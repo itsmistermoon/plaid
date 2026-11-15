@@ -43,7 +43,21 @@ fieldset{border-top:0;padding-top:0}legend{display:block;width:100%;border-top:1
 [data-theme=moderno] .track{background:#5d9344}
 [data-theme=moderno] .tag{color:#487c30;background:#ecf5e5;border-color:#c9dfbb}
 [data-theme=moderno] .check input{accent-color:var(--accent)}
-.modern-table{padding:16px;min-height:205px;display:flex;flex-direction:column}.table-illustration{width:100%;height:110px}.modern-tabletop{fill:#d8c7a5}.modern-cloth{fill:#8dbb70}
-.modern-info{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-top:8px}.modern-info strong{font-size:14px}
-.badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:9px}.badge{display:inline-flex;align-items:center;border:1px solid transparent;border-radius:4px;padding:3px 7px;font-size:10px;font-weight:600;line-height:1.2}.badge.default{background:#4e8b30;color:#fff}.badge.secondary{background:#edf0eb;color:#465344}.badge.outline{border-color:#d5ded0;color:#465344}.badge.destructive{background:#c53133;color:#fff}
-@media(max-width:450px){.modern-table{padding:12px;min-height:180px}.table-illustration{height:90px}.ref-seals .seal-pairs{gap:12px}}
+[data-theme=moderno] .table-button{border:0;border-radius:14px;background:transparent;box-shadow:none;overflow:visible;text-align:center}
+[data-theme=moderno] .table-button:hover{background:transparent}
+[data-theme=moderno] .table-button[data-selected=true]{background:transparent;box-shadow:none}
+[data-theme=moderno] .table-button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.modern-table{position:relative;aspect-ratio:1;border-radius:14px;background:#fbfaf6;border:1px solid #e2e6dc;box-shadow:0 1px 2px #1f30170d;overflow:hidden;container-type:inline-size;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:12px;transition:border-color .15s,box-shadow .15s}
+.table-button:hover .modern-table{border-color:#b7d0a6;box-shadow:0 2px 8px #2d4f1b14}
+.table-button[data-selected=true] .modern-table{border-color:var(--accent);box-shadow:0 0 0 3px #4e8b3033,0 2px 8px #2d4f1b14}
+.modern-surface{position:absolute;inset:0;width:100%;height:100%}
+.modern-cloth{fill:#e3efd8;transition:fill .15s}.modern-stitch{fill:none;stroke:#fff;stroke-width:.6;stroke-dasharray:2 1.6;vector-effect:non-scaling-stroke;opacity:.9}
+.modern-table[data-occupied=true] .modern-cloth{fill:#c9e0b6}
+.modern-plate{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 14px;background:#fff;border:1px solid #dfe6d9;border-radius:10px;box-shadow:0 1px 3px #1f301714}
+.modern-plate strong{font:600 15px/1 Inter,sans-serif;letter-spacing:-.01em;color:var(--text)}
+.modern-table .badges{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:4px}
+.badge{display:inline-flex;align-items:center;gap:3px;border:1px solid transparent;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:600;line-height:1.3;white-space:nowrap}.badge svg{width:11px;height:11px;flex:none}
+.badge.default{background:#4e8b30;color:#fff}.badge.secondary{background:#eef1ea;color:#465344;border-color:#dfe5da}
+.badge.call{background:#fff;border-color:#dfe5da;color:#2b3a28;box-shadow:0 1px 2px #1f301712}.badge.pago{background:#c53133;border-color:#c53133;color:#fff}.badge.pedido svg{color:#1f6fa8}.badge.garzón svg{color:#b27c0e}
+@container (max-width:200px){.modern-table{gap:6px;padding:8px}.modern-plate{padding:7px 10px;gap:4px}.modern-plate strong{font-size:13px}.badge.call{padding:3px 5px}.badge.call .badge-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}}
+@media(max-width:450px){.ref-seals .seal-pairs{gap:12px}}

@@ -5,6 +5,7 @@ import '@fontsource/courier-prime';
 import '@fontsource/outfit/700.css';
 import '@fontsource/kaushan-script';
 import '@fontsource/inter';
+import '@fontsource/inter/600.css';
 import './style.css';
 
 type Call = 'pago' | 'pedido' | 'garzón';
@@ -28,7 +29,11 @@ function Seal({ kind, x }: { kind: Call; x: number }) {
 }
 function Mesa({ table, number, theme = 'original' }: { table: Table; number: number; theme?: 'original' | 'moderno' }) {
   const id = useId().replace(/:/g, '');
-  if (theme === 'moderno') return <div className="modern-table"><svg className="table-illustration" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id={`${id}modern-clip`}><rect x="12" y="12" width="76" height="76" rx="8"/></clipPath></defs><rect x="12" y="12" width="76" height="76" rx="8" className="modern-tabletop"/><g clipPath={`url(#${id}modern-clip)`}><path d="M50 0 100 50 50 100 0 50Z" className="modern-cloth"/></g></svg><div className="modern-info"><strong>Mesa {number}</strong><span className={`badge ${table.occupied ? 'secondary' : 'default'}`}>{table.occupied ? 'Ocupada' : 'Libre'}</span></div><div className="badges">{table.calls.map(call => <span key={call} className={`badge ${call === 'pago' ? 'destructive' : 'outline'} ${call}`}>{labels[call]}</span>)}</div></div>;
+  if (theme === 'moderno') return <div className="modern-table" data-occupied={table.occupied}>
+    <svg className="modern-surface" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0 100 50 50 100 0 50Z" className="modern-cloth"/><path d="M50 6 94 50 50 94 6 50Z" className="modern-stitch"/></svg>
+    <div className="modern-plate"><strong>Mesa {number}</strong><span className={`badge ${table.occupied ? 'secondary' : 'default'}`}>{table.occupied ? 'Ocupada' : 'Libre'}</span></div>
+    {table.calls.length > 0 && <div className="badges">{table.calls.map(call => { const Icon = sealIcons[call]; return <span key={call} className={`badge call ${call}`} title={labels[call]}><Icon aria-hidden="true" strokeWidth={2.5}/><span className="badge-label">{labels[call]}</span></span>; })}</div>}
+  </div>;
   return <svg className="mesa" viewBox="0 0 200 200" role="img" aria-label={`Mesa ${number}, ${table.occupied ? 'ocupada' : 'libre'}${table.calls.length ? ', llamado: ' + table.calls.join(', ') : ''}`}>
     <defs>
       <pattern id={`${id}checks`} width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
