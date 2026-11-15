@@ -30,7 +30,7 @@ function Seal({ kind, x }: { kind: Call; x: number }) {
 function Mesa({ table, number, theme = 'original' }: { table: Table; number: number; theme?: 'original' | 'moderno' }) {
   const id = useId().replace(/:/g, '');
   if (theme === 'moderno') return <div className="modern-table" data-occupied={table.occupied}>
-    <svg className="modern-surface" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0 100 50 50 100 0 50Z" className="modern-cloth"/><path d="M50 6 94 50 50 94 6 50Z" className="modern-stitch"/></svg>
+    <svg className="modern-surface" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 -12 112 50 50 112 -12 50Z" className="modern-cloth"/><path d="M50 -6 106 50 50 106 -6 50Z" className="modern-stitch"/></svg>
     <div className="modern-plate"><strong>Mesa {number}</strong><span className={`badge ${table.occupied ? 'secondary' : 'default'}`}>{table.occupied ? 'Ocupada' : 'Libre'}</span></div>
     {table.calls.length > 0 && <div className="badges">{table.calls.map(call => { const Icon = sealIcons[call]; return <span key={call} className={`badge call ${call}`} title={labels[call]}><Icon aria-hidden="true" strokeWidth={2.5}/><span className="badge-label">{labels[call]}</span></span>; })}</div>}
   </div>;
