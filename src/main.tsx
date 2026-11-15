@@ -1,5 +1,6 @@
 import React, { useId, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { DollarSign, HandPlatter, Utensils } from 'lucide-react';
 import '@fontsource/courier-prime';
 import '@fontsource/outfit/700.css';
 import '@fontsource/kaushan-script';
@@ -10,11 +11,12 @@ type Call = 'pago' | 'pedido' | 'garzón';
 type Table = { occupied: boolean; calls: Call[] };
 const calls: Call[] = ['pago', 'pedido', 'garzón'];
 const labels: Record<Call, string> = { pago: 'Pago', pedido: 'Pedido', garzón: 'Garzón' };
-function sealPoints() { return Array.from({ length: 48 }, (_, i) => { const a = i * Math.PI / 24 - Math.PI / 2, r = i % 2 ? 33 : 39; return `${50 + Math.cos(a) * r},${50 + Math.sin(a) * r}`; }).join(' '); }
+const sealIcons = { pago: DollarSign, pedido: Utensils, garzón: HandPlatter };
 function Seal({ kind, x }: { kind: Call; x: number }) {
-  return <g transform={`translate(${x},74) scale(.68)`} className={`seal ${kind}`}>
-    <polygon points={sealPoints()} className="seal-edge"/><circle cx="50" cy="50" r="29" className="seal-face"/>
-    {kind === 'pago' ? <text x="50" y="69" textAnchor="middle" className="seal-symbol">$</text> : kind === 'pedido' ? <g className="seal-icon"><path d="M36 29v17m-5-17v12c0 7 10 7 10 0V29M36 46v23M61 29c-7 5-8 15-8 21h8v19M61 29v21"/></g> : <g className="seal-icon"><path d="M29 31h42L54 51v15h9M54 51h-8v15h-9"/></g>}
+  const Icon = sealIcons[kind];
+  return <g className={`seal ${kind}`}>
+    <circle cx={x} cy="148" r="14" className="seal-face"/>
+    <Icon x={x - 9} y="139" width="18" height="18" strokeWidth={3} className="seal-icon"/>
   </g>;
 }
 function Mesa({ table, number }: { table: Table; number: number }) {
@@ -32,7 +34,7 @@ function Mesa({ table, number }: { table: Table; number: number }) {
     <rect className="table-outline" x="19" y="19" width="162" height="162" rx="23"/>
     <g className="plate"><rect x="30" y="77" width="140" height="49" rx="2" fill={`url(#${id}plate)`}/><rect x="36" y="83" width="128" height="37" rx="2"/><text x="100" y="107" textAnchor="middle">Mesa {table.occupied ? 'ocupada' : 'libre'}</text></g>
     <g className="table-number"><circle cx="157" cy="44" r="14"/><text x="157" y="49" textAnchor="middle">{number}</text></g>
-    {table.calls.map((call, i) => <Seal key={call} kind={call} x={table.calls.length === 1 ? 66 : 22 + i * 45}/>)}
+    {table.calls.map((call, i) => <Seal key={call} kind={call} x={100 + (i - (table.calls.length - 1) / 2) * 32}/>)}
   </svg>;
 }
 function App() {
