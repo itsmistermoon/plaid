@@ -1,6 +1,6 @@
 import React, { useId, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ArrowRight, DollarSign, HandPlatter, Utensils } from 'lucide-react';
+import { DollarSign, HandPlatter, Utensils } from 'lucide-react';
 import '@fontsource/courier-prime';
 import '@fontsource/outfit/700.css';
 import '@fontsource/kaushan-script';
@@ -14,19 +14,21 @@ const labels: Record<Call, string> = { pago: 'Pago', pedido: 'Pedido', garzón: 
 const sealIcons = { pago: DollarSign, pedido: Utensils, garzón: HandPlatter };
 function Seal({ kind, x }: { kind: Call; x: number }) {
   const Icon = sealIcons[kind];
-  const points = Array.from({ length: 64 }, (_, i) => {
-    const angle = i * Math.PI / 32 - Math.PI / 2;
+  const gradientId = useId().replace(/:/g, '');
+  const points = Array.from({ length: 28 }, (_, i) => {
+    const angle = i * Math.PI / 14 - Math.PI / 2;
     const radius = i % 2 === 0 ? 25 : 21;
     return `${x + Math.cos(angle) * radius},${153 + Math.sin(angle) * radius}`;
   }).join(" ");
   return <g className={`seal ${kind}`}>
-    <polygon points={points} className="seal-face"/>
+    <defs><radialGradient id={gradientId} cx="35%" cy="25%" r="80%"><stop className="seal-light"/><stop offset="1" className="seal-dark"/></radialGradient></defs>
+    <polygon points={points} className="seal-face" fill={`url(#${gradientId})`}/>
     <Icon x={x - 13} y="140" width="26" height="26" strokeWidth={3} className="seal-icon"/>
   </g>;
 }
 function Mesa({ table, number, theme = 'original' }: { table: Table; number: number; theme?: 'original' | 'moderno' }) {
   const id = useId().replace(/:/g, '');
-  if (theme === 'moderno') return <div className="modern-table"><svg className="table-illustration" viewBox="0 0 100 100" aria-hidden="true"><rect x="38" y="4" width="24" height="15" rx="7"/><rect x="38" y="81" width="24" height="15" rx="7"/><rect x="4" y="38" width="15" height="24" rx="7"/><rect x="81" y="38" width="15" height="24" rx="7"/><circle cx="50" cy="50" r="30" className="table-top"/><circle cx="50" cy="50" r="22" className="table-inner"/></svg><div className="modern-info"><div><strong>Mesa {number}</strong><span className={table.occupied ? 'status occupied' : 'status'}>{table.occupied ? 'Ocupada' : 'Libre'}</span></div><span className="card-arrow"><ArrowRight size={16}/></span></div><div className="badges">{table.calls.map(call => <span key={call} className={`badge ${call}`}>{labels[call]}</span>)}</div></div>;
+  if (theme === 'moderno') return <div className="modern-table"><svg className="table-illustration" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id={`${id}modern-clip`}><rect x="12" y="12" width="76" height="76" rx="8"/></clipPath></defs><rect x="12" y="12" width="76" height="76" rx="8" className="modern-tabletop"/><g clipPath={`url(#${id}modern-clip)`}><path d="M50 0 100 50 50 100 0 50Z" className="modern-cloth"/></g></svg><div className="modern-info"><strong>Mesa {number}</strong><span className={`badge ${table.occupied ? 'secondary' : 'default'}`}>{table.occupied ? 'Ocupada' : 'Libre'}</span></div><div className="badges">{table.calls.map(call => <span key={call} className={`badge ${call === 'pago' ? 'destructive' : 'outline'} ${call}`}>{labels[call]}</span>)}</div></div>;
   return <svg className="mesa" viewBox="0 0 200 200" role="img" aria-label={`Mesa ${number}, ${table.occupied ? 'ocupada' : 'libre'}${table.calls.length ? ', llamado: ' + table.calls.join(', ') : ''}`}>
     <defs>
       <pattern id={`${id}checks`} width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
