@@ -7,6 +7,7 @@ import '@fontsource/kaushan-script';
 import '@fontsource/inter';
 import '@fontsource/inter/600.css';
 import './style.css';
+import { MobileApp } from './mobile';
 
 type Call = 'pago' | 'pedido' | 'garzón';
 type Table = { occupied: boolean; calls: Call[] };
@@ -27,7 +28,7 @@ function Seal({ kind, x }: { kind: Call; x: number }) {
     <Icon x={x - 13} y="140" width="26" height="26" strokeWidth={3} className="seal-icon"/>
   </g>;
 }
-function Mesa({ table, number, theme = 'original' }: { table: Table; number: number; theme?: 'original' | 'moderno' }) {
+export function Mesa({ table, number, theme = 'original' }: { table: Table; number: number; theme?: 'original' | 'moderno' }) {
   const id = useId().replace(/:/g, '');
   if (theme === 'moderno') return <div className="modern-table" data-occupied={table.occupied}>
     <svg className="modern-surface" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 -12 112 50 50 112 -12 50Z" className="modern-cloth"/><path d="M50 -6 106 50 50 106 -6 50Z" className="modern-stitch"/></svg>
@@ -69,4 +70,4 @@ function App() {
     <section className="fonts"><p className="eyebrow">PALETA TIPOGRÁFICA</p><h2>Cuatro voces para plaid</h2><div className="font-grid"><div><small>COURIER PRIME</small><p style={{fontFamily:'Courier Prime'}}>La cuenta, por favor.</p></div><div><small>OUTFIT 700</small><p style={{fontFamily:'Outfit',fontWeight:700}}>Mesa para cuatro</p></div><div><small>KAUSHAN SCRIPT</small><p style={{fontFamily:'Kaushan Script'}}>Buen provecho</p></div><div><small>INTER</small><p style={{fontFamily:'Inter'}}>Tu pedido está listo.</p></div></div></section><footer>plaid / experimento de reconstrucción vectorial</footer></main></div>;
 }
 
-createRoot(document.getElementById('root')!).render(<App/>);
+createRoot(document.getElementById('root')!).render(window.location.search.includes('movil') ? <MobileApp/> : <App/>);
