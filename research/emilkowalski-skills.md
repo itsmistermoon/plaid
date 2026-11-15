@@ -5,7 +5,7 @@ Fuente primaria: https://github.com/emilkowalski/skills (commit `64eb3de`, 2026-
 
 ## Respuesta corta
 
-Son 20 skills de diseño de interfaz, casi todas sobre animación y pulido web, más algunas de referencia (filosofía de Emil, Apple, vocabulario). Se instalan con `npx skills@latest add emilkowalski/skills` (README, sección "Install") y en Claude Code se invocan como `/nombre`. La mayoría también se activa sola por su `description`; seis tienen `disable-model-invocation: true` y solo corren invocadas a mano. Para plaid (web, solo frontend, UI esqueuomórfica vectorial de tablet) sirven el flujo principal web y las referencias. Las de React Native (`animate-expo`), Swift (`write-swift`) y Sonner (`ask-sonner`) no aplican.
+Son 20 skills de diseño de interfaz, casi todas sobre animación y pulido web, más algunas de referencia (filosofía de Emil, Apple, vocabulario). Se instalan con `npx skills@latest add emilkowalski/skills` (README, sección "Install") y en Claude Code se invocan como `/nombre`. La mayoría también se activa sola por su `description`; cinco tienen `disable-model-invocation: true` y solo corren invocadas a mano. Para plaid (web, solo frontend, UI esqueuomórfica vectorial de tablet) sirven el flujo principal web y las referencias. Las de React Native (`animate-expo`), Swift (`write-swift`) y Sonner (`ask-sonner`) no aplican.
 
 ## Catálogo (según el frontmatter de cada SKILL.md)
 
