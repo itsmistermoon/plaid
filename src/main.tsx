@@ -14,16 +14,26 @@ const labels: Record<Call, string> = { pago: 'Pago', pedido: 'Pedido', garzón: 
 const sealIcons = { pago: DollarSign, pedido: Utensils, garzón: HandPlatter };
 function Seal({ kind, x }: { kind: Call; x: number }) {
   const Icon = sealIcons[kind];
+  const points = Array.from({ length: 64 }, (_, i) => {
+    const angle = i * Math.PI / 32 - Math.PI / 2;
+    const radius = i % 2 === 0 ? 25 : 21;
+    return `${x + Math.cos(angle) * radius},${153 + Math.sin(angle) * radius}`;
+  }).join(" ");
   return <g className={`seal ${kind}`}>
-    <circle cx={x} cy="148" r="14" className="seal-face"/>
-    <Icon x={x - 9} y="139" width="18" height="18" strokeWidth={3} className="seal-icon"/>
+    <polygon points={points} className="seal-face"/>
+    <Icon x={x - 13} y="140" width="26" height="26" strokeWidth={3} className="seal-icon"/>
   </g>;
 }
 function Mesa({ table, number }: { table: Table; number: number }) {
   const id = useId().replace(/:/g, '');
   return <svg className="mesa" viewBox="0 0 200 200" role="img" aria-label={`Mesa ${number}, ${table.occupied ? 'ocupada' : 'libre'}${table.calls.length ? ', llamado: ' + table.calls.join(', ') : ''}`}>
     <defs>
-      <pattern id={`${id}checks`} width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="24" height="24" fill="#93b75a"/><path d="M0 0h12v24H0zM0 0h24v12H0z" fill="#e4efbd" opacity=".38"/><path d="M0 0h12v12H0zM12 12h12v12H12z" fill="#3e792d" opacity=".3"/></pattern>
+      <pattern id={`${id}checks`} width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="28" height="28" className="cloth-base"/>
+        <path d="M0 0h14v28H0zM0 0h28v14H0z" className="cloth-band"/>
+        <path d="M0 0h14v14H0z" className="cloth-cross"/>
+        <path d="M2 0v28M6 0v28M10 0v28M14 0v28M18 0v28M22 0v28M26 0v28M0 2h28M0 6h28M0 10h28M0 14h28M0 18h28M0 22h28M0 26h28" className="cloth-thread"/>
+      </pattern>
       <filter id={`${id}grain`}><feTurbulence type="fractalNoise" baseFrequency=".035 .38" numOctaves="3" seed="8"/><feColorMatrix type="saturate" values="0"/></filter>
       <linearGradient id={`${id}wood`} x2="0" y2="1"><stop stopColor="#ddb585"/><stop offset=".5" stopColor="#ae7848"/><stop offset="1" stopColor="#79502e"/></linearGradient>
       <linearGradient id={`${id}plate`} x2="0" y2="1"><stop stopColor="#fffbd6"/><stop offset="1" stopColor="#c5b77d"/></linearGradient>
@@ -32,9 +42,9 @@ function Mesa({ table, number }: { table: Table; number: number }) {
     <rect className="table-shadow" x="19" y="22" width="162" height="162" rx="23"/>
     <g clipPath={`url(#${id}clip)`}><rect className="wood" x="19" y="19" width="162" height="162" fill={`url(#${id}wood)`}/><rect className="grain" x="19" y="19" width="162" height="162" filter={`url(#${id}grain)`}/><path className="cloth-shadow" d="M100 3 198 101 100 199 2 101Z"/><path className="cloth" d="M100 0 200 100 100 200 0 100Z" fill={`url(#${id}checks)`}/><path className="cloth-shine" d="M100 2 198 100 100 198 2 100Z"/></g>
     <rect className="table-outline" x="19" y="19" width="162" height="162" rx="23"/>
-    <g className="plate"><rect x="30" y="77" width="140" height="49" rx="2" fill={`url(#${id}plate)`}/><rect x="36" y="83" width="128" height="37" rx="2"/><text x="100" y="107" textAnchor="middle">Mesa {table.occupied ? 'ocupada' : 'libre'}</text></g>
+    <g className="plate"><rect x="30" y="77" width="140" height="49" rx="2" fill={`url(#${id}plate)`}/><path d="M42 83H158Q158 89 164 89V114Q158 114 158 120H42Q42 114 36 114V89Q42 89 42 83Z"/><text x="100" y="107" textAnchor="middle">Mesa {table.occupied ? 'ocupada' : 'libre'}</text></g>
     <g className="table-number"><circle cx="157" cy="44" r="14"/><text x="157" y="49" textAnchor="middle">{number}</text></g>
-    {table.calls.map((call, i) => <Seal key={call} kind={call} x={100 + (i - (table.calls.length - 1) / 2) * 32}/>)}
+    {table.calls.map((call, i) => <Seal key={call} kind={call} x={100 + (i - (table.calls.length - 1) / 2) * 49}/>)}
   </svg>;
 }
 function App() {
