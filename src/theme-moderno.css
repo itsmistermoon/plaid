@@ -772,3 +772,12 @@
   background: var(--card);
   box-shadow: 0 8px 24px #18181b1f;
 }
+
+/* Columna de acción de la boleta */
+[data-theme="moderno"] .receipt-actions-total span {
+  color: var(--muted-foreground);
+}
+[data-theme="moderno"] .receipt-actions-total strong {
+  color: var(--foreground);
+  text-shadow: none;
+}

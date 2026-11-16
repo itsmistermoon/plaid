@@ -231,9 +231,13 @@
     width: auto;
     align-self: stretch;
   }
-  .ticket-card > .light-button {
+  .receipt-actions {
     order: -1;
-    align-self: flex-end;
+    position: static;
+    width: auto;
+    align-self: stretch;
+    grid-template-columns: 1fr auto;
+    align-items: center;
   }
 
   /* Estado: llamar al garzón y ver la cuenta */

@@ -1,6 +1,6 @@
 import { ShoppingCart } from 'lucide-react';
 import { useStore } from 'zustand';
-import { Receipt, Stepper } from '../../components/Receipt';
+import { Receipt, ReceiptActions, Stepper } from '../../components/Receipt';
 import { cartTotal } from '../../domain';
 import { useExtraName, useT } from '../../i18n';
 import { dishById, lineKey, receiptLine } from '../lines';
@@ -43,17 +43,19 @@ export function Carrito({ go }: { go: Go }) {
               ),
             )}
           />
-          <button
-            type="button"
-            className="light-button"
-            data-tour="enviar"
-            onClick={() => {
-              sendOrder();
-              go('estado');
-            }}
-          >
-            {t('placeOrder')}
-          </button>
+          <ReceiptActions total={cartTotal(cart)}>
+            <button
+              type="button"
+              className="light-button"
+              data-tour="enviar"
+              onClick={() => {
+                sendOrder();
+                go('estado');
+              }}
+            >
+              {t('placeOrder')}
+            </button>
+          </ReceiptActions>
         </>
       )}
     </section>

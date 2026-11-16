@@ -1,6 +1,6 @@
 import { ReceiptText } from 'lucide-react';
 import { useStore } from 'zustand';
-import { Receipt } from '../../components/Receipt';
+import { Receipt, ReceiptActions } from '../../components/Receipt';
 import { billTotal, findVisitorTable } from '../../domain';
 import { useExtraName, useT } from '../../i18n';
 import { lineKey, receiptLine } from '../lines';
@@ -34,20 +34,22 @@ export function Cuenta() {
               ),
             )}
           />
-          {mesa.calls.includes('pago') ? (
-            <p className="notice" role="status">
-              {t('billComing')}
-            </p>
-          ) : (
-            <button
-              type="button"
-              className="light-button"
-              data-tour="cuenta"
-              onClick={requestBill}
-            >
-              {t('askBill')}
-            </button>
-          )}
+          <ReceiptActions total={billTotal(mesa)}>
+            {mesa.calls.includes('pago') ? (
+              <p className="notice" role="status">
+                {t('billComing')}
+              </p>
+            ) : (
+              <button
+                type="button"
+                className="light-button"
+                data-tour="cuenta"
+                onClick={requestBill}
+              >
+                {t('askBill')}
+              </button>
+            )}
+          </ReceiptActions>
         </>
       )}
     </section>

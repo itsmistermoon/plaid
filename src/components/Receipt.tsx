@@ -119,3 +119,26 @@ export function Stepper({
     </span>
   );
 }
+
+/**
+ * Columna de acción junto a la boleta: repite el total, que es lo más
+ * importante, y deja la acción principal siempre a la vista.
+ */
+export function ReceiptActions({
+  total,
+  children,
+}: {
+  total: number;
+  children: ReactNode;
+}) {
+  const t = useT();
+  return (
+    <div className="receipt-actions">
+      <p className="receipt-actions-total">
+        <span>{t('total')}</span>
+        <strong>{money(total)}</strong>
+      </p>
+      {children}
+    </div>
+  );
+}

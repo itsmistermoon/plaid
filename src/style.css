@@ -1195,6 +1195,37 @@ ol {
 .ticket-card .receipt {
   align-self: flex-start;
 }
+/* Columna de acción: total grande arriba y la acción principal debajo. */
+.receipt-actions {
+  position: sticky;
+  top: 0;
+  display: grid;
+  justify-items: stretch;
+  gap: 14px;
+  width: 180px;
+  flex: none;
+}
+.receipt-actions-total {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.receipt-actions-total span {
+  font-size: 13px;
+  color: var(--muted);
+}
+.receipt-actions-total strong {
+  font:
+    700 28px Outfit,
+    sans-serif;
+  color: #fff;
+  text-shadow: 0 -1px #0008;
+}
+.receipt-actions .light-button {
+  height: 32px;
+  font-size: 13px;
+}
 .notice {
   padding: 10px 14px;
   border-radius: 6px;
