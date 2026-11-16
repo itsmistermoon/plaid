@@ -375,30 +375,12 @@
   color: var(--destructive);
 }
 
-/* Boleta: tarjeta lisa con divisores */
+/* Boleta: tarjeta limpia, sin impresora ni papel */
 [data-theme="moderno"] .receipt-slot {
-  left: -6px;
-  right: -6px;
-  top: -8px;
-  height: 16px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--secondary);
-  box-shadow: var(--shadow-sm);
+  display: none;
 }
-[data-theme="moderno"] .receipt-slot::before {
-  left: 14px;
-  right: 26px;
-  top: 4px;
-  height: 6px;
-  background: var(--foreground);
-  box-shadow: none;
-}
-[data-theme="moderno"] .receipt-slot::after {
-  right: 9px;
-  top: 4px;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+[data-theme="moderno"] .receipt-feed {
+  clip-path: none;
 }
 [data-theme="moderno"] .receipt-paper {
   padding: 12px 0 0;
@@ -791,4 +773,10 @@
 [data-theme="moderno"] .receipt-actions-total strong {
   color: var(--foreground);
   text-shadow: none;
+}
+[data-theme="moderno"] .detail-receipt .receipt {
+  margin-top: 0;
+}
+[data-theme="moderno"] .detail-receipt .receipt table {
+  font-size: 13px;
 }
