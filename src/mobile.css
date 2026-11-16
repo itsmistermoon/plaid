@@ -16,6 +16,7 @@
   --role-w: 100px;
   --tour-w: 32px;
   --reset-w: 32px;
+  --kit-w: 32px;
 }
 .stage-bar:where([data-phone]) .selector-toggle {
   display: flex;

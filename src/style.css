@@ -151,6 +151,7 @@ ol {
   --role-w: 176px;
   --tour-w: 156px;
   --reset-w: 130px;
+  --kit-w: 100px;
   max-width: 1120px;
   margin: 0 auto 18px;
   display: flex;
@@ -158,12 +159,14 @@ ol {
   gap: 12px;
 }
 .stage-bar .selector,
-.stage-bar button.dark-button {
+.stage-bar button.dark-button,
+.stage-bar a.dark-button {
   box-sizing: border-box;
   flex: none;
   height: var(--bar-h);
 }
-.stage-bar button.dark-button {
+.stage-bar button.dark-button,
+.stage-bar a.dark-button {
   padding: 0;
   font-size: 13px;
   font-weight: 600;
@@ -182,6 +185,10 @@ ol {
 }
 .reset-button {
   width: var(--reset-w);
+}
+.kit-link {
+  width: var(--kit-w);
+  text-decoration: none;
 }
 .stage-bar h1 {
   margin-right: auto;

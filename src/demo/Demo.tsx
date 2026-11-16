@@ -1,5 +1,6 @@
-import { RotateCcw } from 'lucide-react';
+import { LayoutGrid, RotateCcw } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'wouter';
 import { useStore } from 'zustand';
 import { LangSwitch } from '../components/LangSwitch';
 import { Selector } from '../components/Selector';
@@ -7,7 +8,7 @@ import { SelectorToggle } from '../components/SelectorToggle';
 import { StageBar } from '../components/StageBar';
 import { ThemeSwitch } from '../components/ThemeSwitch';
 import { TourCoach } from '../components/TourCoach';
-import { useT } from '../i18n';
+import { pathFor, useLang, useT } from '../i18n';
 import { tourSteps } from '../tour';
 import { Comensal } from './Comensal';
 import { Garzon } from './Garzon';
@@ -21,6 +22,7 @@ export function Demo() {
   const { view, setView, reset, tour, skipTour, endTour } = useStore(store);
   const touring = tour && !tour.skipped ? tour : null;
   const t = useT();
+  const lang = useLang();
   const phone = useMedia('(max-width: 760px)');
   const [revision, setRevision] = useState(0);
   const [entered, setEntered] = useState(false);
@@ -63,6 +65,14 @@ export function Demo() {
           />
         )}
         <TourButton />
+        <Link
+          href={pathFor('gallery', lang)}
+          className="dark-button kit-link"
+          aria-label={t('uiKit')}
+        >
+          <LayoutGrid aria-hidden="true" />
+          <span className="reset-label">{t('uiKit')}</span>
+        </Link>
         <button
           type="button"
           className="dark-button reset-button"

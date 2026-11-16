@@ -12,6 +12,7 @@ for (const width of [1440, 390]) {
       '.lang-switch',
       '.role-switch',
       '.tour-button',
+      '.kit-link',
       '.reset-button',
     ];
     let baseline;
