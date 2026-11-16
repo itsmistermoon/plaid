@@ -26,14 +26,18 @@ export function Seal({ kind, x }: { kind: CallKind; x: number }) {
         className="seal-face"
         fill={`url(#${gradient})`}
       />
-      <Icon
-        x={x - 13}
-        y={140}
-        width={26}
-        height={26}
-        strokeWidth={3}
-        className="seal-icon"
-      />
+      {/* Cara plana del tema moderno; el original la oculta. */}
+      <circle className="seal-dot" cx={x} cy={153} r={15} />
+      <g className="seal-glyph">
+        <Icon
+          x={x - 13}
+          y={140}
+          width={26}
+          height={26}
+          strokeWidth={3}
+          className="seal-icon"
+        />
+      </g>
     </g>
   );
 }

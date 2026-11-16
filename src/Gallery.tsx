@@ -19,6 +19,7 @@ import { Scroller } from './components/Scroller';
 import { SealBadge } from './components/Seal';
 import { SearchField } from './components/SearchField';
 import { Table } from './components/Table';
+import { ThemeSwitch } from './components/ThemeSwitch';
 import type { CallKind } from './domain';
 import { money } from './format';
 import { categories, dishes } from './menu';
@@ -356,11 +357,12 @@ function NavbarDemo() {
 
 export function Gallery() {
   return (
-    <main className="gallery" data-theme="original">
+    <main className="gallery">
       <header className="stage-bar">
         <h1>
           Galería de componentes <small>El Clan · iClub</small>
         </h1>
+        <ThemeSwitch />
         <Link href="/demo" className="light-button">
           Abrir la demo
         </Link>

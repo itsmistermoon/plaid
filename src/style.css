@@ -1139,6 +1139,9 @@ ol {
   stroke-width: 1.5;
   stroke-linejoin: round;
 }
+.seal-dot {
+  display: none;
+}
 .seal-icon {
   color: #fff;
 }

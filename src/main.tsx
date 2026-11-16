@@ -5,12 +5,15 @@ import '@fontsource/kaushan-script/400.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
+import { Preferences } from '@ui-sdk/react/preferences';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Redirect, Route, Switch } from 'wouter';
 import { Demo } from './Demo';
 import { Gallery } from './Gallery';
+import { theme } from './theme';
 import './style.css';
+import './theme-moderno.css';
 
 function App() {
   return (
@@ -45,6 +48,8 @@ const root = document.getElementById('root');
 if (!root) throw new Error('No se encontró la raíz de la aplicación');
 createRoot(root).render(
   <StrictMode>
-    <App />
+    <Preferences preferences={[theme]}>
+      <App />
+    </Preferences>
   </StrictMode>,
 );

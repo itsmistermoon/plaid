@@ -14,6 +14,7 @@ import { ArrowButton, Navbar } from './components/Navbar';
 import { QuantityWheel } from './components/QuantityWheel';
 import { Receipt, Stepper } from './components/Receipt';
 import { Table } from './components/Table';
+import { ThemeSwitch } from './components/ThemeSwitch';
 import { billTotal, type CallKind, cartTotal, createDemoStore } from './domain';
 import { money } from './format';
 import { type Category, categories, type Dish, dishes } from './menu';
@@ -530,11 +531,12 @@ export function Demo() {
     [],
   );
   return (
-    <main className="app" data-theme="original">
+    <main className="app">
       <header className="stage-bar">
         <h1>
           El Clan <small>una reconstrucción de iClub</small>
         </h1>
+        <ThemeSwitch />
         <fieldset className="selector">
           <legend className="sr-only">Dispositivo</legend>
           <button

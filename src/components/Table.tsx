@@ -67,7 +67,14 @@ export function Table({
         rx="23"
       />
       <g clipPath={`url(#${id}clip)`}>
-        <rect x="19" y="19" width="162" height="162" fill={`url(#${id}wood)`} />
+        <rect
+          className="wood"
+          x="19"
+          y="19"
+          width="162"
+          height="162"
+          fill={`url(#${id}wood)`}
+        />
         <rect
           className="grain"
           x="19"
