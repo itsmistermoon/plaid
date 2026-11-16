@@ -28,15 +28,15 @@
   .stage-bar {
     max-width: none;
     margin: 0;
-    padding: 8px 10px;
-    gap: 6px;
+    padding: 8px;
+    gap: 4px;
     justify-content: space-between;
   }
   .app .stage-bar h1 {
     display: none;
   }
   .stage-bar .selector :is(button, a) {
-    padding: 6px 9px;
+    padding: 6px 8px;
     font-size: 12px;
   }
   .reset-button {
