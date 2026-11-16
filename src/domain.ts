@@ -50,7 +50,7 @@ interface Order {
   lines: Line[];
   status: OrderStatus;
 }
-interface Table {
+export interface Table {
   number: number;
   occupied: boolean;
   orders: Order[];

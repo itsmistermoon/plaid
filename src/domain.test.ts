@@ -221,11 +221,64 @@ it('las mesas de relleno generan llamados sin tocar la Mesa 7', () => {
   vi.advanceTimersByTime(3000);
   expect(store.getState().tables[0]).toMatchObject({
     occupied: true,
-    calls: ['garzón'],
+    calls: ['pedido'],
   });
   expect(store.getState().tables[6].calls).toEqual([]);
   stop();
 });
+
+/** Azar reproducible: un generador congruencial con semilla fija. */
+const seeded = (seed: number) => () => {
+  seed = (seed * 1103515245 + 12345) % 2 ** 31;
+  return seed / 2 ** 31;
+};
+const fillerCalls = (store: ReturnType<typeof createDemoStore>) =>
+  store
+    .getState()
+    .tables.filter((table) => table.number !== 7)
+    .flatMap((table) => table.calls);
+
+it.each([1, 2, 3])(
+  'las mesas de relleno mandan llamados de los tres tipos (semilla %s)',
+  (seed) => {
+    vi.useFakeTimers();
+    const store = createDemoStore();
+    const stop = startSimulator(store, {
+      random: seeded(seed),
+      setTimeout,
+      clearTimeout,
+    });
+    const seen = new Set<string>();
+    for (let tick = 0; tick < 60; tick++) {
+      vi.advanceTimersByTime(5000);
+      for (const call of fillerCalls(store)) seen.add(call);
+    }
+    expect([...seen].sort()).toEqual(['garzón', 'pago', 'pedido']);
+    stop();
+  },
+);
+
+it.each([0, 0.5, 0.99, 1, 2, 3])(
+  'la sala no se satura: los llamados de relleno se atienden solos (azar %s)',
+  (value) => {
+    vi.useFakeTimers();
+    const store = createDemoStore();
+    const stop = startSimulator(store, {
+      random: value < 1 ? () => value : seeded(value),
+      setTimeout,
+      clearTimeout,
+    });
+    const history: string[] = [];
+    for (let tick = 0; tick < 100; tick++) {
+      vi.advanceTimersByTime(5000);
+      expect(fillerCalls(store).length).toBeLessThanOrEqual(4);
+      history.push(JSON.stringify(store.getState().tables));
+    }
+    // La sala sigue cambiando: no se queda pegada en un estado lleno.
+    expect(new Set(history.slice(-20)).size).toBeGreaterThan(1);
+    stop();
+  },
+);
 
 it('el reinicio también se conserva al recargar la sesión', () => {
   const store = createDemoStore();
