@@ -1,6 +1,7 @@
 import { Switch, SwitchThumb } from '@ui-sdk/react/switch';
+import { useT } from '../i18n';
 
-/** Interruptor del kit: riel hundido y perilla clara con SÍ/NO. */
+/** Interruptor del kit: riel hundido y perilla clara con SÍ/NO (ON/OFF en inglés). */
 export function KitSwitch({
   label,
   checked,
@@ -12,6 +13,7 @@ export function KitSwitch({
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
 }) {
+  const t = useT();
   return (
     <label className="kit-switch-field">
       {label}
@@ -22,10 +24,10 @@ export function KitSwitch({
         onCheckedChange={(next) => onChange?.(next)}
       >
         <span className="kit-switch-on" aria-hidden="true">
-          SÍ
+          {t('switchOn')}
         </span>
         <span className="kit-switch-off" aria-hidden="true">
-          NO
+          {t('switchOff')}
         </span>
         <SwitchThumb className="kit-switch-thumb" />
       </Switch>

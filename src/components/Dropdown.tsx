@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from '@ui-sdk/react/select';
 import { Check, ChevronDown } from 'lucide-react';
+import { useT } from '../i18n';
 
 /** Selector desplegable del kit: botón claro con lista flotante. */
 export function Dropdown({
@@ -20,17 +21,18 @@ export function Dropdown({
   invalid,
 }: {
   label: string;
-  items: string[];
+  items: { value: string; label: string }[];
   value: string | null;
   onChange?: (value: string) => void;
   disabled?: boolean;
   invalid?: boolean;
 }) {
+  const t = useT();
   return (
     <Select
       items={items}
       value={value}
-      placeholder="Elige una opción"
+      placeholder={t('pickOption')}
       disabled={disabled}
       onValueChange={(next) => next && onChange?.(next)}
     >
@@ -45,8 +47,12 @@ export function Dropdown({
       </SelectTrigger>
       <SelectContent className="dropdown-list">
         {items.map((item) => (
-          <SelectItem key={item} value={item} className="dropdown-item">
-            <SelectItemText>{item}</SelectItemText>
+          <SelectItem
+            key={item.value}
+            value={item.value}
+            className="dropdown-item"
+          >
+            <SelectItemText>{item.label}</SelectItemText>
             <SelectItemIndicator>
               <Check aria-hidden="true" strokeWidth={3} />
             </SelectItemIndicator>

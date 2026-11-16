@@ -4,29 +4,27 @@ import {
   Clock,
   ConciergeBell,
   ReceiptText,
+  RotateCcw,
   ShoppingCart,
 } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 import { DishPlate } from './components/DishPlate';
 import { KitCheck } from './components/KitCheck';
+import { LangSwitch } from './components/LangSwitch';
 import { ArrowButton, Navbar } from './components/Navbar';
 import { QuantityWheel } from './components/QuantityWheel';
 import { Receipt, Stepper } from './components/Receipt';
 import { Table } from './components/Table';
 import { ThemeSwitch } from './components/ThemeSwitch';
-import { billTotal, type CallKind, cartTotal, createDemoStore } from './domain';
+import { billTotal, cartTotal, createDemoStore } from './domain';
 import { money } from './format';
+import { useDishText, useT } from './i18n';
 import { type Category, categories, type Dish, dishes } from './menu';
 import { startSimulator } from './simulator';
 
 const store = createDemoStore();
 const dishById = (id: string) => dishes.find((dish) => dish.id === id);
-const callLabels: Record<CallKind, string> = {
-  pedido: 'Pedido nuevo',
-  garzón: 'Llama al garzón',
-  pago: 'Pide la cuenta',
-};
 const statusLabels = ['enviado', 'confirmado', 'servido'] as const;
 
 type Page = 'carta' | 'carrito' | 'estado' | 'cuenta';
@@ -34,6 +32,8 @@ type Page = 'carta' | 'carrito' | 'estado' | 'cuenta';
 function Comensal({ onHome }: { onHome: () => void }) {
   const { cart, tables, setQty, sendOrder, requestBill, callWaiter } =
     useStore(store);
+  const t = useT();
+  const text = useDishText();
   const mesa = tables[6];
   const [page, setPage] = useState<Page>('carta');
   const [category, setCategory] = useState<Category>(categories[0]);
@@ -48,32 +48,35 @@ function Comensal({ onHome }: { onHome: () => void }) {
     ? detail.name
     : {
         carta: 'El Clan',
-        carrito: 'Tu pedido',
-        estado: 'Estado',
-        cuenta: 'Tu cuenta',
+        carrito: t('yourOrder'),
+        estado: t('status'),
+        cuenta: t('yourBill'),
       }[page];
   const menu: { page: Page; label: string; icon: ReactNode; off?: boolean }[] =
     [
-      { page: 'carta', label: 'Carta', icon: <BookOpen /> },
+      { page: 'carta', label: t('menu'), icon: <BookOpen /> },
       {
         page: 'carrito',
-        label: 'Pedido',
+        label: t('order'),
         icon: <ShoppingCart />,
       },
       {
         page: 'estado',
-        label: 'Estado',
+        label: t('status'),
         icon: <Clock />,
         off: !mesa.orders.length,
       },
-      { page: 'cuenta', label: 'Cuenta', icon: <ReceiptText /> },
+      { page: 'cuenta', label: t('bill'), icon: <ReceiptText /> },
     ];
   return (
     <div className="screen" data-surface="comensal">
       <Navbar
         start={
-          <ArrowButton onClick={() => (detail ? setDetail(null) : onHome())}>
-            {detail ? 'Carta' : 'Volver'}
+          <ArrowButton
+            className={detail ? undefined : 'desktop-only'}
+            onClick={() => (detail ? setDetail(null) : onHome())}
+          >
+            {detail ? t('menu') : t('back')}
           </ArrowButton>
         }
         title={title}
@@ -81,8 +84,8 @@ function Comensal({ onHome }: { onHome: () => void }) {
         end={
           <button
             type="button"
-            className="dark-button cart-button"
-            aria-label={`Ver pedido, ${count} unidades`}
+            className="dark-button cart-button desktop-only"
+            aria-label={t('viewOrder')(count)}
             onClick={() => go('carrito')}
           >
             <ShoppingCart aria-hidden="true" strokeWidth={2.5} />
@@ -91,18 +94,19 @@ function Comensal({ onHome }: { onHome: () => void }) {
         }
       />
       <div className="screen-body">
-        <nav className="sidebar" aria-label="Comensal">
+        <nav className="sidebar tabbar" aria-label={t('diner')}>
           <div className="sidebar-guest">
             <span className="avatar" aria-hidden="true">
               7
             </span>
-            Mesa 7
+            {t('table7')}
           </div>
           {menu.map((item) => (
             <button
               key={item.page}
               type="button"
               className="sidebar-item"
+              data-tab={item.page === 'cuenta' ? undefined : true}
               aria-current={page === item.page && !detail ? 'page' : undefined}
               disabled={item.off}
               onClick={() => go(item.page)}
@@ -121,10 +125,12 @@ function Comensal({ onHome }: { onHome: () => void }) {
             onClick={callWaiter}
           >
             <ConciergeBell />
-            {mesa.calls.includes('garzón') ? 'Garzón en camino' : 'Garzón'}
+            {mesa.calls.includes('garzón')
+              ? t('waiterComing')
+              : t('waiterShort')}
           </button>
           <p className="sidebar-logo">
-            El Clan<small>con iClub</small>
+            El Clan<small>{t('withIclub')}</small>
           </p>
         </nav>
         <div className="board">
@@ -132,24 +138,24 @@ function Comensal({ onHome }: { onHome: () => void }) {
             <section className="card detail" aria-label={detail.name}>
               <DishPlate dish={detail} size="big" />
               <h3 className="ribbon">{detail.name}</h3>
-              <p className="detail-text">{detail.description}</p>
+              <p className="detail-text">{text(detail)}</p>
               <div className="detail-foot">
                 <div className="detail-qty">
                   <span className="stamp" aria-hidden="true" />
-                  <h4>Cantidad</h4>
+                  <h4>{t('quantity')}</h4>
                   {detail.soldOut ? (
-                    <p className="sold-out">Agotado por hoy</p>
+                    <p className="sold-out">{t('soldOut')}</p>
                   ) : (
                     <QuantityWheel
                       value={quantity}
                       onChange={setQuantity}
-                      label={`Cantidad de ${detail.name}`}
+                      label={t('quantityOf')(detail.name)}
                     />
                   )}
                 </div>
                 <div className="detail-receipt">
                   <Receipt
-                    caption={`Vista previa de ${detail.name}`}
+                    caption={t('previewOf')(detail.name)}
                     lines={[
                       {
                         key: detail.id,
@@ -169,14 +175,18 @@ function Comensal({ onHome }: { onHome: () => void }) {
                       setDetail(null);
                     }}
                   >
-                    Agregar
+                    {t('add')}
                   </button>
                 </div>
               </div>
             </section>
           ) : page === 'carta' ? (
             <>
-              <div className="segmented" role="tablist" aria-label="Categorías">
+              <div
+                className="segmented"
+                role="tablist"
+                aria-label={t('categoriesLabel')}
+              >
                 {categories.map((item) => (
                   <button
                     key={item}
@@ -185,11 +195,11 @@ function Comensal({ onHome }: { onHome: () => void }) {
                     aria-selected={category === item}
                     onClick={() => setCategory(item)}
                   >
-                    {item}
+                    {t('categories')[item]}
                   </button>
                 ))}
               </div>
-              <ul className="dish-list" aria-label={category}>
+              <ul className="dish-list" aria-label={t('categories')[category]}>
                 {dishes
                   .filter((dish) => dish.category === category)
                   .map((dish) => (
@@ -201,14 +211,12 @@ function Comensal({ onHome }: { onHome: () => void }) {
                       <DishPlate dish={dish} />
                       <div className="dish-text">
                         <h3>{dish.name}</h3>
-                        <p>
-                          {dish.soldOut ? 'Agotado por hoy' : dish.description}
-                        </p>
+                        <p>{dish.soldOut ? t('soldOut') : text(dish)}</p>
                       </div>
                       <div className="dish-side">
                         <span className="dish-price">{money(dish.price)}</span>
                         <KitCheck
-                          label={`Agregar ${dish.name} al pedido`}
+                          label={t('addToOrder')(dish.name)}
                           disabled={dish.soldOut}
                           checked={!!cart[dish.id]}
                           onChange={(checked) =>
@@ -218,13 +226,13 @@ function Comensal({ onHome }: { onHome: () => void }) {
                         <button
                           className="light-button"
                           type="button"
-                          aria-label={`Ver ${dish.name} en detalle`}
+                          aria-label={t('seeDetailOf')(dish.name)}
                           onClick={() => {
                             setQuantity(1);
                             setDetail(dish);
                           }}
                         >
-                          Ver en detalle
+                          {t('seeDetail')}
                         </button>
                       </div>
                     </li>
@@ -232,23 +240,23 @@ function Comensal({ onHome }: { onHome: () => void }) {
               </ul>
             </>
           ) : page === 'carrito' ? (
-            <section className="card ticket-card" aria-label="Tu pedido">
+            <section className="card ticket-card" aria-label={t('yourOrder')}>
               {count === 0 ? (
                 <div className="empty">
                   <ShoppingCart aria-hidden="true" />
-                  <p>Tu pedido está vacío.</p>
+                  <p>{t('emptyOrder')}</p>
                   <button
                     type="button"
                     className="light-button"
                     onClick={() => go('carta')}
                   >
-                    Ver la carta
+                    {t('seeMenu')}
                   </button>
                 </div>
               ) : (
                 <>
                   <Receipt
-                    caption="Tu pedido"
+                    caption={t('yourOrder')}
                     total={cartTotal(cart)}
                     lines={dishes
                       .filter((dish) => cart[dish.id])
@@ -273,19 +281,19 @@ function Comensal({ onHome }: { onHome: () => void }) {
                       setPage('estado');
                     }}
                   >
-                    Realizar pedido
+                    {t('placeOrder')}
                   </button>
                 </>
               )}
             </section>
           ) : page === 'estado' ? (
-            <section className="card status" aria-label="Estado del pedido">
+            <section className="card status" aria-label={t('orderStatus')}>
               <ol className="orders">
                 {mesa.orders.map((order, index) => {
                   const step = statusLabels.indexOf(order.status);
                   return (
                     <li key={order.id}>
-                      <h3>Pedido {index + 1}</h3>
+                      <h3>{t('orderN')(index + 1)}</h3>
                       <p className="order-lines">
                         {order.lines
                           .map(
@@ -294,7 +302,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
                           )
                           .join(' · ')}
                       </p>
-                      <ol className="steps" aria-label="Avance">
+                      <ol className="steps" aria-label={t('progress')}>
                         {statusLabels.map((label, i) => (
                           <li
                             key={label}
@@ -306,7 +314,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
                             <span className="step-dot" aria-hidden="true">
                               {i <= step ? <Check strokeWidth={4} /> : i + 1}
                             </span>
-                            {label}
+                            {t('statuses')[label]}
                           </li>
                         ))}
                       </ol>
@@ -314,18 +322,39 @@ function Comensal({ onHome }: { onHome: () => void }) {
                   );
                 })}
               </ol>
+              <div className="status-actions mobile-only">
+                <button
+                  type="button"
+                  className="dark-button"
+                  disabled={mesa.calls.includes('garzón')}
+                  onClick={callWaiter}
+                >
+                  <ConciergeBell aria-hidden="true" />
+                  {mesa.calls.includes('garzón')
+                    ? t('waiterComing')
+                    : t('callWaiter')}
+                </button>
+                <button
+                  type="button"
+                  className="light-button"
+                  onClick={() => go('cuenta')}
+                >
+                  <ReceiptText aria-hidden="true" />
+                  {t('bill')}
+                </button>
+              </div>
             </section>
           ) : (
-            <section className="card ticket-card" aria-label="Tu cuenta">
+            <section className="card ticket-card" aria-label={t('yourBill')}>
               {mesa.orders.length === 0 ? (
                 <div className="empty">
                   <ReceiptText aria-hidden="true" />
-                  <p>Aún no hay pedidos en tu cuenta.</p>
+                  <p>{t('emptyBill')}</p>
                 </div>
               ) : (
                 <>
                   <Receipt
-                    caption="Tu cuenta"
+                    caption={t('yourBill')}
                     total={billTotal(mesa)}
                     lines={mesa.orders.flatMap((order) =>
                       order.lines.map((line) => {
@@ -341,7 +370,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
                   />
                   {mesa.calls.includes('pago') ? (
                     <p className="notice" role="status">
-                      El garzón viene a cobrar.
+                      {t('billComing')}
                     </p>
                   ) : (
                     <button
@@ -349,7 +378,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
                       className="light-button"
                       onClick={requestBill}
                     >
-                      Pedir la cuenta
+                      {t('askBill')}
                     </button>
                   )}
                 </>
@@ -363,9 +392,10 @@ function Comensal({ onHome }: { onHome: () => void }) {
 }
 
 function Portada({ onEnter }: { onEnter: () => void }) {
+  const t = useT();
   return (
     <div className="screen portada" data-surface="comensal">
-      <h2 className="sr-only">Bienvenido a El Clan</h2>
+      <h2 className="sr-only">{t('welcome')}</h2>
       <div className="scanner" aria-hidden="true">
         <span className="scanner-window">
           <span className="scanner-laser" />
@@ -376,9 +406,9 @@ function Portada({ onEnter }: { onEnter: () => void }) {
           <i />
         </span>
       </div>
-      <p className="portada-text">Escanea el código QR de tu mesa</p>
+      <p className="portada-text">{t('scanQr')}</p>
       <button type="button" className="light-button" onClick={onEnter}>
-        Sentarme en la Mesa 7
+        {t('sitDown')}
       </button>
     </div>
   );
@@ -387,51 +417,67 @@ function Portada({ onEnter }: { onEnter: () => void }) {
 function Garzon() {
   const { tables, confirmOrder, serveOrder, attendCall, chargeAndFree } =
     useStore(store);
+  const t = useT();
   const [selected, setSelected] = useState<number | null>(null);
   const table = tables.find((item) => item.number === selected);
   const pending = tables.reduce((sum, item) => sum + item.calls.length, 0);
   return (
     <div className="screen" data-surface="garzon">
       <Navbar
-        title="Sala principal"
+        title={t('floor')}
         end={
           <span className="pending" role="status">
-            {pending} {pending === 1 ? 'llamado' : 'llamados'}
+            {t('pendingCalls')(pending)}
           </span>
         }
       />
       <div className="screen-body">
-        <aside className="sidebar table-detail" aria-label="Detalle de mesa">
+        <aside
+          className="sidebar table-detail"
+          aria-label={t('tableDetail')}
+          data-open={table ? true : undefined}
+        >
           {table ? (
             <>
-              <h3>Mesa {table.number}</h3>
-              <p className="muted">{table.occupied ? 'Ocupada' : 'Libre'}</p>
-              <h4>Llamados</h4>
+              <div className="table-detail-head">
+                <h3>{t('tableN')(table.number)}</h3>
+                <button
+                  type="button"
+                  className="dark-button mobile-only"
+                  onClick={() => setSelected(null)}
+                >
+                  {t('closeDetail')}
+                </button>
+              </div>
+              <p className="muted">
+                {table.occupied ? t('occupied') : t('free')}
+              </p>
+              <h4>{t('calls')}</h4>
               {table.calls.length ? (
                 <ul className="side-list">
                   {[...new Set(table.calls)].map((call) => (
                     <li key={call} data-kind={call}>
-                      <span>{callLabels[call]}</span>
+                      <span>{t('callLabels')[call]}</span>
                       <button
                         type="button"
                         className="dark-button"
                         onClick={() => attendCall(table.number, call)}
                       >
-                        Atender
+                        {t('attend')}
                       </button>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="muted">Sin llamados.</p>
+                <p className="muted">{t('noCalls')}</p>
               )}
-              <h4>Pedidos</h4>
+              <h4>{t('orders')}</h4>
               {table.orders.length ? (
                 <ul className="side-list">
                   {table.orders.map((order, index) => (
                     <li key={order.id}>
                       <span>
-                        Pedido {index + 1}
+                        {t('orderN')(index + 1)}
                         <small>
                           {order.lines
                             .map(
@@ -440,7 +486,7 @@ function Garzon() {
                             )
                             .join(', ')}
                         </small>
-                        <small>{order.status}</small>
+                        <small>{t('statuses')[order.status]}</small>
                       </span>
                       {order.status === 'enviado' && (
                         <button
@@ -448,7 +494,7 @@ function Garzon() {
                           className="dark-button"
                           onClick={() => confirmOrder(table.number, order.id)}
                         >
-                          Confirmar
+                          {t('confirm')}
                         </button>
                       )}
                       {order.status === 'confirmado' && (
@@ -457,16 +503,16 @@ function Garzon() {
                           className="dark-button"
                           onClick={() => serveOrder(table.number, order.id)}
                         >
-                          Servir
+                          {t('serve')}
                         </button>
                       )}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="muted">Sin pedidos.</p>
+                <p className="muted">{t('noOrders')}</p>
               )}
-              <h4>Cuenta</h4>
+              <h4>{t('bill')}</h4>
               <p className="side-total">{money(billTotal(table))}</p>
               {table.occupied && (
                 <button
@@ -477,16 +523,16 @@ function Garzon() {
                     setSelected(null);
                   }}
                 >
-                  Cobrar y liberar
+                  {t('chargeAndFree')}
                 </button>
               )}
             </>
           ) : (
-            <p className="muted">Toca una mesa para ver su detalle.</p>
+            <p className="muted">{t('pickTable')}</p>
           )}
         </aside>
         <div className="board">
-          <ul className="tables" aria-label="Mesas">
+          <ul className="tables" aria-label={t('tables')}>
             {tables.map((item) => (
               <li key={item.number}>
                 <button
@@ -502,9 +548,11 @@ function Garzon() {
                     calls={item.calls}
                   />
                   <span className="sr-only">
-                    Mesa {item.number}, {item.occupied ? 'ocupada' : 'libre'}
+                    {t('tableSummary')(item.number, item.occupied)}
                     {item.calls.length
-                      ? `, llamados: ${[...new Set(item.calls)].join(', ')}`
+                      ? `, ${t('callsSummary')}: ${[...new Set(item.calls)]
+                          .map((call) => t('callLabels')[call])
+                          .join(', ')}`
                       : ''}
                   </span>
                 </button>
@@ -519,6 +567,7 @@ function Garzon() {
 
 export function Demo() {
   const { view, setView, reset } = useStore(store);
+  const t = useT();
   const [revision, setRevision] = useState(0);
   const [entered, setEntered] = useState(false);
   useEffect(
@@ -534,36 +583,39 @@ export function Demo() {
     <main className="app">
       <header className="stage-bar">
         <h1>
-          El Clan <small>una reconstrucción de iClub</small>
+          El Clan <small>{t('stageSubtitle')}</small>
         </h1>
         <ThemeSwitch />
+        <LangSwitch />
         <fieldset className="selector">
-          <legend className="sr-only">Dispositivo</legend>
+          <legend className="sr-only">{t('device')}</legend>
           <button
             type="button"
             aria-pressed={view === 'comensal'}
             onClick={() => setView('comensal')}
           >
-            Comensal
+            {t('diner')}
           </button>
           <button
             type="button"
             aria-pressed={view === 'garzon'}
             onClick={() => setView('garzon')}
           >
-            Garzón
+            {t('waiter')}
           </button>
         </fieldset>
         <button
           type="button"
-          className="dark-button"
+          className="dark-button reset-button"
+          aria-label={t('resetDemo')}
           onClick={() => {
             reset();
             setEntered(false);
             setRevision((value) => value + 1);
           }}
         >
-          Reiniciar demo
+          <RotateCcw aria-hidden="true" />
+          <span className="reset-label">{t('resetDemo')}</span>
         </button>
       </header>
       <div className="tablet">

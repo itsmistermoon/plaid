@@ -1,30 +1,29 @@
 import { usePreference } from '@ui-sdk/react/preferences';
+import { useT } from '../i18n';
 import { theme } from '../theme';
 
-const options = [
-  { value: 'original', label: 'Original' },
-  { value: 'moderno', label: 'Moderno' },
-] as const;
+const options = ['original', 'moderno'] as const;
 
 /** Switch entre la piel original (2012) y la moderna. */
 export function ThemeSwitch() {
   const { value } = usePreference(theme);
+  const t = useT();
   return (
     <fieldset className="selector">
-      <legend className="sr-only">Tema</legend>
+      <legend className="sr-only">{t('themeSwitch')}</legend>
       {options.map((option) => (
         <button
-          key={option.value}
+          key={option}
           type="button"
-          aria-pressed={value === option.value}
+          aria-pressed={value === option}
           onClick={(event) =>
-            theme.set(option.value, {
+            theme.set(option, {
               reason: 'press',
               event: event.nativeEvent,
             })
           }
         >
-          {option.label}
+          {t('themes')[option]}
         </button>
       ))}
     </fieldset>

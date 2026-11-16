@@ -27,15 +27,17 @@ export function ArrowButton({
   children,
   onClick,
   disabled,
+  className,
 }: {
   children: ReactNode;
+  className?: string;
   onClick?: () => void;
   disabled?: boolean;
 }) {
   return (
     <button
       type="button"
-      className="arrow-button"
+      className={className ? `arrow-button ${className}` : 'arrow-button'}
       onClick={onClick}
       disabled={disabled}
     >

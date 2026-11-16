@@ -1,6 +1,7 @@
 import { Minus, Plus } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { money } from '../format';
+import { useT } from '../i18n';
 
 export interface ReceiptLine {
   key: string;
@@ -21,6 +22,7 @@ export function Receipt({
   caption: string;
   children?: ReactNode;
 }) {
+  const t = useT();
   return (
     <div className="receipt">
       <span className="receipt-slot" aria-hidden="true" />
@@ -29,9 +31,9 @@ export function Receipt({
           <caption className="sr-only">{caption}</caption>
           <thead className="sr-only">
             <tr>
-              <th scope="col">Plato</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Precio</th>
+              <th scope="col">{t('dish')}</th>
+              <th scope="col">{t('quantity')}</th>
+              <th scope="col">{t('price')}</th>
             </tr>
           </thead>
           <tbody>
@@ -44,7 +46,9 @@ export function Receipt({
             ))}
           </tbody>
         </table>
-        <p className="receipt-total">Total: {money(total)}</p>
+        <p className="receipt-total">
+          {t('total')}: {money(total)}
+        </p>
         {children}
       </div>
     </div>
@@ -61,11 +65,12 @@ export function Stepper({
   qty: number;
   onChange: (qty: number) => void;
 }) {
+  const t = useT();
   return (
     <span className="stepper">
       <button
         type="button"
-        aria-label={`Quitar una unidad de ${name}`}
+        aria-label={t('removeOneOf')(name)}
         onClick={() => onChange(qty - 1)}
       >
         <Minus aria-hidden="true" strokeWidth={3} />
@@ -73,7 +78,7 @@ export function Stepper({
       <output>x{qty}</output>
       <button
         type="button"
-        aria-label={`Agregar una unidad de ${name}`}
+        aria-label={t('addOneOf')(name)}
         onClick={() => onChange(qty + 1)}
       >
         <Plus aria-hidden="true" strokeWidth={3} />

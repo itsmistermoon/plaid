@@ -7,6 +7,7 @@ import {
 } from '@ui-sdk/react/number-input';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useT } from '../i18n';
 import { tick } from '../lib/tick';
 import { crossed, flingTarget, give, settleStep } from '../lib/wheel';
 
@@ -47,6 +48,7 @@ export function QuantityWheel({
   max?: number;
   disabled?: boolean;
 }) {
+  const t = useT();
   const [center, setCenter] = useState(value);
   const windowEl = useRef<HTMLSpanElement>(null);
   const motion = useRef({
@@ -281,10 +283,10 @@ export function QuantityWheel({
           />
         </span>
         <span className="wheel-arrows">
-          <NumberInputIncrement aria-label="Agregar una unidad">
+          <NumberInputIncrement aria-label={t('addOne')}>
             <ChevronUp aria-hidden="true" />
           </NumberInputIncrement>
-          <NumberInputDecrement aria-label="Quitar una unidad">
+          <NumberInputDecrement aria-label={t('removeOne')}>
             <ChevronDown aria-hidden="true" />
           </NumberInputDecrement>
         </span>
