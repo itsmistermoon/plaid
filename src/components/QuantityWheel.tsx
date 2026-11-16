@@ -94,7 +94,7 @@ export function QuantityWheel({
         radius;
       const visible = Math.abs(angle) < Math.PI / 2;
       tooth.style.transform = visible
-        ? `translateY(${(radius * Math.sin(angle)).toFixed(2)}px) scaleY(${Math.cos(angle).toFixed(3)})`
+        ? `translateY(${(-radius * Math.sin(angle)).toFixed(2)}px) scaleY(${Math.cos(angle).toFixed(3)})`
         : 'scaleY(0)';
       tooth.style.opacity = visible
         ? (0.25 + 0.75 * Math.cos(angle)).toFixed(2)
@@ -104,7 +104,8 @@ export function QuantityWheel({
       const d = Number(face.dataset.n) - pos;
       const angle = Math.max(-90, Math.min(90, d * stepDeg));
       const rad = (angle * Math.PI) / 180;
-      face.style.transform = `translateY(${(radius * Math.sin(rad)).toFixed(2)}px) translateZ(${(radius * (Math.cos(rad) - 1)).toFixed(2)}px) rotateX(${(-angle).toFixed(2)}deg)`;
+      // Los números mayores quedan arriba: subir la cantidad hace bajar el tambor.
+      face.style.transform = `translateY(${(-radius * Math.sin(rad)).toFixed(2)}px) translateZ(${(radius * (Math.cos(rad) - 1)).toFixed(2)}px) rotateX(${angle.toFixed(2)}deg)`;
       face.style.opacity = Math.max(0, 1 - Math.abs(d) * 0.3).toFixed(2);
     }
   };
@@ -164,7 +165,7 @@ export function QuantityWheel({
       event.preventDefault();
       const m = motion.current;
       const { min, max } = latest.current;
-      m.target = give(m.target + event.deltaY / row / 1.5, min, max);
+      m.target = give(m.target - event.deltaY / row / 1.5, min, max);
       run();
       clearTimeout(settle);
       settle = window.setTimeout(() => {
@@ -225,8 +226,8 @@ export function QuantityWheel({
             if (!d.moved && Math.abs(dy) < 3) return;
             if (!d.moved) event.currentTarget.dataset.dragging = '';
             d.moved = true;
-            // Arrastrar hacia abajo trae los números menores, como un picker.
-            const target = give(d.target - dy / row, min, max);
+            // Arrastrar hacia abajo trae los números mayores, que están arriba.
+            const target = give(d.target + dy / row, min, max);
             d.samples = [...d.samples.slice(-4), [performance.now(), target]];
             aim(target);
           }}
@@ -240,7 +241,7 @@ export function QuantityWheel({
               const box = event.currentTarget.getBoundingClientRect();
               const offset = event.clientY - box.top - box.height / 2;
               if (Math.abs(offset) > row / 2)
-                goTo(Math.round(motion.current.target) + (offset < 0 ? -1 : 1));
+                goTo(Math.round(motion.current.target) + (offset < 0 ? 1 : -1));
               else run();
               return;
             }
