@@ -1,51 +1,51 @@
-# Glosario de plaid
+# plaid glossary
 
-Vocabulario del dominio de la demo. Sin detalles de implementación.
+Domain vocabulary of the demo. Domain terms stay in Spanish, as they appear in the UI; definitions are in English. No implementation details.
 
-## Lugar y roles
+## Place and roles
 
-- **Restaurant El Clan**: el restaurant ficticio de la demo.
-- **Comensal**: quien pide desde la tablet o el teléfono de su mesa. En la demo, el visitante es el comensal de la Mesa 7.
-- **Garzón**: el personal de sala. Su vista es la grilla de mesas.
-- **Garzón simulado**: el garzón automático que hace avanzar los pedidos de la Mesa 7 mientras el visitante no ocupa la vista del garzón.
-- **Mesa de relleno**: una mesa ocupada por comensales simulados, que manda llamados para que la sala se vea viva. Nunca afecta a la Mesa 7.
+- **Restaurant El Clan**: the fictional restaurant of the demo.
+- **Comensal** (diner): the person ordering from the tablet or phone at their table. In the demo, the visitor is the Comensal at Mesa 7.
+- **Garzón** (server): the floor staff. Their view is the table grid.
+- **Garzón simulado**: the automatic Garzón that advances Mesa 7's Pedidos while the visitor is not in the Garzón view.
+- **Mesa de relleno**: a Mesa occupied by simulated Comensales that sends Llamados to make the floor feel alive. It never affects Mesa 7.
 
 ## Mesa
 
-- **Mesa**: puesto numerado de la sala. Puede estar **libre** u **ocupada**. Acumula pedidos y llamados.
-- **Liberar**: dejar libre una mesa después de cobrar. Borra sus pedidos y sus llamados.
+- **Mesa**: a numbered spot on the floor. It can be **libre** (free) or **ocupada** (occupied). It accumulates Pedidos and Llamados.
+- **Liberar**: free a Mesa after payment. It clears the Mesa's Pedidos and Llamados.
 
 ## Carta
 
-- **Carta**: los platos que ofrece Restaurant El Clan, agrupados en categorías.
-- **Categoría**: grupo de la carta: entradas, sándwiches, fondos, bebidas y postres.
-- **Plato**: todo lo que se puede pedir, bebidas incluidas. Tiene nombre, descripción, precio y foto.
-- **Agotado**: un plato que hoy no se puede pedir. Se muestra, pero no entra al carrito.
+- **Carta**: the dishes Restaurant El Clan offers, grouped into categories.
+- **Categoría**: a group in the Carta: entradas, sándwiches, fondos, bebidas and postres.
+- **Plato**: anything that can be ordered, drinks included. It has a name, description, price and photo.
+- **Agotado**: a Plato that cannot be ordered today. It is shown, but cannot be added to the Carrito.
 
-## Pedir
+## Ordering
 
-- **Carrito**: lo que el comensal eligió y todavía no envía.
-- **Pedido**: cada envío del carrito a cocina. Pasa por **enviado → confirmado → servido**. Una mesa puede tener varios.
-- **Cuenta**: lo que debe la mesa, es decir, la suma de sus pedidos.
-- **Boleta**: la forma visual en papel del carrito o de la cuenta. No es un concepto aparte.
-- **Llamado**: un aviso del comensal al garzón. Hay tres tipos:
-  - **pedido**: se envió un pedido nuevo;
-  - **garzón**: el comensal pide ayuda;
-  - **pago**: el comensal pidió la cuenta.
-- **Atender**: resolver un llamado.
-- **Cobrar**: recibir el pago de la cuenta. La demo no simula el medio de pago.
+- **Carrito**: what the Comensal has chosen and not yet sent.
+- **Pedido**: each submission of the Carrito to the kitchen. It goes through **enviado → confirmado → servido** (sent → confirmed → served). A Mesa can have several.
+- **Cuenta**: what the Mesa owes, that is, the sum of its Pedidos.
+- **Boleta**: the paper-receipt visual form of the Carrito or the Cuenta. It is not a separate concept.
+- **Llamado**: a notice from the Comensal to the Garzón. There are three kinds:
+  - **pedido**: a new Pedido was sent;
+  - **garzón**: the Comensal asks for help;
+  - **pago**: the Comensal asked for the Cuenta.
+- **Atender**: resolve a Llamado.
+- **Cobrar**: receive payment for the Cuenta. The demo does not simulate the payment method.
 
-## Presentación
+## Presentation
 
-- **Sello**: la forma visual de un llamado sobre la mesa en la grilla del garzón.
-- **Tema**: la piel de la interfaz. Es **original**, la reconstrucción esqueuomórfica de iClub, o **moderno**, plano. Cambia la apariencia, no el comportamiento.
-- **Galería**: la página que muestra cada componente con su demo vivo y sus estados.
-- **Recorrido guiado**: la capa de ayuda opcional que lleva al visitante por el circuito comensal → garzón.
-- **iClub**: la app original de 2012 que plaid reconstruye.
+- **Sello**: the visual form of a Llamado on a Mesa in the Garzón's grid.
+- **Tema**: the skin of the interface. It is either **original**, the skeuomorphic reconstruction of iClub, or **moderno**, flat. It changes appearance, not behavior.
+- **Galería**: the page that shows every component with its live demo and states.
+- **Recorrido guiado**: the optional help layer that walks the visitor through the Comensal → Garzón circuit.
+- **iClub**: the original 2012 app that plaid reconstructs.
 
-## Términos a evitar
+## Terms to avoid
 
-- "Carrito" para lo ya enviado: es un **pedido**.
-- "Alerta" o "notificación": se dice **llamado**. "Sello" es solo su dibujo.
-- "Mozo" o "mesero": se dice **garzón**.
-- "Cliente" o "usuario": se dice **comensal**, o **visitante** para quien prueba la demo.
+- "Carrito" for what was already sent: that is a **Pedido**.
+- "Alerta" or "notificación": say **Llamado**. "Sello" is only its drawing.
+- "Mozo" or "mesero": say **Garzón**.
+- "Cliente" or "usuario": say **Comensal**, or **visitante** for the person trying the demo.

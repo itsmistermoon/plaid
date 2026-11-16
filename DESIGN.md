@@ -1,87 +1,88 @@
 # DESIGN.md
 
-Reglas de diseño de plaid (demo de Restaurant El Clan, reconstrucción de iClub). Cada regla viene de una corrección de moon; el comentario guarda la fecha y sus palabras.
+Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub). Every rule comes from a correction by the project owner; the comment keeps the date.
 
 ## Surfaces
 
-- **En el tema original, todo elemento se reconstruye con CSS/SVG propio, tomando del original su forma, materiales y proporciones. Nunca se calcan bitmaps ni se pegan imágenes del PSD.**
-  Why: el objetivo es mostrar cómo una interfaz esqueuomórfica funcionaría hoy, no una copia pixel a pixel.
-  <!-- 2026-11-15: "no es necesario pixel por pixel, puede ser una reinterpretación reconstruida de forma vectorial" -->
-- **Cuando una pieza del original se ve tosca, se rediseña como un objeto físico de calidad en vez de copiarla. Que se reconozca el original importa más que la fidelidad.**
-  Why: la pieza debe sentirse distinta y "especial", no arrastrar la tosquedad del original.
-  <!-- 2026-11-16: "no necesariamente el mismo diseño original (ahora que lo veo es bastante tosco), pero sí algo que haga se sienta distinto y especial" -->
-- **Las piezas emblemáticas del original (lector QR, mantel, sellos, boleta) conservan su anatomía: las mismas partes, en la misma posición y con las mismas proporciones.**
-  Why: son la firma visual de iClub.
-  <!-- 2026-11-16: "el lector qr puede ser más similar al diseño original" -->
-- **La cinta de título es una tela que cuelga desde el borde superior del panel, sin pliegue ni parte trasera. Termina en cola de golondrina con dos puntas, nunca desborda el layout y usa el verde de acento saturado, nunca una versión pálida.**
-  Why: el efecto de tela plegándose desde atrás no se leía convincente; solo queda la parte que va por encima.
-  <!-- 2026-11-16: "una tela que viene plegándose desde atrás del contenedor principal, además usa un color muy pálido" / "no tiene las dos puntas" -->
-  <!-- 2026-11-16: "con este efecto me rindo, deja solo la parte que queda por encima y elimina el efecto de pliegue hacia atrás" -->
-- **El mantel cuadrillé es más grande que la mesa: sobrepasa sus puntas y se recorta.**
-  Why: así es el original.
-  <!-- 2026-11-15: "Que el mantel sobrepase sus puntas igual que en el original" -->
-- **El papel de la boleta tiene el borde superior entero, sin dientes ni prepicado. Los dientes van solo en el borde inferior.**
-  Why: el papel sale de la ranura, así que arriba no hay corte.
-  <!-- 2026-11-16: "el borde superior del papel no debería verse prepicado sino que entero" -->
-- **En el tema original, el papel siempre nace desde adentro de una ranura: la boca de la ranura queda por encima del borde del papel y es más ancha que él, con una sombra interior donde el papel entra.**
-  Why: si el papel no sale de la ranura, se pierde la ilusión esqueuomórfica.
-  <!-- 2026-11-16: "el papel no sale de la supuesta ranura de la impresora, mata la ilusión esqueumórfica" -->
-- **El tema moderno no simula objetos físicos: sin ranuras, impresoras ni papel. La boleta es una tarjeta limpia.**
-  Why: el tema moderno no simula papel impreso.
-  <!-- 2026-11-16: "en la versión moderna, la info no debería tener ranura de impresora, ya que no simula un papel siendo impreso" -->
-- **El tema moderno es plano, estilo shadcn, con el verde del mantel como acento. Solo cambia la piel; la estructura, los tamaños y las posiciones son las mismas en ambos temas.**
-  Why: permite comparar los dos temas uno al lado del otro.
-  <!-- 2026-11-15: "un switch que cambie entre el diseño original y uno más limpio y moderno" -->
+- **In the original theme, every element is rebuilt with custom CSS/SVG, taking its shape, materials and proportions from the original. Bitmaps are never traced and PSD images are never pasted in.**
+  Why: the goal is to show how a skeuomorphic interface would work today, not a pixel-by-pixel copy.
+  <!-- 2026-11-15 -->
+- **When a piece of the original looks crude, it is redesigned as a high-quality physical object instead of being copied. Being recognizable as the original matters more than fidelity.**
+  Why: the piece should feel different and "special", not carry over the crudeness of the original.
+  <!-- 2026-11-16 -->
+- **The original's signature pieces (QR scanner, tablecloth, seals, receipt) keep their anatomy: the same parts, in the same position and with the same proportions.**
+  Why: they are iClub's visual signature.
+  <!-- 2026-11-16 -->
+- **The title ribbon is a cloth hanging from the top edge of the panel, with no fold and no back side. It ends in a swallowtail with two points, never overflows the layout, and uses the saturated accent green, never a pale version.**
+  Why: the effect of cloth folding in from behind did not read as convincing; only the part that sits on top remains.
+  <!-- 2026-11-16 -->
+- **The title ribbon uses the tablecloth green (`--plaid-green`), never a separate green.**
+  Why: the ribbon and the tablecloth are the same cloth, so they must match.
+  <!-- 2026-11-16 -->
+- **The gingham tablecloth is larger than the table: it extends past its corners and is clipped.**
+  Why: that is how the original looks.
+  <!-- 2026-11-15 -->
+- **The receipt paper has an intact top edge, with no teeth or perforation. Teeth appear only on the bottom edge.**
+  Why: the paper comes out of the slot, so there is no cut at the top.
+  <!-- 2026-11-16 -->
+- **In the original theme, the paper always emerges from inside a slot: the slot mouth sits above the paper's edge and is wider than it, with an inner shadow where the paper enters.**
+  Why: if the paper does not come out of the slot, the skeuomorphic illusion is lost.
+  <!-- 2026-11-16 -->
+- **The modern theme does not simulate physical objects: no slots, printers or paper. The receipt is a clean card.**
+  Why: the modern theme does not simulate printed paper.
+  <!-- 2026-11-16 -->
+- **The modern theme is flat, shadcn-style, with the tablecloth green as its accent. Only the skin changes; structure, sizes and positions are the same in both themes.**
+  Why: it lets the two themes be compared side by side.
+  <!-- 2026-11-15 -->
 
 ## Color
 
-- **Comensal y Garzón usan la misma estructura: la misma barra superior, el mismo ancho y fondo de sidebar, los mismos botones y badges. El color sale siempre de variables por tema y nunca de un valor fijado en una sola vista.**
-  Why: tienen que verse como una sola app.
-  <!-- 2026-11-16: "deben ser consistentes: mismo verde en la barra superior, botones, etc." -->
-- **Las barras de navegación (superior, sidebar y tabbar del teléfono) usan el mismo material oscuro; el verde de acento solo marca el ítem activo.**
-  Why: la tabbar verde brillante competía con el contenido y no se veía parte de la misma app.
-  <!-- 2026-11-16: aprobado por moon tras auditoría -->
+- **Comensal and Garzón use the same structure: the same top bar, the same sidebar width and background, the same buttons and badges. Color always comes from per-theme variables, never from a value hardcoded in a single view.**
+  Why: they must look like a single app.
+  <!-- 2026-11-16 -->
+- **The navigation bars (top bar, sidebar and phone tab bar) use the same dark material; the accent green only marks the active item.**
+  Why: the bright green tab bar competed with the content and did not look like part of the same app.
+  <!-- 2026-11-16 -->
 
-- **En el tema moderno, las superficies usan la escala slate (gris con un toque frío), nunca grises neutros o cálidos que se lean beige.**
-  Why: los grises cálidos en fondos, pestañas y paneles delatan una interfaz genérica hecha por IA.
-  <!-- 2026-11-16: "cambia esos colores medio cálidos en las superficies que gritan hecho por Claude" -->
-  <!-- 2026-11-16: "estos colores para mí son cálidos, se ven como un beige desabrido, quizás habría que agregarle un toque frío" -->
+- **In the modern theme, surfaces use the slate scale (gray with a cool tint), never neutral or warm grays that read as beige.**
+  Why: warm grays on backgrounds, tabs and panels give away a generic AI-made interface.
+  <!-- 2026-11-16 -->
 
 ## Typography
 
-- **Tipografías: Courier Prime para la boleta, Outfit 700 para los títulos, Kaushan Script para el logo e Inter para la interfaz. No se agregan otras.**
-  Why: las eligió moon.
-  <!-- 2026-11-15: "elijo: Courier Prime, Outfit 700, Kaushan Script, Inter" -->
-- **Los íconos son de `lucide-react`; nunca se dibujan íconos propios. Los sellos usan `strokeWidth` 3. Agregados usa `BadgePlus`.**
-  Why: los íconos dibujados a mano se veían mal.
-  <!-- 2026-11-15: "Los badges vectorizados se ven muy mal, reemplázalos por los iconos de Lucide, en su versión más ancha" / 2026-11-16: "usa badge-plus en este icono" -->
+- **Typefaces: Courier Prime for the receipt, Outfit 700 for titles, Kaushan Script for the logo and Inter for the interface. No others are added.**
+  Why: they were chosen by the project owner.
+  <!-- 2026-11-15 -->
+- **Icons come from `lucide-react`; custom icons are never drawn. Seals use `strokeWidth` 3. Extras uses `BadgePlus`.**
+  Why: hand-drawn icons looked bad.
+  <!-- 2026-11-15 -->
 
 ## Spacing & layout
 
-- **Ninguna cifra que cambie puede mover el layout: se usan `tabular-nums` y columnas de ancho fijo. Los controles tienen el mismo tamaño y posición en ambos temas e idiomas, con el ancho calculado para el texto más largo entre ES y EN.**
-  Why: si las cosas se mueven, la interfaz se siente desordenada.
-  <!-- 2026-11-16: "establecer anchos fijos para que las columnas y el contenido no bailen" / "Deben estar en posiciones y tamaños independiente del estilo e idioma" -->
-- **Los controles (botones, búsqueda, selectores, segmentados, checkbox, switch, stepper, ítems de sidebar y tabbar) miden exactamente lo mismo en ambos temas, en escritorio y teléfono: alto, ancho fijo y relleno salen de variables compartidas (`--button-h`, `--field-h`, `--check-size`…) que ningún tema redefine. El moderno solo cambia la piel; sus contornos e insets se dibujan con sombras, colores de borde o `background-clip`, nunca con bordes, márgenes o rellenos distintos. La boleta moderna es la única excepción: es una tarjeta sin impresora, con otra tipografía, y puede medir distinto.**
-  Why: así los dos temas se comparan uno al lado del otro sin que nada cambie de tamaño.
-  <!-- 2026-11-16: moon aprueba igualar solo los controles y aceptar la boleta como excepción -->
-- **Las barras fijas (sticky), como pestañas y encabezados, tienen fondo opaco y el contenido pasa por debajo de ellas.**
-  Why: si el contenido se ve a través, la interfaz parece rota.
-  <!-- 2026-11-16: "que las pestañas superiores queden fijas y el menú se deslice por debajo, sin ser visible por detrás" -->
+- **No changing figure may move the layout: use `tabular-nums` and fixed-width columns. Controls have the same size and position in both themes and languages, with the width computed for the longest text between ES and EN.**
+  Why: when things move, the interface feels messy.
+  <!-- 2026-11-16 -->
+- **Controls (buttons, search, selectors, segmented controls, checkbox, switch, stepper, sidebar and tab bar items) measure exactly the same in both themes, on desktop and phone: height, fixed width and padding come from shared variables (`--button-h`, `--field-h`, `--check-size`…) that no theme redefines. The modern theme only changes the skin; its outlines and insets are drawn with shadows, border colors or `background-clip`, never with different borders, margins or padding. The modern receipt is the only exception: it is a card without a printer, with a different typeface, and may measure differently.**
+  Why: this way the two themes can be compared side by side without anything changing size.
+  <!-- 2026-11-16 -->
+- **Sticky bars, such as tabs and headers, have an opaque background and the content scrolls underneath them.**
+  Why: if the content shows through, the interface looks broken.
+  <!-- 2026-11-16 -->
 
 ## Motion
 
-- **No se agregan animaciones decorativas de entrada. Solo se anima lo que responde a una acción, como el clic de la rueda.**
-  Why: la animación de impresión no aportaba nada.
-  <!-- 2026-11-16: "quítale la animación de papel imprimiéndose, no es necesaria" -->
+- **No decorative entrance animations are added. Only what responds to an action is animated, such as the click of the wheel.**
+  Why: the paper-printing animation added nothing.
+  <!-- 2026-11-16 -->
 
 ## Interaction
 
-- **En toda pantalla con contenido que puede crecer, la acción principal va arriba a la derecha y siempre queda visible. Nunca va al final del contenido.**
-  Why: con una boleta larga el botón quedaba fuera de vista.
-  <!-- 2026-11-16: "pondría el botón de acción arriba a la derecha... para casos donde la boleta es muy larga el botón queda fuera de vista" -->
-- **El dato más importante de una pantalla (por ejemplo, el total de pedido o cuenta) queda siempre visible junto a la acción principal, aunque se repita en otra parte y rompa la metáfora física.**
-  Why: es la información más importante y tiene que verse de inmediato.
-  <!-- 2026-11-16: "aunque rompe la ilusión de la boleta en papel, el monto total debería estar replicado arriba a la derecha, junto al botón" -->
-- **Los controles de cantidad dan respuesta física en cada paso (tope, sonido, vibración). Su dirección coincide con la flecha: subir aumenta, y los números mayores quedan arriba.**
-  Why: la rueda tiene que comportarse como un objeto real.
-  <!-- 2026-11-16: "que se sienta que hace clic cada vez que gira" / "hay que invertir la dirección de los números" -->
+- **On every screen whose content can grow, the primary action goes at the top right and always stays visible. It never goes at the end of the content.**
+  Why: with a long receipt the button ended up out of view.
+  <!-- 2026-11-16 -->
+- **The most important figure on a screen (for example, the order or bill total) is always visible next to the primary action, even if it is repeated elsewhere and breaks the physical metaphor.**
+  Why: it is the most important information and must be seen immediately.
+  <!-- 2026-11-16 -->
+- **Quantity controls give physical feedback at every step (detent, sound, vibration). Their direction matches the arrow: up increases, and larger numbers sit on top.**
+  Why: the wheel has to behave like a real object.
+  <!-- 2026-11-16 -->
