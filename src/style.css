@@ -397,9 +397,10 @@ ol {
 }
 
 .board {
+  --board-top: 22px;
   min-height: 0;
   overflow: auto;
-  padding: 22px 36px 22px;
+  padding: var(--board-top) 36px 22px;
   scrollbar-width: thin;
   scrollbar-color: #2b3133 transparent;
 }
@@ -412,6 +413,19 @@ ol {
 }
 
 /* Carta */
+/* Las categorías quedan fijas arriba; el fondo opaco tapa la lista que pasa por
+   debajo, también en el hueco del relleno del tablero. */
+.tabs-bar {
+  position: sticky;
+  top: calc(var(--board-top) * -1);
+  z-index: 2;
+  margin: calc(var(--board-top) * -1) -36px 0;
+  padding: var(--board-top) 36px 12px;
+  background: var(--noise), var(--slate);
+}
+.tabs-bar .segmented {
+  margin-bottom: 0;
+}
 .segmented {
   display: flex;
   margin-bottom: 12px;

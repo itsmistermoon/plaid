@@ -243,6 +243,9 @@
 [data-theme="moderno"] .sidebar-logo small {
   color: var(--muted-foreground);
 }
+[data-theme="moderno"] .tabs-bar {
+  background: var(--background);
+}
 [data-theme="moderno"] .board {
   scrollbar-color: var(--input) transparent;
 }

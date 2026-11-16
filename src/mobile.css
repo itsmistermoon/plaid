@@ -74,7 +74,12 @@
   }
   .board,
   [data-surface="garzon"] .board {
+    --board-top: 12px;
     padding: 12px;
+  }
+  .tabs-bar {
+    margin-inline: -12px;
+    padding-inline: 12px;
   }
 
   /* Comensal: la barra lateral pasa a pestañas inferiores */
