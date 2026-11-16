@@ -598,6 +598,30 @@ export function Gallery() {
                 </div>
               ),
             },
+            {
+              label: 'Con agregados y nota',
+              node: (
+                <div className="detail-receipt">
+                  <Receipt
+                    caption="Vista previa con agregados"
+                    total={(dish('chacarero').price + 1200 + 600) * 2}
+                    lines={[
+                      {
+                        key: 'chacarero',
+                        name: dish('chacarero').name,
+                        qty: 'x2',
+                        price: dish('chacarero').price * 2,
+                        extras: [
+                          { name: 'Palta', price: 2400 },
+                          { name: 'Tomate', price: 1200 },
+                        ],
+                        note: 'Sin ají, por favor',
+                      },
+                    ]}
+                  />
+                </div>
+              ),
+            },
           ]}
         >
           <ReceiptDemo />
