@@ -57,8 +57,14 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   Why: warm grays on backgrounds, tabs and panels give away a generic AI-made interface.
   <!-- 2026-11-16 -->
 
-- **On the waiter's floor the tablecloth itself tells the table's state: a free table's cloth is faded and desaturated, an occupied one shows its full weave, and each open call weaves a thread of its color (`--thread-pedido` blue, `--thread-garzon` orange, `--thread-pago` red) into the warp and weft, in addition to its seal.**
+- **On the waiter's floor the tablecloth itself tells the table's state: a free table's cloth is faded and desaturated, an occupied one shows its full weave, and each open call weaves a thread of its color (`--thread-pedido` blue, `--thread-garzon` violet, `--thread-pago` red) into the warp and weft, in addition to its seal.**
   Why: the plaid is the kit's signature, so it should carry meaning, not only decoration.
+  <!-- 2026-11-16 -->
+- **The waiter call is violet (`--thread-garzon`, and the seal's `--seal-garzon-*`) in every piece: seal, cloth thread, badges, toasts and gallery legends. Gold belongs to the tartan's thin thread only; no call uses orange or gold.**
+  Why: the orange call read as the tartan's gold thread; the gold stays, the call changes.
+  <!-- 2026-11-16 -->
+- **In the modern theme, the call threads woven into the tablecloth are quiet: thinner and translucent (`--cloth-call-width`, `--cloth-call-opacity`), still readable next to the seal.**
+  Why: at full strength they overpowered the flat cards.
   <!-- 2026-11-16 -->
 - **Restaurant El Clan has its own tartan, defined once in `src/tartan.ts` by its threadcount (`K/8 G32 K6 G6 K24 W4 K24 Y/2`: green, slate, cream and a thin gold thread). The gallery accent, the "Tartan" section, the favicon and the Open Graph image are generated from it (`pnpm tartan:assets`); it is never redrawn by hand.**
   Why: one sett, one source of truth, like a registered tartan.
@@ -74,6 +80,10 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   <!-- 2026-11-16 -->
 - **In the modern theme, cards carry the minimal plaid: crossed 1px lines of the accent green at 10% and 7% (`--plaid-lines`). It is used on content cards only, never on receipts, controls or every element, and text keeps its contrast.**
   Why: it translates the gingham to the flat theme without turning it into decoration.
+  <!-- 2026-11-16 -->
+
+- **The modern theme has a light and a dark scheme, chosen with UI SDK's `createColorScheme` (`data-color-scheme`: system, light, dark; default system). Every modern color token is a `light-dark()` pair resolved by `color-scheme`; rules never branch on the scheme. The dark scheme uses the slate scale (#0f172a / #1e293b / #334155 surfaces, #f1f5f9 / #a3b1c6 text), a lighter accent green with dark ink on it (`--on-accent`), and keeps WCAG AA contrast for text. The original theme is always dark and ignores the scheme.**
+  Why: one token set for both schemes keeps the greens and threads in one place and lets the demo follow the system.
   <!-- 2026-11-16 -->
 
 ## Typography
@@ -92,6 +102,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   <!-- 2026-11-16 -->
 - **Controls (buttons, search, selectors, segmented controls, checkbox, switch, stepper, sidebar and tab bar items) measure exactly the same in both themes, on desktop and phone: height, fixed width and padding come from shared variables (`--button-h`, `--field-h`, `--check-size`…) that no theme redefines. The modern theme only changes the skin; its outlines and insets are drawn with shadows, border colors or `background-clip`, never with different borders, margins or padding. The modern receipt is the only exception: it is a card without a printer, with a different typeface, and may measure differently.**
   Why: this way the two themes can be compared side by side without anything changing size.
+  <!-- 2026-11-16 -->
+- **The scheme control (system, light, dark) sits in the demo bar and the gallery bar right after the theme switch, with a fixed width: three icon segments on desktop and one icon toggle that cycles on phones. It is always present and keeps its place; in the original theme it is disabled. The layout tests cover it and the dark modern skin.**
+  Why: no control may move or resize when switching theme, language or scheme.
   <!-- 2026-11-16 -->
 - **Sticky bars, such as tabs and headers, have an opaque background and the content scrolls underneath them.**
   Why: if the content shows through, the interface looks broken.

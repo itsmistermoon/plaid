@@ -11,9 +11,10 @@
    is a single button that shows the current value and toggles. */
 .stage-bar[data-phone] {
   --bar-h: 32px;
-  --theme-w: 96px;
-  --lang-w: 56px;
-  --role-w: 100px;
+  --theme-w: 84px;
+  --scheme-w: 32px;
+  --lang-w: 52px;
+  --role-w: 88px;
   --tour-w: 32px;
   --reset-w: 32px;
   --kit-w: 32px;
@@ -385,6 +386,6 @@
 /* Modern theme on phones */
 @media (max-width: 760px) {
   [data-theme="moderno"] .table-detail {
-    box-shadow: 0 -8px 24px #0f172a29;
+    box-shadow: var(--shadow-sheet);
   }
 }

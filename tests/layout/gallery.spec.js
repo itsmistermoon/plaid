@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { chooseSkin, skins } from './skins.js';
 
 for (const width of [1440, 390]) {
   test(`la galería no desborda y su barra no se mueve a ${width}px`, async ({
@@ -6,25 +7,23 @@ for (const width of [1440, 390]) {
   }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/componentes');
-    const selectors = ['.theme-switch', '.lang-switch', '.stage-bar > a'];
+    const selectors = [
+      '.theme-switch',
+      '.scheme-switch',
+      '.lang-switch',
+      '.stage-bar > a',
+    ];
     let baseline;
-    for (const theme of ['original', 'moderno']) {
+    for (const skin of skins) {
+      const { theme, scheme } = skin;
       for (const lang of ['es', 'en']) {
-        const current = await page.locator('html').getAttribute('data-theme');
-        if (current !== theme)
-          await (width > 760
-            ? page
-                .locator('.theme-switch button')
-                .nth(theme === 'original' ? 0 : 1)
-            : page.locator('.theme-switch')
-          ).click();
+        await chooseSkin(page, width, skin);
         const english = page.url().includes('/en/');
         if (english !== (lang === 'en'))
           await (width > 760
             ? page.locator(`.lang-switch a[hreflang="${lang}"]`)
             : page.locator('.lang-switch')
           ).click();
-        await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
         await expect(page).toHaveURL(
           lang === 'es' ? /\/componentes$/ : /\/en\/components$/,
         );
@@ -39,7 +38,10 @@ for (const width of [1440, 390]) {
             })
             .map((panel) => panel.querySelector('.panel-caption')?.textContent);
         });
-        expect(overflow, `paneles desbordados (${theme}/${lang})`).toEqual([]);
+        expect(
+          overflow,
+          `paneles desbordados (${theme}/${scheme}/${lang})`,
+        ).toEqual([]);
         const boxes = [];
         for (const selector of selectors)
           boxes.push(await page.locator(selector).boundingBox());
@@ -49,7 +51,7 @@ for (const width of [1440, 390]) {
             for (const dimension of ['x', 'y', 'width', 'height'])
               expect(
                 Math.abs(boxes[i][dimension] - baseline[i][dimension]),
-                `${selectors[i]} ${dimension} (${theme}/${lang})`,
+                `${selectors[i]} ${dimension} (${theme}/${scheme}/${lang})`,
               ).toBeLessThanOrEqual(0.5);
       }
     }

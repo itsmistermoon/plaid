@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'wouter';
 import { useStore } from 'zustand';
 import { LangSwitch } from '../components/LangSwitch';
+import { SchemeSwitch } from '../components/SchemeSwitch';
 import { Selector } from '../components/Selector';
 import { SelectorToggle } from '../components/SelectorToggle';
 import { StageBar } from '../components/StageBar';
@@ -39,6 +40,7 @@ export function Demo() {
           Restaurant El Clan <small>{t('stageSubtitle')}</small>
         </h1>
         <ThemeSwitch />
+        <SchemeSwitch />
         <LangSwitch />
         {phone ? (
           <SelectorToggle

@@ -44,6 +44,7 @@ import {
 } from './components/Receipt';
 import { Ribbon } from './components/Ribbon';
 import { Scanner } from './components/Scanner';
+import { SchemeSwitch } from './components/SchemeSwitch';
 import { Scroller } from './components/Scroller';
 import { SealBadge } from './components/Seal';
 import { SearchField } from './components/SearchField';
@@ -874,6 +875,7 @@ export function Gallery() {
           {t('galleryTitle')} <small>{t('gallerySubtitle')}</small>
         </h1>
         <ThemeSwitch />
+        <SchemeSwitch />
         <LangSwitch />
         <Link href={pathFor('demo', lang)} className="light-button">
           {t('openDemo')}

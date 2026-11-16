@@ -12,7 +12,7 @@ import { Redirect, useLocation } from 'wouter';
 import { Demo } from './demo/Demo';
 import { Gallery } from './Gallery';
 import { LangContext, messages, routeFor } from './i18n';
-import { theme } from './theme';
+import { colorScheme, theme } from './theme';
 import './style.css';
 import './theme-moderno.css';
 import './mobile.css';
@@ -45,7 +45,7 @@ const root = document.getElementById('root');
 if (!root) throw new Error('No se encontró la raíz de la aplicación');
 createRoot(root).render(
   <StrictMode>
-    <Preferences preferences={[theme]}>
+    <Preferences preferences={[theme, colorScheme]}>
       <App />
     </Preferences>
   </StrictMode>,

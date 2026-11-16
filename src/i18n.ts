@@ -33,6 +33,9 @@ const es = {
   switchTo: (label: string, current: string, next: string) =>
     `${label}: ${current}. Tocar para cambiar a ${next}`,
   themes: { original: 'Original', moderno: 'Moderno' },
+  schemeSwitch: 'Apariencia',
+  schemes: { system: 'Sistema', light: 'Claro', dark: 'Oscuro' },
+  schemeModernOnly: 'Solo en el tema Moderno',
   notFound: 'Página no encontrada',
   // Demo stage
   stageTitle: 'Restaurant El Clan',
@@ -219,7 +222,7 @@ const es = {
       G: ['Verde Clan', 'El verde de la letra (--brand)'],
       K: ['Pizarra', 'El fondo del escenario (--stage)'],
       W: ['Crema', 'La placa y el papel de la boleta'],
-      Y: ['Hilo dorado', 'El acento fino: el llamado al garzón'],
+      Y: ['Hilo dorado', 'El acento fino del sett'],
     },
     warp: 'Urdimbre (--warp)',
     weft: 'Trama (--weft)',
@@ -319,6 +322,9 @@ const en: Messages = {
   switchTo: (label: string, current: string, next: string) =>
     `${label}: ${current}. Tap to switch to ${next}`,
   themes: { original: 'Original', moderno: 'Modern' },
+  schemeSwitch: 'Appearance',
+  schemes: { system: 'System', light: 'Light', dark: 'Dark' },
+  schemeModernOnly: 'Modern theme only',
   notFound: 'Page not found',
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'an iClub reconstruction',
@@ -494,7 +500,7 @@ const en: Messages = {
       G: ['Clan green', 'The lettering green (--brand)'],
       K: ['Slate', 'The stage background (--stage)'],
       W: ['Cream', 'The plate and the receipt paper'],
-      Y: ['Gold thread', 'The thin accent: the waiter call'],
+      Y: ['Gold thread', 'The thin accent of the sett'],
     },
     warp: 'Warp (--warp)',
     weft: 'Weft (--weft)',

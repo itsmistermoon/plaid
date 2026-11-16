@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { chooseSkin, skins } from './skins.js';
 
 for (const width of [1440, 390]) {
   test(`los controles mantienen su geometría a ${width}px`, async ({
@@ -9,6 +10,7 @@ for (const width of [1440, 390]) {
     await page.evaluate(() => document.fonts.ready);
     const selectors = [
       '.theme-switch',
+      '.scheme-switch',
       '.lang-switch',
       '.role-switch',
       '.tour-button',
@@ -16,23 +18,15 @@ for (const width of [1440, 390]) {
       '.reset-button',
     ];
     let baseline;
-    for (const theme of ['original', 'moderno']) {
+    for (const skin of skins) {
+      const { theme, scheme } = skin;
       for (const lang of ['es', 'en']) {
-        if (width > 760) {
-          await page
-            .locator('.theme-switch button')
-            .nth(theme === 'original' ? 0 : 1)
-            .click();
+        // On phones every choice is a single button that toggles.
+        await chooseSkin(page, width, skin);
+        if (width > 760)
           await page.locator(`.lang-switch a[hreflang="${lang}"]`).click();
-        } else {
-          // On phones every choice is a single button that toggles.
-          const current = await page.locator('html').getAttribute('data-theme');
-          if (current !== theme) await page.locator('.theme-switch').click();
-          const english = page.url().includes('/en/');
-          if (english !== (lang === 'en'))
-            await page.locator('.lang-switch').click();
-        }
-        await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+        else if (page.url().includes('/en/') !== (lang === 'en'))
+          await page.locator('.lang-switch').click();
         await expect(page).toHaveURL(lang === 'es' ? /\/demo$/ : /\/en\/demo$/);
         await page.evaluate(() => document.fonts.ready);
         const boxes = [];
@@ -43,7 +37,7 @@ for (const width of [1440, 390]) {
           // The longest text across themes and languages fits without overflowing.
           expect(
             await control.evaluate((el) => el.scrollWidth <= el.clientWidth),
-            `${selector} desborda (${theme}/${lang})`,
+            `${selector} desborda (${theme}/${scheme}/${lang})`,
           ).toBe(true);
         }
         if (!baseline) baseline = boxes;
@@ -52,7 +46,7 @@ for (const width of [1440, 390]) {
             for (const dimension of ['x', 'y', 'width', 'height']) {
               expect(
                 Math.abs(boxes[i][dimension] - baseline[i][dimension]),
-                `${selectors[i]} ${dimension} (${theme}/${lang})`,
+                `${selectors[i]} ${dimension} (${theme}/${scheme}/${lang})`,
               ).toBeLessThanOrEqual(0.5);
             }
           }

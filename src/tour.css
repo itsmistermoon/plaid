@@ -150,7 +150,7 @@
   background: var(--card);
   border-color: var(--border);
   border-radius: var(--radius);
-  box-shadow: 0 4px 16px #0f172a14;
+  box-shadow: var(--shadow-overlay);
 }
 [data-theme="moderno"] .tour-hand {
   color: var(--accent);
@@ -185,7 +185,7 @@
   background: var(--secondary);
 }
 [data-theme="moderno"] .tour-button[aria-pressed="true"] {
-  color: #fff;
+  color: var(--on-accent);
   background: var(--accent);
   border-color: var(--accent);
   box-shadow: none;
