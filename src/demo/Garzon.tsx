@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogTitle,
 } from '@ui-sdk/react/dialog';
+import { MousePointerClick } from 'lucide-react';
 import { type ReactNode, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 import { Navbar } from '../components/Navbar';
@@ -208,7 +209,14 @@ export function Garzon() {
                 }
               />
             ) : (
-              <p className="muted">{t('pickTable')}</p>
+              <div className="sidebar-empty">
+                <MousePointerClick
+                  size={36}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                />
+                <p>{t('pickTable')}</p>
+              </div>
             )}
           </aside>
         )}
