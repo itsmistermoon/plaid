@@ -782,14 +782,13 @@ ol {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 24px;
-  padding: 26px 20px 16px;
+  gap: 32px;
+  padding: 30px 32px 20px;
 }
 .detail-qty {
   display: grid;
-  justify-items: center;
-  gap: 26px;
-  padding-top: 18px;
+  justify-items: stretch;
+  gap: 16px;
 }
 .extras-icon {
   width: 28px;
@@ -848,7 +847,7 @@ ol {
 }
 .wheel-window {
   position: relative;
-  width: 72px;
+  width: 54px;
   height: 92px;
   overflow: hidden;
   background: var(--wheel-drum);
@@ -866,21 +865,18 @@ ol {
   border-block: 1px solid var(--wheel-line);
   background: var(--wheel-lens);
 }
-/* Las dos marcas que encierran el valor, a cada lado. */
+/* La marca que señala el valor, junto a las líneas de medida. */
 .wheel-window::after {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(var(--wheel-mark), var(--wheel-mark)) 0 50% / 6px 2px
-    no-repeat,
-    linear-gradient(var(--wheel-mark), var(--wheel-mark)) 100% 50% / 6px 2px
-    no-repeat;
+  background: linear-gradient(var(--wheel-mark), var(--wheel-mark)) 0 50% / 6px
+    2px no-repeat;
   pointer-events: none;
 }
 .wheel-drum {
   position: absolute;
-  inset: 0;
+  inset: 0 0 0 12px;
   display: grid;
   place-items: center;
   perspective: 400px;
@@ -900,20 +896,15 @@ ol {
 .wheel-face[data-current] {
   color: var(--wheel-ink);
 }
-/* Dientes finos a cada lado, ubicados por script sobre la curva. */
+/* Líneas de medida a la izquierda, ubicadas por script sobre la curva. */
 .wheel-teeth {
   position: absolute;
   inset-block: 0;
+  left: 9px;
   width: 5px;
   display: grid;
   place-items: center;
   pointer-events: none;
-}
-.wheel-teeth[data-edge="left"] {
-  left: 9px;
-}
-.wheel-teeth[data-edge="right"] {
-  right: 9px;
 }
 .wheel-teeth i {
   grid-area: 1 / 1;
@@ -926,8 +917,8 @@ ol {
    números los dibuja el tambor. */
 .wheel-value {
   position: absolute;
-  inset: 30px 16px;
-  width: calc(100% - 32px);
+  inset: 30px 4px 30px 16px;
+  width: calc(100% - 20px);
   height: 32px;
   padding: 0;
   border: 0;
@@ -952,10 +943,15 @@ ol {
   border-left: 1px solid var(--wheel-line);
 }
 .wheel-arrows button {
-  width: 36px;
+  width: 24px;
+  padding: 0;
   border: 0;
   color: var(--wheel-arrow);
   background: var(--wheel-frame);
+}
+.wheel-arrows svg {
+  width: 16px;
+  height: 16px;
 }
 .wheel-arrows button + button {
   border-top: 1px solid var(--wheel-line);
@@ -967,8 +963,8 @@ ol {
   flex: none;
 }
 .detail-receipt .receipt {
-  width: 220px;
-  margin-top: 4px;
+  width: 204px;
+  margin-top: 16px;
 }
 
 /* Boleta dentada */

@@ -23,7 +23,7 @@ import {
 const row = 30;
 const stepDeg = 24;
 const radius = row / ((stepDeg * Math.PI) / 180);
-const pitch = 4;
+const pitch = 7;
 const teeth = Array.from(
   { length: Math.ceil((Math.PI * radius) / pitch) + 2 },
   (_, i) => i,
@@ -263,18 +263,11 @@ export function QuantityWheel({
             goTo(Math.round(motion.current.target));
           }}
         >
-          {['left', 'right'].map((edge) => (
-            <span
-              key={edge}
-              className="wheel-teeth"
-              data-edge={edge}
-              aria-hidden="true"
-            >
-              {teeth.map((i) => (
-                <i key={i} data-tooth={i} />
-              ))}
-            </span>
-          ))}
+          <span className="wheel-teeth" aria-hidden="true">
+            {teeth.map((i) => (
+              <i key={i} data-tooth={i} />
+            ))}
+          </span>
           <span className="wheel-drum" aria-hidden="true">
             {numbers.map((n) => (
               <span
