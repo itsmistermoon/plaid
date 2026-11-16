@@ -21,4 +21,4 @@ pnpm lint
 
 ## Publicación
 
-La configuración de Vercel incluye el rewrite necesario para recargar las rutas de la SPA. Producción: https://plaid-itsmistermoons-projects.vercel.app (rama de producción `main`; cada PR tiene su preview).
+La configuración de Vercel incluye el rewrite necesario para recargar las rutas de la SPA. Producción: https://plaid-ui-kit.vercel.app (rama de producción `main`; cada PR tiene su preview).
