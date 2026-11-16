@@ -22,11 +22,31 @@ interface Table {
 }
 export const cartTotal = (cart: Cart) =>
   dishes.reduce((total, dish) => total + dish.price * (cart[dish.id] ?? 0), 0);
+export const billTotal = (table: Table) =>
+  table.orders.reduce(
+    (total, order) =>
+      total +
+      cartTotal(
+        Object.fromEntries(order.lines.map((line) => [line.dishId, line.qty])),
+      ),
+    0,
+  );
+const initialTables = (): Table[] =>
+  Array.from({ length: 12 }, (_, index) => ({
+    number: index + 1,
+    occupied: index === 6,
+    orders: [],
+    calls: [],
+  }));
 interface DemoState {
   view: 'comensal' | 'garzon';
   setView: (view: 'comensal' | 'garzon') => void;
   cart: Cart;
   tables: Table[];
+  callWaiter: () => void;
+  reset: () => void;
+  chargeAndFree: (number: number) => void;
+  requestBill: () => void;
   setQty: (id: string, qty: number) => void;
   sendOrder: () => void;
   confirmOrder: (table: number, id: string) => void;
@@ -40,12 +60,34 @@ export const createDemoStore = (storage?: StateStorage) =>
         view: 'comensal',
         setView: (view) => set({ view }),
         cart: {},
-        tables: Array.from({ length: 12 }, (_, index) => ({
-          number: index + 1,
-          occupied: index === 6,
-          orders: [],
-          calls: [],
-        })),
+        tables: initialTables(),
+        reset: () =>
+          set({ view: 'comensal', cart: {}, tables: initialTables() }),
+        callWaiter: () =>
+          set((state) => ({
+            tables: state.tables.map((table) =>
+              table.number === 7 && !table.calls.includes('garzón')
+                ? { ...table, calls: [...table.calls, 'garzón'] }
+                : table,
+            ),
+          })),
+        chargeAndFree: (number) =>
+          set((state) => ({
+            tables: state.tables.map((table) =>
+              table.number === number
+                ? { ...table, occupied: false, orders: [], calls: [] }
+                : table,
+            ),
+            ...(number === 7 ? { cart: {} } : {}),
+          })),
+        requestBill: () =>
+          set((state) => ({
+            tables: state.tables.map((table) =>
+              table.number === 7 && !table.calls.includes('pago')
+                ? { ...table, calls: [...table.calls, 'pago'] }
+                : table,
+            ),
+          })),
         setQty: (id, qty) =>
           set((state) => {
             const dish = dishes.find((item) => item.id === id);

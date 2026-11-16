@@ -6,10 +6,11 @@ import {
   NumberInputGroup,
   NumberInputIncrement,
 } from '@ui-sdk/react/number-input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
-import { cartTotal, createDemoStore } from './domain';
+import { billTotal, cartTotal, createDemoStore } from './domain';
 import { categories, type Dish, dishes } from './menu';
+import { startSimulator } from './simulator';
 import { Table } from './Table';
 
 const store = createDemoStore();
@@ -19,8 +20,11 @@ const money = (amount: number) =>
   );
 
 function Comensal() {
-  const { cart, tables, setQty, sendOrder } = useStore(store);
-  const [page, setPage] = useState<'carta' | 'carrito' | 'estado'>('carta');
+  const { cart, tables, setQty, sendOrder, requestBill, callWaiter } =
+    useStore(store);
+  const [page, setPage] = useState<'carta' | 'carrito' | 'estado' | 'cuenta'>(
+    'carta',
+  );
   const [category, setCategory] = useState(categories[0]);
   const [detail, setDetail] = useState<Dish | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -58,6 +62,19 @@ function Comensal() {
           }}
         >
           Estado
+        </button>
+        <button
+          type="button"
+          aria-pressed={page === 'cuenta'}
+          onClick={() => {
+            setPage('cuenta');
+            setDetail(null);
+          }}
+        >
+          Cuenta
+        </button>
+        <button type="button" onClick={callWaiter}>
+          Llamar al garzón
         </button>
       </nav>
       {detail ? (
@@ -157,6 +174,40 @@ function Comensal() {
             </section>
           ))}
         </div>
+      ) : page === 'cuenta' ? (
+        <section className="panel">
+          <h2>Tu cuenta</h2>
+          {tables[6].orders.length === 0 ? (
+            <p>Aún no hay pedidos.</p>
+          ) : (
+            <>
+              {tables[6].orders.flatMap((order) =>
+                order.lines.map((line) => {
+                  const dish = dishes.find((item) => item.id === line.dishId);
+                  return (
+                    <div
+                      className="cart-line"
+                      key={`${order.id}-${line.dishId}`}
+                    >
+                      <span>
+                        {line.qty} × {dish?.name}
+                      </span>
+                      <strong>{money((dish?.price ?? 0) * line.qty)}</strong>
+                    </div>
+                  );
+                }),
+              )}
+              <p className="total">Total: {money(billTotal(tables[6]))}</p>
+              {tables[6].calls.includes('pago') ? (
+                <p>El garzón viene a cobrar.</p>
+              ) : (
+                <button type="button" onClick={requestBill}>
+                  Pedir la cuenta
+                </button>
+              )}
+            </>
+          )}
+        </section>
       ) : page === 'estado' ? (
         <section className="panel status-panel">
           <h2>Estado del pedido</h2>
@@ -227,7 +278,8 @@ function Comensal() {
 }
 
 function Garzon() {
-  const { tables, confirmOrder, serveOrder, attendCall } = useStore(store);
+  const { tables, confirmOrder, serveOrder, attendCall, chargeAndFree } =
+    useStore(store);
   const [selected, setSelected] = useState<number | null>(null);
   const table = tables.find((item) => item.number === selected);
   return table ? (
@@ -253,6 +305,19 @@ function Garzon() {
         ))
       ) : (
         <p>Sin llamados pendientes.</p>
+      )}
+      <h3>Cuenta</h3>
+      <p>Total: {money(billTotal(table))}</p>
+      {table.occupied && (
+        <button
+          type="button"
+          onClick={() => {
+            chargeAndFree(table.number);
+            setSelected(null);
+          }}
+        >
+          Cobrar y liberar mesa
+        </button>
       )}
       <h3>Pedidos</h3>
       {table.orders.length ? (
@@ -324,7 +389,13 @@ function Garzon() {
 }
 
 export function Demo() {
-  const { view, setView } = useStore(store);
+  const { view, setView, reset } = useStore(store);
+  const [revision, setRevision] = useState(0);
+  useEffect(
+    () =>
+      startSimulator(store, { random: Math.random, setTimeout, clearTimeout }),
+    [],
+  );
   const [entered, setEntered] = useState(false);
   return (
     <main className="app" data-theme="original">
@@ -350,6 +421,16 @@ export function Demo() {
             Garzón
           </button>
         </nav>
+        <button
+          type="button"
+          onClick={() => {
+            reset();
+            setEntered(false);
+            setRevision((value) => value + 1);
+          }}
+        >
+          Reiniciar demo
+        </button>
       </header>
       <div className="tablet">
         <div className="tablet-camera" />
@@ -360,7 +441,7 @@ export function Demo() {
           </div>
           {view === 'comensal' ? (
             entered ? (
-              <Comensal />
+              <Comensal key={revision} />
             ) : (
               <section className="welcome">
                 <div className="qr" aria-hidden="true">
@@ -376,7 +457,7 @@ export function Demo() {
               </section>
             )
           ) : (
-            <Garzon />
+            <Garzon key={revision} />
           )}
         </div>
       </div>
