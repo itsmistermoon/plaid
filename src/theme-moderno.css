@@ -572,6 +572,10 @@
   stroke-width: 1.5;
   stroke-dasharray: 5 4;
   opacity: 1;
+  /* La costura va hacia adentro del borde del mantel, no encima de él. */
+  transform: scale(0.93);
+  transform-box: view-box;
+  transform-origin: center;
 }
 [data-theme="moderno"] .table-outline {
   stroke: var(--border);
