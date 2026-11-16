@@ -473,10 +473,10 @@
   border: 3px solid var(--accent);
   border-radius: inherit;
   mask:
-    linear-gradient(#000 0 0) 0 0 / 24px 24px no-repeat,
-    linear-gradient(#000 0 0) 100% 0 / 24px 24px no-repeat,
-    linear-gradient(#000 0 0) 0 100% / 24px 24px no-repeat,
-    linear-gradient(#000 0 0) 100% 100% / 24px 24px no-repeat;
+    linear-gradient(var(--accent) 0 0) 0 0 / 24px 24px no-repeat,
+    linear-gradient(var(--accent) 0 0) 100% 0 / 24px 24px no-repeat,
+    linear-gradient(var(--accent) 0 0) 0 100% / 24px 24px no-repeat,
+    linear-gradient(var(--accent) 0 0) 100% 100% / 24px 24px no-repeat;
 }
 [data-theme="moderno"] .scanner-laser {
   left: 8%;
