@@ -234,8 +234,11 @@
 }
 [data-theme="moderno"] .sidebar-item[aria-current="page"] {
   color: var(--accent);
-  background: var(--accent-soft);
+  background: var(--secondary);
   box-shadow: none;
+}
+[data-theme="moderno"] .sidebar-item[aria-current="page"] svg {
+  color: var(--accent);
 }
 [data-theme="moderno"] .sidebar-logo {
   text-shadow: none;
