@@ -440,18 +440,15 @@ ol {
   mask-size: 51% 51%;
   mask-repeat: no-repeat;
 }
-.dish-plate svg {
-  width: 46px;
-  height: 46px;
+.dish-plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .dish-plate[data-size="big"] {
   --r: 14px;
   width: 100%;
   height: 100%;
-}
-.dish-plate[data-size="big"] svg {
-  width: 96px;
-  height: 96px;
 }
 .dish-text h3 {
   font:

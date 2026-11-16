@@ -7,7 +7,6 @@ import {
   NumberInputIncrement,
 } from '@ui-sdk/react/number-input';
 import {
-  Beef,
   BookOpen,
   Check,
   ChevronDown,
@@ -15,13 +14,9 @@ import {
   ChevronUp,
   Clock,
   ConciergeBell,
-  CupSoda,
-  IceCreamCone,
   Minus,
   Plus,
   ReceiptText,
-  Salad,
-  Sandwich,
   ShoppingCart,
 } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
@@ -34,13 +29,6 @@ import { Table } from './Table';
 const store = createDemoStore();
 const money = (amount: number) => `$${amount.toLocaleString('es-CL')}`;
 const dishById = (id: string) => dishes.find((dish) => dish.id === id);
-const categoryIcons: Record<Category, typeof Beef> = {
-  Entradas: Salad,
-  Sándwiches: Sandwich,
-  Fondos: Beef,
-  Bebidas: CupSoda,
-  Postres: IceCreamCone,
-};
 const callLabels: Record<CallKind, string> = {
   pedido: 'Pedido nuevo',
   garzón: 'Llama al garzón',
@@ -52,10 +40,9 @@ type Page = 'carta' | 'carrito' | 'estado' | 'cuenta';
 
 /** Placa de esquinas cóncavas que enmarca la foto del plato. */
 function DishPlate({ dish, size }: { dish: Dish; size?: 'big' }) {
-  const Icon = categoryIcons[dish.category];
   return (
-    <span className="dish-plate" data-size={size} aria-hidden="true">
-      <Icon strokeWidth={1.5} />
+    <span className="dish-plate" data-size={size}>
+      <img src={`/fotos/${dish.id}.webp`} alt="" />
     </span>
   );
 }
@@ -636,8 +623,8 @@ export function Demo() {
     () =>
       startSimulator(store, {
         random: Math.random,
-        setTimeout: window.setTimeout.bind(window),
-        clearTimeout: window.clearTimeout.bind(window),
+        setTimeout: (fn, ms) => window.setTimeout(fn, ms),
+        clearTimeout: (id) => window.clearTimeout(id),
       }),
     [],
   );
