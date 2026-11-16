@@ -78,6 +78,36 @@
   --thread-pedido: #2563eb;
   --thread-garzon: #d97706;
   --thread-pago: var(--destructive);
+  /* Subtler threads and stitches on the flat theme. */
+  --weave-shade: #0f172a1f;
+  --weave-opacity: 0.6;
+  --list-stitch: repeating-linear-gradient(
+    90deg,
+    var(--input) 0 5px,
+    #0000 5px 9px
+  );
+  /* Minimal plaid: crossed 1px lines of the accent green at 10% / 7%. */
+  --plaid-lines:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 10%, transparent) 0 1px,
+      #0000 1px
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--accent) 10%, transparent) 0 1px,
+      #0000 1px
+    ),
+    linear-gradient(
+      90deg,
+      #0000 11px,
+      color-mix(in srgb, var(--accent) 7%, transparent) 11px 12px,
+      #0000 12px
+    ),
+    linear-gradient(
+      #0000 11px,
+      color-mix(in srgb, var(--accent) 7%, transparent) 11px 12px,
+      #0000 12px
+    );
 }
 [data-theme="moderno"] :focus-visible {
   outline: 2px solid var(--accent);
@@ -295,6 +325,11 @@
   background: var(--card);
   box-shadow: var(--shadow-sm);
 }
+[data-theme="moderno"] .card:not(.ticket-card, .ribbon-demo) {
+  background-color: var(--card);
+  background-image: var(--plaid-lines);
+  background-size: 24px 24px;
+}
 
 /* Carta */
 [data-theme="moderno"] .dish-text p {
@@ -483,10 +518,6 @@
 }
 
 /* Order status */
-[data-theme="moderno"] .orders > li + li {
-  border-top: 1px solid var(--border);
-  box-shadow: none;
-}
 
 /* Portada QR */
 [data-theme="moderno"] .scanner {
@@ -696,9 +727,6 @@
 [data-theme="moderno"] .navbar-demo {
   border-radius: 8px;
   box-shadow: 0 0 0 1px var(--border);
-}
-[data-theme="moderno"] .scroll-list li {
-  border-bottom: 1px solid var(--border);
 }
 
 /* Kit switch */

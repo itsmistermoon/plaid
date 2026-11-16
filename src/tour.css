@@ -101,69 +101,46 @@
   background: #ffffff1a;
 }
 
-/* What must be tapped in the current step. The already active selector does not glow. */
-.app[data-tour-step="elegir"] [data-tour~="elegir"],
-.app[data-tour-step="enviar"] [data-tour~="enviar"],
-.app[data-tour-step="sala"] [data-tour~="sala"]:not([aria-pressed="true"]),
-.app[data-tour-step="servir"] [data-tour~="servir"]:not([aria-pressed="true"]),
-.app[data-tour-step="cuenta"] [data-tour~="cuenta"]:not([aria-pressed="true"]),
-.app[data-tour-step="cobrar"] [data-tour~="cobrar"]:not([aria-pressed="true"]) {
-  outline: 3px solid #f6d55c;
-  outline-offset: 2px;
-  animation: tour-glow 1.4s ease-in-out infinite;
+/* What must be tapped in the current step: a thread runs along its border
+   (see TourThread). */
+.tour-threads {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
 }
-
-/* The selector clips whatever sticks out of its buttons: the notice surrounds
-   the whole segment and pulses with a halo. */
-.app :is(.selector button[data-tour]) {
-  outline: 0;
-  animation: none;
+.tour-thread {
+  fill: none;
+  stroke: var(--tour-ring);
+  stroke-width: 2.5;
+  stroke-dasharray: 7 5;
+  stroke-linecap: round;
+  animation: tour-run 1s linear infinite;
 }
-.app[data-tour-step="sala"]
-  .selector:has([data-tour~="sala"]:not([aria-pressed="true"])),
-.app[data-tour-step="cuenta"]
-  .selector:has([data-tour~="cuenta"]:not([aria-pressed="true"])) {
-  outline: 3px solid var(--tour-ring);
-  outline-offset: 3px;
-  border-radius: 9px;
-  animation: tour-halo 1.4s ease-in-out infinite;
-}
-.app[data-tour-step="sala"] [data-tour~="sala"]:not([aria-pressed="true"]),
-.app[data-tour-step="cuenta"] [data-tour~="cuenta"]:not([aria-pressed="true"]) {
-  filter: brightness(1.25);
-}
-@keyframes tour-halo {
-  50% {
-    outline-color: var(--tour-ring-dim);
-    box-shadow: 0 0 0 8px var(--tour-ring-halo);
+@keyframes tour-run {
+  to {
+    stroke-dashoffset: -12;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .app .selector:has([data-tour]) {
-    animation: none !important;
+  .tour-thread {
+    animation: none;
   }
 }
 
 :root {
   --tour-ring: #f6d55c;
-  --tour-ring-dim: #f6d55c55;
-  --tour-ring-halo: #f6d55c33;
 }
 [data-theme="moderno"] {
   --tour-ring: var(--accent);
-  --tour-ring-dim: color-mix(in srgb, var(--accent) 33%, transparent);
-  --tour-ring-halo: color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 @keyframes tour-in {
   from {
     opacity: 0;
     transform: translateY(6px);
-  }
-}
-@keyframes tour-glow {
-  50% {
-    outline-color: #f6d55c55;
   }
 }
 
@@ -212,12 +189,6 @@
   background: var(--accent);
   border-color: var(--accent);
   box-shadow: none;
-}
-[data-theme="moderno"] .app[data-tour-step] [data-tour] {
-  outline-color: var(--accent);
-}
-[data-theme="moderno"] .app[data-tour-step] .selector:has([data-tour]) {
-  --tour-ring: var(--accent);
 }
 
 /* Phone: the note goes between the bar and the screen, compact */

@@ -8,6 +8,7 @@ import { SelectorToggle } from '../components/SelectorToggle';
 import { StageBar } from '../components/StageBar';
 import { ThemeSwitch } from '../components/ThemeSwitch';
 import { TourCoach } from '../components/TourCoach';
+import { TourThread } from '../components/TourThread';
 import { pathFor, useLang, useT } from '../i18n';
 import { tourSteps } from '../tour';
 import { Comensal } from './Comensal';
@@ -99,6 +100,9 @@ export function Demo() {
           )}
         </div>
       </div>
+      {touring && tourSteps[touring.step] && (
+        <TourThread step={tourSteps[touring.step]} />
+      )}
       {touring && (
         <TourCoach tour={touring} onSkip={skipTour} onEnd={endTour} />
       )}

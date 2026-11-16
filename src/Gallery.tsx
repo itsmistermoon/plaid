@@ -142,10 +142,23 @@ function Panel({
 }
 
 /** A group of panels with its title. */
-function Group({ title, children }: { title: string; children: ReactNode }) {
+function Group({
+  title,
+  thread,
+  children,
+}: {
+  title: string;
+  /** Which thread this group's panel headers carry. */
+  thread: 'controls' | 'containers' | 'restaurant' | 'tartan';
+  children: ReactNode;
+}) {
   const id = useId();
   return (
-    <section className="gallery-group" aria-labelledby={id}>
+    <section
+      className="gallery-group"
+      data-thread={thread}
+      aria-labelledby={id}
+    >
       <h2 className="gallery-group-title" id={id}>
         {title}
       </h2>
@@ -760,7 +773,7 @@ function TartanGroup() {
   const panel = t('panels');
   const text = t('tartan');
   return (
-    <Group title={t('groups').tartan}>
+    <Group title={t('groups').tartan} thread="tartan">
       <Panel title={panel.tartanCloth} uses={[]}>
         <div className="tartan-cloth">
           <TartanSwatch />
@@ -866,7 +879,7 @@ export function Gallery() {
           {t('openDemo')}
         </Link>
       </StageBar>
-      <Group title={group.controls}>
+      <Group title={group.controls} thread="controls">
         <Panel
           title={panel.button}
           uses={[]}
@@ -1123,7 +1136,7 @@ export function Gallery() {
           <PostItDemo />
         </Panel>
       </Group>
-      <Group title={group.containers}>
+      <Group title={group.containers} thread="containers">
         <Panel
           title={panel.navbar}
           uses={[]}
@@ -1238,7 +1251,7 @@ export function Gallery() {
           <ToastDemo />
         </Panel>
       </Group>
-      <Group title={group.restaurant}>
+      <Group title={group.restaurant} thread="restaurant">
         <Panel
           title={panel.ribbon}
           uses={[]}

@@ -66,6 +66,15 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **Textile token names are used only where the metaphor is honest: `--warp` and `--weft` for the tablecloth stripes, `--selvedge` for the cloth's hem, `--stitch` / `--stitch-dash` for sewn dashes (ribbon, modern hem) and `--thread-*` for call threads. Other tokens keep their plain names.**
   Why: the kit is named after the tablecloth; the names explain the pattern code without renaming everything.
   <!-- 2026-11-16 -->
+- **Each gallery group has its own thread (`--thread-pedido` for controls, `--selvedge` for containers and navigation, `--thread-garzon` for restaurant pieces, `--brand` for the tartan), woven as a small stripe at the left of its panel headers. Nothing else changes in the header: no dashed line at the bottom, no stitched panel borders. In the modern theme the weave is subtler.**
+  Why: the groups read as threads of one cloth without adding noise; stitched borders were rejected.
+  <!-- 2026-11-16 -->
+- **Lists are divided by a running stitch (`--list-stitch`), not a solid line. Dividers that are not lists keep their line.**
+  Why: the stitch is the sewn detail of the kit, and it only makes sense where items follow one another.
+  <!-- 2026-11-16 -->
+- **In the modern theme, cards carry the minimal plaid: crossed 1px lines of the accent green at 10% and 7% (`--plaid-lines`). It is used on content cards only, never on receipts, controls or every element, and text keeps its contrast.**
+  Why: it translates the gingham to the flat theme without turning it into decoration.
+  <!-- 2026-11-16 -->
 
 ## Typography
 
@@ -95,6 +104,10 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   <!-- 2026-11-16 -->
 
 ## Interaction
+
+- **The guided tour highlights its target with a running thread: a dashed stitch that travels along the border (`TourThread`), never a pulsing ring. With `prefers-reduced-motion` the thread stays still.**
+  Why: it follows the textile language of the kit, and the overlay is not clipped by the pieces it surrounds.
+  <!-- 2026-11-16 -->
 
 - **On every screen whose content can grow, the primary action goes at the top right and always stays visible. It never goes at the end of the content.**
   Why: with a long receipt the button ended up out of view.
