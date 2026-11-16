@@ -17,14 +17,14 @@
   --tour-w: 32px;
   --reset-w: 32px;
 }
-.stage-bar[data-phone] .selector-toggle {
+.stage-bar:where([data-phone]) .selector-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   font-size: 12px;
 }
-.stage-bar[data-phone] .selector-toggle svg {
+.stage-bar:where([data-phone]) .selector-toggle svg {
   flex: none;
   width: 12px;
   height: 12px;
