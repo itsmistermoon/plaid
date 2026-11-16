@@ -1,33 +1,25 @@
-import { Checkbox, CheckboxIndicator } from '@ui-sdk/react/checkbox';
-import {
-  NumberInput,
-  NumberInputControl,
-  NumberInputDecrement,
-  NumberInputGroup,
-  NumberInputIncrement,
-} from '@ui-sdk/react/number-input';
 import {
   BookOpen,
   Check,
-  ChevronDown,
-  ChevronLeft,
-  ChevronUp,
   Clock,
   ConciergeBell,
-  Minus,
-  Plus,
   ReceiptText,
   ShoppingCart,
 } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
 import { useStore } from 'zustand';
+import { DishPlate } from './components/DishPlate';
+import { KitCheck } from './components/KitCheck';
+import { ArrowButton, Navbar } from './components/Navbar';
+import { QuantityWheel } from './components/QuantityWheel';
+import { Receipt, Stepper } from './components/Receipt';
+import { Table } from './components/Table';
 import { billTotal, type CallKind, cartTotal, createDemoStore } from './domain';
+import { money } from './format';
 import { type Category, categories, type Dish, dishes } from './menu';
 import { startSimulator } from './simulator';
-import { Table } from './Table';
 
 const store = createDemoStore();
-const money = (amount: number) => `$${amount.toLocaleString('es-CL')}`;
 const dishById = (id: string) => dishes.find((dish) => dish.id === id);
 const callLabels: Record<CallKind, string> = {
   pedido: 'Pedido nuevo',
@@ -37,57 +29,6 @@ const callLabels: Record<CallKind, string> = {
 const statusLabels = ['enviado', 'confirmado', 'servido'] as const;
 
 type Page = 'carta' | 'carrito' | 'estado' | 'cuenta';
-
-/** Placa de esquinas cóncavas que enmarca la foto del plato. */
-function DishPlate({ dish, size }: { dish: Dish; size?: 'big' }) {
-  return (
-    <span className="dish-plate" data-size={size}>
-      <img src={`/fotos/${dish.id}.webp`} alt="" />
-    </span>
-  );
-}
-
-/** Boleta de papel con bordes dentados y columnas plato, cantidad y precio. */
-function Receipt({
-  lines,
-  total,
-  caption,
-  children,
-}: {
-  lines: { key: string; name: string; qty: ReactNode; price: number }[];
-  total: number;
-  caption: string;
-  children?: ReactNode;
-}) {
-  return (
-    <div className="receipt">
-      <span className="receipt-slot" aria-hidden="true" />
-      <div className="receipt-paper">
-        <table>
-          <caption className="sr-only">{caption}</caption>
-          <thead className="sr-only">
-            <tr>
-              <th scope="col">Plato</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Precio</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lines.map((line) => (
-              <tr key={line.key}>
-                <th scope="row">{line.name}</th>
-                <td>{line.qty}</td>
-                <td>{money(line.price)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="receipt-total">Total: {money(total)}</p>
-        {children}
-      </div>
-    </div>
-  );
-}
 
 function Comensal({ onHome }: { onHome: () => void }) {
   const { cart, tables, setQty, sendOrder, requestBill, callWaiter } =
@@ -128,26 +69,26 @@ function Comensal({ onHome }: { onHome: () => void }) {
     ];
   return (
     <div className="screen" data-surface="comensal">
-      <div className="navbar">
-        <button
-          type="button"
-          className="arrow-button"
-          onClick={() => (detail ? setDetail(null) : onHome())}
-        >
-          <ChevronLeft aria-hidden="true" strokeWidth={3} />
-          {detail ? 'Carta' : 'Volver'}
-        </button>
-        <h2 data-logo={title === 'El Clan' || undefined}>{title}</h2>
-        <button
-          type="button"
-          className="dark-button cart-button"
-          aria-label={`Ver pedido, ${count} unidades`}
-          onClick={() => go('carrito')}
-        >
-          <ShoppingCart aria-hidden="true" strokeWidth={2.5} />
-          {count > 0 && <span className="count">{count}</span>}
-        </button>
-      </div>
+      <Navbar
+        start={
+          <ArrowButton onClick={() => (detail ? setDetail(null) : onHome())}>
+            {detail ? 'Carta' : 'Volver'}
+          </ArrowButton>
+        }
+        title={title}
+        logo={title === 'El Clan'}
+        end={
+          <button
+            type="button"
+            className="dark-button cart-button"
+            aria-label={`Ver pedido, ${count} unidades`}
+            onClick={() => go('carrito')}
+          >
+            <ShoppingCart aria-hidden="true" strokeWidth={2.5} />
+            {count > 0 && <span className="count">{count}</span>}
+          </button>
+        }
+      />
       <div className="screen-body">
         <nav className="sidebar" aria-label="Comensal">
           <div className="sidebar-guest">
@@ -198,35 +139,11 @@ function Comensal({ onHome }: { onHome: () => void }) {
                   {detail.soldOut ? (
                     <p className="sold-out">Agotado por hoy</p>
                   ) : (
-                    <NumberInput
+                    <QuantityWheel
                       value={quantity}
-                      min={1}
-                      max={20}
-                      onValueChange={(value) => setQuantity(value ?? 1)}
-                    >
-                      <NumberInputGroup className="wheel">
-                        <span className="wheel-window">
-                          <span className="wheel-ghost" aria-hidden="true">
-                            {quantity - 1 || ''}
-                          </span>
-                          <NumberInputControl
-                            className="wheel-value"
-                            aria-label={`Cantidad de ${detail.name}`}
-                          />
-                          <span className="wheel-ghost" aria-hidden="true">
-                            {quantity < 20 ? quantity + 1 : ''}
-                          </span>
-                        </span>
-                        <span className="wheel-arrows">
-                          <NumberInputIncrement aria-label="Agregar una unidad">
-                            <ChevronUp aria-hidden="true" />
-                          </NumberInputIncrement>
-                          <NumberInputDecrement aria-label="Quitar una unidad">
-                            <ChevronDown aria-hidden="true" />
-                          </NumberInputDecrement>
-                        </span>
-                      </NumberInputGroup>
-                    </NumberInput>
+                      onChange={setQuantity}
+                      label={`Cantidad de ${detail.name}`}
+                    />
                   )}
                 </div>
                 <div className="detail-receipt">
@@ -289,19 +206,14 @@ function Comensal({ onHome }: { onHome: () => void }) {
                       </div>
                       <div className="dish-side">
                         <span className="dish-price">{money(dish.price)}</span>
-                        <Checkbox
-                          className="kit-check"
-                          aria-label={`Agregar ${dish.name} al pedido`}
+                        <KitCheck
+                          label={`Agregar ${dish.name} al pedido`}
                           disabled={dish.soldOut}
                           checked={!!cart[dish.id]}
-                          onCheckedChange={(checked) =>
+                          onChange={(checked) =>
                             setQty(dish.id, checked ? 1 : 0)
                           }
-                        >
-                          <CheckboxIndicator>
-                            <Check aria-hidden="true" strokeWidth={4} />
-                          </CheckboxIndicator>
-                        </Checkbox>
+                        />
                         <button
                           className="light-button"
                           type="button"
@@ -344,23 +256,11 @@ function Comensal({ onHome }: { onHome: () => void }) {
                         name: dish.name,
                         price: dish.price * cart[dish.id],
                         qty: (
-                          <span className="stepper">
-                            <button
-                              type="button"
-                              aria-label={`Quitar una unidad de ${dish.name}`}
-                              onClick={() => setQty(dish.id, cart[dish.id] - 1)}
-                            >
-                              <Minus aria-hidden="true" strokeWidth={3} />
-                            </button>
-                            <output>x{cart[dish.id]}</output>
-                            <button
-                              type="button"
-                              aria-label={`Agregar una unidad de ${dish.name}`}
-                              onClick={() => setQty(dish.id, cart[dish.id] + 1)}
-                            >
-                              <Plus aria-hidden="true" strokeWidth={3} />
-                            </button>
-                          </span>
+                          <Stepper
+                            name={dish.name}
+                            qty={cart[dish.id]}
+                            onChange={(qty) => setQty(dish.id, qty)}
+                          />
                         ),
                       }))}
                   />
@@ -491,13 +391,14 @@ function Garzon() {
   const pending = tables.reduce((sum, item) => sum + item.calls.length, 0);
   return (
     <div className="screen" data-surface="garzon">
-      <div className="navbar">
-        <span />
-        <h2>Sala principal</h2>
-        <span className="pending" role="status">
-          {pending} {pending === 1 ? 'llamado' : 'llamados'}
-        </span>
-      </div>
+      <Navbar
+        title="Sala principal"
+        end={
+          <span className="pending" role="status">
+            {pending} {pending === 1 ? 'llamado' : 'llamados'}
+          </span>
+        }
+      />
       <div className="screen-body">
         <aside className="sidebar table-detail" aria-label="Detalle de mesa">
           {table ? (

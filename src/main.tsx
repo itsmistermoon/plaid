@@ -9,6 +9,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Redirect, Route, Switch } from 'wouter';
 import { Demo } from './Demo';
+import { Gallery } from './Gallery';
 import './style.css';
 
 function App() {
@@ -19,9 +20,7 @@ function App() {
         <Demo />
       </Route>
       <Route path="/componentes">
-        <main>
-          <h1>Galería de componentes</h1>
-        </main>
+        <Gallery />
       </Route>
       <Route path="/en/demo">
         <main lang="en">

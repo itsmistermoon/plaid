@@ -8,7 +8,7 @@ import { dishes } from './menu';
 
 type Cart = Record<string, number>;
 export type CallKind = 'pedido' | 'garzón' | 'pago';
-type OrderStatus = 'enviado' | 'confirmado' | 'servido';
+export type OrderStatus = 'enviado' | 'confirmado' | 'servido';
 interface Order {
   id: string;
   lines: { dishId: string; qty: number }[];
