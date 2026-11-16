@@ -40,6 +40,12 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **Comensal and Garzón use the same structure: the same top bar, the same sidebar width and background, the same buttons and badges. Color always comes from per-theme variables, never from a value hardcoded in a single view.**
   Why: they must look like a single app.
   <!-- 2026-11-16 -->
+- **In the original theme there is one green: the lettering green (`--brand`). `--plaid-green` equals it, and the ribbon, the tablecloth with its stripes and shades, and every active face (segmented, selector, switch, step, progress, toast) are shades of it made with `color-mix` (or the `--brand-*` tokens), never separate hex greens.**
+  Why: the lettering, ribbon and tablecloth read as three different greens; the lettering green rules.
+  <!-- 2026-11-16 -->
+- **The phone selector toggle uses the inactive segment's surface (`--segment-face`), not the dark button's.**
+  Why: next to a segmented control it looked darker than the inactive segment.
+  <!-- 2026-11-16 -->
 - **The navigation bars (top bar, sidebar and phone tab bar) use the same dark material; the accent green only marks the active item.**
   Why: the bright green tab bar competed with the content and did not look like part of the same app.
   <!-- 2026-11-16 -->

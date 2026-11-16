@@ -8,7 +8,24 @@
   --bar: linear-gradient(#5f696b, #3c4446 50%, #343b3d);
   --bar-line: #1e2425;
   --sidebar: #3d4547;
+  /* The lettering green is the single brand green: every other green
+     (ribbon, tablecloth, active faces, fills) is a shade mixed from it. */
   --brand: #8fc23f;
+  --brand-face: linear-gradient(
+    color-mix(in srgb, var(--brand), #000 4%),
+    color-mix(in srgb, var(--brand), #000 32%)
+  );
+  --brand-face-inset: linear-gradient(
+    color-mix(in srgb, var(--brand), #000 32%),
+    color-mix(in srgb, var(--brand), #000 4%)
+  );
+  --brand-fill: linear-gradient(
+    color-mix(in srgb, var(--brand), #fff 35%),
+    color-mix(in srgb, var(--brand), #000 10%)
+  );
+  --segment-face: linear-gradient(#6b7577, #485153);
+  --segment-ink: #e6ebe9;
+  --segment-ink-shadow: 0 -1px #0007;
   --paper-ink: #3e3e3e;
   --total: #a3622b;
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -16,8 +33,11 @@
 
   /* Skin of the pieces both themes share: the modern theme only changes these values. */
   --step-line: currentColor;
-  --step-done-line: #4f7f22;
-  --step-done-bg: linear-gradient(#9fd164, #5a8f28);
+  --step-done-line: color-mix(in srgb, var(--brand), #000 38%);
+  --step-done-bg: linear-gradient(
+    color-mix(in srgb, var(--brand), #fff 15%),
+    color-mix(in srgb, var(--brand), #000 30%)
+  );
   --step-done-shadow: inset 0 1px #ffffff60, 0 1px 2px #0006;
   --step-now-shadow: var(--step-done-shadow);
   /* The phone tab bar uses the top bar's dark material; the
@@ -35,7 +55,7 @@
   --badge-ink: #fff;
   --toast-icon-shadow: 0 1px 2px #0008;
   --toast-enviado: linear-gradient(#4ca4d6, #105b92);
-  --toast-confirmado: linear-gradient(#b6d77f, #79a63f);
+  --toast-confirmado: var(--brand-fill);
   --toast-servido: linear-gradient(#f0c453, #b27c0e);
   --toast-error: linear-gradient(#e74c3c, #b02a1e);
   --sticky-line: 1px solid #3c4446;
@@ -63,14 +83,18 @@
     linear-gradient(#fff, #e6e6e6 55%, #fbfbfb);
   --paper-shadow: drop-shadow(0 3px 3px #0007);
   --ribbon-shadow: drop-shadow(0 3px 3px #0007);
-  --plaid-green: #4e9a28;
+  --plaid-green: var(--brand);
+  --cloth-base: color-mix(in srgb, var(--plaid-green), #fff 45%);
+  --cloth-cross: color-mix(in srgb, var(--plaid-green), #000 50%);
+  --cloth-thread: color-mix(in srgb, var(--plaid-green), #fff 80%);
+  --cloth-shade: color-mix(in srgb, var(--plaid-green), #000 80%);
   --ribbon-cloth:
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
     repeating-linear-gradient(0deg, #0000000f 0 1px, #0000 1px 3px),
     linear-gradient(
-      color-mix(in srgb, var(--plaid-green), #fff 26%),
-      color-mix(in srgb, var(--plaid-green), #fff 12%) 55%,
-      color-mix(in srgb, var(--plaid-green), #000 6%)
+      color-mix(in srgb, var(--plaid-green), #000 10%),
+      color-mix(in srgb, var(--plaid-green), #000 22%) 55%,
+      color-mix(in srgb, var(--plaid-green), #000 32%)
     );
   --ribbon-ink: #fff;
   --ribbon-ink-shadow: 0 -1px color-mix(in srgb, var(--plaid-green), #000 70%);
@@ -231,16 +255,16 @@ ol {
   font:
     600 13px Inter,
     sans-serif;
-  color: #e6ebe9;
-  background: linear-gradient(#6b7577, #485153);
-  text-shadow: 0 -1px #0007;
+  color: var(--segment-ink);
+  background: var(--segment-face);
+  text-shadow: var(--segment-ink-shadow);
 }
 .selector :is(button, a) + :is(button, a) {
   border-left: 1px solid #2a3133;
 }
 .selector button[aria-pressed="true"],
 .selector a[aria-current="page"] {
-  background: linear-gradient(#86b84d, #5b8c2c);
+  background: var(--brand-face);
   box-shadow: inset 0 2px 4px #0005;
 }
 
@@ -311,7 +335,7 @@ ol {
   font:
     400 27px "Kaushan Script",
     cursive;
-  color: #aee921;
+  color: var(--brand);
   text-shadow: 0 1px 2px #000a;
 }
 .navbar > :last-child {
@@ -336,6 +360,13 @@ ol {
 .dark-button:active,
 .light-button:active {
   transform: scale(0.97);
+}
+/* The phone selector toggle sits in the segmented control's material. */
+[data-theme="original"] .selector-toggle {
+  box-shadow: none;
+  color: var(--segment-ink);
+  background: var(--segment-face);
+  text-shadow: var(--segment-ink-shadow);
 }
 .arrow-button,
 .dark-button {
@@ -599,15 +630,15 @@ ol {
   font:
     600 12px Inter,
     sans-serif;
-  color: #e6ebe9;
-  background: linear-gradient(#6b7577, #485153);
-  text-shadow: 0 -1px #0007;
+  color: var(--segment-ink);
+  background: var(--segment-face);
+  text-shadow: var(--segment-ink-shadow);
 }
 .segmented button + button {
   border-left: 1px solid #2a3133;
 }
 .segmented button[aria-selected="true"] {
-  background: linear-gradient(#86b84d, #5b8c2c);
+  background: var(--brand-face);
   box-shadow: inset 0 2px 4px #0005;
 }
 .dish-list {
@@ -1645,29 +1676,29 @@ ol {
   mix-blend-mode: multiply;
 }
 .cloth-base {
-  fill: #c3e187;
+  fill: var(--cloth-base);
 }
 .cloth-band {
   fill: var(--plaid-green);
   opacity: 0.68;
 }
 .cloth-cross {
-  fill: #24731f;
+  fill: var(--cloth-cross);
   opacity: 0.52;
 }
 .cloth-thread {
   fill: none;
-  stroke: #e7f4bb;
+  stroke: var(--cloth-thread);
   stroke-width: 0.45;
   opacity: 0.27;
 }
 .cloth-shadow {
-  fill: #263c16;
+  fill: var(--cloth-shade);
   opacity: 0.55;
 }
 .cloth-shine {
   fill: none;
-  stroke: #e8f4c9;
+  stroke: var(--cloth-thread);
   stroke-width: 2;
   opacity: 0.55;
 }
@@ -1692,7 +1723,7 @@ ol {
 }
 .table-number circle {
   fill: #263e2b;
-  stroke: #d5e6b1;
+  stroke: var(--cloth-thread);
   stroke-width: 1.5;
 }
 .table-number text {
@@ -2090,7 +2121,7 @@ ol {
     0 1px #ffffff1f;
 }
 .kit-switch[data-checked] {
-  background: linear-gradient(#5b8c2c, #86b84d);
+  background: var(--brand-face-inset);
 }
 .kit-switch-on,
 .kit-switch-off {
@@ -2240,7 +2271,7 @@ ol {
   border-radius: inherit;
   background:
     repeating-linear-gradient(135deg, #ffffff2e 0 6px, #0000 6px 12px),
-    linear-gradient(#b6d77f, #79a63f);
+    var(--brand-fill);
   box-shadow: inset 0 1px #ffffff80;
   transition: width 300ms var(--ease-out);
 }
@@ -2322,7 +2353,7 @@ ol {
   color: var(--brand);
 }
 .dropdown-item[data-highlighted] {
-  background: linear-gradient(#86b84d, #5b8c2c);
+  background: var(--brand-face);
 }
 .dropdown-item[data-highlighted] svg {
   color: #fff;
