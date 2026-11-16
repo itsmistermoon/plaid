@@ -17,11 +17,20 @@ for (const width of [1440, 390]) {
     let baseline;
     for (const theme of ['original', 'moderno']) {
       for (const lang of ['es', 'en']) {
-        await page
-          .locator('.theme-switch button')
-          .nth(theme === 'original' ? 0 : 1)
-          .click();
-        await page.locator(`.lang-switch a[hreflang="${lang}"]`).click();
+        if (width > 760) {
+          await page
+            .locator('.theme-switch button')
+            .nth(theme === 'original' ? 0 : 1)
+            .click();
+          await page.locator(`.lang-switch a[hreflang="${lang}"]`).click();
+        } else {
+          // En teléfono cada elección es un solo botón que alterna.
+          const current = await page.locator('html').getAttribute('data-theme');
+          if (current !== theme) await page.locator('.theme-switch').click();
+          const english = page.url().includes('/en/');
+          if (english !== (lang === 'en'))
+            await page.locator('.lang-switch').click();
+        }
         await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
         await expect(page).toHaveURL(lang === 'es' ? /\/demo$/ : /\/en\/demo$/);
         await page.evaluate(() => document.fonts.ready);
@@ -30,6 +39,11 @@ for (const width of [1440, 390]) {
           const control = page.locator(selector);
           await expect(control).toBeVisible();
           boxes.push(await control.boundingBox());
+          // El texto más largo entre temas e idiomas cabe sin desbordar.
+          expect(
+            await control.evaluate((el) => el.scrollWidth <= el.clientWidth),
+            `${selector} desborda (${theme}/${lang})`,
+          ).toBe(true);
         }
         if (!baseline) baseline = boxes;
         else

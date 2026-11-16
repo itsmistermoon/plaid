@@ -27,9 +27,9 @@
   }
   .stage-bar {
     --bar-h: 32px;
-    --theme-w: 116px;
-    --lang-w: 60px;
-    --role-w: 120px;
+    --theme-w: 96px;
+    --lang-w: 56px;
+    --role-w: 100px;
     --tour-w: 32px;
     --reset-w: 32px;
     max-width: none;
@@ -41,8 +41,19 @@
   .app .stage-bar h1 {
     display: none;
   }
-  .stage-bar .selector :is(button, a) {
+  /* Cada elección binaria es un solo botón: muestra el valor actual y alterna. */
+  .stage-bar .selector-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     font-size: 12px;
+  }
+  .stage-bar .selector-toggle svg {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    opacity: 0.7;
   }
   .reset-label {
     display: none;

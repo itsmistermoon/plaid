@@ -30,6 +30,8 @@ const es = {
   langName: 'Español',
   langSwitch: 'Idioma',
   themeSwitch: 'Tema',
+  switchTo: (label: string, current: string, next: string) =>
+    `${label}: ${current}. Tocar para cambiar a ${next}`,
   themes: { original: 'Original', moderno: 'Moderno' },
   notFound: 'Página no encontrada',
   // Escenario de la demo
@@ -252,6 +254,8 @@ const en: Messages = {
   langName: 'English',
   langSwitch: 'Language',
   themeSwitch: 'Theme',
+  switchTo: (label: string, current: string, next: string) =>
+    `${label}: ${current}. Tap to switch to ${next}`,
   themes: { original: 'Original', moderno: 'Modern' },
   notFound: 'Page not found',
   stageTitle: 'El Clan',
