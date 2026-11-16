@@ -11,10 +11,10 @@ const paths: Record<Lang, Record<Page, string>> = {
   en: { demo: '/en/demo', gallery: '/en/components' },
 };
 
-/** Ruta de una página en un idioma. */
+/** Path of a page in a language. */
 export const pathFor = (page: Page, lang: Lang) => paths[lang][page];
 
-/** Página e idioma de una ruta, o `null` si no existe. */
+/** Page and language of a path, or `null` if it does not exist. */
 export function routeFor(path: string): { page: Page; lang: Lang } | null {
   const clean = path.replace(/\/+$/, '') || '/';
   for (const lang of ['es', 'en'] as const)
@@ -34,7 +34,7 @@ const es = {
     `${label}: ${current}. Tocar para cambiar a ${next}`,
   themes: { original: 'Original', moderno: 'Moderno' },
   notFound: 'Página no encontrada',
-  // Escenario de la demo
+  // Demo stage
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'una reconstrucción de iClub',
   device: 'Dispositivo',
@@ -42,7 +42,8 @@ const es = {
   waiter: 'Garzón',
   resetDemo: 'Reiniciar demo',
   resetShort: 'Reiniciar',
-  // Recorrido guiado
+  uiKit: 'UI Kit',
+  // Guided tour
   tour: 'Recorrido guiado',
   tourStart: 'Recorrido',
   tourResume: 'Retomar recorrido',
@@ -80,7 +81,7 @@ const es = {
       'Recorriste el pedido de punta a punta. Sigue probando o reinicia la demo.',
     ],
   } satisfies Record<TourStep | 'listo', [string, string]>,
-  // Portada
+  // Cover
   welcome: 'Bienvenido a Restaurant El Clan',
   scanQr: 'Escanea el código QR de tu mesa',
   sitDown: 'Sentarme en la Mesa 7',
@@ -159,7 +160,7 @@ const es = {
     garzón: 'Llama al garzón',
     pago: 'Pide la cuenta',
   } satisfies Record<CallKind, string>,
-  // Componentes
+  // Components
   dish: 'Plato',
   price: 'Precio',
   total: 'Total',
@@ -172,7 +173,7 @@ const es = {
   pickOption: 'Elige una opción',
   switchOn: 'SÍ',
   switchOff: 'NO',
-  // Galería
+  // Gallery
   galleryTitle: 'Galería de componentes',
   gallerySubtitle: 'Restaurant El Clan · iClub',
   openDemo: 'Abrir la demo',
@@ -303,6 +304,7 @@ const en: Messages = {
   waiter: 'Waiter',
   resetDemo: 'Reset demo',
   resetShort: 'Reset',
+  uiKit: 'UI Kit',
   tour: 'Guided tour',
   tourStart: 'Tour',
   tourResume: 'Resume tour',
@@ -541,22 +543,22 @@ export const messages: Record<Lang, Messages> = { es, en };
 
 export const LangContext = createContext<Lang>('es');
 
-/** Idioma de la ruta actual. */
+/** Language of the current path. */
 export const useLang = () => useContext(LangContext);
 
-/** `t(clave)` devuelve el texto del idioma de la ruta. */
+/** `t(key)` returns the text in the path's language. */
 export function useT() {
   const dict = messages[useLang()];
   return <K extends keyof Messages>(key: K): Messages[K] => dict[key];
 }
 
-/** Descripción de un plato en el idioma de la ruta; el nombre no se traduce. */
+/** Description of a dish in the path's language; the name is not translated. */
 export function useDishText() {
   const lang = useLang();
   return (dish: Dish) => (lang === 'en' ? dish.en : dish.description);
 }
 
-/** Nombre de un agregado en el idioma de la ruta. */
+/** Name of an extra in the path's language. */
 export function useExtraName() {
   const lang = useLang();
   return (extra: Extra) => (lang === 'en' ? extra.en : extra.name);
