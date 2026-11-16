@@ -545,38 +545,40 @@ ol {
   height: 232px;
   box-shadow: 0 2px 4px #0006;
 }
-/* Cinta de tela verde: entra desde atrás de la tarjeta por arriba (los
-   triángulos oscuros son la tela doblada hacia atrás) y termina abajo en cola
-   de golondrina, con una costura punteada que sigue su borde. */
+/* Cinta de tela verde: cuelga por encima del borde de la tarjeta, así que la
+   tela se dobla sobre él (el pliegue marca el borde y proyecta su sombra
+   hacia abajo; los triángulos oscuros son las puntas dobladas) y termina abajo
+   en cola de golondrina, con una costura punteada que sigue su borde. */
 .ribbon {
+  --over: 12px;
   justify-self: end;
   position: relative;
   max-width: 100%;
-  margin: -26px 24px 0 0;
+  margin: calc(-26px - var(--over)) 24px 0 0;
   filter: drop-shadow(0 3px 3px #0007);
 }
 .ribbon::before,
 .ribbon::after {
   content: "";
   position: absolute;
-  top: 0;
+  top: var(--over);
   width: 10px;
   height: 10px;
   background: linear-gradient(135deg, #0c3a1f, #17562f);
 }
 .ribbon::before {
   left: -10px;
-  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
 .ribbon::after {
   right: -10px;
-  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 .ribbon-cloth {
   position: relative;
   display: block;
   min-width: 250px;
-  padding: 14px 28px 28px;
+  padding: calc(14px + var(--over)) 28px 28px;
   text-align: center;
   color: #fff;
   font:
@@ -584,6 +586,9 @@ ol {
     sans-serif;
   text-shadow: 0 -1px #0b3a1c;
   background:
+    /* pliegue sobre el borde: brillo en la arista y sombra justo debajo */
+    linear-gradient(#ffffff40 0 1px, #00000038 1px 3px, #0000 9px) 0
+    var(--over) / 100% 9px no-repeat,
     linear-gradient(90deg, #ffffff99 0 5px, #0000 5px 9px) left 6px / 9px 1px
     repeat-x,
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
