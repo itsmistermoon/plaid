@@ -59,6 +59,18 @@
   --track-edge: #0f172a14;
   --bill-shadow: 0 -4px 8px -4px #0f172a1f;
 }
+/* Textile tokens (see style.css): stitch and call threads. */
+[data-theme="moderno"] {
+  --stitch: #fff;
+  --stitch-dash: 5 4;
+  --clan-tartan-opacity: 0.06;
+  --tartan-chip-ink: #0009;
+  --tartan-frame: 0 0 0 1px var(--border);
+  --tartan-fade: linear-gradient(#000, #0000);
+  --thread-pedido: #2563eb;
+  --thread-garzon: #d97706;
+  --thread-pago: var(--destructive);
+}
 [data-theme="moderno"] :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -576,9 +588,9 @@
   fill: #cfe4bf;
 }
 [data-theme="moderno"] .cloth-shine {
-  stroke: #fff;
+  stroke: var(--stitch);
   stroke-width: 1.5;
-  stroke-dasharray: 5 4;
+  stroke-dasharray: var(--stitch-dash);
   opacity: 1;
   /* The stitching goes inward from the tablecloth's edge, not on top of it. */
   transform: scale(0.93);

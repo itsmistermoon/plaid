@@ -208,6 +208,24 @@ const es = {
     controls: 'Controles',
     containers: 'Contenedores y navegación',
     restaurant: 'Piezas del restaurant',
+    tartan: 'Tartán del Clan',
+  },
+  tartan: {
+    intro:
+      'Un tartán se describe por su sett: el orden y el ancho, en hilos, de cada franja de color. El sett es simétrico: se escribe de pivote a pivote (marcados con /) y se refleja. La urdimbre y la trama usan el mismo sett; tejidas en sarga 2/2, cada cruce muestra mitad urdimbre y mitad trama, y eso forma el cuadro.',
+    threads: (n: number) => `${n} hilos`,
+    repeat: (n: number) => `Repetición completa: ${n} hilos`,
+    colors: {
+      G: ['Verde Clan', 'El verde de la letra (--brand)'],
+      K: ['Pizarra', 'El fondo del escenario (--stage)'],
+      W: ['Crema', 'La placa y el papel de la boleta'],
+      Y: ['Hilo dorado', 'El acento fino: el llamado al garzón'],
+    },
+    warp: 'Urdimbre (--warp)',
+    weft: 'Trama (--weft)',
+    check: 'Urdimbre + trama = cuadro',
+    tokens:
+      'Los tokens del kit toman nombres textiles donde la metáfora es honesta: --warp y --weft para las franjas del mantel, --selvedge para su orilla, --stitch para las costuras y --thread-* para los hilos de cada llamado.',
   },
   panels: {
     button: 'Botón',
@@ -237,6 +255,10 @@ const es = {
     seal: 'Sello',
     table: 'Mesa',
     tableDetail: 'Detalle de mesa del Garzón',
+    tartanCloth: 'Tela',
+    tartanSett: 'Sett',
+    tartanColors: 'Colores',
+    tartanWeave: 'Cómo se teje',
   },
 
   stateLabels: {
@@ -284,6 +306,7 @@ const es = {
     freeTable: 'Mesa libre',
     selected: 'Seleccionada',
     withActions: 'Con total y acción',
+    occupiedF: 'Ocupada',
   },
 };
 
@@ -460,6 +483,24 @@ const en: Messages = {
     controls: 'Controls',
     containers: 'Containers and navigation',
     restaurant: 'Restaurant pieces',
+    tartan: 'Clan tartan',
+  },
+  tartan: {
+    intro:
+      'A tartan is described by its sett: the order and width, in threads, of each colored stripe. The sett is symmetric: it is written pivot to pivot (marked with /) and mirrored. Warp and weft use the same sett; woven in a 2/2 twill, each crossing shows half warp and half weft, and that makes the check.',
+    threads: (n) => `${n} threads`,
+    repeat: (n) => `Full repeat: ${n} threads`,
+    colors: {
+      G: ['Clan green', 'The lettering green (--brand)'],
+      K: ['Slate', 'The stage background (--stage)'],
+      W: ['Cream', 'The plate and the receipt paper'],
+      Y: ['Gold thread', 'The thin accent: the waiter call'],
+    },
+    warp: 'Warp (--warp)',
+    weft: 'Weft (--weft)',
+    check: 'Warp + weft = check',
+    tokens:
+      'Kit tokens take textile names where the metaphor is honest: --warp and --weft for the tablecloth stripes, --selvedge for its hem, --stitch for seams and --thread-* for each call thread.',
   },
   panels: {
     button: 'Button',
@@ -489,6 +530,10 @@ const en: Messages = {
     seal: 'Seal',
     table: 'Table',
     tableDetail: "Waiter's table detail",
+    tartanCloth: 'Cloth',
+    tartanSett: 'Sett',
+    tartanColors: 'Colors',
+    tartanWeave: 'How it is woven',
   },
 
   stateLabels: {
@@ -536,6 +581,7 @@ const en: Messages = {
     freeTable: 'Free table',
     selected: 'Selected',
     withActions: 'With total and action',
+    occupiedF: 'Occupied',
   },
 };
 

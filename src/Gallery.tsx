@@ -6,6 +6,7 @@ import {
   ShoppingCart,
 } from 'lucide-react';
 import {
+  type CSSProperties,
   type ReactNode,
   useId,
   useLayoutEffect,
@@ -64,6 +65,16 @@ import {
 import { money } from './format';
 import { pathFor, useExtraName, useLang, useT } from './i18n';
 import { type Category, categories, dishes } from './menu';
+import {
+  fullSett,
+  sett,
+  settSize,
+  type TartanColor,
+  type TartanLayer,
+  tartanColors,
+  tartanUrl,
+  threadcount,
+} from './tartan';
 
 const dish = (id: string) => {
   const found = dishes.find((item) => item.id === id);
@@ -734,6 +745,101 @@ function TableDetailFrame({
   );
 }
 
+function TartanSwatch({ layer }: { layer?: TartanLayer }) {
+  return (
+    <span
+      className="tartan-swatch"
+      style={{ backgroundImage: tartanUrl(layer) }}
+    />
+  );
+}
+
+/** The Clan tartan: the cloth, its sett, its colors and how it is woven. */
+function TartanGroup() {
+  const t = useT();
+  const panel = t('panels');
+  const text = t('tartan');
+  return (
+    <Group title={t('groups').tartan}>
+      <Panel title={panel.tartanCloth} uses={[]}>
+        <div className="tartan-cloth">
+          <TartanSwatch />
+          <p className="hint">{text.intro}</p>
+        </div>
+      </Panel>
+      <Panel title={panel.tartanSett} uses={[]}>
+        <div className="tartan-sett">
+          <code>{threadcount}</code>
+          <ol aria-label={threadcount}>
+            {sett.map(([color, count], index) => (
+              <li
+                key={index}
+                style={{ flexGrow: count, background: tartanColors[color] }}
+                title={`${text.colors[color][0]} · ${text.threads(count)}`}
+              />
+            ))}
+          </ol>
+          <div
+            className="tartan-repeat"
+            aria-label={text.repeat(settSize)}
+            role="img"
+          >
+            {fullSett.map(([color, count], index) => (
+              <span
+                key={index}
+                style={{ flexGrow: count, background: tartanColors[color] }}
+              />
+            ))}
+          </div>
+          <p className="hint">{text.repeat(settSize)}</p>
+        </div>
+      </Panel>
+      <Panel title={panel.tartanColors} uses={[]}>
+        <ul className="tartan-colors">
+          {(Object.keys(tartanColors) as TartanColor[]).map((color) => (
+            <li key={color}>
+              <span
+                className="tartan-chip"
+                style={{ background: tartanColors[color] }}
+              >
+                {color}
+              </span>
+              <span>
+                <strong>{text.colors[color][0]}</strong>
+                <small className="hint">
+                  {text.colors[color][1]} · {tartanColors[color]}
+                </small>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Panel>
+      <Panel
+        title={panel.tartanWeave}
+        uses={[]}
+        wide
+        states={[
+          { label: text.warp, node: <TartanSwatch layer="warp" /> },
+          { label: text.weft, node: <TartanSwatch layer="weft" /> },
+          { label: text.check, node: <TartanSwatch /> },
+        ]}
+      >
+        <p className="hint tartan-tokens">
+          {text.tokens
+            .split(/(--[\w*-]+)/)
+            .map((part, index) =>
+              part.startsWith('--') ? (
+                <code key={part}>{part}</code>
+              ) : (
+                <span key={`${index}${part}`}>{part}</span>
+              ),
+            )}
+        </p>
+      </Panel>
+    </Group>
+  );
+}
+
 export function Gallery() {
   const t = useT();
   const lang = useLang();
@@ -746,7 +852,10 @@ export function Gallery() {
     label: t('categories')[id],
   }));
   return (
-    <main className="gallery">
+    <main
+      className="gallery"
+      style={{ '--clan-tartan': tartanUrl() } as CSSProperties}
+    >
       <StageBar>
         <h1>
           {t('galleryTitle')} <small>{t('gallerySubtitle')}</small>
@@ -1196,6 +1305,14 @@ export function Gallery() {
               ),
             },
             {
+              label: s.occupiedF,
+              node: (
+                <span className="table-state">
+                  <TableButton number={4} occupied calls={[]} />
+                </span>
+              ),
+            },
+            {
               label: s.selected,
               node: (
                 <span className="table-state">
@@ -1203,6 +1320,14 @@ export function Gallery() {
                 </span>
               ),
             },
+            ...callKinds.map((kind, index) => ({
+              label: callLabels[kind],
+              node: (
+                <span className="table-state">
+                  <TableButton number={6 + index} occupied calls={[kind]} />
+                </span>
+              ),
+            })),
             {
               label: s.combinedCalls,
               node: (
@@ -1293,6 +1418,7 @@ export function Gallery() {
           <Printer lines={[line('empanada', 2), line('italiano', 1)]} />
         </Panel>
       </Group>
+      <TartanGroup />
       <OrderToastRegion />
     </main>
   );

@@ -88,6 +88,22 @@
   --cloth-cross: color-mix(in srgb, var(--plaid-green), #000 50%);
   --cloth-thread: color-mix(in srgb, var(--plaid-green), #fff 80%);
   --cloth-shade: color-mix(in srgb, var(--plaid-green), #000 80%);
+  /* Textile names (see DESIGN.md): the gingham's vertical stripes are the
+     warp, its horizontal ones the weft; the hem of the cloth is its selvedge;
+     sewn dashes are the stitch. */
+  --warp: var(--plaid-green);
+  --weft: var(--plaid-green);
+  --selvedge: var(--cloth-thread);
+  --stitch: #ffffff99;
+  --stitch-dash: 5 4;
+  --clan-tartan-opacity: 0.1;
+  --tartan-chip-ink: #0009;
+  --tartan-frame: var(--crop-frame);
+  --tartan-fade: linear-gradient(#000, #0000);
+  /* A thread per open call, woven into the tablecloth. */
+  --thread-pedido: #3d97d0;
+  --thread-garzon: #f0b632;
+  --thread-pago: #d23b3e;
   --ribbon-cloth:
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
     repeating-linear-gradient(0deg, #0000000f 0 1px, #0000 1px 3px),
@@ -794,8 +810,8 @@ ol {
   width: calc(100% - 12px);
   height: calc(100% - 6px);
   fill: none;
-  stroke: #ffffff99;
-  stroke-dasharray: 5 4;
+  stroke: var(--stitch);
+  stroke-dasharray: var(--stitch-dash);
   overflow: visible;
 }
 .ribbon-stitch * {
@@ -1655,9 +1671,23 @@ ol {
 .table-button[aria-pressed="true"] .mesa {
   filter: drop-shadow(0 0 6px #f4d67a);
 }
-.table-button[data-occupied="false"] .mesa {
-  opacity: 0.6;
-  filter: saturate(0.55);
+/* A free table's cloth is faded; an occupied one shows its full weave. */
+.mesa[data-occupied="false"] .cloth {
+  opacity: 0.55;
+  filter: saturate(0.25);
+}
+.cloth-call {
+  fill: none;
+  stroke-width: 2.4;
+}
+.cloth-call[data-kind="pedido"] {
+  stroke: var(--thread-pedido);
+}
+.cloth-call[data-kind="garzón"] {
+  stroke: var(--thread-garzon);
+}
+.cloth-call[data-kind="pago"] {
+  stroke: var(--thread-pago);
 }
 
 /* Mesa (SVG) */
@@ -1679,8 +1709,13 @@ ol {
   fill: var(--cloth-base);
 }
 .cloth-band {
-  fill: var(--plaid-green);
   opacity: 0.68;
+}
+.cloth-warp {
+  fill: var(--warp);
+}
+.cloth-weft {
+  fill: var(--weft);
 }
 .cloth-cross {
   fill: var(--cloth-cross);
@@ -1698,7 +1733,7 @@ ol {
 }
 .cloth-shine {
   fill: none;
-  stroke: var(--cloth-thread);
+  stroke: var(--selvedge);
   stroke-width: 2;
   opacity: 0.55;
 }
@@ -1801,7 +1836,105 @@ ol {
   text-decoration: none;
 }
 .gallery {
+  position: relative;
+  isolation: isolate;
   counter-reset: panel;
+}
+/* Subtle accent: the Clan tartan woven into the top of the page, fading out. */
+.gallery::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 360px;
+  background: var(--clan-tartan) 0 0 / 202px 202px;
+  opacity: var(--clan-tartan-opacity);
+  mask-image: var(--tartan-fade);
+  pointer-events: none;
+}
+
+/* Tartan section */
+.tartan-swatch {
+  display: block;
+  width: 120px;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background-size: 202px 202px;
+  box-shadow: var(--tartan-frame);
+}
+.tartan-cloth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.tartan-cloth .tartan-swatch {
+  width: 100%;
+  height: 150px;
+  aspect-ratio: auto;
+}
+.tartan-cloth p,
+.tartan-tokens {
+  margin: 0;
+  line-height: 1.45;
+}
+.tartan-tokens code {
+  white-space: nowrap;
+}
+.tartan-sett {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.tartan-sett code {
+  font:
+    700 15px "Courier Prime",
+    monospace;
+  text-align: center;
+}
+.tartan-sett ol,
+.tartan-repeat {
+  display: flex;
+  height: 34px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--tartan-frame);
+}
+.tartan-repeat {
+  height: 14px;
+}
+.tartan-colors {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+.tartan-colors li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+.tartan-colors strong,
+.tartan-colors small {
+  display: block;
+}
+.tartan-chip {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-weight: 700;
+  color: var(--tartan-chip-ink);
+  box-shadow: var(--tartan-frame);
 }
 .gallery-group {
   max-width: 1120px;

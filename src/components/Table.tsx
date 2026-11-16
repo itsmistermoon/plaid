@@ -31,12 +31,36 @@ export function Table({
           patternTransform="rotate(45)"
         >
           <rect width="28" height="28" className="cloth-base" />
-          <path d="M0 0h14v28H0zM0 0h28v14H0z" className="cloth-band" />
+          <g className="cloth-band">
+            <path d="M0 0h14v28H0z" className="cloth-warp" />
+            <path d="M0 0h28v14H0z" className="cloth-weft" />
+          </g>
           <path d="M0 0h14v14H0z" className="cloth-cross" />
           <path
             d="M2 0v28M6 0v28M10 0v28M14 0v28M18 0v28M22 0v28M26 0v28M0 2h28M0 6h28M0 10h28M0 14h28M0 18h28M0 22h28M0 26h28"
             className="cloth-thread"
           />
+        </pattern>
+        {/* Each open call weaves a thread of its color into the cloth, in
+            the warp and in the weft, through the light squares. */}
+        <pattern
+          id={`${id}calls`}
+          width="28"
+          height="28"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          {unique.map((call, index) => {
+            const at = 21 + (index - (unique.length - 1) / 2) * 4;
+            return (
+              <path
+                key={call}
+                className="cloth-call"
+                data-kind={call}
+                d={`M${at} 0v28M0 ${at}h28`}
+              />
+            );
+          })}
         </pattern>
         <filter id={`${id}grain`}>
           <feTurbulence
@@ -96,6 +120,13 @@ export function Table({
           d="M100 -28 228 100 100 228 -28 100Z"
           fill={`url(#${id}checks)`}
         />
+        {unique.length > 0 && (
+          <path
+            className="cloth-calls"
+            d="M100 -28 228 100 100 228 -28 100Z"
+            fill={`url(#${id}calls)`}
+          />
+        )}
         <path className="cloth-shine" d="M100 -26 226 100 100 226 -26 100Z" />
       </g>
       <rect

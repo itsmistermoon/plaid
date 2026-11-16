@@ -54,6 +54,16 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   Why: warm grays on backgrounds, tabs and panels give away a generic AI-made interface.
   <!-- 2026-11-16 -->
 
+- **On the waiter's floor the tablecloth itself tells the table's state: a free table's cloth is faded and desaturated, an occupied one shows its full weave, and each open call weaves a thread of its color (`--thread-pedido` blue, `--thread-garzon` orange, `--thread-pago` red) into the warp and weft, in addition to its seal.**
+  Why: the plaid is the kit's signature, so it should carry meaning, not only decoration.
+  <!-- 2026-11-16 -->
+- **Restaurant El Clan has its own tartan, defined once in `src/tartan.ts` by its threadcount (`K/8 G32 K6 G6 K24 W4 K24 Y/2`: green, slate, cream and a thin gold thread). The gallery accent, the "Tartan" section, the favicon and the Open Graph image are generated from it (`pnpm tartan:assets`); it is never redrawn by hand.**
+  Why: one sett, one source of truth, like a registered tartan.
+  <!-- 2026-11-16 -->
+- **Textile token names are used only where the metaphor is honest: `--warp` and `--weft` for the tablecloth stripes, `--selvedge` for the cloth's hem, `--stitch` / `--stitch-dash` for sewn dashes (ribbon, modern hem) and `--thread-*` for call threads. Other tokens keep their plain names.**
+  Why: the kit is named after the tablecloth; the names explain the pattern code without renaming everything.
+  <!-- 2026-11-16 -->
+
 ## Typography
 
 - **Typefaces: Courier Prime for the receipt, Outfit 700 for titles, Kaushan Script for the logo and Inter for the interface. No others are added.**
