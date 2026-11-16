@@ -1165,11 +1165,18 @@ ol {
 }
 .scanner {
   position: relative;
-  width: 39%;
-  aspect-ratio: 400 / 400;
-  padding: 12% 9% 11%;
-  border-radius: 8px;
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: 12px;
   background:
+    /* rejillas de las esquinas inferiores */
+    repeating-linear-gradient(#0009 0 1px, #0000 1px 3px) 6% 93% / 16px 7px
+    no-repeat,
+    repeating-linear-gradient(#0009 0 1px, #0000 1px 3px) 94% 93% / 16px 7px
+    no-repeat,
+    /* líneas guía verticales a los lados de la ventana */
+    linear-gradient(#0009, #0009) 4.5% 50% / 1px 62% no-repeat,
+    linear-gradient(#0009, #0009) 95.5% 50% / 1px 62% no-repeat,
     repeating-linear-gradient(90deg, #ffffff0a 0 1px, #0000 1px 3px),
     linear-gradient(
       90deg,
@@ -1180,35 +1187,41 @@ ol {
       #444 80%,
       #5a5a5a
     );
-  border: 1px solid #222;
+  border: 1px solid #1c1c1c;
   box-shadow:
     inset 0 1px #ffffff40,
     inset 0 -1px #0008,
     0 4px 10px #0008;
 }
+/* Ranura del borde superior y marcas de las esquinas. */
 .scanner::before {
   content: "";
   position: absolute;
-  inset: 5% 0 auto;
-  border-top: 1px solid #2a2a2a;
+  inset: 4.5% 0 auto;
+  height: 1px;
+  background:
+    linear-gradient(#0009, #0009) 88% 0 / 4% 3px no-repeat,
+    #2a2a2a;
   box-shadow: 0 1px #ffffff20;
 }
 .scanner-window {
-  position: relative;
-  display: block;
-  height: 100%;
-  border-radius: 18px / 12px;
-  background: var(--noise), var(--slate);
+  position: absolute;
+  inset: 11% 9% 17%;
+  border-radius: 7% / 6%;
+  background:
+    linear-gradient(160deg, #ffffff14, #0000 35%),
+    var(--noise),
+    var(--slate);
   box-shadow:
-    inset 0 2px 6px #000a,
+    inset 0 3px 8px #000b,
+    inset 0 -2px 4px #0004,
     0 1px #ffffff30;
-  overflow: hidden;
 }
 .scanner-laser {
   position: absolute;
-  left: -2%;
-  right: -2%;
-  top: 15%;
+  left: -2.5%;
+  right: -2.5%;
+  top: 12%;
   height: 4px;
   border-radius: 2px;
   background: #ff7ae6;
@@ -1216,6 +1229,24 @@ ol {
     0 0 6px 2px #e03cc4,
     0 0 14px 4px #c02aa966;
   animation: laser 2.4s ease-in-out infinite alternate;
+}
+/* Terminaciones del láser: dos topes verticales en sus extremos. */
+.scanner-laser::before,
+.scanner-laser::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 4px;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(#f3b6e8, #b3379e);
+  box-shadow: 0 0 4px #e03cc4;
+}
+.scanner-laser::before {
+  left: 0;
+}
+.scanner-laser::after {
+  right: 0;
 }
 @keyframes laser {
   to {
@@ -1226,17 +1257,19 @@ ol {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 3%;
+  bottom: 5.5%;
   display: flex;
   justify-content: center;
-  gap: 18px;
+  gap: 20px;
 }
 .scanner-leds i {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: radial-gradient(circle at 40% 35%, #ff6b6b, #a10d0d);
-  box-shadow: 0 0 4px #ff2d2d;
+  box-shadow:
+    0 0 4px #ff2d2d,
+    0 0 0 2px #0006;
 }
 .portada-text {
   font:

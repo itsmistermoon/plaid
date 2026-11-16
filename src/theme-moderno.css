@@ -472,6 +472,10 @@
   background: var(--accent);
   box-shadow: 0 0 10px 1px #4e8b3066;
 }
+[data-theme="moderno"] .scanner-laser::before,
+[data-theme="moderno"] .scanner-laser::after {
+  display: none;
+}
 [data-theme="moderno"] .scanner-leds i {
   background: var(--accent);
   box-shadow: none;

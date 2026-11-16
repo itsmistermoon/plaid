@@ -134,6 +134,11 @@
     margin: 0;
   }
 
+  /* Portada */
+  .scanner {
+    width: 64%;
+  }
+
   /* Carta */
   .segmented button {
     padding: 8px 0;
