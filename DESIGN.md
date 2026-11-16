@@ -22,6 +22,12 @@ Reglas de diseño de plaid (demo de El Clan, reconstrucción de iClub). Cada reg
 - **El papel de la boleta tiene el borde superior entero, sin dientes ni prepicado. Los dientes van solo en el borde inferior.**
   Why: el papel sale de la ranura, así que arriba no hay corte.
   <!-- 2026-11-16: "el borde superior del papel no debería verse prepicado sino que entero" -->
+- **En el tema original, el papel siempre nace desde adentro de una ranura: la boca de la ranura queda por encima del borde del papel y es más ancha que él, con una sombra interior donde el papel entra.**
+  Why: si el papel no sale de la ranura, se pierde la ilusión esqueuomórfica.
+  <!-- 2026-11-16: "el papel no sale de la supuesta ranura de la impresora, mata la ilusión esqueumórfica" -->
+- **El tema moderno no simula objetos físicos: sin ranuras, impresoras ni papel. La boleta es una tarjeta limpia.**
+  Why: el tema moderno no simula papel impreso.
+  <!-- 2026-11-16: "en la versión moderna, la info no debería tener ranura de impresora, ya que no simula un papel siendo impreso" -->
 - **El tema moderno es plano, estilo shadcn, con el verde del mantel como acento. Solo cambia la piel; la estructura, los tamaños y las posiciones son las mismas en ambos temas.**
   Why: permite comparar los dos temas uno al lado del otro.
   <!-- 2026-11-15: "un switch que cambie entre el diseño original y uno más limpio y moderno" -->
@@ -61,6 +67,9 @@ Reglas de diseño de plaid (demo de El Clan, reconstrucción de iClub). Cada reg
 - **En toda pantalla con contenido que puede crecer, la acción principal va arriba a la derecha y siempre queda visible. Nunca va al final del contenido.**
   Why: con una boleta larga el botón quedaba fuera de vista.
   <!-- 2026-11-16: "pondría el botón de acción arriba a la derecha... para casos donde la boleta es muy larga el botón queda fuera de vista" -->
+- **El dato más importante de una pantalla (por ejemplo, el total de pedido o cuenta) queda siempre visible junto a la acción principal, aunque se repita en otra parte y rompa la metáfora física.**
+  Why: es la información más importante y tiene que verse de inmediato.
+  <!-- 2026-11-16: "aunque rompe la ilusión de la boleta en papel, el monto total debería estar replicado arriba a la derecha, junto al botón" -->
 - **Los controles de cantidad dan respuesta física en cada paso (tope, sonido, vibración). Su dirección coincide con la flecha: subir aumenta, y los números mayores quedan arriba.**
   Why: la rueda tiene que comportarse como un objeto real.
   <!-- 2026-11-16: "que se sienta que hace clic cada vez que gira" / "hay que invertir la dirección de los números" -->
