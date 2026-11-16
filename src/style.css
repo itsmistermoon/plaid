@@ -8,7 +8,6 @@
   --bar: linear-gradient(#5f696b, #3c4446 50%, #343b3d);
   --bar-line: #1e2425;
   --sidebar: #3d4547;
-  --sidebar-dark: #2a2a2a;
   --brand: #8fc23f;
   --paper-ink: #3e3e3e;
   --total: #a3622b;
@@ -599,8 +598,8 @@ ol {
   text-shadow: 0 -1px #0b3a1c;
   background:
     /* pliegue sobre el borde: brillo en la arista y sombra justo debajo */
-    linear-gradient(#ffffff40 0 1px, #00000038 1px 3px, #0000 9px) 0
-    var(--over) / 100% 9px no-repeat,
+    linear-gradient(#ffffff40 0 1px, #00000038 1px 3px, #0000 9px) 0 var(--over)
+    / 100% 9px no-repeat,
     linear-gradient(90deg, #ffffff99 0 5px, #0000 5px 9px) left 6px / 9px 1px
     repeat-x,
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
@@ -1263,9 +1262,7 @@ ol {
   inset: 11% 9% 17%;
   border-radius: 7% / 6%;
   background:
-    linear-gradient(160deg, #ffffff14, #0000 35%),
-    var(--noise),
-    var(--slate);
+    linear-gradient(160deg, #ffffff14, #0000 35%), var(--noise), var(--slate);
   box-shadow:
     inset 0 3px 8px #000b,
     inset 0 -2px 4px #0004,
