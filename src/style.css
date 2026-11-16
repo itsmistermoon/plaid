@@ -92,12 +92,48 @@ ol {
   background:
     var(--noise), radial-gradient(120% 90% at 50% 0%, #3d4a4e, var(--stage));
 }
+/* Barra de controles: cada grupo y botón tiene un ancho y un alto fijos, el
+   mismo en ambos temas y en ambos idiomas (caben el texto más largo de ES y
+   EN), y la barra se ancla a la derecha. Así nada se mueve al cambiar de tema
+   o de idioma. */
 .stage-bar {
+  --bar-h: 34px;
+  --theme-w: 168px;
+  --lang-w: 88px;
+  --role-w: 176px;
+  --tour-w: 156px;
+  --reset-w: 130px;
   max-width: 1120px;
   margin: 0 auto 18px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+}
+.stage-bar .selector,
+.stage-bar button.dark-button {
+  box-sizing: border-box;
+  flex: none;
+  height: var(--bar-h);
+}
+.stage-bar button.dark-button {
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+.theme-switch {
+  width: var(--theme-w);
+}
+.lang-switch {
+  width: var(--lang-w);
+}
+.role-switch {
+  width: var(--role-w);
+}
+.tour-button {
+  width: var(--tour-w);
+}
+.reset-button {
+  width: var(--reset-w);
 }
 .stage-bar h1 {
   margin-right: auto;
@@ -125,9 +161,12 @@ ol {
 }
 .selector button,
 .selector a {
+  flex: 1 1 0;
+  display: grid;
+  place-items: center;
   border: 0;
   text-decoration: none;
-  padding: 7px 16px;
+  padding: 0;
   font:
     600 13px Inter,
     sans-serif;

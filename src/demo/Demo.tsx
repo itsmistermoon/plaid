@@ -32,7 +32,7 @@ export function Demo() {
         </h1>
         <ThemeSwitch />
         <LangSwitch />
-        <fieldset className="selector">
+        <fieldset className="selector role-switch">
           <legend className="sr-only">{t('device')}</legend>
           <button
             type="button"

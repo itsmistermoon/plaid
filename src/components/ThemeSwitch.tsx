@@ -9,7 +9,7 @@ export function ThemeSwitch() {
   const { value } = usePreference(theme);
   const t = useT();
   return (
-    <fieldset className="selector">
+    <fieldset className="selector theme-switch">
       <legend className="sr-only">{t('themeSwitch')}</legend>
       {options.map((option) => (
         <button

@@ -26,6 +26,12 @@
     flex-direction: column;
   }
   .stage-bar {
+    --bar-h: 32px;
+    --theme-w: 116px;
+    --lang-w: 60px;
+    --role-w: 120px;
+    --tour-w: 32px;
+    --reset-w: 32px;
     max-width: none;
     margin: 0;
     padding: 8px;
@@ -36,11 +42,7 @@
     display: none;
   }
   .stage-bar .selector :is(button, a) {
-    padding: 6px 8px;
     font-size: 12px;
-  }
-  .reset-button {
-    padding: 6px 8px;
   }
   .reset-label {
     display: none;
