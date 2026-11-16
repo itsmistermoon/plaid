@@ -720,17 +720,11 @@ ol {
   gap: 26px;
   padding-top: 18px;
 }
-.stamp {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    #e2a157 40%,
-    #b56d24 41% 60%,
-    #e2a157 61%
-  );
-  box-shadow: 0 0 0 2px #b56d2499;
+.extras-icon {
+  width: 28px;
+  height: 28px;
+  color: #e2a157;
+  filter: drop-shadow(0 1px 1px #0006);
 }
 .sold-out {
   grid-column: 1 / -1;

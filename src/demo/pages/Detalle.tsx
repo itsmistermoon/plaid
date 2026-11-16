@@ -1,4 +1,5 @@
 import { Label } from '@ui-sdk/react/label';
+import { BadgePlus } from 'lucide-react';
 import { useState } from 'react';
 import { useStore } from 'zustand';
 import { DishPlate } from '../../components/DishPlate';
@@ -60,7 +61,7 @@ export function Detalle({ dish, onDone }: { dish: Dish; onDone: () => void }) {
         {dish.extras && (
           <fieldset className="extras">
             <legend>
-              <span className="stamp" aria-hidden="true" />
+              <BadgePlus className="extras-icon" aria-hidden="true" />
               {t('extras')}
             </legend>
             {dish.extras.map((extra) => (

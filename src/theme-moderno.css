@@ -362,12 +362,9 @@
 [data-theme="moderno"] .post-it textarea:focus-visible {
   outline: 0;
 }
-[data-theme="moderno"] .stamp {
-  width: 10px;
-  height: 10px;
-  margin: 8px;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+[data-theme="moderno"] .extras-icon {
+  color: var(--accent);
+  filter: none;
 }
 [data-theme="moderno"] .sold-out {
   color: var(--destructive);
