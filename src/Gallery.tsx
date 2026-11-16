@@ -52,7 +52,11 @@ function Panel({
   children: ReactNode;
 }) {
   return (
-    <section className="panel" aria-labelledby={`panel-${n}`} data-wide={wide || undefined}>
+    <section
+      className="panel"
+      aria-labelledby={`panel-${n}`}
+      data-wide={wide || undefined}
+    >
       <h2 className="panel-caption" id={`panel-${n}`}>
         <span className="panel-number">{String(n).padStart(2, '0')}</span>
         {title}
