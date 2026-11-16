@@ -377,6 +377,8 @@
   display: none;
 }
 [data-theme="moderno"] .receipt-feed {
+  top: 0;
+  margin-bottom: 0;
   clip-path: none;
 }
 [data-theme="moderno"] .receipt-paper {
