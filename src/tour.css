@@ -177,8 +177,12 @@
 
 /* Teléfono: la nota va entre la barra y la pantalla, compacta */
 @media (max-width: 760px) {
+  /* El botón del recorrido suma un ícono a la barra: se recortan márgenes para que quepa en 390 px. */
   .tour-button {
-    padding: 6px 8px;
+    padding: 6px;
+  }
+  .stage-bar .selector :is(button, a) {
+    padding-inline: 6px;
   }
   .tour {
     order: 1;
