@@ -2,3 +2,7 @@ node_modules
 dist
 *.tsbuildinfo
 .vercel
+
+.cache/
+test-results/
+playwright-report/
