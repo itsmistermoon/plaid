@@ -111,15 +111,13 @@
   color: var(--foreground);
   background: var(--background);
 }
-[data-theme="moderno"] .navbar,
-[data-theme="moderno"] [data-surface="garzon"] .navbar {
+[data-theme="moderno"] .navbar {
   color: var(--foreground);
   background: var(--card);
   border-bottom: 1px solid var(--border);
   box-shadow: none;
 }
-[data-theme="moderno"] .navbar h2,
-[data-theme="moderno"] [data-surface="garzon"] .navbar h2 {
+[data-theme="moderno"] .navbar h2 {
   font-size: 18px;
   color: var(--foreground);
   text-shadow: none;
@@ -510,16 +508,6 @@
 }
 
 /* Garzón */
-[data-theme="moderno"] .pending {
-  border: 0;
-  border-radius: 999px;
-  font-weight: 600;
-  background: var(--accent);
-  box-shadow: none;
-}
-[data-theme="moderno"] .table-detail {
-  background: var(--card);
-}
 [data-theme="moderno"] .table-detail h3 {
   font-size: 24px;
 }
@@ -534,9 +522,6 @@
 }
 [data-theme="moderno"] .side-total {
   color: var(--foreground);
-}
-[data-theme="moderno"] [data-surface="garzon"] .board {
-  background: var(--background);
 }
 [data-theme="moderno"] .tables {
   gap: 14px;

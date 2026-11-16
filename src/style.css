@@ -7,8 +7,6 @@
   --muted: #c5ccca;
   --bar: linear-gradient(#5f696b, #3c4446 50%, #343b3d);
   --bar-line: #1e2425;
-  --garzon-bar: linear-gradient(#b6d77f, #8bb751 50%, #79a63f);
-  --garzon-board: #4b6470;
   --sidebar: #3d4547;
   --sidebar-dark: #2a2a2a;
   --brand: #8fc23f;
@@ -1335,39 +1333,15 @@ ol {
   text-shadow: 0 -1px #0008;
 }
 
-/* Garzón: barra verde y sala azul pizarra */
-[data-surface="garzon"] .navbar {
-  background: var(--garzon-bar);
-  border-color: #4c6e25;
-  box-shadow:
-    inset 0 1px #ffffff70,
-    0 2px 5px #0006;
-}
-[data-surface="garzon"] .navbar h2 {
-  color: #fff;
-  text-shadow: 0 -1px #3d5a1c;
-}
+/* Garzón: la misma barra, sidebar y tablero que el comensal. */
 .pending {
-  padding: 3px 9px;
-  border-radius: 4px;
-  font:
-    700 12px Inter,
-    sans-serif;
-  color: #fff;
-  border: 1px solid #2f4a17;
-  background: linear-gradient(#78a83e, #4e7d22);
-  box-shadow: inset 0 1px #ffffff50;
-}
-[data-surface="garzon"] .screen-body {
-  grid-template-columns: 28.9% 1fr;
+  cursor: default;
+  white-space: nowrap;
 }
 .table-detail {
   gap: 8px;
   padding: 20px;
   overflow: auto;
-  background:
-    radial-gradient(#ffffff09 1px, #0000 1.5px) 0 0 / 4px 4px,
-    var(--sidebar-dark);
 }
 .table-detail h3 {
   font:
@@ -1406,12 +1380,6 @@ ol {
   font:
     700 22px "Courier Prime",
     monospace;
-}
-[data-surface="garzon"] .board {
-  padding: 22px 34px;
-  background:
-    repeating-linear-gradient(125deg, #ffffff08 0 1px, #0000 1px 3px),
-    var(--garzon-board);
 }
 .tables {
   display: grid;

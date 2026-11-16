@@ -170,7 +170,7 @@ export function Garzon() {
       <Navbar
         title={t('floor')}
         end={
-          <span className="pending" role="status">
+          <span className="dark-button pending" role="status">
             {t('pendingCalls')(pending)}
           </span>
         }
