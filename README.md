@@ -21,4 +21,4 @@ pnpm lint
 
 ## Publicación
 
-La configuración de Vercel incluye el rewrite necesario para recargar las rutas de la SPA. Queda pendiente conectar un proyecto de Vercel al repositorio y anotar aquí la URL de producción cuando moon configure la cuenta.
+La configuración de Vercel incluye el rewrite necesario para recargar las rutas de la SPA. Producción: https://plaid-itsmistermoons-projects.vercel.app (rama de producción `integration/demo` mientras dura la construcción; cada PR tiene su preview).

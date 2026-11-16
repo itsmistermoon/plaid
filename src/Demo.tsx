@@ -353,7 +353,11 @@ export function Demo() {
   const [revision, setRevision] = useState(0);
   useEffect(
     () =>
-      startSimulator(store, { random: Math.random, setTimeout, clearTimeout }),
+      startSimulator(store, {
+        random: Math.random,
+        setTimeout: (fn, ms) => window.setTimeout(fn, ms),
+        clearTimeout: (id) => window.clearTimeout(id),
+      }),
     [],
   );
   return (
