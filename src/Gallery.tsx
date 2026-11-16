@@ -198,6 +198,12 @@ function StepperOnPaper({ qty }: { qty: number }) {
   );
 }
 
+/** Ruleta con estado propio para mostrarla parada en un valor. */
+function WheelAt({ start, label }: { start: number; label: string }) {
+  const [value, setValue] = useState(start);
+  return <QuantityWheel value={value} onChange={setValue} label={label} />;
+}
+
 function CheckDemo() {
   const [checked, setChecked] = useState(false);
   const t = useT();
@@ -794,15 +800,11 @@ export function Gallery() {
           states={[
             {
               label: s.atMin,
-              node: (
-                <QuantityWheel value={1} onChange={() => {}} label={s.min} />
-              ),
+              node: <WheelAt start={1} label={s.min} />,
             },
             {
               label: s.atMax,
-              node: (
-                <QuantityWheel value={20} onChange={() => {}} label={s.max} />
-              ),
+              node: <WheelAt start={20} label={s.max} />,
             },
             {
               label: s.disabledF,

@@ -367,6 +367,15 @@
   .printer-demo .receipt {
     width: 100%;
   }
+  /* En la galería el detalle de mesa es una muestra dentro de su panel, no una hoja. */
+  .gallery .sidebar.table-detail-demo {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    max-height: none;
+    border-radius: 6px;
+    box-shadow: var(--crop-frame);
+  }
   .table-demo {
     flex-direction: column;
   }
