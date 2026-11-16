@@ -44,6 +44,11 @@ function Comensal() {
           <button type="button" onClick={() => setDetail(null)}>
             ← Volver a la carta
           </button>
+          <img
+            className="detail-photo"
+            src={`/fotos/${detail.id}.webp`}
+            alt=""
+          />
           <h2>{detail.name}</h2>
           <p>{detail.description}</p>
           <p>{money(detail.price)}</p>
@@ -108,6 +113,12 @@ function Comensal() {
                           setDetail(dish);
                         }}
                       >
+                        <img
+                          className="dish-photo"
+                          src={`/fotos/${dish.id}.webp`}
+                          alt=""
+                          loading="lazy"
+                        />
                         <strong>{dish.name}</strong>
                         <span>{dish.description}</span>
                       </button>
