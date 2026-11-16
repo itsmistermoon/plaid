@@ -1108,7 +1108,7 @@ ol {
   gap: 4px;
 }
 .stepper output {
-  min-width: 26px;
+  width: 3.5ch;
   text-align: center;
 }
 .stepper button {
