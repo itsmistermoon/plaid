@@ -521,29 +521,47 @@ ol {
   height: 232px;
   box-shadow: 0 2px 4px #0006;
 }
+/* Cinta de tela verde: entra desde atrás de la tarjeta por arriba y se pliega
+   sobre el borde (los triángulos oscuros son la tela doblada hacia atrás). */
 .ribbon {
   justify-self: end;
-  margin: -26px -18px 0 0;
+  position: relative;
+  margin: -26px 30px 0 0;
   min-width: 268px;
-  padding: 12px 20px 16px;
+  padding: 14px 24px 16px;
   text-align: center;
+  color: #fff;
   font:
     700 21px Inter,
     sans-serif;
-  text-shadow: 0 -1px #0007;
+  text-shadow: 0 -1px #2d4a14;
   background:
-    repeating-linear-gradient(90deg, #ffffff08 0 1px, #0000 1px 3px),
-    linear-gradient(#679c7d, #4e8566);
-  position: relative;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 88%, 0 100%);
-  filter: drop-shadow(0 2px 3px #0007);
+    linear-gradient(90deg, #ffffff8c 0 5px, #0000 5px 9px) left 5px / 9px 1px repeat-x,
+    linear-gradient(90deg, #ffffff8c 0 5px, #0000 5px 9px) left calc(100% - 5px) / 9px 1px repeat-x,
+    repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
+    repeating-linear-gradient(0deg, #0000000d 0 1px, #0000 1px 3px),
+    linear-gradient(#7fb04c, #5f9233 55%, #4e7e27);
+  border-bottom: 1px solid #3d6420;
+  box-shadow:
+    inset 0 1px #ffffff40,
+    0 3px 4px #0007;
 }
+.ribbon::before,
 .ribbon::after {
   content: "";
   position: absolute;
-  inset: 4px 4px 9px;
-  border: 1px dashed #c6e2d0aa;
-  clip-path: inherit;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, #24400f, #3a6119);
+}
+.ribbon::before {
+  left: -12px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+.ribbon::after {
+  right: -12px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 .detail-qty h4 {
   justify-self: start;
