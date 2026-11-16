@@ -34,7 +34,7 @@ export function Comensal({ onHome }: { onHome: () => void }) {
           </ArrowButton>
         }
         title={title}
-        logo={title === 'El Clan'}
+        logo={title === 'Restaurant El Clan'}
         end={
           <button
             type="button"
@@ -86,7 +86,7 @@ export function Comensal({ onHome }: { onHome: () => void }) {
               : t('waiterShort')}
           </button>
           <p className="sidebar-logo">
-            El Clan<small>{t('withIclub')}</small>
+            Restaurant El Clan<small>{t('withIclub')}</small>
           </p>
         </nav>
         <div className="board">

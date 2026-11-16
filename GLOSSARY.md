@@ -4,7 +4,7 @@ Vocabulario del dominio de la demo. Sin detalles de implementación.
 
 ## Lugar y roles
 
-- **El Clan**: el restaurant ficticio de la demo.
+- **Restaurant El Clan**: el restaurant ficticio de la demo.
 - **Comensal**: quien pide desde la tablet o el teléfono de su mesa. En la demo, el visitante es el comensal de la Mesa 7.
 - **Garzón**: el personal de sala. Su vista es la grilla de mesas.
 - **Garzón simulado**: el garzón automático que hace avanzar los pedidos de la Mesa 7 mientras el visitante no ocupa la vista del garzón.
@@ -17,7 +17,7 @@ Vocabulario del dominio de la demo. Sin detalles de implementación.
 
 ## Carta
 
-- **Carta**: los platos que ofrece El Clan, agrupados en categorías.
+- **Carta**: los platos que ofrece Restaurant El Clan, agrupados en categorías.
 - **Categoría**: grupo de la carta: entradas, sándwiches, fondos, bebidas y postres.
 - **Plato**: todo lo que se puede pedir, bebidas incluidas. Tiene nombre, descripción, precio y foto.
 - **Agotado**: un plato que hoy no se puede pedir. Se muestra, pero no entra al carrito.

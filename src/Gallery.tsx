@@ -353,7 +353,7 @@ function NavbarDemo() {
         start={
           <ArrowButton onClick={() => setCount(0)}>{t('back')}</ArrowButton>
         }
-        title="El Clan"
+        title="Restaurant El Clan"
         logo
         end={
           <button

@@ -33,7 +33,7 @@ interface PageEntry {
 export const pages: PageEntry[] = [
   {
     page: 'carta',
-    title: () => 'El Clan',
+    title: () => 'Restaurant El Clan',
     label: (t) => t('menu'),
     icon: <BookOpen />,
     tab: true,

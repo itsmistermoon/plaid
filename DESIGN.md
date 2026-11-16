@@ -1,6 +1,6 @@
 # DESIGN.md
 
-Reglas de diseño de plaid (demo de El Clan, reconstrucción de iClub). Cada regla viene de una corrección de moon; el comentario guarda la fecha y sus palabras.
+Reglas de diseño de plaid (demo de Restaurant El Clan, reconstrucción de iClub). Cada regla viene de una corrección de moon; el comentario guarda la fecha y sus palabras.
 
 ## Surfaces
 

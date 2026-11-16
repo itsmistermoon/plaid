@@ -1,6 +1,6 @@
 # plaid
 
-Demo de El Clan, una reconstrucción de iClub para el portfolio de moon.
+Demo de Restaurant El Clan, una reconstrucción de iClub para el portfolio de moon.
 
 ## Desarrollo
 

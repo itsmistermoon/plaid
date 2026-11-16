@@ -35,7 +35,7 @@ const es = {
   themes: { original: 'Original', moderno: 'Moderno' },
   notFound: 'Página no encontrada',
   // Escenario de la demo
-  stageTitle: 'El Clan',
+  stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'una reconstrucción de iClub',
   device: 'Dispositivo',
   diner: 'Comensal',
@@ -81,7 +81,7 @@ const es = {
     ],
   } satisfies Record<TourStep | 'listo', [string, string]>,
   // Portada
-  welcome: 'Bienvenido a El Clan',
+  welcome: 'Bienvenido a Restaurant El Clan',
   scanQr: 'Escanea el código QR de tu mesa',
   sitDown: 'Sentarme en la Mesa 7',
   // Comensal
@@ -175,7 +175,7 @@ const es = {
   switchOff: 'NO',
   // Galería
   galleryTitle: 'Galería de componentes',
-  gallerySubtitle: 'El Clan · iClub',
+  gallerySubtitle: 'Restaurant El Clan · iClub',
   openDemo: 'Abrir la demo',
   states: 'Estados',
   presentational: 'Presentacional',
@@ -258,7 +258,7 @@ const en: Messages = {
     `${label}: ${current}. Tap to switch to ${next}`,
   themes: { original: 'Original', moderno: 'Modern' },
   notFound: 'Page not found',
-  stageTitle: 'El Clan',
+  stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'an iClub reconstruction',
   device: 'Device',
   diner: 'Diner',
@@ -302,7 +302,7 @@ const en: Messages = {
       'You followed the order from start to finish. Keep playing or reset the demo.',
     ],
   },
-  welcome: 'Welcome to El Clan',
+  welcome: 'Welcome to Restaurant El Clan',
   scanQr: 'Scan the QR code on your table',
   sitDown: 'Sit at Table 7',
   table7: 'Table 7',
@@ -388,7 +388,7 @@ const en: Messages = {
   switchOn: 'ON',
   switchOff: 'OFF',
   galleryTitle: 'Component gallery',
-  gallerySubtitle: 'El Clan · iClub',
+  gallerySubtitle: 'Restaurant El Clan · iClub',
   openDemo: 'Open the demo',
   states: 'States',
   presentational: 'Presentational',

@@ -31,7 +31,7 @@ export function Demo() {
     >
       <header className="stage-bar">
         <h1>
-          El Clan <small>{t('stageSubtitle')}</small>
+          Restaurant El Clan <small>{t('stageSubtitle')}</small>
         </h1>
         <ThemeSwitch />
         <LangSwitch />
