@@ -9,7 +9,7 @@ import { Preferences } from '@ui-sdk/react/preferences';
 import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Redirect, useLocation } from 'wouter';
-import { Demo } from './Demo';
+import { Demo } from './demo/Demo';
 import { Gallery } from './Gallery';
 import { LangContext, messages, routeFor } from './i18n';
 import { theme } from './theme';
