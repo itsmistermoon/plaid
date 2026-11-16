@@ -296,6 +296,7 @@
 }
 [data-theme="moderno"] .ribbon {
   margin: 0;
+  padding: 0;
   filter: none;
   justify-self: start;
 }
@@ -313,6 +314,7 @@
 }
 [data-theme="moderno"] .ribbon::before,
 [data-theme="moderno"] .ribbon::after,
+[data-theme="moderno"] .ribbon-back,
 [data-theme="moderno"] .ribbon-stitch {
   display: none;
 }

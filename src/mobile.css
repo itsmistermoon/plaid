@@ -181,6 +181,7 @@
   }
   .detail .ribbon {
     --over: 0px;
+    --flap: 0px;
     justify-self: center;
     margin: 14px 0 0;
   }

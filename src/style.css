@@ -595,40 +595,57 @@ ol {
   height: 232px;
   box-shadow: 0 2px 4px #0006;
 }
-/* Cinta de tela verde: cuelga por encima del borde de la tarjeta, así que la
-   tela se dobla sobre él (el pliegue marca el borde y proyecta su sombra
-   hacia abajo; los triángulos oscuros son las puntas dobladas) y termina abajo
-   en cola de golondrina, con una costura punteada que sigue su borde. */
+/* Cinta de tela verde que viene desde atrás de la tarjeta: la parte de atrás
+   asoma sobre el borde, más ancha y en sombra; al doblarse sobre el borde las
+   puntas oscuras bajan por detrás y la tela del frente pasa por delante del
+   borde, con brillo en el pliegue. Termina abajo en cola de golondrina con una
+   costura punteada que sigue su borde. */
 .ribbon {
   --over: 12px;
+  --flap: 9px;
   justify-self: end;
   position: relative;
   max-width: 100%;
-  margin: calc(-26px - var(--over)) 24px 0 0;
+  margin: calc(-26px - var(--over)) calc(24px + var(--flap)) 0 0;
+  padding-top: var(--over);
   filter: drop-shadow(0 3px 3px #0007);
 }
+.ribbon-back {
+  position: absolute;
+  top: 0;
+  left: calc(var(--flap) * -1);
+  right: calc(var(--flap) * -1);
+  height: var(--over);
+  border-radius: 2px 2px 0 0;
+  background:
+    repeating-linear-gradient(90deg, #ffffff0a 0 1px, #0000 1px 3px),
+    linear-gradient(#0d3f21, #17633a);
+  box-shadow: inset 0 1px #ffffff21;
+}
+/* Puntas dobladas: triángulos oscuros que bajan por detrás desde los
+   extremos de la parte de atrás hasta el canto de la tela del frente. */
 .ribbon::before,
 .ribbon::after {
   content: "";
   position: absolute;
   top: var(--over);
-  width: 10px;
-  height: 10px;
-  background: linear-gradient(135deg, #0c3a1f, #17562f);
+  width: var(--flap);
+  height: var(--flap);
+  background: linear-gradient(#082a16, #0f3f22);
 }
 .ribbon::before {
-  left: -10px;
+  left: calc(var(--flap) * -1);
   clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
 .ribbon::after {
-  right: -10px;
+  right: calc(var(--flap) * -1);
   clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 .ribbon-cloth {
   position: relative;
   display: block;
   min-width: 250px;
-  padding: calc(14px + var(--over)) 28px 28px;
+  padding: 14px 28px 28px;
   text-align: center;
   color: #fff;
   font:
@@ -636,9 +653,8 @@ ol {
     sans-serif;
   text-shadow: 0 -1px #0b3a1c;
   background:
-    /* pliegue sobre el borde: brillo en la arista y sombra justo debajo */
-    linear-gradient(#ffffff40 0 1px, #00000038 1px 3px, #0000 9px) 0 var(--over)
-    / 100% 9px no-repeat,
+    /* pliegue sobre el borde: arista con brillo y la tela que cae en sombra */
+    linear-gradient(#ffffff59 0 1px, #0000003d 1px 2px, #0000001a 4px, #0000 10px),
     linear-gradient(90deg, #ffffff99 0 5px, #0000 5px 9px) left 6px / 9px 1px
     repeat-x,
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
@@ -1630,7 +1646,7 @@ ol {
     sans-serif;
   background: var(--bar);
   border-bottom: 1px solid var(--bar-line);
-  box-shadow: inset 0 1px #ffffff2e;
+  box-shadow: inset 0 1px #ffffff21;
   text-shadow: 0 -1px #000a;
 }
 .panel-number {
