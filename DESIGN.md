@@ -45,6 +45,7 @@ Reglas de diseño de plaid (demo de El Clan, reconstrucción de iClub). Cada reg
 - **En el tema moderno, las superficies usan la escala slate (gris con un toque frío), nunca grises neutros o cálidos que se lean beige.**
   Why: los grises cálidos en fondos, pestañas y paneles delatan una interfaz genérica hecha por IA.
   <!-- 2026-11-16: "cambia esos colores medio cálidos en las superficies que gritan hecho por Claude" -->
+  <!-- 2026-11-16: "estos colores para mí son cálidos, se ven como un beige desabrido, quizás habría que agregarle un toque frío" -->
 
 ## Typography
 
