@@ -20,7 +20,7 @@ import {
 
 // Tambor vertical y dientes en el borde, mezcla del select wheel y la
 // page-wheel de spec-01 (Shu Ding, MIT), con piel propia.
-const row = 30;
+const row = 36;
 const stepDeg = 24;
 const radius = row / ((stepDeg * Math.PI) / 180);
 const pitch = 7;
