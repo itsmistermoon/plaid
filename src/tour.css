@@ -1,0 +1,212 @@
+/*
+ * Recorrido guiado: la capa de ayuda de iClub (texto manuscrito blanco y una
+ * mano que señala sobre fondo oscuro) como nota bajo la tablet, sin tapar la
+ * demo. Lo que hay que tocar en cada paso lleva `data-tour` y brilla.
+ */
+.tour-button[aria-pressed="true"] {
+  background: linear-gradient(#86b84d, #5b8c2c);
+  box-shadow: inset 0 2px 4px #0005;
+}
+
+.tour {
+  max-width: 1120px;
+  margin: 18px auto 0;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "hand text close"
+    "hand dots close";
+  align-items: center;
+  gap: 4px 16px;
+  color: #fff;
+  background: #000000b8;
+  border: 1px solid #ffffff1f;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px #0008;
+  animation: tour-in 260ms var(--ease-out);
+}
+.tour-hand {
+  grid-area: hand;
+  width: 38px;
+  height: 38px;
+  filter: drop-shadow(0 2px 0 #000);
+}
+.tour-text {
+  grid-area: text;
+}
+.tour-count {
+  margin: 0;
+  font:
+    600 11px Inter,
+    sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.tour h2 {
+  margin: 2px 0;
+  font:
+    24px "Kaushan Script",
+    cursive;
+  animation: tour-in 260ms var(--ease-out);
+}
+.tour-text > p:last-child {
+  margin: 0;
+  font:
+    15px Inter,
+    sans-serif;
+  color: #e9ecea;
+}
+.tour-dots {
+  grid-area: dots;
+  display: flex;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tour-dots li {
+  width: 22px;
+  height: 4px;
+  border-radius: 2px;
+  background: #ffffff38;
+}
+.tour-dots li[data-done] {
+  background: var(--brand);
+}
+.tour-close {
+  grid-area: close;
+  display: grid;
+  justify-items: center;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  background: none;
+  font:
+    600 13px Inter,
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.tour-close small {
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: none;
+  color: #c5ccca;
+}
+.tour-close:hover {
+  background: #ffffff1a;
+}
+
+/* Lo que hay que tocar en el paso actual. El selector ya activo no brilla. */
+.app[data-tour-step="elegir"] [data-tour~="elegir"],
+.app[data-tour-step="enviar"] [data-tour~="enviar"],
+.app[data-tour-step="sala"] [data-tour~="sala"]:not([aria-pressed="true"]),
+.app[data-tour-step="servir"] [data-tour~="servir"]:not([aria-pressed="true"]),
+.app[data-tour-step="cuenta"] [data-tour~="cuenta"]:not([aria-pressed="true"]),
+.app[data-tour-step="cobrar"] [data-tour~="cobrar"]:not([aria-pressed="true"]) {
+  outline: 3px solid #f6d55c;
+  outline-offset: 2px;
+  animation: tour-glow 1.4s ease-in-out infinite;
+}
+
+@keyframes tour-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes tour-glow {
+  50% {
+    outline-color: #f6d55c55;
+  }
+}
+
+/* Tema moderno: tarjeta plana con el acento verde */
+[data-theme="moderno"] .tour {
+  color: var(--foreground);
+  background: var(--card);
+  border-color: var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px #0f172a14;
+}
+[data-theme="moderno"] .tour-hand {
+  color: var(--accent);
+  filter: none;
+}
+[data-theme="moderno"] .tour-count {
+  color: var(--accent);
+}
+[data-theme="moderno"] .tour h2 {
+  font:
+    700 18px Outfit,
+    sans-serif;
+}
+[data-theme="moderno"] .tour-text > p:last-child {
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+[data-theme="moderno"] .tour-dots li {
+  background: var(--border);
+}
+[data-theme="moderno"] .tour-dots li[data-done] {
+  background: var(--accent);
+}
+[data-theme="moderno"] .tour-close {
+  color: var(--foreground);
+  border: 1px solid var(--border);
+}
+[data-theme="moderno"] .tour-close small {
+  color: var(--muted-foreground);
+}
+[data-theme="moderno"] .tour-close:hover {
+  background: var(--secondary);
+}
+[data-theme="moderno"] .tour-button[aria-pressed="true"] {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: none;
+}
+[data-theme="moderno"] .app[data-tour-step] [data-tour] {
+  outline-color: var(--accent);
+}
+
+/* Teléfono: la nota va entre la barra y la pantalla, compacta */
+@media (max-width: 760px) {
+  .tour {
+    order: 1;
+    margin: 0 8px 8px;
+    padding: 8px 10px;
+    grid-template-areas:
+      "hand text close"
+      "dots dots dots";
+    gap: 2px 10px;
+  }
+  .tablet {
+    order: 2;
+  }
+  .tour-hand {
+    width: 26px;
+    height: 26px;
+  }
+  .tour h2 {
+    font-size: 18px;
+  }
+  .tour-text > p:last-child {
+    font-size: 12.5px;
+  }
+  .tour-close {
+    padding: 4px 6px;
+    font-size: 11px;
+  }
+  .tour-close small {
+    display: none;
+  }
+  .tour-dots li {
+    flex: 1;
+  }
+}

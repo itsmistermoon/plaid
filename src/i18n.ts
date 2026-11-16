@@ -1,0 +1,487 @@
+import { createContext, useContext } from 'react';
+import type { CallKind, OrderStatus } from './domain';
+import type { Category, Dish, Extra } from './menu';
+import type { TourStep } from './tour';
+
+export type Lang = 'es' | 'en';
+export type Page = 'demo' | 'gallery';
+
+const paths: Record<Lang, Record<Page, string>> = {
+  es: { demo: '/demo', gallery: '/componentes' },
+  en: { demo: '/en/demo', gallery: '/en/components' },
+};
+
+/** Ruta de una página en un idioma. */
+export const pathFor = (page: Page, lang: Lang) => paths[lang][page];
+
+/** Página e idioma de una ruta, o `null` si no existe. */
+export function routeFor(path: string): { page: Page; lang: Lang } | null {
+  const clean = path.replace(/\/+$/, '') || '/';
+  for (const lang of ['es', 'en'] as const)
+    for (const page of ['demo', 'gallery'] as const)
+      if (paths[lang][page] === clean) return { page, lang };
+  return null;
+}
+
+const units = (n: number) => `${n} ${n === 1 ? 'unidad' : 'unidades'}`;
+const unitsEn = (n: number) => `${n} ${n === 1 ? 'item' : 'items'}`;
+
+const es = {
+  langName: 'Español',
+  langSwitch: 'Idioma',
+  themeSwitch: 'Tema',
+  switchTo: (label: string, current: string, next: string) =>
+    `${label}: ${current}. Tocar para cambiar a ${next}`,
+  themes: { original: 'Original', moderno: 'Moderno' },
+  notFound: 'Página no encontrada',
+  // Escenario de la demo
+  stageTitle: 'Restaurant El Clan',
+  stageSubtitle: 'una reconstrucción de iClub',
+  device: 'Dispositivo',
+  diner: 'Comensal',
+  waiter: 'Garzón',
+  resetDemo: 'Reiniciar demo',
+  resetShort: 'Reiniciar',
+  // Recorrido guiado
+  tour: 'Recorrido guiado',
+  tourStart: 'Recorrido',
+  tourResume: 'Retomar recorrido',
+  tourSkip: 'Saltar recorrido',
+  tourSkipHint: 'o pulsa Esc',
+  tourEnd: 'Terminar',
+  tourStepOf: (n: number, total: number) => `Paso ${n} de ${total}`,
+  tourSteps: {
+    elegir: [
+      'Elige tus platos',
+      'Siéntate en la Mesa 7 y marca un plato de la carta, o ábrelo en detalle para elegir la cantidad.',
+    ],
+    enviar: [
+      'Envía el pedido',
+      'Abre tu pedido, revisa la boleta y toca «Realizar pedido».',
+    ],
+    sala: [
+      'Mira la sala',
+      'Cambia a la vista del garzón: la Mesa 7 lleva el sello de tu pedido.',
+    ],
+    servir: [
+      'Sirve el pedido',
+      'Toca la Mesa 7, confirma el pedido y márcalo servido. Si vuelves al comensal, el garzón simulado lo hace solo.',
+    ],
+    cuenta: [
+      'Pide la cuenta',
+      'Vuelve a la vista del comensal, abre la cuenta y toca «Pedir la cuenta».',
+    ],
+    cobrar: [
+      'Cobra y libera',
+      'En la vista del garzón, abre la Mesa 7 y toca «Cobrar y liberar».',
+    ],
+    listo: [
+      '¡Circuito completo!',
+      'Recorriste el pedido de punta a punta. Sigue probando o reinicia la demo.',
+    ],
+  } satisfies Record<TourStep | 'listo', [string, string]>,
+  // Portada
+  welcome: 'Bienvenido a Restaurant El Clan',
+  scanQr: 'Escanea el código QR de tu mesa',
+  sitDown: 'Sentarme en la Mesa 7',
+  // Comensal
+  table7: 'Mesa 7',
+  back: 'Volver',
+  menu: 'Carta',
+  order: 'Pedido',
+  status: 'Estado',
+  bill: 'Cuenta',
+  yourOrder: 'Tu pedido',
+  yourBill: 'Tu cuenta',
+  viewOrder: (n: number) => `Ver pedido, ${units(n)}`,
+  callWaiter: 'Llamar al garzón',
+  waiterShort: 'Garzón',
+  waiterComing: 'Garzón en camino',
+  withIclub: 'con iClub',
+  categoriesLabel: 'Categorías',
+  categories: {
+    Entradas: 'Entradas',
+    Sándwiches: 'Sándwiches',
+    Fondos: 'Fondos',
+    Bebidas: 'Bebidas',
+    Postres: 'Postres',
+  } satisfies Record<Category, string>,
+  quantity: 'Cantidad',
+  quantityOf: (name: string) => `Cantidad de ${name}`,
+  soldOut: 'Agotado por hoy',
+  previewOf: (name: string) => `Vista previa de ${name}`,
+  extras: 'Agregados',
+  addNote: 'Agregar nota...',
+  kitchenNote: 'Nota para cocina',
+  sampleNote: 'Sin ají, por favor',
+  add: 'Agregar',
+  addToOrder: (name: string) => `Agregar ${name} al pedido`,
+  seeDetail: 'Ver en detalle',
+  seeDetailOf: (name: string) => `Ver ${name} en detalle`,
+  emptyOrder: 'Tu pedido está vacío.',
+  seeMenu: 'Ver la carta',
+  placeOrder: 'Realizar pedido',
+  orderStatus: 'Estado del pedido',
+  orderN: (n: number) => `Pedido ${n}`,
+  progress: 'Avance',
+  emptyBill: 'Aún no hay pedidos en tu cuenta.',
+  askBill: 'Pedir la cuenta',
+  billComing: 'El garzón viene a cobrar.',
+  statuses: {
+    enviado: 'enviado',
+    confirmado: 'confirmado',
+    servido: 'servido',
+  } satisfies Record<OrderStatus, string>,
+  // Garzón
+  floor: 'Sala principal',
+  pendingCalls: (n: number) => `${n} ${n === 1 ? 'llamado' : 'llamados'}`,
+  tableDetail: 'Detalle de mesa',
+  tableN: (n: number) => `Mesa ${n}`,
+  occupied: 'Ocupada',
+  free: 'Libre',
+  calls: 'Llamados',
+  noCalls: 'Sin llamados.',
+  orders: 'Pedidos',
+  noOrders: 'Sin pedidos.',
+  attend: 'Atender',
+  confirm: 'Confirmar',
+  serve: 'Servir',
+  chargeAndFree: 'Cobrar y liberar',
+  pickTable: 'Toca una mesa para ver su detalle.',
+  closeDetail: 'Cerrar',
+  tables: 'Mesas',
+  tableSummary: (n: number, occupied: boolean) =>
+    `Mesa ${n}, ${occupied ? 'ocupada' : 'libre'}`,
+  callsSummary: 'llamados',
+  plateOccupied: 'Mesa ocupada',
+  plateFree: 'Mesa libre',
+  callLabels: {
+    pedido: 'Pedido nuevo',
+    garzón: 'Llama al garzón',
+    pago: 'Pide la cuenta',
+  } satisfies Record<CallKind, string>,
+  // Componentes
+  dish: 'Plato',
+  price: 'Precio',
+  total: 'Total',
+  addOne: 'Agregar una unidad',
+  removeOne: 'Quitar una unidad',
+  addOneOf: (name: string) => `Agregar una unidad de ${name}`,
+  removeOneOf: (name: string) => `Quitar una unidad de ${name}`,
+  search: 'Buscar',
+  clearSearch: 'Borrar búsqueda',
+  pickOption: 'Elige una opción',
+  switchOn: 'SÍ',
+  switchOff: 'NO',
+  // Galería
+  galleryTitle: 'Galería de componentes',
+  gallerySubtitle: 'Restaurant El Clan · iClub',
+  openDemo: 'Abrir la demo',
+  states: 'Estados',
+  presentational: 'Presentacional',
+  taps: (n: number) => `${n} toques`,
+  backs: (n: number) => `${n} vueltas`,
+  addDish: (name: string) => `Agregar ${name}`,
+  inOrder: 'En el pedido',
+  notAdded: 'Sin agregar',
+  callsSwitch: 'Llamados',
+  searchMenu: 'Buscar en la carta',
+  found: (n: number, names: string) => `${n} platos: ${names}`,
+  typeToSearch: 'Escribe para buscar en la carta',
+  fullMenu: 'Carta completa',
+  shortList: 'Lista corta',
+  orderStatusLabel: (status: string) => `Pedido ${status}`,
+  advance: 'Avanzar',
+  category: 'Categoría',
+  tapToChange: 'toca para cambiar',
+  sampleReceipt: 'Boleta de ejemplo',
+  preview: 'Vista previa',
+  addUnitCount: (n: number) => `Agregar una unidad, ${units(n)}`,
+  longTitle: 'Pastel de choclo con ensalada chilena',
+  toasts: {
+    enviado: ['Pedido enviado', 'La cocina lo recibió.'],
+    confirmado: ['Pedido confirmado', 'El garzón lo está preparando.'],
+    servido: ['Pedido servido', '¡Buen provecho!'],
+    error: ['No se pudo enviar', 'Revisa la conexión e inténtalo de nuevo.'],
+  } satisfies Record<OrderStatus | 'error', [string, string]>,
+  panels: {
+    button: 'Botón',
+    arrow: 'Botón flecha',
+    wheel: 'Ruleta de cantidad',
+    check: 'Checkbox',
+    switch: 'Switch',
+    search: 'Búsqueda',
+    scroll: 'Scrollbar',
+    progress: 'Progress bar',
+    dropdown: 'Selector desplegable',
+    plate: 'Placa de plato',
+    receipt: 'Boleta',
+    toast: 'Toast de estado',
+    seal: 'Sello',
+    table: 'Mesa',
+    navbar: 'Navbar',
+  },
+  stateLabels: {
+    disabled: 'Deshabilitado',
+    disabledF: 'Deshabilitada',
+    atMin: 'En el mínimo',
+    atMax: 'En el máximo',
+    min: 'Mínimo',
+    max: 'Máximo',
+    checked: 'Marcado',
+    soldOut: 'Agotado',
+    off: 'Apagado',
+    error: 'Error',
+    withError: 'Con error',
+    noOverflow: 'Sin desborde',
+    indeterminate: 'Indeterminada',
+    complete: 'Completa',
+    sending: 'Enviando',
+    served: 'Servido',
+    detailPreview: 'Vista previa del detalle',
+    withExtras: 'Con agregados y nota',
+    confirmed: 'Confirmado',
+    free: 'Libre',
+    combinedCalls: 'Llamados combinados',
+    waiter: 'Garzón',
+    longTitle: 'Título largo',
+  },
+};
+
+export type Messages = typeof es;
+
+const en: Messages = {
+  langName: 'English',
+  langSwitch: 'Language',
+  themeSwitch: 'Theme',
+  switchTo: (label: string, current: string, next: string) =>
+    `${label}: ${current}. Tap to switch to ${next}`,
+  themes: { original: 'Original', moderno: 'Modern' },
+  notFound: 'Page not found',
+  stageTitle: 'Restaurant El Clan',
+  stageSubtitle: 'an iClub reconstruction',
+  device: 'Device',
+  diner: 'Diner',
+  waiter: 'Waiter',
+  resetDemo: 'Reset demo',
+  resetShort: 'Reset',
+  tour: 'Guided tour',
+  tourStart: 'Tour',
+  tourResume: 'Resume tour',
+  tourSkip: 'Skip tour',
+  tourSkipHint: 'or press Esc',
+  tourEnd: 'Finish',
+  tourStepOf: (n: number, total: number) => `Step ${n} of ${total}`,
+  tourSteps: {
+    elegir: [
+      'Pick your dishes',
+      'Sit at Table 7 and tick a dish on the menu, or open it in detail to choose how many.',
+    ],
+    enviar: [
+      'Send the order',
+      'Open your order, check the receipt and tap “Place order”.',
+    ],
+    sala: [
+      'Look at the floor',
+      'Switch to the waiter view: Table 7 carries the seal of your order.',
+    ],
+    servir: [
+      'Serve the order',
+      'Tap Table 7, confirm the order and mark it served. If you go back to the diner, the simulated waiter does it for you.',
+    ],
+    cuenta: [
+      'Ask for the bill',
+      'Go back to the diner view, open the bill and tap “Ask for the bill”.',
+    ],
+    cobrar: [
+      'Charge and free',
+      'In the waiter view, open Table 7 and tap “Charge and free”.',
+    ],
+    listo: [
+      'Circuit complete!',
+      'You followed the order from start to finish. Keep playing or reset the demo.',
+    ],
+  },
+  welcome: 'Welcome to Restaurant El Clan',
+  scanQr: 'Scan the QR code on your table',
+  sitDown: 'Sit at Table 7',
+  table7: 'Table 7',
+  back: 'Back',
+  menu: 'Menu',
+  order: 'Order',
+  status: 'Status',
+  bill: 'Bill',
+  yourOrder: 'Your order',
+  yourBill: 'Your bill',
+  viewOrder: (n) => `View order, ${unitsEn(n)}`,
+  callWaiter: 'Call the waiter',
+  waiterShort: 'Waiter',
+  waiterComing: 'Waiter on the way',
+  withIclub: 'with iClub',
+  categoriesLabel: 'Categories',
+  categories: {
+    Entradas: 'Starters',
+    Sándwiches: 'Sandwiches',
+    Fondos: 'Mains',
+    Bebidas: 'Drinks',
+    Postres: 'Desserts',
+  },
+  quantity: 'Quantity',
+  quantityOf: (name) => `Quantity of ${name}`,
+  soldOut: 'Sold out today',
+  previewOf: (name) => `Preview of ${name}`,
+  extras: 'Extras',
+  addNote: 'Add a note...',
+  kitchenNote: 'Note for the kitchen',
+  sampleNote: 'No chili, please',
+  add: 'Add',
+  addToOrder: (name) => `Add ${name} to the order`,
+  seeDetail: 'See details',
+  seeDetailOf: (name) => `See ${name} in detail`,
+  emptyOrder: 'Your order is empty.',
+  seeMenu: 'See the menu',
+  placeOrder: 'Place order',
+  orderStatus: 'Order status',
+  orderN: (n) => `Order ${n}`,
+  progress: 'Progress',
+  emptyBill: 'There are no orders on your bill yet.',
+  askBill: 'Ask for the bill',
+  billComing: 'The waiter is coming with the bill.',
+  statuses: { enviado: 'sent', confirmado: 'confirmed', servido: 'served' },
+  floor: 'Main floor',
+  pendingCalls: (n) => `${n} ${n === 1 ? 'call' : 'calls'}`,
+  tableDetail: 'Table detail',
+  tableN: (n) => `Table ${n}`,
+  occupied: 'Occupied',
+  free: 'Free',
+  calls: 'Calls',
+  noCalls: 'No calls.',
+  orders: 'Orders',
+  noOrders: 'No orders.',
+  attend: 'Attend',
+  confirm: 'Confirm',
+  serve: 'Serve',
+  chargeAndFree: 'Charge and free',
+  pickTable: 'Tap a table to see its detail.',
+  closeDetail: 'Close',
+  tables: 'Tables',
+  tableSummary: (n, occupied) =>
+    `Table ${n}, ${occupied ? 'occupied' : 'free'}`,
+  callsSummary: 'calls',
+  plateOccupied: 'Occupied',
+  plateFree: 'Free table',
+  callLabels: {
+    pedido: 'New order',
+    garzón: 'Calls the waiter',
+    pago: 'Asks for the bill',
+  },
+  dish: 'Dish',
+  price: 'Price',
+  total: 'Total',
+  addOne: 'Add one',
+  removeOne: 'Remove one',
+  addOneOf: (name) => `Add one ${name}`,
+  removeOneOf: (name) => `Remove one ${name}`,
+  search: 'Search',
+  clearSearch: 'Clear search',
+  pickOption: 'Pick an option',
+  switchOn: 'ON',
+  switchOff: 'OFF',
+  galleryTitle: 'Component gallery',
+  gallerySubtitle: 'Restaurant El Clan · iClub',
+  openDemo: 'Open the demo',
+  states: 'States',
+  presentational: 'Presentational',
+  taps: (n) => `${n} taps`,
+  backs: (n) => `${n} backs`,
+  addDish: (name) => `Add ${name}`,
+  inOrder: 'In the order',
+  notAdded: 'Not added',
+  callsSwitch: 'Calls',
+  searchMenu: 'Search the menu',
+  found: (n, names) => `${n} dishes: ${names}`,
+  typeToSearch: 'Type to search the menu',
+  fullMenu: 'Full menu',
+  shortList: 'Short list',
+  orderStatusLabel: (status) => `Order ${status}`,
+  advance: 'Advance',
+  category: 'Category',
+  tapToChange: 'tap to change',
+  sampleReceipt: 'Sample receipt',
+  preview: 'Preview',
+  addUnitCount: (n) => `Add one, ${unitsEn(n)}`,
+  longTitle: 'Pastel de choclo with ensalada chilena',
+  toasts: {
+    enviado: ['Order sent', 'The kitchen got it.'],
+    confirmado: ['Order confirmed', 'The waiter is on it.'],
+    servido: ['Order served', 'Enjoy your meal!'],
+    error: ['Could not send', 'Check the connection and try again.'],
+  },
+  panels: {
+    button: 'Button',
+    arrow: 'Arrow button',
+    wheel: 'Quantity wheel',
+    check: 'Checkbox',
+    switch: 'Switch',
+    search: 'Search',
+    scroll: 'Scrollbar',
+    progress: 'Progress bar',
+    dropdown: 'Dropdown',
+    plate: 'Dish plate',
+    receipt: 'Receipt',
+    toast: 'Status toast',
+    seal: 'Seal',
+    table: 'Table',
+    navbar: 'Navbar',
+  },
+  stateLabels: {
+    disabled: 'Disabled',
+    disabledF: 'Disabled',
+    atMin: 'At minimum',
+    atMax: 'At maximum',
+    min: 'Minimum',
+    max: 'Maximum',
+    checked: 'Checked',
+    soldOut: 'Sold out',
+    off: 'Off',
+    error: 'Error',
+    withError: 'With error',
+    noOverflow: 'No overflow',
+    indeterminate: 'Indeterminate',
+    complete: 'Complete',
+    sending: 'Sending',
+    served: 'Served',
+    detailPreview: 'Detail preview',
+    withExtras: 'With extras and note',
+    confirmed: 'Confirmed',
+    free: 'Free',
+    combinedCalls: 'Combined calls',
+    waiter: 'Waiter',
+    longTitle: 'Long title',
+  },
+};
+
+export const messages: Record<Lang, Messages> = { es, en };
+
+export const LangContext = createContext<Lang>('es');
+
+/** Idioma de la ruta actual. */
+export const useLang = () => useContext(LangContext);
+
+/** `t(clave)` devuelve el texto del idioma de la ruta. */
+export function useT() {
+  const dict = messages[useLang()];
+  return <K extends keyof Messages>(key: K): Messages[K] => dict[key];
+}
+
+/** Descripción de un plato en el idioma de la ruta; el nombre no se traduce. */
+export function useDishText() {
+  const lang = useLang();
+  return (dish: Dish) => (lang === 'en' ? dish.en : dish.description);
+}
+
+/** Nombre de un agregado en el idioma de la ruta. */
+export function useExtraName() {
+  const lang = useLang();
+  return (extra: Extra) => (lang === 'en' ? extra.en : extra.name);
+}
