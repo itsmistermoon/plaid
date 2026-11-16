@@ -67,6 +67,9 @@
 }
 
 :root {
+  /* Alto del encabezado del sidebar; la barra de pestañas lo comparte para
+     que ambas líneas divisorias queden a la misma altura. */
+  --head-height: 68px;
   font-family: Inter, sans-serif;
   font-synthesis: none;
   color: #ecece2;
@@ -390,7 +393,7 @@ ol {
   box-shadow: 0 1px #ffffff12;
 }
 .sidebar-guest {
-  height: 68px;
+  height: var(--head-height);
   font:
     600 26px Inter,
     sans-serif;
@@ -485,8 +488,12 @@ ol {
   position: sticky;
   top: calc(var(--board-top) * -1);
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: var(--head-height);
   margin: calc(var(--board-top) * -1) -36px 0;
-  padding: var(--board-top) 36px 12px;
+  padding: 0 36px;
   border-bottom: var(--sticky-line);
   background: var(--noise), var(--slate);
   box-shadow: var(--sticky-shadow);

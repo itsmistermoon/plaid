@@ -80,8 +80,9 @@
     padding: 12px;
   }
   .tabs-bar {
+    height: auto;
     margin-inline: -12px;
-    padding-inline: 12px;
+    padding: var(--board-top) 12px 12px;
   }
 
   /* Comensal: la barra lateral pasa a pestañas inferiores */
