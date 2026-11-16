@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 import type { CallKind, OrderStatus } from './domain';
 import type { Category, Dish } from './menu';
+import type { TourStep } from './tour';
 
 export type Lang = 'es' | 'en';
 export type Page = 'demo' | 'gallery';
@@ -39,6 +40,44 @@ const es = {
   waiter: 'Garzón',
   resetDemo: 'Reiniciar demo',
   resetShort: 'Reiniciar',
+  // Recorrido guiado
+  tour: 'Recorrido guiado',
+  tourStart: 'Recorrido',
+  tourResume: 'Retomar recorrido',
+  tourSkip: 'Saltar recorrido',
+  tourSkipHint: 'o pulsa Esc',
+  tourEnd: 'Terminar',
+  tourStepOf: (n: number, total: number) => `Paso ${n} de ${total}`,
+  tourSteps: {
+    elegir: [
+      'Elige tus platos',
+      'Siéntate en la Mesa 7 y marca un plato de la carta, o ábrelo en detalle para elegir la cantidad.',
+    ],
+    enviar: [
+      'Envía el pedido',
+      'Abre tu pedido, revisa la boleta y toca «Realizar pedido».',
+    ],
+    sala: [
+      'Mira la sala',
+      'Cambia a la vista del garzón: la Mesa 7 lleva el sello de tu pedido.',
+    ],
+    servir: [
+      'Sirve el pedido',
+      'Toca la Mesa 7, confirma el pedido y márcalo servido. Si vuelves al comensal, el garzón simulado lo hace solo.',
+    ],
+    cuenta: [
+      'Pide la cuenta',
+      'Vuelve a la vista del comensal, abre la cuenta y toca «Pedir la cuenta».',
+    ],
+    cobrar: [
+      'Cobra y libera',
+      'En la vista del garzón, abre la Mesa 7 y toca «Cobrar y liberar».',
+    ],
+    listo: [
+      '¡Circuito completo!',
+      'Recorriste el pedido de punta a punta. Sigue probando o reinicia la demo.',
+    ],
+  } satisfies Record<TourStep | 'listo', [string, string]>,
   // Portada
   welcome: 'Bienvenido a El Clan',
   scanQr: 'Escanea el código QR de tu mesa',
@@ -217,6 +256,43 @@ const en: Messages = {
   waiter: 'Waiter',
   resetDemo: 'Reset demo',
   resetShort: 'Reset',
+  tour: 'Guided tour',
+  tourStart: 'Tour',
+  tourResume: 'Resume tour',
+  tourSkip: 'Skip tour',
+  tourSkipHint: 'or press Esc',
+  tourEnd: 'Finish',
+  tourStepOf: (n: number, total: number) => `Step ${n} of ${total}`,
+  tourSteps: {
+    elegir: [
+      'Pick your dishes',
+      'Sit at Table 7 and tick a dish on the menu, or open it in detail to choose how many.',
+    ],
+    enviar: [
+      'Send the order',
+      'Open your order, check the receipt and tap “Place order”.',
+    ],
+    sala: [
+      'Look at the floor',
+      'Switch to the waiter view: Table 7 carries the seal of your order.',
+    ],
+    servir: [
+      'Serve the order',
+      'Tap Table 7, confirm the order and mark it served. If you go back to the diner, the simulated waiter does it for you.',
+    ],
+    cuenta: [
+      'Ask for the bill',
+      'Go back to the diner view, open the bill and tap “Ask for the bill”.',
+    ],
+    cobrar: [
+      'Charge and free',
+      'In the waiter view, open Table 7 and tap “Charge and free”.',
+    ],
+    listo: [
+      'Circuit complete!',
+      'You followed the order from start to finish. Keep playing or reset the demo.',
+    ],
+  },
   welcome: 'Welcome to El Clan',
   scanQr: 'Scan the QR code on your table',
   sitDown: 'Sit at Table 7',

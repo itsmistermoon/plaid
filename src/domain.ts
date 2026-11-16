@@ -5,6 +5,7 @@ import {
 } from 'zustand/middleware';
 import { createStore } from 'zustand/vanilla';
 import { dishes } from './menu';
+import { advanceTour, type Tour, tourSteps } from './tour';
 
 type Cart = Record<string, number>;
 export type CallKind = 'pedido' | 'garzón' | 'pago';
@@ -52,17 +53,43 @@ interface DemoState {
   confirmOrder: (table: number, id: string) => void;
   serveOrder: (table: number, id: string) => void;
   attendCall: (table: number, call: CallKind) => void;
+  tour: Tour | null;
+  /** Empieza el recorrido, lo retoma si estaba saltado o lo repite si ya terminó. */
+  startTour: () => void;
+  skipTour: () => void;
+  endTour: () => void;
 }
-export const createDemoStore = (storage?: StateStorage) =>
-  createStore<DemoState>()(
+export const createDemoStore = (storage?: StateStorage) => {
+  const store = createStore<DemoState>()(
     persist(
       (set) => ({
+        tour: null,
+        startTour: () =>
+          set((state) => {
+            const step =
+              state.tour && state.tour.step < tourSteps.length
+                ? state.tour.step
+                : 0;
+            return {
+              tour: { step: advanceTour(step, state), skipped: false },
+            };
+          }),
+        skipTour: () =>
+          set((state) => ({
+            tour: state.tour && { ...state.tour, skipped: true },
+          })),
+        endTour: () => set({ tour: null }),
         view: 'comensal',
         setView: (view) => set({ view }),
         cart: {},
         tables: initialTables(),
         reset: () =>
-          set({ view: 'comensal', cart: {}, tables: initialTables() }),
+          set({
+            view: 'comensal',
+            cart: {},
+            tables: initialTables(),
+            tour: null,
+          }),
         callWaiter: () =>
           set((state) => ({
             tables: state.tables.map((table) =>
@@ -159,6 +186,7 @@ export const createDemoStore = (storage?: StateStorage) =>
                 table.number === 7
                   ? {
                       ...table,
+                      occupied: true,
                       orders: [...table.orders, order],
                       calls: [...table.calls, 'pedido'],
                     }
@@ -173,3 +201,12 @@ export const createDemoStore = (storage?: StateStorage) =>
       },
     ),
   );
+  // El recorrido sigue al dominio: tras cada cambio salta los pasos ya cumplidos.
+  store.subscribe((state) => {
+    if (!state.tour) return;
+    const step = advanceTour(state.tour.step, state);
+    if (step !== state.tour.step)
+      store.setState({ tour: { ...state.tour, step } });
+  });
+  return store;
+};

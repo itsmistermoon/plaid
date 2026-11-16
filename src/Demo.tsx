@@ -1,6 +1,7 @@
 import {
   BookOpen,
   Check,
+  CircleHelp,
   Clock,
   ConciergeBell,
   ReceiptText,
@@ -17,11 +18,13 @@ import { QuantityWheel } from './components/QuantityWheel';
 import { Receipt, Stepper } from './components/Receipt';
 import { Table } from './components/Table';
 import { ThemeSwitch } from './components/ThemeSwitch';
+import { TourCoach } from './components/TourCoach';
 import { billTotal, cartTotal, createDemoStore } from './domain';
 import { money } from './format';
 import { useDishText, useT } from './i18n';
 import { type Category, categories, type Dish, dishes } from './menu';
 import { startSimulator } from './simulator';
+import { tourSteps } from './tour';
 
 const store = createDemoStore();
 const dishById = (id: string) => dishes.find((dish) => dish.id === id);
@@ -85,6 +88,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
           <button
             type="button"
             className="dark-button cart-button desktop-only"
+            data-tour="enviar"
             aria-label={t('viewOrder')(count)}
             onClick={() => go('carrito')}
           >
@@ -107,6 +111,9 @@ function Comensal({ onHome }: { onHome: () => void }) {
               type="button"
               className="sidebar-item"
               data-tab={item.page === 'cuenta' ? undefined : true}
+              data-tour={
+                { carrito: 'enviar', cuenta: 'cuenta' }[item.page as string]
+              }
               aria-current={page === item.page && !detail ? 'page' : undefined}
               disabled={item.off}
               onClick={() => go(item.page)}
@@ -199,7 +206,11 @@ function Comensal({ onHome }: { onHome: () => void }) {
                   </button>
                 ))}
               </div>
-              <ul className="dish-list" aria-label={t('categories')[category]}>
+              <ul
+                className="dish-list"
+                data-tour="elegir"
+                aria-label={t('categories')[category]}
+              >
                 {dishes
                   .filter((dish) => dish.category === category)
                   .map((dish) => (
@@ -276,6 +287,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
                   <button
                     type="button"
                     className="light-button"
+                    data-tour="enviar"
                     onClick={() => {
                       sendOrder();
                       setPage('estado');
@@ -337,6 +349,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
                 <button
                   type="button"
                   className="light-button"
+                  data-tour="cuenta"
                   onClick={() => go('cuenta')}
                 >
                   <ReceiptText aria-hidden="true" />
@@ -376,6 +389,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
                     <button
                       type="button"
                       className="light-button"
+                      data-tour="cuenta"
                       onClick={requestBill}
                     >
                       {t('askBill')}
@@ -407,7 +421,12 @@ function Portada({ onEnter }: { onEnter: () => void }) {
         </span>
       </div>
       <p className="portada-text">{t('scanQr')}</p>
-      <button type="button" className="light-button" onClick={onEnter}>
+      <button
+        type="button"
+        className="light-button"
+        data-tour="elegir"
+        onClick={onEnter}
+      >
         {t('sitDown')}
       </button>
     </div>
@@ -492,6 +511,7 @@ function Garzon() {
                         <button
                           type="button"
                           className="dark-button"
+                          data-tour="servir"
                           onClick={() => confirmOrder(table.number, order.id)}
                         >
                           {t('confirm')}
@@ -501,6 +521,7 @@ function Garzon() {
                         <button
                           type="button"
                           className="dark-button"
+                          data-tour="servir"
                           onClick={() => serveOrder(table.number, order.id)}
                         >
                           {t('serve')}
@@ -518,6 +539,7 @@ function Garzon() {
                 <button
                   type="button"
                   className="light-button"
+                  data-tour="cobrar"
                   onClick={() => {
                     chargeAndFree(table.number);
                     setSelected(null);
@@ -540,6 +562,7 @@ function Garzon() {
                   data-occupied={item.occupied}
                   type="button"
                   aria-pressed={selected === item.number}
+                  data-tour={item.number === 7 ? 'servir cobrar' : undefined}
                   onClick={() => setSelected(item.number)}
                 >
                   <Table
@@ -566,7 +589,9 @@ function Garzon() {
 }
 
 export function Demo() {
-  const { view, setView, reset } = useStore(store);
+  const { view, setView, reset, tour, startTour, skipTour, endTour } =
+    useStore(store);
+  const touring = tour && !tour.skipped ? tour : null;
   const t = useT();
   const [revision, setRevision] = useState(0);
   const [entered, setEntered] = useState(false);
@@ -580,7 +605,11 @@ export function Demo() {
     [],
   );
   return (
-    <main className="app">
+    <main
+      className="app"
+      data-view={view}
+      data-tour-step={touring ? tourSteps[touring.step] : undefined}
+    >
       <header className="stage-bar">
         <h1>
           El Clan <small>{t('stageSubtitle')}</small>
@@ -592,6 +621,7 @@ export function Demo() {
           <button
             type="button"
             aria-pressed={view === 'comensal'}
+            data-tour="cuenta"
             onClick={() => setView('comensal')}
           >
             {t('diner')}
@@ -599,11 +629,24 @@ export function Demo() {
           <button
             type="button"
             aria-pressed={view === 'garzon'}
+            data-tour="sala servir cobrar"
             onClick={() => setView('garzon')}
           >
             {t('waiter')}
           </button>
         </fieldset>
+        <button
+          type="button"
+          className="dark-button tour-button"
+          aria-pressed={!!touring}
+          aria-label={tour?.skipped ? t('tourResume') : t('tour')}
+          onClick={touring ? skipTour : startTour}
+        >
+          <CircleHelp aria-hidden="true" />
+          <span className="reset-label">
+            {tour?.skipped ? t('tourResume') : t('tourStart')}
+          </span>
+        </button>
         <button
           type="button"
           className="dark-button reset-button"
@@ -630,6 +673,9 @@ export function Demo() {
           )}
         </div>
       </div>
+      {touring && (
+        <TourCoach tour={touring} onSkip={skipTour} onEnd={endTour} />
+      )}
     </main>
   );
 }

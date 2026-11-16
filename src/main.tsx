@@ -16,6 +16,7 @@ import { theme } from './theme';
 import './style.css';
 import './theme-moderno.css';
 import './mobile.css';
+import './tour.css';
 
 function App() {
   const [location] = useLocation();
