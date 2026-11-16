@@ -22,13 +22,14 @@ function App() {
   const [location] = useLocation();
   const route = routeFor(location);
   useEffect(() => {
-    document.documentElement.lang = route?.lang ?? 'es';
-  }, [route?.lang]);
+    document.documentElement.lang =
+      route?.lang ?? (location.startsWith('/en/') ? 'en' : 'es');
+  }, [route?.lang, location]);
   if (location === '/') return <Redirect to="/demo" replace />;
   if (!route)
     return (
       <main>
-        <h1>{messages.es.notFound}</h1>
+        <h1>{messages[location.startsWith('/en/') ? 'en' : 'es'].notFound}</h1>
       </main>
     );
   // Demo y galería quedan en la misma posición del árbol: cambiar de idioma
