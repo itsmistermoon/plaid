@@ -6,41 +6,36 @@ import '@fontsource/inter/400.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import { Preferences } from '@ui-sdk/react/preferences';
-import { StrictMode } from 'react';
+import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Redirect, Route, Switch } from 'wouter';
+import { Redirect, useLocation } from 'wouter';
 import { Demo } from './Demo';
 import { Gallery } from './Gallery';
+import { LangContext, messages, routeFor } from './i18n';
 import { theme } from './theme';
 import './style.css';
 import './theme-moderno.css';
+import './mobile.css';
 
 function App() {
+  const [location] = useLocation();
+  const route = routeFor(location);
+  useEffect(() => {
+    document.documentElement.lang = route?.lang ?? 'es';
+  }, [route?.lang]);
+  if (location === '/') return <Redirect to="/demo" replace />;
+  if (!route)
+    return (
+      <main>
+        <h1>{messages.es.notFound}</h1>
+      </main>
+    );
+  // Demo y galería quedan en la misma posición del árbol: cambiar de idioma
+  // solo cambia el contexto y no desmonta el estado local.
   return (
-    <Switch>
-      <Route path="/" component={() => <Redirect to="/demo" replace />} />
-      <Route path="/demo">
-        <Demo />
-      </Route>
-      <Route path="/componentes">
-        <Gallery />
-      </Route>
-      <Route path="/en/demo">
-        <main lang="en">
-          <h1>El Clan demo</h1>
-        </main>
-      </Route>
-      <Route path="/en/components">
-        <main lang="en">
-          <h1>Component gallery</h1>
-        </main>
-      </Route>
-      <Route>
-        <main>
-          <h1>Página no encontrada</h1>
-        </main>
-      </Route>
-    </Switch>
+    <LangContext value={route.lang}>
+      {route.page === 'demo' ? <Demo /> : <Gallery />}
+    </LangContext>
   );
 }
 

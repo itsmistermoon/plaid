@@ -1,0 +1,344 @@
+/*
+ * Teléfono (≤ 760 px): el comensal a pantalla completa, sin marco de tablet,
+ * con pestañas inferiores; el garzón en 2 columnas con el detalle como hoja.
+ * Vale para ambos temas; los colores del moderno van al final.
+ */
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .desktop-only {
+    display: none;
+  }
+  /* En la barra, el hueco se conserva para que el título siga centrado. */
+  .navbar > .desktop-only {
+    display: block;
+    visibility: hidden;
+  }
+
+  /* Escenario: barra compacta y pantalla completa */
+  .app {
+    height: 100dvh;
+    min-height: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .stage-bar {
+    max-width: none;
+    margin: 0;
+    padding: 8px;
+    gap: 4px;
+    justify-content: space-between;
+  }
+  .app .stage-bar h1 {
+    display: none;
+  }
+  .stage-bar .selector :is(button, a) {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+  .reset-button {
+    padding: 6px 8px;
+  }
+  .reset-label {
+    display: none;
+  }
+  .tablet {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .tablet-camera {
+    display: none;
+  }
+  .tablet-glass {
+    flex: 1;
+    min-width: 0;
+    aspect-ratio: auto;
+    box-shadow: none;
+  }
+  .navbar {
+    grid-template-columns: 84px 1fr 84px;
+  }
+  .navbar h2 {
+    font-size: 19px;
+  }
+  .board,
+  [data-surface="garzon"] .board {
+    padding: 12px;
+  }
+
+  /* Comensal: la barra lateral pasa a pestañas inferiores */
+  [data-surface="comensal"] .screen-body {
+    grid-template: minmax(0, 1fr) auto / 1fr;
+  }
+  .tabbar {
+    order: 2;
+    flex-direction: row;
+    border-right: 0;
+    border-top: 1px solid #4f7f22;
+    background: linear-gradient(#b4dc7c, #78ad41 55%, #6a9d37);
+    box-shadow: inset 0 1px #ffffff70;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .tabbar :is(.sidebar-guest, .sidebar-logo, .sidebar-item:not([data-tab])) {
+    display: none;
+  }
+  .tabbar .sidebar-item {
+    position: relative;
+    flex: 1;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 7px 0 8px;
+    border-bottom: 0;
+    box-shadow: none;
+    font:
+      600 11px Inter,
+      sans-serif;
+    color: #fff;
+    text-shadow: 0 -1px #0005;
+  }
+  .tabbar .sidebar-item + .sidebar-item {
+    border-left: 1px solid #0000001f;
+  }
+  .tabbar .sidebar-item svg {
+    width: 22px;
+    height: 22px;
+    color: #fff;
+  }
+  .tabbar .sidebar-item[aria-current="page"] {
+    background: #0000002a;
+    box-shadow: inset 0 2px 5px #0003;
+  }
+  .tabbar .sidebar-item[aria-current="page"] svg {
+    color: #fff;
+  }
+  .tabbar .sidebar-item .count {
+    position: absolute;
+    top: 3px;
+    left: calc(50% + 6px);
+    margin: 0;
+  }
+
+  /* Carta */
+  .segmented button {
+    padding: 8px 0;
+    font-size: 11.5px;
+  }
+  .dish {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    padding: 8px;
+  }
+  .dish .dish-plate {
+    width: 84px;
+    height: 64px;
+  }
+  .dish-text p {
+    font-size: 12px;
+  }
+  .dish-side {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .dish-side .dish-price {
+    margin-right: auto;
+  }
+
+  /* Detalle del plato: todo en una columna */
+  .detail {
+    grid-template: none / minmax(0, 1fr);
+    align-content: start;
+    padding: 12px 12px 0;
+  }
+  .detail .ribbon {
+    justify-self: center;
+    margin: 14px 0 0;
+  }
+  .detail .ribbon-cloth {
+    min-width: 0;
+    font-size: 18px;
+  }
+  .detail > .dish-plate {
+    grid-row: auto;
+    height: 190px;
+  }
+  .detail-text {
+    padding: 12px 0 0;
+    font-size: 15px;
+  }
+  .detail-foot {
+    flex-direction: column;
+    margin: 16px -12px 0;
+  }
+  .extras {
+    padding: 14px 16px;
+    border-right: 0;
+    border-bottom: 1px solid #3c4446;
+  }
+  .detail-order {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px 16px 20px;
+  }
+  .detail-qty {
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0;
+  }
+  .detail-receipt .receipt {
+    width: auto;
+  }
+  .ticket-card .receipt {
+    width: auto;
+  }
+
+  /* Estado: llamar al garzón y ver la cuenta */
+  .status-actions.mobile-only {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .status-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .status-actions svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Garzón: grilla de 2 columnas y detalle de mesa como hoja inferior */
+  [data-surface="garzon"] .screen-body {
+    position: relative;
+    grid-template-columns: 1fr;
+  }
+  .table-detail:not([data-open]) {
+    display: none;
+  }
+  .table-detail {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 2;
+    max-height: 75%;
+    border-right: 0;
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -8px 24px #0008;
+  }
+  .table-detail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .table-detail-head .mobile-only {
+    display: inline-flex;
+  }
+  .tables {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px 14px;
+  }
+
+  /* Galería: una columna y la barra en dos filas */
+  .gallery {
+    padding: 10px 10px 32px;
+  }
+  .gallery .stage-bar {
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .gallery .stage-bar h1 {
+    flex-basis: 100%;
+    font-size: 26px;
+  }
+  .gallery .stage-bar .light-button {
+    margin-left: auto;
+  }
+  .gallery-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gallery-grid .panel[data-wide] {
+    grid-column: auto;
+  }
+  .panel-stage,
+  .panel-states {
+    overflow-x: auto;
+  }
+  .panel-states > li:has(.navbar-demo) {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .panel-states .navbar-demo {
+    width: 100%;
+  }
+  .table-demo {
+    flex-direction: column;
+  }
+}
+
+/* Tema moderno en el teléfono */
+@media (max-width: 760px) {
+  [data-theme="moderno"] .tabbar {
+    border-top: 1px solid var(--border);
+    background: var(--card);
+    box-shadow: none;
+  }
+  [data-theme="moderno"] .tabbar .sidebar-item {
+    margin: 0;
+    border-radius: 0;
+    font-size: 11px;
+    color: var(--muted-foreground);
+    text-shadow: none;
+  }
+  [data-theme="moderno"] .tabbar .sidebar-item + .sidebar-item {
+    border-left: 0;
+  }
+  [data-theme="moderno"] .tabbar .sidebar-item svg {
+    color: var(--muted-foreground);
+  }
+  [data-theme="moderno"] .tabbar .sidebar-item[aria-current="page"],
+  [data-theme="moderno"] .tabbar .sidebar-item[aria-current="page"] svg {
+    color: var(--accent);
+    background: none;
+  }
+  /* Categorías como chips que se desplazan */
+  [data-theme="moderno"] .segmented {
+    gap: 6px;
+    padding: 0;
+    overflow-x: auto;
+    background: none;
+    scrollbar-width: none;
+  }
+  [data-theme="moderno"] .segmented button {
+    flex: none;
+    padding: 7px 14px;
+    border-radius: 99px;
+    background: var(--secondary);
+    border: 1px solid var(--border);
+  }
+  [data-theme="moderno"] .segmented button[aria-selected="true"] {
+    color: #fff;
+    background: var(--foreground);
+    border-color: var(--foreground);
+  }
+  [data-theme="moderno"] .table-detail {
+    box-shadow: 0 -8px 24px #18181b29;
+  }
+}

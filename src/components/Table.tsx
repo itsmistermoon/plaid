@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import type { CallKind } from '../domain';
+import { useT } from '../i18n';
 import { Seal } from './Seal';
 
 export function Table({
@@ -11,6 +12,7 @@ export function Table({
   occupied: boolean;
   calls: CallKind[];
 }) {
+  const t = useT();
   const id = useId().replace(/:/g, '');
   const unique = [...new Set(calls)];
   return (
@@ -115,7 +117,7 @@ export function Table({
         />
         <path d="M42 83H158Q158 89 164 89V114Q158 114 158 120H42Q42 114 36 114V89Q42 89 42 83Z" />
         <text x="100" y="107" textAnchor="middle">
-          Mesa {occupied ? 'ocupada' : 'libre'}
+          {occupied ? t('plateOccupied') : t('plateFree')}
         </text>
       </g>
       <g className="table-number">
