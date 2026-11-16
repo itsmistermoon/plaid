@@ -46,6 +46,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **The phone selector toggle uses the inactive segment's surface (`--segment-face`), not the dark button's.**
   Why: next to a segmented control it looked darker than the inactive segment.
   <!-- 2026-11-16 -->
+- **In the modern theme there is one green: `--accent`. Hover, soft background, tablecloth tints, notice border and ink, and glows are shades of it made with `color-mix` (`--accent-*` tokens), never separate hex greens.**
+  Why: same rule as the original theme; the greens must not drift apart.
+  <!-- 2026-11-16 -->
 - **The navigation bars (top bar, sidebar and phone tab bar) use the same dark material; the accent green only marks the active item.**
   Why: the bright green tab bar competed with the content and did not look like part of the same app.
   <!-- 2026-11-16 -->
