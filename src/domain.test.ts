@@ -241,3 +241,22 @@ it('el reinicio también se conserva al recargar la sesión', () => {
   });
   expect(reloaded.getState().cart).toEqual([]);
 });
+
+it.each([0, 0.3, 0.5, 0.99])(
+  'las mesas de relleno nunca tocan la Mesa 7 (azar %s, varios ticks)',
+  (value) => {
+    vi.useFakeTimers();
+    const store = createDemoStore();
+    const mesa7 = store.getState().tables[6];
+    const stop = startSimulator(store, {
+      random: () => value,
+      setTimeout,
+      clearTimeout,
+    });
+    for (let tick = 0; tick < 20; tick++) {
+      vi.advanceTimersByTime(5000);
+      expect(store.getState().tables[6]).toEqual(mesa7);
+    }
+    stop();
+  },
+);
