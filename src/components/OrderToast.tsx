@@ -18,7 +18,7 @@ const icons = {
   error: CircleAlert,
 };
 
-/** Cola de avisos del estado del pedido. */
+/** Cola de avisos al comensal sobre el estado de su pedido (no son llamados: esos van al garzón). */
 export const orderToaster = createToaster({ duration: 4000 });
 
 export function showOrderToast(

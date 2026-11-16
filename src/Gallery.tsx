@@ -135,7 +135,7 @@ function CheckDemo() {
 function SwitchDemo() {
   const [on, setOn] = useState(true);
   const t = useT();
-  return <KitSwitch label={t('alerts')} checked={on} onChange={setOn} />;
+  return <KitSwitch label={t('callsSwitch')} checked={on} onChange={setOn} />;
 }
 
 function SearchDemo() {
@@ -486,11 +486,11 @@ export function Gallery() {
           states={[
             {
               label: s.off,
-              node: <KitSwitch label={t('alerts')} checked={false} />,
+              node: <KitSwitch label={t('callsSwitch')} checked={false} />,
             },
             {
               label: s.disabled,
-              node: <KitSwitch label={t('alerts')} checked disabled />,
+              node: <KitSwitch label={t('callsSwitch')} checked disabled />,
             },
           ]}
         >
