@@ -31,82 +31,91 @@ function TableDetail({
   const extraName = useExtraName();
   return (
     <>
-      {heading}
-      <p className="muted">{table.occupied ? t('occupied') : t('free')}</p>
-      <h4>{t('calls')}</h4>
-      {table.calls.length ? (
-        <ul className="side-list">
-          {[...new Set(table.calls)].map((call) => (
-            <li key={call} data-kind={call}>
-              <span>{t('callLabels')[call]}</span>
-              <button
-                type="button"
-                className="dark-button"
-                onClick={() => attendCall(table.number, call)}
-              >
-                {t('attend')}
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="muted">{t('noCalls')}</p>
-      )}
-      <h4>{t('orders')}</h4>
-      {table.orders.length ? (
-        <ul className="side-list">
-          {table.orders.map((order, index) => (
-            <li key={order.id}>
-              <span>
-                {t('orderN')(index + 1)}
-                {order.lines.map((line) => (
-                  <small key={lineKey(line)}>
-                    {lineSummary(line, extraName)}
-                  </small>
-                ))}
-                <small>{t('statuses')[order.status]}</small>
-              </span>
-              {order.status === 'enviado' && (
+      <div className="table-detail-scroll">
+        {heading}
+        <p className="muted">{table.occupied ? t('occupied') : t('free')}</p>
+        <h4>{t('calls')}</h4>
+        {table.calls.length ? (
+          <ul className="side-list">
+            {[...new Set(table.calls)].map((call) => (
+              <li key={call} data-kind={call}>
+                <span>{t('callLabels')[call]}</span>
                 <button
                   type="button"
                   className="dark-button"
-                  data-tour="servir"
-                  onClick={() => confirmOrder(table.number, order.id)}
+                  onClick={() => attendCall(table.number, call)}
                 >
-                  {t('confirm')}
+                  {t('attend')}
                 </button>
-              )}
-              {order.status === 'confirmado' && (
-                <button
-                  type="button"
-                  className="dark-button"
-                  data-tour="servir"
-                  onClick={() => serveOrder(table.number, order.id)}
-                >
-                  {t('serve')}
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="muted">{t('noOrders')}</p>
-      )}
-      <h4>{t('bill')}</h4>
-      <p className="side-total">{money(billTotal(table))}</p>
-      {table.occupied && (
-        <button
-          type="button"
-          className="light-button"
-          data-tour="cobrar"
-          onClick={() => {
-            chargeAndFree(table.number);
-            onCharged();
-          }}
-        >
-          {t('chargeAndFree')}
-        </button>
-      )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="muted">{t('noCalls')}</p>
+        )}
+        <h4>{t('orders')}</h4>
+        {table.orders.length ? (
+          <ul className="table-orders">
+            {table.orders.map((order, index) => (
+              <li key={order.id} className="table-order">
+                <div className="table-order-head">
+                  <span className="table-order-title">
+                    {t('orderN')(index + 1)}
+                  </span>
+                  <span className="status-badge" data-status={order.status}>
+                    {t('statuses')[order.status]}
+                  </span>
+                  {order.status === 'enviado' && (
+                    <button
+                      type="button"
+                      className="dark-button"
+                      data-tour="servir"
+                      onClick={() => confirmOrder(table.number, order.id)}
+                    >
+                      {t('confirm')}
+                    </button>
+                  )}
+                  {order.status === 'confirmado' && (
+                    <button
+                      type="button"
+                      className="dark-button"
+                      data-tour="servir"
+                      onClick={() => serveOrder(table.number, order.id)}
+                    >
+                      {t('serve')}
+                    </button>
+                  )}
+                </div>
+                <ul className="table-order-lines">
+                  {order.lines.map((line) => (
+                    <li key={lineKey(line)}>{lineSummary(line, extraName)}</li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="muted">{t('noOrders')}</p>
+        )}
+      </div>
+      {/* La cuenta y su acción quedan fijas abajo; lo largo hace scroll arriba. */}
+      <section className="table-detail-bill" aria-label={t('bill')}>
+        <h4>{t('bill')}</h4>
+        <p className="side-total">{money(billTotal(table))}</p>
+        {table.occupied && (
+          <button
+            type="button"
+            className="light-button"
+            data-tour="cobrar"
+            onClick={() => {
+              chargeAndFree(table.number);
+              onCharged();
+            }}
+          >
+            {t('chargeAndFree')}
+          </button>
+        )}
+      </section>
     </>
   );
 }

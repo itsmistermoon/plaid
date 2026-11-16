@@ -29,6 +29,7 @@
   --tabbar-current-ink: #fff;
   --tabbar-current-bg: #0000002a;
   --toast-icon-border: 1.5px solid #fff;
+  --badge-ink: #fff;
   --toast-icon-shadow: 0 1px 2px #0008;
   --toast-enviado: linear-gradient(#4ca4d6, #105b92);
   --toast-confirmado: linear-gradient(#b6d77f, #79a63f);
@@ -1460,9 +1461,24 @@ ol {
   white-space: nowrap;
 }
 .table-detail {
+  overflow: hidden;
+}
+/* El contenido largo hace scroll; la cuenta y su botón quedan siempre abajo. */
+.table-detail-scroll {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
   padding: 20px;
   overflow: auto;
+}
+.table-detail-bill {
+  flex: none;
+  display: grid;
+  gap: 8px;
+  padding: 14px 20px 20px;
+  border-top: var(--sticky-line);
 }
 .table-detail h3 {
   font:
@@ -1493,8 +1509,50 @@ ol {
   gap: 8px;
   font-size: 13px;
 }
-.side-list small {
-  display: block;
+.table-orders {
+  display: grid;
+  gap: 10px;
+}
+.table-order {
+  display: grid;
+  gap: 6px;
+}
+.table-order-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+}
+.table-order-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+.table-order-head button {
+  margin-left: auto;
+}
+.status-badge {
+  padding: 2px 8px;
+  border-radius: 99px;
+  color: var(--badge-ink);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status-badge[data-status="enviado"] {
+  background: var(--toast-enviado);
+}
+.status-badge[data-status="confirmado"] {
+  background: var(--toast-confirmado);
+}
+.status-badge[data-status="servido"] {
+  background: var(--toast-servido);
+}
+.table-order-lines {
+  display: grid;
+  gap: 2px;
+  padding-left: 10px;
+  border-left: 2px solid var(--brand);
+  font-size: 13px;
   color: var(--muted);
 }
 .side-total {

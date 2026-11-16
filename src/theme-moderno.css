@@ -511,6 +511,14 @@
   border: 1px solid var(--border);
   border-radius: 8px;
 }
+[data-theme="moderno"] .table-order {
+  padding: 8px 10px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+[data-theme="moderno"] .table-order-lines {
+  border-left-color: var(--border);
+}
 [data-theme="moderno"] .side-total {
   color: var(--foreground);
 }
