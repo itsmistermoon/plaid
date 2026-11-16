@@ -14,7 +14,7 @@ import { useT } from '../i18n';
 import { store } from './store';
 import { useMedia } from './useMedia';
 
-/** El detalle de una mesa conectado al estado de la demo. */
+/** A table's detail wired to the demo state. */
 function StoreTableDetail({
   table,
   heading,
@@ -41,7 +41,7 @@ function StoreTableDetail({
   );
 }
 
-/** En el teléfono el detalle es una hoja inferior: un diálogo que atrapa el foco y se cierra con Esc. */
+/** On phones the detail is a bottom sheet: a dialog that traps focus and closes with Esc. */
 function TableSheet({
   table,
   onClose,
@@ -49,7 +49,7 @@ function TableSheet({
 }: {
   table: Mesa | undefined;
   onClose: () => void;
-  /** La mesa de la grilla que abrió la hoja: ahí vuelve el foco al cerrarla. */
+  /** The grid table that opened the sheet: focus returns there when it closes. */
   opener: () => HTMLElement | null;
 }) {
   const t = useT();

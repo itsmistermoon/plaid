@@ -5,7 +5,7 @@ import { billTotal, type CallKind, type Table } from '../domain';
 import { money } from '../format';
 import { useExtraName, useT } from '../i18n';
 
-/** Lo que el garzón ve y hace sobre una mesa: llamados, pedidos y cuenta fija abajo. */
+/** What the Garzón sees and does on a table: Llamados, Pedidos and the Cuenta pinned at the bottom. */
 export function TableDetail({
   table,
   heading,
@@ -92,7 +92,7 @@ export function TableDetail({
           <p className="muted">{t('noOrders')}</p>
         )}
       </div>
-      {/* La cuenta y su acción quedan fijas abajo; lo largo hace scroll arriba. */}
+      {/* The Cuenta and its action stay pinned at the bottom; long content scrolls above. */}
       <section className="table-detail-bill" aria-label={t('bill')}>
         <h4>{t('bill')}</h4>
         <p className="side-total">{money(billTotal(table))}</p>
@@ -111,7 +111,7 @@ export function TableDetail({
   );
 }
 
-/** Estado vacío del detalle: todavía no se eligió una mesa. */
+/** Empty state of the detail: no table has been chosen yet. */
 export function TableDetailEmpty() {
   const t = useT();
   return (

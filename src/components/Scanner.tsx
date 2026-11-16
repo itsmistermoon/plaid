@@ -1,4 +1,4 @@
-/** Lector QR de la portada: carcasa de aluminio, ventana con láser y tres LED. */
+/** The cover's QR scanner: aluminum casing, laser window and three LEDs. */
 export function Scanner() {
   return (
     <div className="scanner" aria-hidden="true">

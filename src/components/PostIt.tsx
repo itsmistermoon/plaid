@@ -1,4 +1,4 @@
-/** Post-it amarillo con chinche: la nota para cocina. */
+/** Yellow sticky note with a pin: the note for the kitchen. */
 export function PostIt({
   label,
   placeholder,

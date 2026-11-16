@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react';
 
-/** Cinta de tela que cuelga desde el borde superior del panel, con cola de golondrina. */
+/** Cloth ribbon hanging from the panel's top edge, with a swallowtail. */
 export function Ribbon({ children }: { children: ReactNode }) {
   return (
     <h3 className="ribbon">
       <span className="ribbon-cloth">
-        {/* La costura sigue los lados y la cola, nunca el borde superior:
-            los lados van de arriba a las puntas y la V, en un svg anidado de
-            13 px de alto, sube desde las puntas hasta el centro. */}
+        {/* The stitching follows the sides and the tail, never the top edge:
+            the sides run from the top to the points and the V, in a nested
+            13 px-tall svg that rises from the points to the center. */}
         <svg className="ribbon-stitch" aria-hidden="true">
           <line x1="0" y1="0" x2="0" y2="100%" />
           <line x1="100%" y1="0" x2="100%" y2="100%" />

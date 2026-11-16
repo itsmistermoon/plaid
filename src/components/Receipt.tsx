@@ -13,8 +13,8 @@ export interface ReceiptLine {
 }
 
 /**
- * Boleta de papel con el borde inferior dentado y columnas fijas plato,
- * cantidad y precio, que sale de la ranura de una impresora.
+ * Paper receipt with a toothed bottom edge and fixed dish, quantity and
+ * price columns, coming out of a printer slot.
  */
 export function Receipt({
   lines,
@@ -86,7 +86,7 @@ export function Receipt({
   );
 }
 
-/** Botones −/+ de una línea de la boleta. */
+/** −/+ buttons of a receipt line. */
 export function Stepper({
   name,
   qty,
@@ -119,8 +119,8 @@ export function Stepper({
 }
 
 /**
- * Columna de acción junto a la boleta: repite el total, que es lo más
- * importante, y deja la acción principal siempre a la vista.
+ * Action column next to the receipt: repeats the total, the most important
+ * figure, and keeps the primary action always in view.
  */
 export function ReceiptActions({
   total,

@@ -6,12 +6,12 @@ import valueParser from 'postcss-value-parser';
 import { expect, test } from 'vitest';
 import exceptions from './color-exceptions.json';
 
-// Solo se excluyen reglas cuyo selector completo es :root o [data-theme=...]
-// y cuyo contenido son exclusivamente declaraciones de custom properties.
-// Se examinan declaraciones (incluidas variables y fallbacks) con PostCSS;
-// se ignoran comentarios, strings y URL, y se detectan hex, nombres CSS y
-// funciones de color, incluso dentro de gradientes y sombras. Cada excepción
-// identifica archivo, selector, propiedad y valor, conservando duplicados.
+// Only rules whose full selector is :root or [data-theme=...] are excluded,
+// and whose content is exclusively custom property declarations.
+// Declarations (including variables and fallbacks) are examined with PostCSS;
+// comments, strings and URLs are ignored, and hex, CSS names and
+// color functions are detected, even inside gradients and shadows. Each
+// exception identifies file, selector, property and value, keeping duplicates.
 const colorFunctions = new Set([
   'rgb',
   'rgba',

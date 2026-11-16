@@ -227,7 +227,7 @@ it('las mesas de relleno generan llamados sin tocar la Mesa 7', () => {
   stop();
 });
 
-/** Azar reproducible: un generador congruencial con semilla fija. */
+/** Reproducible randomness: a linear congruential generator with a fixed seed. */
 const seeded = (seed: number) => () => {
   seed = (seed * 1103515245 + 12345) % 2 ** 31;
   return seed / 2 ** 31;
@@ -274,7 +274,7 @@ it.each([0, 0.5, 0.99, 1, 2, 3])(
       expect(fillerCalls(store).length).toBeLessThanOrEqual(4);
       history.push(JSON.stringify(store.getState().tables));
     }
-    // La sala sigue cambiando: no se queda pegada en un estado lleno.
+    // The floor keeps changing: it does not get stuck in a full state.
     expect(new Set(history.slice(-20)).size).toBeGreaterThan(1);
     stop();
   },

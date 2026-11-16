@@ -1,7 +1,7 @@
 import { ChevronLeft, ShoppingCart } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-/** Barra oscura y brillante de la pantalla: acción, título y acción. */
+/** Dark, glossy screen bar: action, title and action. */
 export function Navbar({
   start,
   title,
@@ -22,7 +22,7 @@ export function Navbar({
   );
 }
 
-/** Botón con punta de flecha a la izquierda, para volver. */
+/** Button with an arrow tip on the left, for going back. */
 export function ArrowButton({
   children,
   onClick,
@@ -47,7 +47,7 @@ export function ArrowButton({
   );
 }
 
-/** Botón del carrito en la barra, con la cantidad de unidades. */
+/** Cart button in the bar, with the unit count. */
 export function CartButton({
   count,
   label,
@@ -75,7 +75,7 @@ export function CartButton({
   );
 }
 
-/** Llamados pendientes del garzón, en la barra. */
+/** The Garzón's pending Llamados, in the bar. */
 export function PendingCalls({ children }: { children: ReactNode }) {
   return (
     <span className="dark-button pending" role="status">

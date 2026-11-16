@@ -1,7 +1,7 @@
 import { useT } from '../i18n';
 import { type Category, categories } from '../menu';
 
-/** Pestañas de categorías fijas arriba del tablero; la sombra aparece al desplazar. */
+/** Category tabs pinned above the board; the shadow appears on scroll. */
 export function CategoryTabs({
   value,
   onChange,

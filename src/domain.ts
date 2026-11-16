@@ -7,13 +7,13 @@ import { createStore } from 'zustand/vanilla';
 import { dishes } from './menu';
 import { advanceTour, type Tour, tourSteps } from './tour';
 
-/** Qué se pide: un plato con sus agregados y su nota para cocina. */
+/** What is ordered: a dish with its extras and its kitchen note. */
 export interface LineItem {
   dishId: string;
   extras?: string[];
   note?: string;
 }
-/** Una línea del carrito o de un pedido. */
+/** A line of the Carrito or of a Pedido. */
 export interface Line {
   dishId: string;
   extras: string[];
@@ -21,7 +21,7 @@ export interface Line {
   qty: number;
 }
 const dishById = (id: string) => dishes.find((dish) => dish.id === id);
-/** Agregados válidos en el orden de la carta y nota sin espacios sobrantes. */
+/** Valid extras in Carta order and the note without extra whitespace. */
 const normalize = ({ dishId, extras = [], note = '' }: LineItem) => ({
   dishId,
   extras: (dishById(dishId)?.extras ?? [])
@@ -33,7 +33,7 @@ const sameItem = (a: LineItem, b: LineItem) =>
   a.dishId === b.dishId &&
   a.note === b.note &&
   a.extras?.join() === b.extras?.join();
-/** Precio de una unidad de la línea: el plato más sus agregados. */
+/** Price of one unit of the line: the dish plus its extras. */
 export const unitPrice = ({ dishId, extras = [] }: LineItem) => {
   const dish = dishById(dishId);
   return (
@@ -60,9 +60,9 @@ export const cartTotal = (lines: Line[]) =>
   lines.reduce((total, line) => total + unitPrice(line) * line.qty, 0);
 export const billTotal = (table: Table) =>
   table.orders.reduce((total, order) => total + cartTotal(order.lines), 0);
-/** La Mesa 7: la mesa del visitante, el comensal de la demo. */
+/** Mesa 7: the visitor's table, the demo's Comensal. */
 export const visitorTable = 7;
-/** La Mesa 7 dentro de la sala. */
+/** Mesa 7 within the floor. */
 export const findVisitorTable = <T extends { number: number }>(tables: T[]) =>
   tables.find((table) => table.number === visitorTable) as T;
 const initialTables = (): Table[] =>
@@ -88,7 +88,7 @@ interface DemoState {
   serveOrder: (table: number, id: string) => void;
   attendCall: (table: number, call: CallKind) => void;
   tour: Tour | null;
-  /** Empieza el recorrido, lo retoma si estaba saltado o lo repite si ya terminó. */
+  /** Starts the tour, resumes it if skipped, or repeats it if finished. */
   startTour: () => void;
   skipTour: () => void;
   endTour: () => void;
@@ -244,7 +244,7 @@ export const createDemoStore = (storage?: StateStorage) => {
       },
     ),
   );
-  // El recorrido sigue al dominio: tras cada cambio salta los pasos ya cumplidos.
+  // The tour follows the domain: after every change it skips the steps already done.
   store.subscribe((state) => {
     if (!state.tour) return;
     const step = advanceTour(state.tour.step, state);

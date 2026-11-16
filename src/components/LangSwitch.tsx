@@ -3,7 +3,7 @@ import { useMedia } from '../demo/useMedia';
 import { messages, pathFor, routeFor, useLang, useT } from '../i18n';
 import { SelectorToggle } from './SelectorToggle';
 
-/** Selector ES/EN: lleva a la misma página en el otro idioma. En teléfono, un solo botón que alterna. */
+/** ES/EN selector: goes to the same page in the other language. On phones, a single toggle button. */
 export function LangSwitch() {
   const t = useT();
   const lang = useLang();

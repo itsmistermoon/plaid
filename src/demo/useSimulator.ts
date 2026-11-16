@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { startSimulator } from '../simulator';
 import { store } from './store';
 
-/** Arranca el garzón simulado y las mesas de relleno mientras la demo está montada. */
+/** Starts the Garzón simulado and the Mesas de relleno while the demo is mounted. */
 export function useSimulator() {
   useEffect(
     () =>

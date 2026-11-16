@@ -12,7 +12,7 @@ import type { Dish } from '../../menu';
 import { receiptLine } from '../lines';
 import { store } from '../store';
 
-/** Detalle de un plato: agregados, nota para cocina y cantidad antes de agregarlo. */
+/** Dish detail: extras, kitchen note and quantity before adding it. */
 export function Detalle({ dish, onDone }: { dish: Dish; onDone: () => void }) {
   const addToCart = useStore(store, (state) => state.addToCart);
   const t = useT();

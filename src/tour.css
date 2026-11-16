@@ -1,7 +1,7 @@
 /*
- * Recorrido guiado: la capa de ayuda de iClub (texto manuscrito blanco y una
- * mano que señala sobre fondo oscuro) como nota bajo la tablet, sin tapar la
- * demo. Lo que hay que tocar en cada paso lleva `data-tour` y brilla.
+ * Guided tour: iClub's help layer (white handwritten text and a pointing
+ * hand on a dark background) as a note under the tablet, without covering
+ * the demo. What must be tapped at each step carries `data-tour` and glows.
  */
 .tour-button[aria-pressed="true"] {
   background: linear-gradient(#86b84d, #5b8c2c);
@@ -101,7 +101,7 @@
   background: #ffffff1a;
 }
 
-/* Lo que hay que tocar en el paso actual. El selector ya activo no brilla. */
+/* What must be tapped in the current step. The already active selector does not glow. */
 .app[data-tour-step="elegir"] [data-tour~="elegir"],
 .app[data-tour-step="enviar"] [data-tour~="enviar"],
 .app[data-tour-step="sala"] [data-tour~="sala"]:not([aria-pressed="true"]),
@@ -113,8 +113,8 @@
   animation: tour-glow 1.4s ease-in-out infinite;
 }
 
-/* El selector recorta lo que sobresale de sus botones: el aviso rodea el
-   segmento completo y pulsa con un halo. */
+/* The selector clips whatever sticks out of its buttons: the notice surrounds
+   the whole segment and pulses with a halo. */
 .app :is(.selector button[data-tour]) {
   outline: 0;
   animation: none;
@@ -167,7 +167,7 @@
   }
 }
 
-/* Tema moderno: tarjeta plana con el acento verde */
+/* Modern theme: flat card with the green accent */
 [data-theme="moderno"] .tour {
   color: var(--foreground);
   background: var(--card);
@@ -220,7 +220,7 @@
   --tour-ring: var(--accent);
 }
 
-/* Teléfono: la nota va entre la barra y la pantalla, compacta */
+/* Phone: the note goes between the bar and the screen, compact */
 @media (max-width: 760px) {
   .tour {
     order: 1;

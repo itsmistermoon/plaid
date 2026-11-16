@@ -18,7 +18,7 @@ const icons = {
   error: CircleAlert,
 };
 
-/** Cola de avisos al comensal sobre el estado de su pedido (no son llamados: esos van al garzón). */
+/** Queue of notices to the Comensal about their Pedido's status (not Llamados: those go to the Garzón). */
 export const orderToaster = createToaster({ duration: 4000 });
 
 export function showOrderToast(
@@ -33,7 +33,7 @@ export function showOrderToast(
   });
 }
 
-/** Cara del aviso: banda oscura con un ícono por estado. */
+/** Face of the notice: a dark band with one icon per status. */
 export function ToastFace({
   kind,
   title,
@@ -57,7 +57,7 @@ export function ToastFace({
   );
 }
 
-/** Región fija abajo al centro donde aparecen los avisos. */
+/** Fixed region at the bottom center where notices appear. */
 export function OrderToastRegion() {
   return (
     <ToastRegion

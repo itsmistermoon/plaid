@@ -79,9 +79,9 @@ const line = (dishId: string, qty: number, extras: string[] = []): Line => ({
 });
 
 /**
- * Un componente de la galería, como en spec-01: la pieza en uso arriba,
- * sus variantes con etiqueta abajo y al pie si es presentacional o de UI SDK.
- * El número sale de un contador CSS, así el orden de la página es la numeración.
+ * A gallery component, as in spec-01: the piece in use on top, its labeled
+ * variants below, and a footer saying whether it is presentational or UI SDK.
+ * The number comes from a CSS counter, so page order is the numbering.
  */
 function Panel({
   title,
@@ -95,7 +95,7 @@ function Panel({
   uses: string[];
   states?: { label: string; node: ReactNode }[];
   wide?: boolean | 'full';
-  /** Ocupa dos filas de la grilla, junto a dos paneles anchos apilados. */
+  /** Spans two grid rows, next to two stacked wide panels. */
   tall?: boolean;
   children: ReactNode;
 }) {
@@ -130,7 +130,7 @@ function Panel({
   );
 }
 
-/** Un grupo de paneles con su título. */
+/** A group of panels with its title. */
 function Group({ title, children }: { title: string; children: ReactNode }) {
   const id = useId();
   return (
@@ -184,7 +184,7 @@ function WheelDemo() {
   return <QuantityWheel value={qty} onChange={setQty} label={t('quantity')} />;
 }
 
-/** El stepper vive sobre el papel de la boleta. */
+/** The stepper sits on the receipt paper. */
 function StepperOnPaper({ qty }: { qty: number }) {
   const [value, setValue] = useState(qty);
   return (
@@ -198,7 +198,7 @@ function StepperOnPaper({ qty }: { qty: number }) {
   );
 }
 
-/** Ruleta con estado propio para mostrarla parada en un valor. */
+/** A wheel with its own state, to show it resting on a value. */
 function WheelAt({ start, label }: { start: number; label: string }) {
   const [value, setValue] = useState(start);
   return <QuantityWheel value={value} onChange={setValue} label={label} />;
@@ -214,8 +214,8 @@ function CheckDemo() {
         checked={checked}
         onChange={setChecked}
       />
-      {/* Las dos etiquetas ocupan la misma celda y solo se ve una: el ancho
-          es el de la más larga y cambiar de estado no mueve nada. */}
+      {/* Both labels share the same cell and only one is visible: the width is
+          that of the longer one, so changing state moves nothing. */}
       <span className="hint swap-label">
         <span hidden={checked}>{t('notAdded')}</span>
         <span hidden={!checked}>{t('inOrder')}</span>
@@ -279,7 +279,7 @@ function DropdownDemo() {
 
 type View = 'comensal' | 'garzon';
 
-/** El selector de rol de la barra del demo, en sus dos formas. */
+/** The demo bar's role selector, in both forms. */
 function RoleSwitch({ phone }: { phone?: boolean }) {
   const [view, setView] = useState<View>('comensal');
   const t = useT();
@@ -387,7 +387,7 @@ function NavbarDemo() {
 
 type DinerPage = 'carta' | 'carrito' | 'estado' | 'cuenta';
 
-/** Los ítems del comensal, como en la demo. */
+/** The Comensal's items, as in the demo. */
 function DinerItems({
   page,
   onPage,
@@ -437,12 +437,12 @@ function SidebarDemo({ tabbar }: { tabbar?: boolean }) {
   );
 }
 
-/** Un ítem suelto del sidebar, sobre su material. */
+/** A single sidebar item, on its material. */
 function SidebarSample({ children }: { children: ReactNode }) {
   return <div className="sidebar sidebar-sample">{children}</div>;
 }
 
-/** Pestañas sobre un tablero con la carta debajo; `scrolled` lo deja desplazado. */
+/** Tabs over a board with the menu below; `scrolled` leaves it scrolled. */
 function CategoryTabsDemo({ scrolled }: { scrolled?: boolean }) {
   const [category, setCategory] = useState<Category>('Sándwiches');
   const board = useRef<HTMLDivElement>(null);
@@ -518,7 +518,7 @@ function PlateDemo() {
   );
 }
 
-/** La boleta del pedido tal como en la demo: papel con stepper y la columna de acción. */
+/** The order receipt as in the demo: paper with stepper and the action column. */
 function ReceiptDemo() {
   const [cart, setCart] = useState<Line[]>([
     line('empanada', 2),
@@ -674,7 +674,7 @@ const sampleTable = (): Table => ({
   ],
 });
 
-/** Detalle de una mesa con estado local: atender, confirmar, servir y cobrar. */
+/** Table detail with local state: attend, confirm, serve and charge. */
 function TableDetailDemo() {
   const [table, setTable] = useState(sampleTable);
   const setStatus = (id: string, status: 'confirmado' | 'servido') =>
@@ -715,7 +715,7 @@ function TableHeading({ number }: { number: number }) {
   );
 }
 
-/** El detalle de mesa vive en el sidebar del garzón, con su alto fijo. */
+/** The table detail lives in the Garzón's sidebar, at its fixed height. */
 function TableDetailFrame({
   children,
   short,

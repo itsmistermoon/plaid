@@ -7,7 +7,7 @@ import { SelectorToggle } from './SelectorToggle';
 
 const options = ['original', 'moderno'] as const;
 
-/** Switch entre la piel original (2012) y la moderna. En teléfono, un solo botón que alterna. */
+/** Switch between the original (2012) skin and the modern one. On phones, a single toggle button. */
 export function ThemeSwitch() {
   const { value } = usePreference(theme);
   const t = useT();

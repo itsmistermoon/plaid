@@ -19,7 +19,7 @@ it('arma la ruta equivalente en el otro idioma', () => {
       expect(routeFor(pathFor(page, lang))).toEqual({ page, lang });
 });
 
-/** Recorre el diccionario y devuelve cada texto, llamando a las funciones. */
+/** Walks the dictionary and returns every text, calling the functions. */
 const texts = (value: unknown): string[] =>
   typeof value === 'string'
     ? [value]

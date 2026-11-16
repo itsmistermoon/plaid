@@ -1,4 +1,4 @@
-/* Tokens del tema original (iClub, 2012). */
+/* Original theme tokens (iClub, 2012). */
 [data-theme="original"] {
   --stage: #2b3437;
   --slate: #50595c;
@@ -14,14 +14,14 @@
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
-  /* Piel de las piezas que ambos temas comparten: el moderno solo cambia estos valores. */
+  /* Skin of the pieces both themes share: the modern theme only changes these values. */
   --step-line: currentColor;
   --step-done-line: #4f7f22;
   --step-done-bg: linear-gradient(#9fd164, #5a8f28);
   --step-done-shadow: inset 0 1px #ffffff60, 0 1px 2px #0006;
   --step-now-shadow: var(--step-done-shadow);
-  /* La tabbar del teléfono usa el material oscuro de la barra superior; el
-     verde solo marca el ítem activo, como en el sidebar. */
+  /* The phone tab bar uses the top bar's dark material; the
+     green only marks the active item, as in the sidebar. */
   --tabbar-line: var(--bar-line);
   --tabbar-bg: var(--noise), var(--bar);
   --tabbar-shadow: inset 0 1px #ffffff26;
@@ -48,7 +48,7 @@
   --dark-lift: drop-shadow(0 1px #ffffff1a);
   --crop-frame: 0 0 0 1px var(--dark-edge), 0 4px 10px #0006;
 
-  /* Impresora, papel y cinta. */
+  /* Printer, paper and ribbon. */
   --printer-body:
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
     linear-gradient(#8a9294, #596163 45%, #3c4244 60%, #2c3133);
@@ -73,11 +73,11 @@
 }
 
 :root {
-  /* Alto del encabezado del sidebar; la barra de pestañas lo comparte para
-     que ambas líneas divisorias queden a la misma altura. */
+  /* Height of the sidebar header; the tab bar shares it so
+     both divider lines sit at the same height. */
   --head-height: 68px;
-  /* Medidas de los controles: las mismas en ambos temas. Cada tema pinta su
-     piel encima, pero nunca redefine alto, ancho fijo ni relleno. */
+  /* Control sizes: the same in both themes. Each theme paints its
+     skin on top, but never redefines height, fixed width or padding. */
   --button-h: 26px;
   --field-h: 30px;
   --check-size: 24px;
@@ -133,17 +133,17 @@ ol {
   white-space: nowrap;
 }
 
-/* Escenario y marco de tablet */
+/* Stage and tablet frame */
 .app {
   min-height: 100vh;
   padding: 18px 24px 32px;
   background:
     var(--noise), radial-gradient(120% 90% at 50% 0%, #3d4a4e, var(--stage));
 }
-/* Barra de controles: cada grupo y botón tiene un ancho y un alto fijos, el
-   mismo en ambos temas y en ambos idiomas (caben el texto más largo de ES y
-   EN), y la barra se ancla a la derecha. Así nada se mueve al cambiar de tema
-   o de idioma. */
+/* Control bar: every group and button has a fixed width and height, the
+   same in both themes and both languages (the longest ES and EN text fits),
+   and the bar is anchored to the right. This way nothing moves when
+   switching theme or language. */
 .stage-bar {
   --bar-h: 34px;
   --theme-w: 168px;
@@ -262,7 +262,7 @@ ol {
   box-shadow: 0 0 0 2px #000;
 }
 
-/* Pantalla: barra oscura brillante, menú lateral y pizarra */
+/* Screen: dark glossy bar, side menu and board */
 .screen {
   height: 100%;
   display: flex;
@@ -306,7 +306,7 @@ ol {
   justify-self: end;
 }
 
-/* Botones del kit */
+/* Kit buttons */
 .arrow-button,
 .dark-button,
 .light-button {
@@ -347,11 +347,11 @@ ol {
   box-shadow: none;
   filter: var(--dark-lift);
 }
-/* La punta se dibuja con dos capas recortadas: el borde (::before) y, 1 px
-   adentro, el cuerpo con su degradado y brillo (::after). Recortar el botón
-   entero cortaba el borde en la diagonal. Las cifras valen para
-   --button-h: 26px; el cuerpo corre 1,26 px, el grosor del borde medido
-   perpendicular a la diagonal. */
+/* The tip is drawn with two clipped layers: the border (::before) and, 1 px
+   inside, the body with its gradient and shine (::after). Clipping the whole
+   button cut the border on the diagonal. The numbers hold for
+   --button-h: 26px; the body shifts 1.26 px, the border thickness measured
+   perpendicular to the diagonal. */
 .arrow-button::before,
 .arrow-button::after {
   content: "";
@@ -419,7 +419,7 @@ ol {
   grid-template-columns: 29.3% 1fr;
 }
 .sidebar {
-  /* Por encima del tablero, para que su bisel no lo tape nada que haga sticky. */
+  /* Above the board, so nothing sticky covers its bevel. */
   position: relative;
   z-index: 3;
   display: flex;
@@ -529,8 +529,8 @@ ol {
 }
 
 /* Carta */
-/* Las categorías quedan fijas arriba; el fondo opaco tapa la lista que pasa por
-   debajo, también en el hueco del relleno del tablero. */
+/* Categories stay pinned on top; the opaque background covers the list passing
+   underneath, also in the gap of the board's padding. */
 .tabs-bar {
   position: sticky;
   top: calc(var(--board-top) * -1);
@@ -544,8 +544,8 @@ ol {
   border-bottom: var(--sticky-line);
   background: var(--noise), var(--slate);
 }
-/* La sombra solo aparece cuando la lista ya pasa por debajo: se enciende con
-   los primeros píxeles de scroll del tablero. Sin soporte, queda solo la línea. */
+/* The shadow only appears once the list already passes underneath: it turns on with
+   the board's first pixels of scroll. Without support, only the line remains. */
 @supports (animation-timeline: scroll()) {
   .tabs-bar {
     animation: sticky-shadow linear both;
@@ -624,9 +624,9 @@ ol {
   mask-size: 51% 51%;
   mask-repeat: no-repeat;
 }
-/* La foto va 1 px adentro y sus esquinas cóncavas son concéntricas con las
-   de la placa: el fondo oscuro queda como un contorno de 1 px que sigue la
-   curva. */
+/* The photo sits 1 px inside and its concave corners are concentric with
+   the plate's: the dark background remains as a 1 px outline that follows
+   the curve. */
 .dish-plate img {
   width: 100%;
   height: 100%;
@@ -723,9 +723,9 @@ ol {
   height: 232px;
   box-shadow: 0 2px 4px #0006;
 }
-/* Cinta de tela verde que cuelga desde el borde superior de la tarjeta.
-   Termina abajo en cola de golondrina con una costura punteada que sigue su
-   borde. */
+/* Green cloth ribbon hanging from the card's top edge.
+   It ends at the bottom in a swallowtail with a dotted stitch that follows
+   its edge. */
 .ribbon {
   position: relative;
   max-width: 100%;
@@ -760,7 +760,7 @@ ol {
 }
 .detail-text {
   min-width: 0;
-  /* El borde derecho de la nota coincide con el de la cinta. */
+  /* The note's right edge matches the ribbon's. */
   padding: 20px 24px 0 0;
   overflow-wrap: break-word;
   font-size: 16px;
@@ -784,9 +784,9 @@ ol {
   border: 0;
   border-right: 1px solid #3c4446;
 }
-/* Ícono y título centrados entre sí; el ícono ocupa la columna de las
-   casillas, así el título alinea con los nombres de los agregados. Es un div
-   y no un legend porque WebKit pega el legend al borde superior del fieldset. */
+/* Icon and title centered with each other; the icon takes the checkbox
+   column, so the title aligns with the extras' names. It is a div and not
+   a legend because WebKit pins the legend to the fieldset's top edge. */
 .extras-title {
   display: flex;
   align-items: center;
@@ -810,7 +810,7 @@ ol {
   font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
-/* Post-it amarillo con chinche: la nota para cocina. */
+/** Yellow sticky note with a pin: the note for the kitchen. */
 .post-it {
   position: relative;
   display: block;
@@ -886,9 +886,9 @@ ol {
   grid-column: 1 / -1;
   color: #ffb4a8;
 }
-/* Ruleta de cantidad: un tambor que gira en una ranura, con dientes que
-   ruedan en sus bordes y el valor entre dos marcas. Los colores son
-   variables, así un tema plano cambia la piel sin tocar la estructura. */
+/* Quantity wheel: a drum that turns in a slot, with teeth that roll on its
+   edges and the value between two marks. Colors are variables, so a flat
+   theme changes the skin without touching the structure. */
 .wheel {
   --wheel-frame: linear-gradient(#fdfdfd, #e3e3e3);
   --wheel-border: #8f9393;
@@ -943,7 +943,7 @@ ol {
 .wheel-window[data-dragging] {
   cursor: grabbing;
 }
-/* El lente del valor actual, detrás de los números. */
+/* The lens of the current value, behind the numbers. */
 .wheel-window::before {
   content: "";
   position: absolute;
@@ -951,7 +951,7 @@ ol {
   border-block: 1px solid var(--wheel-line);
   background: var(--wheel-lens);
 }
-/* La marca que señala el valor, junto a las líneas de medida. */
+/* The mark that points at the value, next to the measure lines. */
 .wheel-window::after {
   content: "";
   position: absolute;
@@ -983,7 +983,7 @@ ol {
 .wheel-face[data-current] {
   color: var(--wheel-ink);
 }
-/* Líneas de medida a la izquierda, ubicadas por script sobre la curva. */
+/* Measure lines on the left, placed by script along the curve. */
 .wheel-teeth {
   position: absolute;
   inset-block: 0;
@@ -1000,8 +1000,8 @@ ol {
   background: var(--wheel-tooth);
   will-change: transform;
 }
-/* El spinbutton real queda encima del lente: recibe foco y tipeo, pero los
-   números los dibuja el tambor. */
+/* The real spinbutton sits on top of the lens: it receives focus and typing,
+   but the numbers are drawn by the drum. */
 .wheel-value {
   position: absolute;
   inset: 36px 4px 36px 18px;
@@ -1059,10 +1059,10 @@ ol {
   width: 336px;
   flex: none;
 }
-/* Impresora: una carcasa de aluminio con UNA ranura oscura, más ancha que
-   el papel. El papel cae desde el centro de la ranura: el labio inferior de
-   la carcasa queda por delante de su borde superior, que entra en sombra.
-   Por eso arriba no hay dientes. */
+/* Printer: an aluminum casing with ONE dark slot, wider than the paper.
+   The paper falls from the center of the slot: the casing's lower lip sits
+   in front of its top edge, which falls into shadow. That is why there are
+   no teeth on top. */
 .receipt-slot {
   position: absolute;
   z-index: 1;
@@ -1087,8 +1087,8 @@ ol {
   box-shadow: var(--printer-groove-shadow);
 }
 .receipt-feed {
-  /* El papel nace en la mitad de la ranura: pasa por delante de su labio
-     inferior y se recorta solo arriba, sin perder su sombra. */
+  /* The paper is born in the middle of the slot: it passes in front of its
+     lower lip and is clipped only at the top, without losing its shadow. */
   position: relative;
   z-index: 2;
   top: -8px;
@@ -1108,7 +1108,7 @@ ol {
     bottom / calc(var(--tooth) * 2) 51% repeat-x,
     linear-gradient(#000 0 0) top / 100% 50% no-repeat;
 }
-/* Columnas fijas: el plato toma lo que sobra y las cifras no mueven nada. */
+/* Fixed columns: the dish takes what is left and the figures move nothing. */
 .receipt table {
   width: 100%;
   table-layout: fixed;
@@ -1242,7 +1242,7 @@ ol {
 .ticket-card .receipt {
   align-self: flex-start;
 }
-/* Columna de acción: total grande arriba y la acción principal debajo. */
+/* Action column: large total on top and the primary action below. */
 .receipt-actions {
   position: sticky;
   top: 0;
@@ -1292,7 +1292,7 @@ ol {
   height: 48px;
 }
 
-/* Estado del pedido */
+/* Order status */
 .status {
   padding: 22px 26px;
   min-height: 100%;
@@ -1374,12 +1374,12 @@ ol {
   aspect-ratio: 1;
   border-radius: 12px;
   background:
-    /* rejillas de las esquinas inferiores */
+    /* grilles of the lower corners */
     repeating-linear-gradient(#0009 0 1px, #0000 1px 3px) 6% 93% / 16px 7px
     no-repeat,
     repeating-linear-gradient(#0009 0 1px, #0000 1px 3px) 94% 93% / 16px 7px
     no-repeat,
-    /* líneas guía verticales a los lados de la ventana */
+    /* vertical guide lines on the sides of the window */
     linear-gradient(#0009, #0009) 4.5% 50% / 1px 62% no-repeat,
     linear-gradient(#0009, #0009) 95.5% 50% / 1px 62% no-repeat,
     repeating-linear-gradient(90deg, #ffffff0a 0 1px, #0000 1px 3px),
@@ -1398,7 +1398,7 @@ ol {
     inset 0 -1px #0008,
     0 4px 10px #0008;
 }
-/* Ranura del borde superior y marcas de las esquinas. */
+/* Slot of the top edge and corner marks. */
 .scanner::before {
   content: "";
   position: absolute;
@@ -1433,7 +1433,7 @@ ol {
     0 0 14px 4px #c02aa966;
   animation: laser 2.4s ease-in-out infinite alternate;
 }
-/* Terminaciones del láser: dos topes verticales en sus extremos. */
+/* Laser ends: two vertical stops at its tips. */
 .scanner-laser::before,
 .scanner-laser::after {
   content: "";
@@ -1482,7 +1482,7 @@ ol {
   text-shadow: 0 -1px #0008;
 }
 
-/* Garzón: la misma barra, sidebar y tablero que el comensal. */
+/* Garzón: the same bar, sidebar and board as the Comensal. */
 .pending {
   cursor: default;
   white-space: nowrap;
@@ -1490,7 +1490,7 @@ ol {
 .table-detail {
   overflow: hidden;
 }
-/* El contenido largo hace scroll; la cuenta y su botón quedan siempre abajo. */
+/* Long content scrolls; the Cuenta and its button always stay at the bottom. */
 .table-detail-scroll {
   flex: 1;
   min-height: 0;
@@ -1506,8 +1506,8 @@ ol {
   gap: 8px;
   padding: 14px 20px 20px;
   border-top: var(--sticky-line);
-  /* Fija abajo: su sombra cae hacia arriba, sobre la lista que pasa por
-     debajo. */
+  /* Pinned at the bottom: its shadow falls upward, over the list passing
+     underneath. */
   position: relative;
   z-index: 1;
   box-shadow: var(--bill-shadow);
@@ -1740,7 +1740,7 @@ ol {
   }
 }
 
-/* Galería */
+/* Gallery */
 .gallery {
   min-height: 100vh;
   padding: 18px 24px 48px;
@@ -1748,8 +1748,8 @@ ol {
   background:
     var(--noise), radial-gradient(120% 90% at 50% 0%, #3d4a4e, var(--stage));
 }
-/* El enlace a la demo tiene ancho y alto fijos, como los demás controles de
-   la barra: caben "Abrir la demo" y "Open the demo" y nada se mueve. */
+/* The demo link has a fixed width and height, like the other controls in
+   the bar: "Abrir la demo" and "Open the demo" both fit and nothing moves. */
 .gallery .stage-bar > a {
   flex: none;
   box-sizing: border-box;
@@ -1929,8 +1929,8 @@ ol {
   border-radius: 4px;
   overflow: hidden;
 }
-/* Las piezas recortadas de una pantalla llevan contorno en todos sus bordes,
-   como sombra para no achicar lo que muestran. */
+/* Clipped screen pieces get an outline on every edge, drawn
+   as a shadow so it does not shrink what they show. */
 .navbar-demo,
 .sidebar-demo,
 .tabbar-demo,
@@ -1950,7 +1950,7 @@ ol {
 .search-hint {
   max-width: 260px;
 }
-/* Papel de la boleta bajo el stepper suelto. */
+/* Receipt paper under the standalone stepper. */
 .stepper-paper {
   display: inline-block;
   padding: 8px 14px;
@@ -1962,16 +1962,16 @@ ol {
   background: var(--paper);
   filter: var(--paper-shadow);
 }
-/* La impresora sobresale 14 px a los lados y 16 px arriba de su papel:
-   el marco le reserva ese espacio y algo de aire dentro del panel. */
+/* The printer sticks out 14 px at the sides and 16 px above its paper:
+   the frame reserves that space and some air inside the panel. */
 .printer-demo {
   padding: 24px 22px 8px;
 }
 .post-it-demo {
   width: 240px;
 }
-/* El sidebar y la tabbar con las medidas que tienen en la demo. */
-/* Marco de las piezas recortadas de una pantalla. */
+/* The sidebar and tab bar at the sizes they have in the demo. */
+/* Frame of the clipped screen pieces. */
 .sidebar-demo,
 .tabbar-demo,
 .table-detail-demo {
@@ -2023,7 +2023,7 @@ ol {
 .scanner-demo .scanner {
   width: 100%;
 }
-/* La cinta cuelga del borde superior de una tarjeta, como en el detalle. */
+/* The ribbon hangs from a card's top edge, as in the detail. */
 .ribbon-demo {
   width: 300px;
   padding: 26px 0 20px 24px;
@@ -2031,8 +2031,8 @@ ol {
 .ribbon-demo[data-size="big"] {
   width: 340px;
 }
-/* En el detalle los agregados llevan una línea que los separa del pedido;
-   sueltos en la galería no la necesitan. */
+/* In the detail the extras carry a line separating them from the Pedido;
+   standalone in the gallery they do not need it. */
 .panel .extras {
   border-right: 0;
 }
@@ -2050,7 +2050,7 @@ ol {
   border-bottom: 1px solid #ffffff14;
 }
 
-/* Switch del kit */
+/* Kit switch */
 .kit-switch-field {
   display: inline-flex;
   align-items: center;
@@ -2106,7 +2106,7 @@ ol {
   opacity: 0.5;
 }
 
-/* Búsqueda */
+/* Search */
 .search {
   display: flex;
   align-items: center;
@@ -2316,7 +2316,7 @@ ol {
   color: #fff;
 }
 
-/* Toast de estado del pedido */
+/* Order status toast */
 .toast-region {
   position: fixed;
   inset: auto 0 24px;
@@ -2325,7 +2325,7 @@ ol {
   border: 0;
   background: none;
   width: min(320px, calc(100vw - 16px));
-  /* El margen auto ya centra; sin esto el SDK la corre otro 50 % a la izquierda. */
+  /* The auto margin already centers it; without this the SDK shifts it another 50 % to the left. */
   translate: none;
   list-style: none;
 }
@@ -2389,7 +2389,7 @@ ol {
   color: var(--muted);
 }
 
-/* Garzón sin mesa elegida */
+/* Garzón with no table chosen */
 .sidebar-empty {
   display: flex;
   flex: 1;
@@ -2407,8 +2407,8 @@ ol {
   opacity: 0.6;
 }
 
-/* Con el nombre completo, el subtítulo va bajo el título para que la barra
-   quepa; en escritorios angostos se va el subtítulo y se achica el título. */
+/* With the full name, the subtitle goes under the title so the bar
+   fits; on narrow desktops the subtitle goes away and the title shrinks. */
 .stage-bar h1 small {
   display: block;
   line-height: 1;

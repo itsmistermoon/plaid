@@ -1,6 +1,6 @@
 /*
- * Tema moderno: plano, al estilo shadcn/ui, con el verde del mantel como
- * acento. Misma estructura que el original; solo cambia la piel.
+ * Modern theme: flat, shadcn/ui style, with the tablecloth green as its
+ * accent. Same structure as the original; only the skin changes.
  */
 [data-theme="moderno"] {
   --background: #f1f5f9;
@@ -18,7 +18,7 @@
   --shadow-sm: 0 1px 2px #0f172a0d;
   --shadow: 0 1px 3px #0f172a14, 0 1px 2px #0f172a0f;
 
-  /* Tokens que comparte con el original */
+  /* Tokens shared with the original */
   --ink: var(--foreground);
   --muted: var(--muted-foreground);
   --brand: var(--accent);
@@ -26,7 +26,7 @@
   --total: var(--foreground);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
-  /* Piel de las piezas compartidas (ver style.css) */
+  /* Skin of the shared pieces (see style.css) */
   --step-line: var(--input);
   --step-done-line: var(--accent);
   --step-done-bg: var(--accent);
@@ -53,7 +53,7 @@
   color: var(--foreground);
   background: var(--background);
 }
-/* Riel de selectores y segmentados */
+/* Selector and segmented-control rail */
 [data-theme="moderno"] {
   --track: #e2e8f0;
   --track-edge: #0f172a14;
@@ -64,7 +64,7 @@
   outline-offset: 2px;
 }
 
-/* Escenario y marco */
+/* Stage and frame */
 [data-theme="moderno"] .app,
 [data-theme="moderno"] .gallery {
   color: var(--foreground);
@@ -74,8 +74,8 @@
   color: var(--accent);
   text-shadow: none;
 }
-/* Mismos bordes que el original, pintados del color del riel: el segmento
-   activo se ve inset con un anillo interior, sin cambiar ninguna medida. */
+/* Same borders as the original, painted in the rail's color: the active
+   segment looks inset with an inner ring, without changing any measurement. */
 [data-theme="moderno"] .selector,
 [data-theme="moderno"] .segmented {
   border-color: var(--track);
@@ -159,7 +159,7 @@
 [data-theme="moderno"] .dark-button:hover:not(:disabled) {
   background: var(--secondary);
 }
-/* El chevrón ocupa el relleno izquierdo que en el original es la punta. */
+/* The chevron takes the left padding that is the tip in the original. */
 [data-theme="moderno"] .arrow-button {
   filter: none;
 }
@@ -196,7 +196,7 @@
   border: 0;
 }
 
-/* Menú lateral */
+/* Side menu */
 [data-theme="moderno"] .sidebar {
   background: var(--card);
   border-right-color: var(--border);
@@ -223,8 +223,8 @@
   background: var(--accent);
   box-shadow: none;
 }
-/* Mismo alto y relleno que el original; la píldora es el fondo recortado
-   hacia adentro, así la caja del ítem no cambia. */
+/* Same height and padding as the original; the pill is the background clipped
+   inward, so the item's box does not change. */
 [data-theme="moderno"] .sidebar-item {
   gap: 14px;
 }
@@ -359,7 +359,7 @@
 [data-theme="moderno"] .extra-price {
   color: var(--muted-foreground);
 }
-/* La nota es un campo de texto liso, sin chinche. */
+/* The note is a plain text field, with no pin. */
 [data-theme="moderno"] .post-it {
   margin-top: 18px;
   border: 1px solid var(--input);
@@ -394,7 +394,7 @@
   color: var(--destructive);
 }
 
-/* Boleta: tarjeta limpia, sin impresora ni papel */
+/* Receipt: clean card, no printer or paper */
 [data-theme="moderno"] .receipt-slot {
   display: none;
 }
@@ -462,7 +462,7 @@
   color: var(--muted-foreground);
 }
 
-/* Estado del pedido */
+/* Order status */
 [data-theme="moderno"] .orders > li + li {
   border-top: 1px solid var(--border);
   box-shadow: none;
@@ -483,8 +483,8 @@
   background: var(--secondary);
   box-shadow: none;
 }
-/* Esquinas del visor: un borde redondeado igual al de la ventana, del que
-   solo quedan las cuatro puntas, así siguen la curva sin cortarse. */
+/* Viewfinder corners: a rounded border matching the window's, of which
+   only the four tips remain, so they follow the curve without being cut. */
 [data-theme="moderno"] .scanner-window::before {
   content: "";
   position: absolute;
@@ -545,7 +545,7 @@
   gap: 14px;
 }
 
-/* Mesa: la tarjeta es la mesa, el mantel la sobrepasa y la placa va al centro */
+/* Table: the card is the table, the tablecloth extends past it and the plate goes in the center */
 [data-theme="moderno"] .table-button {
   border-radius: 14px;
 }
@@ -580,7 +580,7 @@
   stroke-width: 1.5;
   stroke-dasharray: 5 4;
   opacity: 1;
-  /* La costura va hacia adentro del borde del mantel, no encima de él. */
+  /* The stitching goes inward from the tablecloth's edge, not on top of it. */
   transform: scale(0.93);
   transform-box: view-box;
   transform-origin: center;
@@ -640,7 +640,7 @@
   fill: #d97706;
 }
 
-/* Galería */
+/* Gallery */
 [data-theme="moderno"] .panel {
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -672,7 +672,7 @@
     0 0 0 1px var(--border),
     var(--shadow-sm);
 }
-/* Contorno como sombra: un borde achicaría las piezas que muestran. */
+/* Outline as a shadow: a border would shrink the pieces they show. */
 [data-theme="moderno"] .navbar-demo {
   border-radius: 8px;
   box-shadow: 0 0 0 1px var(--border);
@@ -681,7 +681,7 @@
   border-bottom: 1px solid var(--border);
 }
 
-/* Switch del kit */
+/* Kit switch */
 [data-theme="moderno"] .kit-switch {
   border-color: var(--input);
   background: var(--input);
@@ -704,7 +704,7 @@
   box-shadow: 0 1px 2px #0f172a40;
 }
 
-/* Búsqueda */
+/* Search */
 [data-theme="moderno"] .search {
   border: 1px solid var(--input);
   border-radius: 8px;
@@ -790,7 +790,7 @@
   box-shadow: 0 8px 24px #0f172a1f;
 }
 
-/* Columna de acción de la boleta */
+/* Receipt action column */
 [data-theme="moderno"] .receipt-actions-total span {
   color: var(--muted-foreground);
 }

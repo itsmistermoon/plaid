@@ -13,15 +13,15 @@ type T = ReturnType<typeof useT>;
 
 interface PageEntry {
   page: Page;
-  /** Título en la barra de la tablet. */
+  /** Title in the tablet bar. */
   title: (t: T) => string;
-  /** Rótulo en el menú lateral o la barra inferior. */
+  /** Label in the side menu or the bottom bar. */
   label: (t: T) => string;
   icon: ReactNode;
-  /** Aparece en la barra inferior del teléfono. */
+  /** Appears in the phone's bottom bar. */
   tab: boolean;
   tour?: TourStep;
-  /** Sin pedidos enviados la página no tiene qué mostrar. */
+  /** With no sent Pedidos the page has nothing to show. */
   needsOrders?: boolean;
   render: (props: {
     go: Go;
@@ -29,7 +29,7 @@ interface PageEntry {
   }) => ReactNode;
 }
 
-/** Las páginas del comensal, en el orden del menú. */
+/** The Comensal's pages, in menu order. */
 export const pages: PageEntry[] = [
   {
     page: 'carta',

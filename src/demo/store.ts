@@ -1,4 +1,4 @@
 import { createDemoStore } from '../domain';
 
-/** El estado de la demo, compartido por el comensal, el garzón y el recorrido. */
+/** The demo state, shared by the Comensal, the Garzón and the tour. */
 export const store = createDemoStore();

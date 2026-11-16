@@ -1,4 +1,4 @@
-/** Recorrido guiado: pasos del circuito y su avance según el estado del dominio. */
+/** Guided tour: the circuit's steps and their progress according to the domain state. */
 
 import { findVisitorTable } from './domain';
 
@@ -12,7 +12,7 @@ export const tourSteps = [
 ] as const;
 export type TourStep = (typeof tourSteps)[number];
 
-/** `step === tourSteps.length` es el cierre del recorrido. */
+/** `step === tourSteps.length` is the end of the tour. */
 export interface Tour {
   step: number;
   skipped: boolean;
@@ -41,7 +41,7 @@ const done: Record<TourStep, (state: Snapshot) => boolean> = {
   cobrar: (s) => findVisitorTable(s.tables).orders.length === 0,
 };
 
-/** Primer paso pendiente a partir de `step`. Si la Mesa 7 perdió sus pedidos a mitad del circuito, vuelve a elegir platos. */
+/** First pending step from `step` on. If Mesa 7 lost its Pedidos midway through the circuit, it goes back to choosing dishes. */
 export function advanceTour(step: number, state: Snapshot): number {
   const sala = tourSteps.indexOf('sala');
   const cobrar = tourSteps.indexOf('cobrar');

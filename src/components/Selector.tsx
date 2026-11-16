@@ -1,4 +1,4 @@
-/** Grupo segmentado de la barra del demo: una opción marcada a la vez. */
+/** Segmented group of the demo bar: one option selected at a time. */
 export function Selector<V extends string>({
   className,
   legend,

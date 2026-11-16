@@ -48,7 +48,7 @@ it('un lanzamiento sigue en su dirección y cae en un número dentro del rango',
 });
 
 it('los dientes suben junto con los números cuando la cantidad aumenta', () => {
-  // Un número sube al crecer la posición; su diente debe subir igual.
+  // A number rises as the position grows; its tooth must rise the same.
   const before = toothOffset(3, 0, 30, 4);
   const after = toothOffset(3, 0.05, 30, 4);
   expect(after).toBeCloseTo(before - 0.05 * 30);

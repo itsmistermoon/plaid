@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 import { useT } from '../i18n';
 
 /**
- * Menú lateral del comensal: mesa arriba, ítems y logo abajo. Como `tabbar`
- * es la barra inferior del teléfono, que solo muestra los ítems con `tab`.
+ * The Comensal's side menu: table on top, items and logo below. `tabbar` is
+ * the phone's bottom bar, which only shows the items marked `tab`.
  */
 export function Sidebar({
   label,
@@ -33,7 +33,7 @@ export function Sidebar({
   );
 }
 
-/** Un ítem del menú lateral: ícono, rótulo y cantidad opcional. */
+/** A side menu item: icon, label and optional count. */
 export function SidebarItem({
   icon,
   label,
@@ -49,7 +49,7 @@ export function SidebarItem({
   current?: boolean;
   disabled?: boolean;
   count?: number;
-  /** Aparece en la barra inferior del teléfono. */
+  /** Appears in the phone's bottom bar. */
   tab?: boolean;
   tour?: string;
   onClick?: () => void;

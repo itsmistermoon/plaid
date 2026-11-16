@@ -1,7 +1,7 @@
 import { Checkbox, CheckboxIndicator } from '@ui-sdk/react/checkbox';
 import { Check } from 'lucide-react';
 
-/** Checkbox del kit: cuadro claro con un visto grueso. */
+/** The kit's checkbox: a light box with a thick checkmark. */
 export function KitCheck({
   label,
   checked,

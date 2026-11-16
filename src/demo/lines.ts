@@ -4,7 +4,7 @@ import { dishes, type Extra } from '../menu';
 
 export const dishById = (id: string) => dishes.find((dish) => dish.id === id);
 
-/** La línea tal como se imprime en la boleta: agregados y nota debajo. */
+/** The line as printed on the receipt: extras and note below. */
 export const receiptLine = (
   line: Line,
   key: string,
@@ -30,7 +30,7 @@ export const receiptLine = (
 export const lineKey = (line: Line) =>
   [line.dishId, ...line.extras, line.note].join('|');
 
-/** Resumen de una línea para la lista del pedido: "2 × Italiano + Palta (sin mayo)". */
+/** Summary of a line for the Pedido list: "2 × Italiano + Palta (sin mayo)". */
 export const lineSummary = (
   line: Line,
   extraName: (extra: Extra) => string,

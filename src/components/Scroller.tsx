@@ -7,7 +7,7 @@ import {
 } from '@ui-sdk/react/scroll-area';
 import type { ReactNode } from 'react';
 
-/** Zona con scroll nativo y la barra delgada del kit. */
+/** Native scroll area with the kit's thin scrollbar. */
 export function Scroller({
   label,
   children,

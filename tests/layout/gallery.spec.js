@@ -29,7 +29,7 @@ for (const width of [1440, 390]) {
           lang === 'es' ? /\/componentes$/ : /\/en\/components$/,
         );
         await page.evaluate(() => document.fonts.ready);
-        // Ninguna pieza se sale de la página ni de su panel.
+        // No piece goes outside the page or its panel.
         const overflow = await page.evaluate(() => {
           const page = document.documentElement.clientWidth;
           return [...document.querySelectorAll('.panel')]

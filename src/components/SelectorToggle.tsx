@@ -3,8 +3,8 @@ import type { MouseEvent } from 'react';
 import { useT } from '../i18n';
 
 /**
- * Elección binaria en teléfono: muestra el valor actual y al tocarla pasa al otro.
- * La etiqueta accesible nombra ambos valores.
+ * Binary choice on phones: shows the current value and switches to the other on tap.
+ * The accessible label names both values.
  */
 export function SelectorToggle({
   className,

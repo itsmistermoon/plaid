@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
-// Controles que miden lo mismo en ambos temas. La boleta queda fuera: en el
-// moderno es una tarjeta con otra tipografía (ver DESIGN.md).
+// Controls that measure the same in both themes. The receipt is left out: in the
+// modern theme it is a card with a different typeface (see DESIGN.md).
 const controls = [
   '.light-button',
   '.dark-button',

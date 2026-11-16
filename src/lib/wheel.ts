@@ -1,14 +1,14 @@
-// Lógica pura del tambor de la ruleta: resorte, detentes, cesión en los
-// bordes y lanzamiento. Adaptado de la page-wheel de spec-01 (Shu Ding, MIT).
+// Pure logic of the wheel drum: spring, detents, yielding at the edges and
+// flinging. Adapted from the page-wheel in spec-01 (Shu Ding, MIT).
 
 export type Motion = { pos: number; vel: number };
 
-// Resorte poco amortiguado: llega rápido y se pasa apenas antes de asentarse.
-const stiffness = 0.00035; // por ms²
+// Lightly damped spring: arrives fast and overshoots slightly before settling.
+const stiffness = 0.00035; // per ms²
 const damping = 2 * 0.75 * Math.sqrt(stiffness);
-const substep = 4; // ms, para que el resultado no dependa del frame rate
+const substep = 4; // ms, so the result does not depend on the frame rate
 
-/** Avanza el tambor `dt` ms hacia `target`. Devuelve el reposo exacto al llegar. */
+/** Advances the drum `dt` ms toward `target`. Returns exact rest on arrival. */
 export function settleStep(
   { pos, vel }: Motion,
   target: number,
@@ -26,15 +26,15 @@ export function settleStep(
   return { pos, vel };
 }
 
-/** Cuántos números cruzaron el centro entre el número `center` y la posición `pos`. */
+/** How many numbers crossed the center between number `center` and position `pos`. */
 export const crossed = (center: number, pos: number) =>
   Math.abs(Math.round(pos) - center);
 
-/** Más allá de min/max el tambor aún se mueve, pero solo un 30 %. */
+/** Beyond min/max the drum still moves, but only 30 %. */
 export const give = (p: number, min: number, max: number) =>
   p < min ? min - (min - p) * 0.3 : p > max ? max + (p - max) * 0.3 : p;
 
-/** Donde cae un lanzamiento a `velocity` filas/ms: sigue su impulso y se ajusta a un número. */
+/** Where a fling at `velocity` rows/ms lands: it follows its momentum and snaps to a number. */
 export const flingTarget = (
   pos: number,
   velocity: number,
@@ -43,9 +43,9 @@ export const flingTarget = (
 ) => Math.min(max, Math.max(min, Math.round(pos + velocity * 220)));
 
 /**
- * Distancia sobre el arco del diente `index` al centro, con el tambor en `pos`.
- * Al crecer `pos` los números suben, así que los dientes también suben; el
- * desfase se repite cada `pitch` px para que la fila de dientes parezca infinita.
+ * Distance along the arc from tooth `index` to the center, with the drum at `pos`.
+ * As `pos` grows the numbers rise, so the teeth rise too; the offset repeats
+ * every `pitch` px so the row of teeth looks infinite.
  */
 export const toothOffset = (
   index: number,

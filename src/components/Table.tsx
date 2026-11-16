@@ -85,7 +85,7 @@ export function Table({
           height="162"
           filter={`url(#${id}grain)`}
         />
-        {/* El mantel es un rombo mayor que la mesa: el borde lo recorta en octágono. */}
+        {/* The tablecloth is a diamond larger than the table: the edge clips it into an octagon. */}
         <path
           className="cloth-shadow"
           transform="translate(0 3)"
@@ -137,7 +137,7 @@ export function Table({
   );
 }
 
-/** Mesa tocable de la grilla del garzón, con su resumen para lectores de pantalla. */
+/** Tappable table of the Garzón's grid, with its summary for screen readers. */
 export function TableButton({
   number,
   occupied,

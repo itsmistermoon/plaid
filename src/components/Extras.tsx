@@ -6,7 +6,7 @@ import { useExtraName, useT } from '../i18n';
 import type { Extra } from '../menu';
 import { KitCheck } from './KitCheck';
 
-/** Agregados de un plato: título con `BadgePlus` y una casilla por agregado. */
+/** A dish's extras: a title with `BadgePlus` and one checkbox per extra. */
 export function Extras({
   extras,
   selected,

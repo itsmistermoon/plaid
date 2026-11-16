@@ -32,8 +32,8 @@ function App() {
         <h1>{messages[location.startsWith('/en/') ? 'en' : 'es'].notFound}</h1>
       </main>
     );
-  // Demo y galería quedan en la misma posición del árbol: cambiar de idioma
-  // solo cambia el contexto y no desmonta el estado local.
+  // Demo and gallery stay at the same position in the tree: switching language
+  // only changes the context and does not unmount local state.
   return (
     <LangContext value={route.lang}>
       {route.page === 'demo' ? <Demo /> : <Gallery />}
