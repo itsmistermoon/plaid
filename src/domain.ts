@@ -7,7 +7,7 @@ import { createStore } from 'zustand/vanilla';
 import { dishes } from './menu';
 
 type Cart = Record<string, number>;
-type CallKind = 'pedido' | 'garzón' | 'pago';
+export type CallKind = 'pedido' | 'garzón' | 'pago';
 type OrderStatus = 'enviado' | 'confirmado' | 'servido';
 interface Order {
   id: string;
