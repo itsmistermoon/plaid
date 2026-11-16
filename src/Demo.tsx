@@ -24,8 +24,10 @@ import {
   billTotal,
   cartTotal,
   createDemoStore,
+  findVisitorTable,
   type Line,
   unitPrice,
+  visitorTable,
 } from './domain';
 import { money } from './format';
 import { useDishText, useExtraName, useT } from './i18n';
@@ -91,7 +93,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
   const t = useT();
   const text = useDishText();
   const extraName = useExtraName();
-  const mesa = tables[6];
+  const mesa = findVisitorTable(tables);
   const [page, setPage] = useState<Page>('carta');
   const [category, setCategory] = useState<Category>(categories[0]);
   const [detail, setDetail] = useState<Dish | null>(null);
@@ -163,7 +165,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
         <nav className="sidebar tabbar" aria-label={t('diner')}>
           <div className="sidebar-guest">
             <span className="avatar" aria-hidden="true">
-              7
+              {visitorTable}
             </span>
             {t('table7')}
           </div>
@@ -680,7 +682,9 @@ function Garzon() {
                   data-occupied={item.occupied}
                   type="button"
                   aria-pressed={selected === item.number}
-                  data-tour={item.number === 7 ? 'servir cobrar' : undefined}
+                  data-tour={
+                    item.number === visitorTable ? 'servir cobrar' : undefined
+                  }
                   onClick={() => setSelected(item.number)}
                 >
                   <Table

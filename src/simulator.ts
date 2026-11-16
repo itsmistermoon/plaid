@@ -1,4 +1,4 @@
-import type { createDemoStore } from './domain';
+import { type createDemoStore, findVisitorTable, visitorTable } from './domain';
 
 export function startSimulator(
   store: ReturnType<typeof createDemoStore>,
@@ -14,15 +14,17 @@ export function startSimulator(
       () => {
         const state = store.getState();
         if (state.view === 'comensal') {
-          const order = state.tables[6].orders.find(
+          const order = findVisitorTable(state.tables).orders.find(
             (item) => item.status !== 'servido',
           );
-          if (order?.status === 'enviado') state.confirmOrder(7, order.id);
+          if (order?.status === 'enviado')
+            state.confirmOrder(visitorTable, order.id);
           else if (order?.status === 'confirmado')
-            state.serveOrder(7, order.id);
+            state.serveOrder(visitorTable, order.id);
         }
         const filler = state.tables.filter(
-          (table) => table.number !== 7 && !table.calls.includes('garzón'),
+          (table) =>
+            table.number !== visitorTable && !table.calls.includes('garzón'),
         );
         const chosen = filler[Math.floor(clock.random() * filler.length)];
         if (chosen)

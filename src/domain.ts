@@ -60,10 +60,15 @@ export const cartTotal = (lines: Line[]) =>
   lines.reduce((total, line) => total + unitPrice(line) * line.qty, 0);
 export const billTotal = (table: Table) =>
   table.orders.reduce((total, order) => total + cartTotal(order.lines), 0);
+/** La Mesa 7: la mesa del visitante, el comensal de la demo. */
+export const visitorTable = 7;
+/** La Mesa 7 dentro de la sala. */
+export const findVisitorTable = <T extends { number: number }>(tables: T[]) =>
+  tables.find((table) => table.number === visitorTable) as T;
 const initialTables = (): Table[] =>
   Array.from({ length: 12 }, (_, index) => ({
     number: index + 1,
-    occupied: index === 6,
+    occupied: index + 1 === visitorTable,
     orders: [],
     calls: [],
   }));
@@ -122,7 +127,7 @@ export const createDemoStore = (storage?: StateStorage) => {
         callWaiter: () =>
           set((state) => ({
             tables: state.tables.map((table) =>
-              table.number === 7 && !table.calls.includes('garzón')
+              table.number === visitorTable && !table.calls.includes('garzón')
                 ? { ...table, calls: [...table.calls, 'garzón'] }
                 : table,
             ),
@@ -134,12 +139,12 @@ export const createDemoStore = (storage?: StateStorage) => {
                 ? { ...table, occupied: false, orders: [], calls: [] }
                 : table,
             ),
-            ...(number === 7 ? { cart: [] } : {}),
+            ...(number === visitorTable ? { cart: [] } : {}),
           })),
         requestBill: () =>
           set((state) => ({
             tables: state.tables.map((table) =>
-              table.number === 7 && !table.calls.includes('pago')
+              table.number === visitorTable && !table.calls.includes('pago')
                 ? { ...table, calls: [...table.calls, 'pago'] }
                 : table,
             ),
@@ -220,7 +225,7 @@ export const createDemoStore = (storage?: StateStorage) => {
             return {
               cart: [],
               tables: state.tables.map((table) =>
-                table.number === 7
+                table.number === visitorTable
                   ? {
                       ...table,
                       occupied: true,
