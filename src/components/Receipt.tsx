@@ -30,9 +30,7 @@ export function Receipt({
   const t = useT();
   return (
     <div className="receipt">
-      <span className="receipt-slot" aria-hidden="true">
-        <span className="receipt-mouth" />
-      </span>
+      <span className="receipt-slot" aria-hidden="true" />
       <div className="receipt-feed">
         <div className="receipt-paper">
           <table>

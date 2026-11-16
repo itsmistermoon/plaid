@@ -42,8 +42,6 @@
 
   /* Impresora, papel y cinta. */
   --printer-body:
-    repeating-linear-gradient(#0008 0 1px, #0000 1px 3px) 14px 6px / 16px 8px
-    no-repeat,
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
     linear-gradient(#8a9294, #596163 45%, #3c4244 60%, #2c3133);
   --printer-body-shadow:
@@ -51,10 +49,6 @@
   --printer-edge: 1px solid #1b1f20;
   --printer-groove: linear-gradient(#050606, #1d2122);
   --printer-groove-shadow: inset 0 2px 2px #000, 0 1px #ffffff40;
-  --printer-led: radial-gradient(circle at 40% 35%, #d6ff9a, #4f8f1f);
-  --printer-led-glow: 0 0 5px #8fc23f, 0 0 0 1.5px #1b1f20;
-  --printer-mouth: linear-gradient(#000 0 50%, #0d1011);
-  --printer-mouth-lip: 0 1px #ffffff26, inset 0 -1px 2px #0008;
   --paper:
     linear-gradient(#000d, #0007 5px, #0002 12px, #0000 20px),
     linear-gradient(90deg, #0002, #0000 6px calc(100% - 6px), #0002),
@@ -1015,56 +1009,32 @@ ol {
   width: 336px;
   flex: none;
 }
-/* Impresora: carcasa de aluminio cepillado con un LED verde y una rejilla.
-   El papel entra por debajo de la carcasa: la boca es una ranura oscura más
-   ancha que el papel, con labio superior que tapa su borde, y deja una
-   sombra interior donde el papel se mete. Por eso arriba no hay dientes. */
+/* Impresora: una carcasa de aluminio con UNA ranura oscura, más ancha que
+   el papel. El papel cae desde el centro de la ranura: el labio inferior de
+   la carcasa queda por delante de su borde superior, que entra en sombra.
+   Por eso arriba no hay dientes. */
 .receipt-slot {
   position: absolute;
   z-index: 1;
   left: -14px;
   right: -14px;
   top: -16px;
-  height: 22px;
-  border-radius: 10px 10px 6px 6px / 9px 9px 5px 5px;
+  height: 18px;
+  border-radius: 9px 9px 5px 5px / 8px 8px 4px 4px;
   border: var(--printer-edge);
   background: var(--printer-body);
   box-shadow: var(--printer-body-shadow);
 }
-/* Ranura superior decorativa de la carcasa. */
 .receipt-slot::before {
   content: "";
   position: absolute;
-  left: 40px;
-  right: 24px;
-  top: 6px;
-  height: 5px;
-  border-radius: 3px;
-  background: var(--printer-groove);
-  box-shadow: var(--printer-groove-shadow);
-}
-.receipt-slot::after {
-  content: "";
-  position: absolute;
-  right: 9px;
-  top: 6px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--printer-led);
-  box-shadow: var(--printer-led-glow);
-}
-/* Boca: queda bajo la cara inferior de la carcasa, más ancha que el papel,
-   y su labio superior pisa el borde del papel. */
-.receipt-mouth {
-  position: absolute;
   left: 7px;
   right: 7px;
-  top: calc(100% - 2px);
-  height: 6px;
-  border-radius: 0 0 4px 4px / 0 0 5px 5px;
-  background: var(--printer-mouth);
-  box-shadow: var(--printer-mouth-lip);
+  top: 4px;
+  height: 9px;
+  border-radius: 5px;
+  background: var(--printer-groove);
+  box-shadow: var(--printer-groove-shadow);
 }
 .receipt-feed {
   /* Recorta el papel solo arriba: sale de la boca sin perder su sombra. */
