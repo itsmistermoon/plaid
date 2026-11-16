@@ -20,13 +20,15 @@
   --step-done-bg: linear-gradient(#9fd164, #5a8f28);
   --step-done-shadow: inset 0 1px #ffffff60, 0 1px 2px #0006;
   --step-now-shadow: var(--step-done-shadow);
-  --tabbar-line: #4f7f22;
-  --tabbar-bg: linear-gradient(#b4dc7c, #78ad41 55%, #6a9d37);
-  --tabbar-shadow: inset 0 1px #ffffff70;
-  --tabbar-ink: #fff;
-  --tabbar-ink-shadow: 0 -1px #0005;
-  --tabbar-divider: 1px solid #0000001f;
-  --tabbar-current-ink: #fff;
+  /* La tabbar del teléfono usa el material oscuro de la barra superior; el
+     verde solo marca el ítem activo, como en el sidebar. */
+  --tabbar-line: var(--bar-line);
+  --tabbar-bg: var(--noise), var(--bar);
+  --tabbar-shadow: inset 0 1px #ffffff26;
+  --tabbar-ink: var(--muted);
+  --tabbar-ink-shadow: 0 -1px #0008;
+  --tabbar-divider: 1px solid #0000004d;
+  --tabbar-current-ink: var(--brand);
   --tabbar-current-bg: #0000002a;
   --toast-icon-border: 1.5px solid #fff;
   --badge-ink: #fff;

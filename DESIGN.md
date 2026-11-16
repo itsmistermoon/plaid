@@ -37,6 +37,9 @@ Reglas de diseño de plaid (demo de El Clan, reconstrucción de iClub). Cada reg
 - **Comensal y Garzón usan la misma estructura: la misma barra superior, el mismo ancho y fondo de sidebar, los mismos botones y badges. El color sale siempre de variables por tema y nunca de un valor fijado en una sola vista.**
   Why: tienen que verse como una sola app.
   <!-- 2026-11-16: "deben ser consistentes: mismo verde en la barra superior, botones, etc." -->
+- **Las barras de navegación (superior, sidebar y tabbar del teléfono) usan el mismo material oscuro; el verde de acento solo marca el ítem activo.**
+  Why: la tabbar verde brillante competía con el contenido y no se veía parte de la misma app.
+  <!-- 2026-11-16: aprobado por moon tras auditoría -->
 
 ## Typography
 
