@@ -524,79 +524,180 @@ ol {
   height: 232px;
   box-shadow: 0 2px 4px #0006;
 }
-/* Cinta de tela verde: entra desde atrás de la tarjeta por arriba y se pliega
-   sobre el borde (los triángulos oscuros son la tela doblada hacia atrás). */
+/* Cinta de tela verde: entra desde atrás de la tarjeta por arriba (los
+   triángulos oscuros son la tela doblada hacia atrás) y termina abajo en cola
+   de golondrina, con una costura punteada que sigue su borde. */
 .ribbon {
   justify-self: end;
   position: relative;
-  margin: -26px 30px 0 0;
-  min-width: 268px;
-  padding: 14px 24px 16px;
-  text-align: center;
-  color: #fff;
-  font:
-    700 21px Inter,
-    sans-serif;
-  text-shadow: 0 -1px #2d4a14;
-  background:
-    linear-gradient(90deg, #ffffff8c 0 5px, #0000 5px 9px) left 5px / 9px 1px
-    repeat-x,
-    linear-gradient(90deg, #ffffff8c 0 5px, #0000 5px 9px) left calc(100% - 5px)
-    / 9px 1px repeat-x,
-    repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
-    repeating-linear-gradient(0deg, #0000000d 0 1px, #0000 1px 3px),
-    linear-gradient(#7fb04c, #5f9233 55%, #4e7e27);
-  border-bottom: 1px solid #3d6420;
-  box-shadow:
-    inset 0 1px #ffffff40,
-    0 3px 4px #0007;
+  max-width: 100%;
+  margin: -26px 24px 0 0;
+  filter: drop-shadow(0 3px 3px #0007);
 }
 .ribbon::before,
 .ribbon::after {
   content: "";
   position: absolute;
   top: 0;
-  width: 12px;
-  height: 12px;
-  background: linear-gradient(135deg, #24400f, #3a6119);
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, #0c3a1f, #17562f);
 }
 .ribbon::before {
-  left: -12px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  left: -10px;
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
 }
 .ribbon::after {
-  right: -12px;
-  clip-path: polygon(0 0, 100% 0, 0 100%);
+  right: -10px;
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
 }
-.detail-qty h4 {
-  justify-self: start;
+.ribbon-cloth {
+  position: relative;
+  display: block;
+  min-width: 250px;
+  padding: 14px 28px 28px;
+  text-align: center;
+  color: #fff;
+  font:
+    700 21px Inter,
+    sans-serif;
+  text-shadow: 0 -1px #0b3a1c;
+  background:
+    linear-gradient(90deg, #ffffff99 0 5px, #0000 5px 9px) left 6px / 9px 1px
+    repeat-x,
+    repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
+    repeating-linear-gradient(0deg, #0000000f 0 1px, #0000 1px 3px),
+    linear-gradient(#3fb36c, #24944f 55%, #1a7d41);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 13px), 0 100%);
+}
+.ribbon-stitch {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 26px;
+  fill: none;
+  stroke: #ffffff99;
+  stroke-dasharray: 5 4;
+  overflow: visible;
+}
+.ribbon-stitch polyline {
+  vector-effect: non-scaling-stroke;
 }
 .detail-text {
-  padding-top: 20px;
+  min-width: 0;
+  padding: 20px 24px 0 0;
+  overflow-wrap: break-word;
   font-size: 16px;
   line-height: 1.5;
   text-shadow: 0 -1px #0007;
 }
 .detail-foot {
   grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  display: flex;
   margin: 22px 0 0 -24px;
   border-top: 1px solid #3c4446;
   box-shadow: inset 0 1px #ffffff17;
 }
-.detail-qty {
+.extras {
+  flex: 1;
   display: grid;
-  grid-template-columns: 26px max-content;
   align-content: start;
-  gap: 18px;
-  padding: 18px 24px;
+  gap: 4px;
+  margin: 0;
+  padding: 14px 20px 16px 24px;
+  border: 0;
   border-right: 1px solid #3c4446;
 }
-.detail-qty h4 {
+.extras legend {
+  float: left;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 6px;
   font:
     700 20px Inter,
     sans-serif;
+}
+.extra {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.extra-price {
+  color: #c9d0d1;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+/* Post-it amarillo con chinche: la nota para cocina. */
+.post-it {
+  position: relative;
+  display: block;
+  margin-top: 26px;
+  background: linear-gradient(#f7ef9b, #ebe17c);
+  box-shadow:
+    0 1px 1px #0003,
+    0 6px 8px -2px #0007;
+}
+.post-it::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: -13px;
+  width: 13px;
+  height: 13px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff8a8a, #c3122a 55%, #7d0716);
+  box-shadow: 1px 2px 2px #0006;
+}
+.post-it::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  width: 2px;
+  height: 8px;
+  background: linear-gradient(#999, #555);
+}
+.post-it textarea {
+  display: block;
+  width: 100%;
+  height: 84px;
+  padding: 18px 18px 10px;
+  border: 0;
+  resize: none;
+  color: #4b4521;
+  font:
+    italic 15px Inter,
+    sans-serif;
+  background: none;
+}
+.post-it textarea::placeholder {
+  color: #7a7243;
+}
+.post-it textarea:focus-visible {
+  outline: 2px solid #c3122a88;
+  outline-offset: -4px;
+}
+.detail-order {
+  flex: 1.3;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 26px 20px 16px;
+}
+.detail-qty {
+  display: grid;
+  justify-items: center;
+  gap: 26px;
+  padding-top: 18px;
 }
 .stamp {
   width: 26px;
@@ -777,17 +878,11 @@ ol {
   opacity: 0.4;
 }
 .detail-receipt {
-  display: flex;
-  align-items: flex-start;
-  gap: 28px;
-  padding: 0 18px 16px 34px;
+  flex: none;
 }
 .detail-receipt .receipt {
-  width: 210px;
-  margin-top: 14px;
-}
-.detail-receipt .light-button {
-  margin-top: 74px;
+  width: 220px;
+  margin-top: 4px;
 }
 
 /* Boleta dentada */
@@ -807,11 +902,16 @@ ol {
   background: linear-gradient(#545454, #1d1d1d);
   box-shadow: 0 2px 3px #0008;
 }
+.receipt-feed {
+  /* Recorta el papel solo arriba: sale de la ranura sin perder su sombra. */
+  clip-path: inset(0 -16px -16px);
+}
 .receipt-paper {
   --tooth: 5px;
   padding: 18px 0 14px;
   color: var(--paper-ink);
   font-family: "Courier Prime", monospace;
+  font-variant-numeric: tabular-nums;
   background: linear-gradient(#fff, #e6e6e6 55%, #fbfbfb);
   filter: drop-shadow(0 3px 3px #0007);
   mask:
@@ -820,30 +920,58 @@ ol {
     conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top
     / calc(var(--tooth) * 2) 51% repeat-x;
 }
+/* Columnas fijas: el plato toma lo que sobra y las cifras no mueven nada. */
 .receipt table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: 16px;
 }
+.receipt-qty {
+  width: 7.5ch;
+}
+.receipt-price {
+  width: 10ch;
+}
 .receipt th,
 .receipt td {
-  padding: 10px 14px;
+  padding: 6px 10px;
   vertical-align: top;
   font-weight: 400;
   text-align: left;
 }
 .receipt th {
-  padding-left: 26px;
+  padding-left: 22px;
+  overflow-wrap: break-word;
 }
-.receipt td + td {
-  border-left: 1px dashed #c9c9c9;
-}
-.receipt td:first-of-type {
-  border-left: 1px dashed #c9c9c9;
+.receipt td {
   white-space: nowrap;
+  text-align: right;
 }
-.receipt tbody tr:last-child > * {
-  padding-bottom: 48px;
+.receipt tbody + tbody {
+  border-top: 1px dashed #c9c9c9;
+}
+.receipt tbody > tr:first-child > * {
+  padding-top: 10px;
+}
+.receipt tbody:last-of-type > tr:last-child > * {
+  padding-bottom: 24px;
+}
+.receipt-extra > *,
+.receipt-note > * {
+  padding-block: 3px;
+  font-size: 0.85em;
+}
+.receipt-plus td {
+  padding-block: 0;
+  padding-left: 22px;
+  text-align: left;
+}
+.receipt-note td {
+  padding-left: 22px;
+  white-space: normal;
+  text-align: left;
+  font-style: italic;
 }
 .receipt-total {
   padding: 10px 8px;
@@ -857,15 +985,31 @@ ol {
 .detail-receipt .receipt table {
   font-size: 13px;
 }
-.detail-receipt .receipt th {
-  padding-left: 10px;
+.detail-receipt .receipt-qty {
+  width: 4.5ch;
+}
+.detail-receipt .receipt-price {
+  width: 9ch;
 }
 .detail-receipt .receipt th,
 .detail-receipt .receipt td {
-  padding-inline: 6px;
+  padding-inline: 4px 10px;
 }
-.detail-receipt .receipt tbody tr:last-child > * {
-  padding-bottom: 10px;
+.detail-receipt .receipt th {
+  padding-left: 12px;
+}
+.detail-receipt .receipt .receipt-plus td {
+  padding-left: 12px;
+}
+.detail-receipt .receipt .receipt-note td {
+  padding-left: 12px;
+}
+.detail-receipt .receipt-extra > *,
+.detail-receipt .receipt-note > * {
+  padding-block: 2px;
+}
+.detail-receipt .receipt tbody:last-of-type > tr:last-child > * {
+  padding-bottom: 12px;
 }
 .detail-receipt .receipt-total {
   font-size: 21px;
@@ -902,6 +1046,9 @@ ol {
   gap: 36px;
   min-height: 100%;
   padding: 26px;
+}
+.ticket-card .receipt-qty {
+  width: 100px;
 }
 .ticket-card .receipt {
   align-self: flex-start;

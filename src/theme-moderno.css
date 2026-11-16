@@ -274,6 +274,10 @@
 }
 [data-theme="moderno"] .ribbon {
   margin: 0;
+  filter: none;
+  justify-self: start;
+}
+[data-theme="moderno"] .ribbon-cloth {
   min-width: 0;
   padding: 0;
   text-align: left;
@@ -283,14 +287,11 @@
   color: var(--foreground);
   background: none;
   clip-path: none;
-  filter: none;
-  box-shadow: none;
-  border: 0;
   text-shadow: none;
-  justify-self: start;
 }
 [data-theme="moderno"] .ribbon::before,
-[data-theme="moderno"] .ribbon::after {
+[data-theme="moderno"] .ribbon::after,
+[data-theme="moderno"] .ribbon-stitch {
   display: none;
 }
 [data-theme="moderno"] .detail-text {
@@ -302,13 +303,43 @@
   border-top: 1px solid var(--border);
   box-shadow: none;
 }
-[data-theme="moderno"] .detail-qty {
-  border-right: 1px solid var(--border);
+[data-theme="moderno"] .extras {
+  border-color: var(--border);
 }
-[data-theme="moderno"] .detail-qty h4 {
+[data-theme="moderno"] .extras legend {
   font:
     600 17px Outfit,
     sans-serif;
+}
+[data-theme="moderno"] .extra-price {
+  color: var(--muted-foreground);
+}
+/* La nota es un campo de texto liso, sin chinche. */
+[data-theme="moderno"] .post-it {
+  margin-top: 18px;
+  border: 1px solid var(--input);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="moderno"] .post-it::before,
+[data-theme="moderno"] .post-it::after {
+  display: none;
+}
+[data-theme="moderno"] .post-it textarea {
+  padding: 12px 14px;
+  font-style: normal;
+  font-size: 14px;
+  color: var(--foreground);
+}
+[data-theme="moderno"] .post-it textarea::placeholder {
+  color: var(--muted-foreground);
+}
+[data-theme="moderno"] .post-it:focus-within {
+  border-color: var(--accent);
+}
+[data-theme="moderno"] .post-it textarea:focus-visible {
+  outline: 0;
 }
 [data-theme="moderno"] .stamp {
   width: 10px;
@@ -342,16 +373,17 @@
 [data-theme="moderno"] .receipt td {
   border-bottom: 1px solid var(--border);
 }
-[data-theme="moderno"] .receipt td + td,
-[data-theme="moderno"] .receipt td:first-of-type {
-  border-left: 0;
+[data-theme="moderno"] .receipt tbody + tbody {
+  border-top: 0;
 }
-[data-theme="moderno"] .receipt td:last-child {
-  text-align: right;
-  font-family: "Courier Prime", monospace;
+[data-theme="moderno"] .receipt tbody > tr:not(:last-child) > * {
+  border-bottom: 0;
 }
-[data-theme="moderno"] .receipt tbody tr:last-child > * {
+[data-theme="moderno"] .receipt tbody:last-of-type > tr:last-child > * {
   padding-bottom: 10px;
+}
+[data-theme="moderno"] .receipt-note td {
+  color: var(--muted-foreground);
 }
 [data-theme="moderno"] .receipt-total {
   padding: 12px 14px;

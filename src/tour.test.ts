@@ -23,7 +23,7 @@ it('avanza paso a paso por el circuito completo', () => {
   const store = createDemoStore();
   const s = () => store.getState();
   s().startTour();
-  s().setQty('chacarero', 1);
+  s().addToCart({ dishId: 'chacarero' }, 1);
   expect(stepOf(store)).toBe('enviar');
   s().sendOrder();
   expect(stepOf(store)).toBe('sala');
@@ -43,7 +43,7 @@ it('avanza paso a paso por el circuito completo', () => {
 
 it('al empezar salta los pasos que el visitante ya hizo', () => {
   const store = createDemoStore();
-  store.getState().setQty('chacarero', 1);
+  store.getState().addToCart({ dishId: 'chacarero' }, 1);
   store.getState().sendOrder();
   store.getState().startTour();
   expect(stepOf(store)).toBe('sala');
@@ -53,7 +53,7 @@ it('no retrocede cuando el visitante vuelve a la vista del comensal', () => {
   const store = createDemoStore();
   const s = () => store.getState();
   s().startTour();
-  s().setQty('chacarero', 1);
+  s().addToCart({ dishId: 'chacarero' }, 1);
   s().sendOrder();
   s().setView('garzon');
   s().setView('comensal');
@@ -64,12 +64,12 @@ it('vuelve a elegir platos si la mesa se libera antes de pedir la cuenta', () =>
   const store = createDemoStore();
   const s = () => store.getState();
   s().startTour();
-  s().setQty('chacarero', 1);
+  s().addToCart({ dishId: 'chacarero' }, 1);
   s().sendOrder();
   s().setView('garzon');
   s().chargeAndFree(7);
   expect(stepOf(store)).toBe('elegir');
-  s().setQty('empanada', 1);
+  s().addToCart({ dishId: 'empanada' }, 1);
   s().sendOrder();
   expect(s().tables[6].occupied).toBe(true);
   expect(stepOf(store)).toBe('servir');
@@ -79,7 +79,7 @@ it('se salta y se retoma en el paso en que iba', () => {
   const store = createDemoStore();
   const s = () => store.getState();
   s().startTour();
-  s().setQty('chacarero', 1);
+  s().addToCart({ dishId: 'chacarero' }, 1);
   s().skipTour();
   expect(s().tour).toMatchObject({ skipped: true });
   s().sendOrder();
@@ -92,7 +92,7 @@ it('empieza de nuevo después de terminar', () => {
   const store = createDemoStore();
   const s = () => store.getState();
   s().startTour();
-  s().setQty('chacarero', 1);
+  s().addToCart({ dishId: 'chacarero' }, 1);
   s().sendOrder();
   s().setView('garzon');
   s().confirmOrder(7, orderId(store));

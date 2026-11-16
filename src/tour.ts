@@ -18,7 +18,7 @@ export interface Tour {
 
 interface Snapshot {
   view: 'comensal' | 'garzon';
-  cart: Record<string, number>;
+  cart: unknown[];
   tables: {
     orders: { status: string }[];
     calls: string[];
@@ -26,8 +26,7 @@ interface Snapshot {
 }
 
 const done: Record<TourStep, (state: Snapshot) => boolean> = {
-  elegir: (s) =>
-    Object.keys(s.cart).length > 0 || s.tables[6].orders.length > 0,
+  elegir: (s) => s.cart.length > 0 || s.tables[6].orders.length > 0,
   enviar: (s) => s.tables[6].orders.length > 0,
   sala: (s) => s.view === 'garzon',
   servir: (s) => s.tables[6].orders.some((order) => order.status === 'servido'),

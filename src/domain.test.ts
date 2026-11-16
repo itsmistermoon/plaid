@@ -7,25 +7,85 @@ import { startSimulator } from './simulator';
 
 it('actualiza el carrito y su total al cambiar cantidades', () => {
   const store = createDemoStore();
-  store.getState().setQty('chacarero', 2);
-  store.getState().setQty('empanada', 1);
+  store.getState().setQty({ dishId: 'chacarero' }, 2);
+  store.getState().setQty({ dishId: 'empanada' }, 1);
   expect(cartTotal(store.getState().cart)).toBe(16700);
-  store.getState().setQty('chacarero', 0);
+  store.getState().setQty({ dishId: 'chacarero' }, 0);
   expect(cartTotal(store.getState().cart)).toBe(2900);
 });
 
 it('no agrega un plato agotado al carrito', () => {
   const store = createDemoStore();
-  store.getState().setQty('chemilico', 1);
-  expect(store.getState().cart).toEqual({});
+  store.getState().setQty({ dishId: 'chemilico' }, 1);
+  expect(store.getState().cart).toEqual([]);
+});
+
+it('los agregados suman su precio a cada unidad', () => {
+  const store = createDemoStore();
+  store
+    .getState()
+    .addToCart({ dishId: 'chacarero', extras: ['palta', 'queso'] }, 2);
+  expect(cartTotal(store.getState().cart)).toBe((6900 + 1200 + 900) * 2);
+});
+
+it('separa en líneas distintas el mismo plato con otros agregados o nota', () => {
+  const store = createDemoStore();
+  const { addToCart } = store.getState();
+  addToCart({ dishId: 'chacarero' }, 1);
+  addToCart({ dishId: 'chacarero', extras: ['palta'] }, 1);
+  addToCart({ dishId: 'chacarero', note: 'sin ají' }, 1);
+  addToCart({ dishId: 'chacarero', extras: ['palta'] }, 2);
+  expect(store.getState().cart).toEqual([
+    { dishId: 'chacarero', extras: [], note: '', qty: 1 },
+    { dishId: 'chacarero', extras: ['palta'], note: '', qty: 3 },
+    { dishId: 'chacarero', extras: [], note: 'sin ají', qty: 1 },
+  ]);
+});
+
+it('normaliza agregados y nota para reconocer la misma línea', () => {
+  const store = createDemoStore();
+  const { addToCart } = store.getState();
+  addToCart(
+    { dishId: 'italiano', extras: ['huevo', 'palta'], note: ' poco pan ' },
+    1,
+  );
+  addToCart(
+    {
+      dishId: 'italiano',
+      extras: ['palta', 'huevo', 'nada'],
+      note: 'poco pan',
+    },
+    1,
+  );
+  expect(store.getState().cart).toEqual([
+    {
+      dishId: 'italiano',
+      extras: ['palta', 'huevo'],
+      note: 'poco pan',
+      qty: 2,
+    },
+  ]);
+});
+
+it('el pedido conserva los agregados y la nota de cada línea', () => {
+  const store = createDemoStore();
+  store
+    .getState()
+    .addToCart({ dishId: 'lomo', extras: ['huevo'], note: 'bien cocido' }, 1);
+  store.getState().sendOrder();
+  const table = store.getState().tables[6];
+  expect(table.orders[0].lines).toEqual([
+    { dishId: 'lomo', extras: ['huevo'], note: 'bien cocido', qty: 1 },
+  ]);
+  expect(billTotal(table)).toBe(13400 + 1000);
 });
 
 it('envía el carrito como pedido y llamado de la Mesa 7', () => {
   const store = createDemoStore();
-  store.getState().setQty('chacarero', 2);
+  store.getState().setQty({ dishId: 'chacarero' }, 2);
   store.getState().sendOrder();
   const state = store.getState();
-  expect(state.cart).toEqual({});
+  expect(state.cart).toEqual([]);
   expect(state.tables[6].orders).toMatchObject([
     { status: 'enviado', lines: [{ dishId: 'chacarero', qty: 2 }] },
   ]);
@@ -34,7 +94,7 @@ it('envía el carrito como pedido y llamado de la Mesa 7', () => {
 
 it('permite al garzón confirmar, servir y atender el llamado', () => {
   const store = createDemoStore();
-  store.getState().setQty('empanada', 1);
+  store.getState().setQty({ dishId: 'empanada' }, 1);
   store.getState().sendOrder();
   const id = store.getState().tables[6].orders[0].id;
   store.getState().confirmOrder(7, id);
@@ -47,7 +107,7 @@ it('permite al garzón confirmar, servir y atender el llamado', () => {
 
 it('comparte la vista activa y conserva el pedido al alternarla', () => {
   const store = createDemoStore();
-  store.getState().setQty('empanada', 1);
+  store.getState().setQty({ dishId: 'empanada' }, 1);
   store.getState().sendOrder();
   store.getState().setView('garzon');
   expect(store.getState().view).toBe('garzon');
@@ -66,7 +126,7 @@ it('recupera el pedido al crear el store con la misma sesión', () => {
     },
   };
   const first = createDemoStore(storage);
-  first.getState().setQty('empanada', 1);
+  first.getState().setQty({ dishId: 'empanada' }, 1);
   first.getState().sendOrder();
   const second = createDemoStore(storage);
   expect(second.getState().tables[6].calls).toEqual(['pedido']);
@@ -74,9 +134,9 @@ it('recupera el pedido al crear el store con la misma sesión', () => {
 
 it('suma los pedidos y registra el llamado de pago', () => {
   const store = createDemoStore();
-  store.getState().setQty('empanada', 2);
+  store.getState().setQty({ dishId: 'empanada' }, 2);
   store.getState().sendOrder();
-  store.getState().setQty('chacarero', 1);
+  store.getState().setQty({ dishId: 'chacarero' }, 1);
   store.getState().sendOrder();
   store.getState().requestBill();
   expect(billTotal(store.getState().tables[6])).toBe(12700);
@@ -85,7 +145,7 @@ it('suma los pedidos y registra el llamado de pago', () => {
 
 it('cobra y libera la mesa, borrando pedidos y llamados', () => {
   const store = createDemoStore();
-  store.getState().setQty('empanada', 1);
+  store.getState().setQty({ dishId: 'empanada' }, 1);
   store.getState().sendOrder();
   store.getState().requestBill();
   store.getState().chargeAndFree(7);
@@ -100,12 +160,12 @@ it('llama al garzón y reinicia toda la sesión', () => {
   const store = createDemoStore();
   store.getState().callWaiter();
   expect(store.getState().tables[6].calls).toContain('garzón');
-  store.getState().setQty('empanada', 2);
+  store.getState().setQty({ dishId: 'empanada' }, 2);
   store.getState().setView('garzon');
   store.getState().reset();
   expect(store.getState()).toMatchObject({
     view: 'comensal',
-    cart: {},
+    cart: [],
     tables: createDemoStore().getInitialState().tables,
   });
 });
@@ -115,7 +175,7 @@ afterEach(() => vi.useRealTimers());
 it('el garzón simulado confirma y sirve dentro de intervalos de 3 a 5 segundos', () => {
   vi.useFakeTimers();
   const store = createDemoStore();
-  store.getState().setQty('empanada', 1);
+  store.getState().setQty({ dishId: 'empanada' }, 1);
   store.getState().sendOrder();
   const stop = startSimulator(store, {
     random: () => 0,
@@ -134,7 +194,7 @@ it('el garzón simulado confirma y sirve dentro de intervalos de 3 a 5 segundos'
 it('pausa el simulador en la vista del garzón y lo reanuda al volver', () => {
   vi.useFakeTimers();
   const store = createDemoStore();
-  store.getState().setQty('empanada', 1);
+  store.getState().setQty({ dishId: 'empanada' }, 1);
   store.getState().sendOrder();
   const stop = startSimulator(store, {
     random: () => 0,
@@ -169,7 +229,7 @@ it('las mesas de relleno generan llamados sin tocar la Mesa 7', () => {
 
 it('el reinicio también se conserva al recargar la sesión', () => {
   const store = createDemoStore();
-  store.getState().setQty('empanada', 1);
+  store.getState().setQty({ dishId: 'empanada' }, 1);
   store.getState().sendOrder();
   store.getState().requestBill();
   store.getState().reset();
@@ -179,5 +239,5 @@ it('el reinicio también se conserva al recargar la sesión', () => {
     orders: [],
     calls: [],
   });
-  expect(reloaded.getState().cart).toEqual({});
+  expect(reloaded.getState().cart).toEqual([]);
 });

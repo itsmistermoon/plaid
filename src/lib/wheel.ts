@@ -41,3 +41,15 @@ export const flingTarget = (
   min: number,
   max: number,
 ) => Math.min(max, Math.max(min, Math.round(pos + velocity * 220)));
+
+/**
+ * Distancia sobre el arco del diente `index` al centro, con el tambor en `pos`.
+ * Al crecer `pos` los números suben, así que los dientes también suben; el
+ * desfase se repite cada `pitch` px para que la fila de dientes parezca infinita.
+ */
+export const toothOffset = (
+  index: number,
+  pos: number,
+  row: number,
+  pitch: number,
+) => index * pitch - ((((pos * row) % pitch) + pitch) % pitch);

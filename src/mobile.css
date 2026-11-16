@@ -161,12 +161,15 @@
   /* Detalle del plato: todo en una columna */
   .detail {
     grid-template: none / minmax(0, 1fr);
+    align-content: start;
     padding: 12px 12px 0;
   }
   .detail .ribbon {
     justify-self: center;
+    margin: 14px 0 0;
+  }
+  .detail .ribbon-cloth {
     min-width: 0;
-    margin: -26px 0 0;
     font-size: 18px;
   }
   .detail > .dish-plate {
@@ -174,30 +177,32 @@
     height: 190px;
   }
   .detail-text {
-    padding-top: 12px;
+    padding: 12px 0 0;
     font-size: 15px;
   }
   .detail-foot {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     margin: 16px -12px 0;
   }
-  .detail-qty {
-    grid-template-columns: 26px 1fr auto;
-    align-items: center;
+  .extras {
     padding: 14px 16px;
     border-right: 0;
+    border-bottom: 1px solid #3c4446;
   }
-  .detail-receipt {
+  .detail-order {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
-    padding: 0 16px 16px;
+    gap: 16px;
+    padding: 16px 16px 20px;
+  }
+  .detail-qty {
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0;
   }
   .detail-receipt .receipt {
     width: auto;
-  }
-  .detail-receipt .light-button {
-    margin-top: 0;
   }
   .ticket-card .receipt {
     width: auto;

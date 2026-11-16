@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import type { CallKind, OrderStatus } from './domain';
-import type { Category, Dish } from './menu';
+import type { Category, Dish, Extra } from './menu';
 import type { TourStep } from './tour';
 
 export type Lang = 'es' | 'en';
@@ -108,6 +108,10 @@ const es = {
   quantityOf: (name: string) => `Cantidad de ${name}`,
   soldOut: 'Agotado por hoy',
   previewOf: (name: string) => `Vista previa de ${name}`,
+  extras: 'Agregados',
+  addNote: 'Agregar nota...',
+  kitchenNote: 'Nota para cocina',
+  sampleNote: 'Sin ají, por favor',
   add: 'Agregar',
   addToOrder: (name: string) => `Agregar ${name} al pedido`,
   seeDetail: 'Ver en detalle',
@@ -233,6 +237,7 @@ const es = {
     sending: 'Enviando',
     served: 'Servido',
     detailPreview: 'Vista previa del detalle',
+    withExtras: 'Con agregados y nota',
     confirmed: 'Confirmado',
     free: 'Libre',
     combinedCalls: 'Llamados combinados',
@@ -321,6 +326,10 @@ const en: Messages = {
   quantityOf: (name) => `Quantity of ${name}`,
   soldOut: 'Sold out today',
   previewOf: (name) => `Preview of ${name}`,
+  extras: 'Extras',
+  addNote: 'Add a note...',
+  kitchenNote: 'Note for the kitchen',
+  sampleNote: 'No chili, please',
   add: 'Add',
   addToOrder: (name) => `Add ${name} to the order`,
   seeDetail: 'See details',
@@ -439,6 +448,7 @@ const en: Messages = {
     sending: 'Sending',
     served: 'Served',
     detailPreview: 'Detail preview',
+    withExtras: 'With extras and note',
     confirmed: 'Confirmed',
     free: 'Free',
     combinedCalls: 'Combined calls',
@@ -464,4 +474,10 @@ export function useT() {
 export function useDishText() {
   const lang = useLang();
   return (dish: Dish) => (lang === 'en' ? dish.en : dish.description);
+}
+
+/** Nombre de un agregado en el idioma de la ruta. */
+export function useExtraName() {
+  const lang = useLang();
+  return (extra: Extra) => (lang === 'en' ? extra.en : extra.name);
 }

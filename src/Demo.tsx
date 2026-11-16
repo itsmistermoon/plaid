@@ -1,3 +1,4 @@
+import { Label } from '@ui-sdk/react/label';
 import {
   BookOpen,
   Check,
@@ -19,30 +20,91 @@ import { Receipt, Stepper } from './components/Receipt';
 import { Table } from './components/Table';
 import { ThemeSwitch } from './components/ThemeSwitch';
 import { TourCoach } from './components/TourCoach';
-import { billTotal, cartTotal, createDemoStore } from './domain';
+import {
+  billTotal,
+  cartTotal,
+  createDemoStore,
+  type Line,
+  unitPrice,
+} from './domain';
 import { money } from './format';
-import { useDishText, useT } from './i18n';
-import { type Category, categories, type Dish, dishes } from './menu';
+import { useDishText, useExtraName, useT } from './i18n';
+import {
+  type Category,
+  categories,
+  type Dish,
+  dishes,
+  type Extra,
+} from './menu';
 import { startSimulator } from './simulator';
 import { tourSteps } from './tour';
 
 const store = createDemoStore();
 const dishById = (id: string) => dishes.find((dish) => dish.id === id);
+/** La línea tal como se imprime en la boleta: agregados y nota debajo. */
+const receiptLine = (
+  line: Line,
+  key: string,
+  qty: ReactNode,
+  extraName: (extra: Extra) => string,
+) => {
+  const dish = dishById(line.dishId);
+  return {
+    key,
+    name: dish?.name ?? line.dishId,
+    qty,
+    price: (dish?.price ?? 0) * line.qty,
+    extras: (dish?.extras ?? [])
+      .filter((extra) => line.extras.includes(extra.id))
+      .map((extra) => ({
+        name: extraName(extra),
+        price: extra.price * line.qty,
+      })),
+    note: line.note,
+  };
+};
+const lineKey = (line: Line) =>
+  [line.dishId, ...line.extras, line.note].join('|');
+/** Resumen de una línea para la lista del pedido: "2 × Italiano + Palta (sin mayo)". */
+const lineSummary = (line: Line, extraName: (extra: Extra) => string) => {
+  const dish = dishById(line.dishId);
+  const extras = (dish?.extras ?? [])
+    .filter((extra) => line.extras.includes(extra.id))
+    .map((extra) => ` + ${extraName(extra)}`)
+    .join('');
+  return `${line.qty} × ${dish?.name}${extras}${line.note ? ` (${line.note})` : ''}`;
+};
 const statusLabels = ['enviado', 'confirmado', 'servido'] as const;
 
 type Page = 'carta' | 'carrito' | 'estado' | 'cuenta';
 
 function Comensal({ onHome }: { onHome: () => void }) {
-  const { cart, tables, setQty, sendOrder, requestBill, callWaiter } =
-    useStore(store);
+  const {
+    cart,
+    tables,
+    setQty,
+    addToCart,
+    sendOrder,
+    requestBill,
+    callWaiter,
+  } = useStore(store);
   const t = useT();
   const text = useDishText();
+  const extraName = useExtraName();
   const mesa = tables[6];
   const [page, setPage] = useState<Page>('carta');
   const [category, setCategory] = useState<Category>(categories[0]);
   const [detail, setDetail] = useState<Dish | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+  const [extras, setExtras] = useState<string[]>([]);
+  const [note, setNote] = useState('');
+  const count = cart.reduce((sum, line) => sum + line.qty, 0);
+  const choice: Line | null = detail && {
+    dishId: detail.id,
+    extras,
+    note: note.trim(),
+    qty: quantity,
+  };
   const go = (next: Page) => {
     setPage(next);
     setDetail(null);
@@ -144,46 +206,103 @@ function Comensal({ onHome }: { onHome: () => void }) {
           {detail ? (
             <section className="card detail" aria-label={detail.name}>
               <DishPlate dish={detail} size="big" />
-              <h3 className="ribbon">{detail.name}</h3>
-              <p className="detail-text">{text(detail)}</p>
-              <div className="detail-foot">
-                <div className="detail-qty">
-                  <span className="stamp" aria-hidden="true" />
-                  <h4>{t('quantity')}</h4>
-                  {detail.soldOut ? (
-                    <p className="sold-out">{t('soldOut')}</p>
-                  ) : (
-                    <QuantityWheel
-                      value={quantity}
-                      onChange={setQuantity}
-                      label={t('quantityOf')(detail.name)}
-                    />
-                  )}
-                </div>
-                <div className="detail-receipt">
-                  <Receipt
-                    caption={t('previewOf')(detail.name)}
-                    lines={[
-                      {
-                        key: detail.id,
-                        name: detail.name,
-                        qty: `x${quantity}`,
-                        price: detail.price * quantity,
-                      },
-                    ]}
-                    total={detail.soldOut ? 0 : detail.price * quantity}
-                  />
-                  <button
-                    type="button"
-                    className="light-button"
-                    disabled={detail.soldOut}
-                    onClick={() => {
-                      setQty(detail.id, (cart[detail.id] ?? 0) + quantity);
-                      setDetail(null);
-                    }}
+              <h3 className="ribbon">
+                <span className="ribbon-cloth">
+                  <svg
+                    className="ribbon-stitch"
+                    viewBox="0 0 100 26"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
                   >
-                    {t('add')}
-                  </button>
+                    <polyline points="0,20 50,7 100,20" />
+                  </svg>
+                  {detail.name}
+                </span>
+              </h3>
+              <div className="detail-text">
+                <p>{text(detail)}</p>
+                <label className="post-it">
+                  <span className="sr-only">{t('kitchenNote')}</span>
+                  <textarea
+                    value={note}
+                    maxLength={120}
+                    placeholder={t('addNote')}
+                    disabled={detail.soldOut}
+                    onChange={(event) => setNote(event.target.value)}
+                  />
+                </label>
+              </div>
+              <div className="detail-foot">
+                {detail.extras && (
+                  <fieldset className="extras">
+                    <legend>
+                      <span className="stamp" aria-hidden="true" />
+                      {t('extras')}
+                    </legend>
+                    {detail.extras.map((extra) => (
+                      <Label key={extra.id} className="extra">
+                        <KitCheck
+                          label={`${extraName(extra)}, ${money(extra.price)}`}
+                          disabled={detail.soldOut}
+                          checked={extras.includes(extra.id)}
+                          onChange={(checked) =>
+                            setExtras((current) =>
+                              checked
+                                ? [...current, extra.id]
+                                : current.filter((id) => id !== extra.id),
+                            )
+                          }
+                        />
+                        <span aria-hidden="true">{extraName(extra)}</span>
+                        <span className="extra-price" aria-hidden="true">
+                          +{money(extra.price)}
+                        </span>
+                      </Label>
+                    ))}
+                  </fieldset>
+                )}
+                <div className="detail-order">
+                  <div className="detail-qty">
+                    {detail.soldOut ? (
+                      <p className="sold-out">{t('soldOut')}</p>
+                    ) : (
+                      <QuantityWheel
+                        value={quantity}
+                        onChange={setQuantity}
+                        label={t('quantityOf')(detail.name)}
+                      />
+                    )}
+                    <button
+                      type="button"
+                      className="light-button"
+                      disabled={detail.soldOut}
+                      data-tour="elegir"
+                      onClick={() => {
+                        if (choice) addToCart(choice, quantity);
+                        setDetail(null);
+                      }}
+                    >
+                      {t('add')}
+                    </button>
+                  </div>
+                  <div className="detail-receipt">
+                    {choice && (
+                      <Receipt
+                        caption={t('previewOf')(detail.name)}
+                        lines={[
+                          receiptLine(
+                            choice,
+                            detail.id,
+                            `x${quantity}`,
+                            extraName,
+                          ),
+                        ]}
+                        total={
+                          detail.soldOut ? 0 : unitPrice(choice) * quantity
+                        }
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </section>
@@ -229,9 +348,14 @@ function Comensal({ onHome }: { onHome: () => void }) {
                         <KitCheck
                           label={t('addToOrder')(dish.name)}
                           disabled={dish.soldOut}
-                          checked={!!cart[dish.id]}
+                          checked={cart.some(
+                            (line) =>
+                              line.dishId === dish.id &&
+                              !line.extras.length &&
+                              !line.note,
+                          )}
                           onChange={(checked) =>
-                            setQty(dish.id, checked ? 1 : 0)
+                            setQty({ dishId: dish.id }, checked ? 1 : 0)
                           }
                         />
                         <button
@@ -240,6 +364,8 @@ function Comensal({ onHome }: { onHome: () => void }) {
                           aria-label={t('seeDetailOf')(dish.name)}
                           onClick={() => {
                             setQuantity(1);
+                            setExtras([]);
+                            setNote('');
                             setDetail(dish);
                           }}
                         >
@@ -269,20 +395,18 @@ function Comensal({ onHome }: { onHome: () => void }) {
                   <Receipt
                     caption={t('yourOrder')}
                     total={cartTotal(cart)}
-                    lines={dishes
-                      .filter((dish) => cart[dish.id])
-                      .map((dish) => ({
-                        key: dish.id,
-                        name: dish.name,
-                        price: dish.price * cart[dish.id],
-                        qty: (
-                          <Stepper
-                            name={dish.name}
-                            qty={cart[dish.id]}
-                            onChange={(qty) => setQty(dish.id, qty)}
-                          />
-                        ),
-                      }))}
+                    lines={cart.map((line) =>
+                      receiptLine(
+                        line,
+                        lineKey(line),
+                        <Stepper
+                          name={dishById(line.dishId)?.name ?? line.dishId}
+                          qty={line.qty}
+                          onChange={(qty) => setQty(line, qty)}
+                        />,
+                        extraName,
+                      ),
+                    )}
                   />
                   <button
                     type="button"
@@ -308,10 +432,7 @@ function Comensal({ onHome }: { onHome: () => void }) {
                       <h3>{t('orderN')(index + 1)}</h3>
                       <p className="order-lines">
                         {order.lines
-                          .map(
-                            (line) =>
-                              `${line.qty} × ${dishById(line.dishId)?.name}`,
-                          )
+                          .map((line) => lineSummary(line, extraName))
                           .join(' · ')}
                       </p>
                       <ol className="steps" aria-label={t('progress')}>
@@ -370,15 +491,14 @@ function Comensal({ onHome }: { onHome: () => void }) {
                     caption={t('yourBill')}
                     total={billTotal(mesa)}
                     lines={mesa.orders.flatMap((order) =>
-                      order.lines.map((line) => {
-                        const dish = dishById(line.dishId);
-                        return {
-                          key: `${order.id}-${line.dishId}`,
-                          name: dish?.name ?? line.dishId,
-                          qty: `x${line.qty}`,
-                          price: (dish?.price ?? 0) * line.qty,
-                        };
-                      }),
+                      order.lines.map((line) =>
+                        receiptLine(
+                          line,
+                          `${order.id}-${lineKey(line)}`,
+                          `x${line.qty}`,
+                          extraName,
+                        ),
+                      ),
                     )}
                   />
                   {mesa.calls.includes('pago') ? (
@@ -437,6 +557,7 @@ function Garzon() {
   const { tables, confirmOrder, serveOrder, attendCall, chargeAndFree } =
     useStore(store);
   const t = useT();
+  const extraName = useExtraName();
   const [selected, setSelected] = useState<number | null>(null);
   const table = tables.find((item) => item.number === selected);
   const pending = tables.reduce((sum, item) => sum + item.calls.length, 0);
@@ -497,14 +618,11 @@ function Garzon() {
                     <li key={order.id}>
                       <span>
                         {t('orderN')(index + 1)}
-                        <small>
-                          {order.lines
-                            .map(
-                              (line) =>
-                                `${line.qty} × ${dishById(line.dishId)?.name}`,
-                            )
-                            .join(', ')}
-                        </small>
+                        {order.lines.map((line) => (
+                          <small key={lineKey(line)}>
+                            {lineSummary(line, extraName)}
+                          </small>
+                        ))}
                         <small>{t('statuses')[order.status]}</small>
                       </span>
                       {order.status === 'enviado' && (

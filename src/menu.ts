@@ -13,7 +13,22 @@ export interface Dish {
   en: string;
   price: number;
   soldOut?: boolean;
+  extras?: Extra[];
 }
+/** Agregado opcional de un plato, con su precio por unidad. */
+export interface Extra {
+  id: string;
+  name: string;
+  en: string;
+  price: number;
+}
+const sandwichExtras: Extra[] = [
+  { id: 'palta', name: 'Palta', en: 'Avocado', price: 1200 },
+  { id: 'queso', name: 'Queso', en: 'Cheese', price: 900 },
+  { id: 'tomate', name: 'Tomate', en: 'Tomato', price: 600 },
+  { id: 'huevo', name: 'Huevo frito', en: 'Fried egg', price: 1000 },
+  { id: 'tocino', name: 'Tocino', en: 'Bacon', price: 1300 },
+];
 export const categories: Category[] = [
   'Entradas',
   'Sándwiches',
@@ -39,6 +54,15 @@ export const dishes: Dish[] = [
       'Porción de papas cortadas a mano, fritas dos veces, con sal de mar y mayonesa casera.',
     en: 'Fries — hand-cut, double-fried, with sea salt and homemade mayo.',
     price: 3500,
+    extras: [
+      {
+        id: 'cheddar',
+        name: 'Queso cheddar',
+        en: 'Cheddar cheese',
+        price: 1500,
+      },
+      { id: 'huevo', name: 'Huevo frito', en: 'Fried egg', price: 1000 },
+    ],
   },
   {
     id: 'ensalada',
@@ -57,6 +81,7 @@ export const dishes: Dish[] = [
       'Churrasco de vacuno, porotos verdes, tomate y ají verde en pan frica.',
     en: 'Steak sandwich with green beans, tomato and green chili on a soft round bun.',
     price: 6900,
+    extras: sandwichExtras,
   },
   {
     id: 'barros-luco',
@@ -66,6 +91,7 @@ export const dishes: Dish[] = [
       'Churrasco de vacuno con queso mantecoso derretido en marraqueta tostada.',
     en: 'Steak and melted cheese on toasted Chilean bread.',
     price: 6400,
+    extras: sandwichExtras,
   },
   {
     id: 'italiano',
@@ -75,6 +101,7 @@ export const dishes: Dish[] = [
       'Lomito de cerdo con palta, tomate y mayonesa casera; los colores de la bandera italiana.',
     en: 'Pulled pork with avocado, tomato and homemade mayo — the Italian flag colors.',
     price: 6200,
+    extras: sandwichExtras,
   },
   {
     id: 'chemilico',
@@ -85,6 +112,7 @@ export const dishes: Dish[] = [
     en: 'Steak, fried egg and caramelized onion on country bread.',
     price: 6600,
     soldOut: true,
+    extras: sandwichExtras,
   },
   {
     id: 'pastel',
@@ -111,6 +139,9 @@ export const dishes: Dish[] = [
       'Lomo vetado a la plancha con papas fritas, cebolla frita y dos huevos.',
     en: 'Grilled steak with fries, fried onions and two eggs.',
     price: 13400,
+    extras: [
+      { id: 'huevo', name: 'Huevo extra', en: 'Extra egg', price: 1000 },
+    ],
   },
   {
     id: 'porotos',

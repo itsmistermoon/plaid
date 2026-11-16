@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { crossed, flingTarget, give, settleStep } from './wheel';
+import { crossed, flingTarget, give, settleStep, toothOffset } from './wheel';
 
 const run = (pos: number, target: number, ms: number) => {
   let state = { pos, vel: 0 };
@@ -45,4 +45,11 @@ it('un lanzamiento sigue en su dirección y cae en un número dentro del rango',
   expect(flingTarget(5, 0, 1, 20)).toBe(5);
   expect(flingTarget(5.3, 0.02, 1, 20)).toBe(10);
   expect(flingTarget(5, -1, 1, 20)).toBe(1);
+});
+
+it('los dientes suben junto con los números cuando la cantidad aumenta', () => {
+  // Un número sube al crecer la posición; su diente debe subir igual.
+  const before = toothOffset(3, 0, 30, 4);
+  const after = toothOffset(3, 0.05, 30, 4);
+  expect(after).toBeCloseTo(before - 0.05 * 30);
 });

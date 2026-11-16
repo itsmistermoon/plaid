@@ -7,12 +7,47 @@ import { createStore } from 'zustand/vanilla';
 import { dishes } from './menu';
 import { advanceTour, type Tour, tourSteps } from './tour';
 
-type Cart = Record<string, number>;
+/** Qué se pide: un plato con sus agregados y su nota para cocina. */
+export interface LineItem {
+  dishId: string;
+  extras?: string[];
+  note?: string;
+}
+/** Una línea del carrito o de un pedido. */
+export interface Line {
+  dishId: string;
+  extras: string[];
+  note: string;
+  qty: number;
+}
+const dishById = (id: string) => dishes.find((dish) => dish.id === id);
+/** Agregados válidos en el orden de la carta y nota sin espacios sobrantes. */
+const normalize = ({ dishId, extras = [], note = '' }: LineItem) => ({
+  dishId,
+  extras: (dishById(dishId)?.extras ?? [])
+    .filter((extra) => extras.includes(extra.id))
+    .map((extra) => extra.id),
+  note: note.trim(),
+});
+const sameItem = (a: LineItem, b: LineItem) =>
+  a.dishId === b.dishId &&
+  a.note === b.note &&
+  a.extras?.join() === b.extras?.join();
+/** Precio de una unidad de la línea: el plato más sus agregados. */
+export const unitPrice = ({ dishId, extras = [] }: LineItem) => {
+  const dish = dishById(dishId);
+  return (
+    (dish?.price ?? 0) +
+    (dish?.extras ?? [])
+      .filter((extra) => extras.includes(extra.id))
+      .reduce((sum, extra) => sum + extra.price, 0)
+  );
+};
 export type CallKind = 'pedido' | 'garzón' | 'pago';
 export type OrderStatus = 'enviado' | 'confirmado' | 'servido';
 interface Order {
   id: string;
-  lines: { dishId: string; qty: number }[];
+  lines: Line[];
   status: OrderStatus;
 }
 interface Table {
@@ -21,17 +56,10 @@ interface Table {
   orders: Order[];
   calls: CallKind[];
 }
-export const cartTotal = (cart: Cart) =>
-  dishes.reduce((total, dish) => total + dish.price * (cart[dish.id] ?? 0), 0);
+export const cartTotal = (lines: Line[]) =>
+  lines.reduce((total, line) => total + unitPrice(line) * line.qty, 0);
 export const billTotal = (table: Table) =>
-  table.orders.reduce(
-    (total, order) =>
-      total +
-      cartTotal(
-        Object.fromEntries(order.lines.map((line) => [line.dishId, line.qty])),
-      ),
-    0,
-  );
+  table.orders.reduce((total, order) => total + cartTotal(order.lines), 0);
 const initialTables = (): Table[] =>
   Array.from({ length: 12 }, (_, index) => ({
     number: index + 1,
@@ -42,13 +70,14 @@ const initialTables = (): Table[] =>
 interface DemoState {
   view: 'comensal' | 'garzon';
   setView: (view: 'comensal' | 'garzon') => void;
-  cart: Cart;
+  cart: Line[];
   tables: Table[];
   callWaiter: () => void;
   reset: () => void;
   chargeAndFree: (number: number) => void;
   requestBill: () => void;
-  setQty: (id: string, qty: number) => void;
+  setQty: (item: LineItem, qty: number) => void;
+  addToCart: (item: LineItem, qty: number) => void;
   sendOrder: () => void;
   confirmOrder: (table: number, id: string) => void;
   serveOrder: (table: number, id: string) => void;
@@ -62,7 +91,7 @@ interface DemoState {
 export const createDemoStore = (storage?: StateStorage) => {
   const store = createStore<DemoState>()(
     persist(
-      (set) => ({
+      (set, get) => ({
         tour: null,
         startTour: () =>
           set((state) => {
@@ -81,12 +110,12 @@ export const createDemoStore = (storage?: StateStorage) => {
         endTour: () => set({ tour: null }),
         view: 'comensal',
         setView: (view) => set({ view }),
-        cart: {},
+        cart: [],
         tables: initialTables(),
         reset: () =>
           set({
             view: 'comensal',
-            cart: {},
+            cart: [],
             tables: initialTables(),
             tour: null,
           }),
@@ -105,7 +134,7 @@ export const createDemoStore = (storage?: StateStorage) => {
                 ? { ...table, occupied: false, orders: [], calls: [] }
                 : table,
             ),
-            ...(number === 7 ? { cart: {} } : {}),
+            ...(number === 7 ? { cart: [] } : {}),
           })),
         requestBill: () =>
           set((state) => ({
@@ -115,16 +144,27 @@ export const createDemoStore = (storage?: StateStorage) => {
                 : table,
             ),
           })),
-        setQty: (id, qty) =>
+        setQty: (item, qty) =>
           set((state) => {
-            const dish = dishes.find((item) => item.id === id);
+            const dish = dishById(item.dishId);
             if (!dish || dish.soldOut || !Number.isFinite(qty)) return state;
-            qty = Math.floor(qty);
-            const cart = { ...state.cart };
-            if (qty <= 0) delete cart[id];
-            else cart[id] = qty;
-            return { cart };
+            const line = { ...normalize(item), qty: Math.floor(qty) };
+            const index = state.cart.findIndex((other) =>
+              sameItem(other, line),
+            );
+            if (line.qty <= 0)
+              return { cart: state.cart.filter((_, i) => i !== index) };
+            if (index < 0) return { cart: [...state.cart, line] };
+            return {
+              cart: state.cart.map((other, i) => (i === index ? line : other)),
+            };
           }),
+        addToCart: (item, qty) => {
+          const current = get().cart.find((line) =>
+            sameItem(line, normalize(item)),
+          );
+          get().setQty(item, (current?.qty ?? 0) + qty);
+        },
         confirmOrder: (number, id) =>
           set((state) => ({
             tables: state.tables.map((table) =>
@@ -170,10 +210,7 @@ export const createDemoStore = (storage?: StateStorage) => {
           })),
         sendOrder: () =>
           set((state) => {
-            const lines = Object.entries(state.cart).map(([dishId, qty]) => ({
-              dishId,
-              qty,
-            }));
+            const lines = state.cart;
             if (!lines.length) return state;
             const order: Order = {
               id: crypto.randomUUID(),
@@ -181,7 +218,7 @@ export const createDemoStore = (storage?: StateStorage) => {
               status: 'enviado',
             };
             return {
-              cart: {},
+              cart: [],
               tables: state.tables.map((table) =>
                 table.number === 7
                   ? {
@@ -197,6 +234,7 @@ export const createDemoStore = (storage?: StateStorage) => {
       }),
       {
         name: 'plaid-demo',
+        version: 1,
         storage: createJSONStorage(() => storage ?? sessionStorage),
       },
     ),

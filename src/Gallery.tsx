@@ -23,7 +23,7 @@ import { Table } from './components/Table';
 import { ThemeSwitch } from './components/ThemeSwitch';
 import type { CallKind } from './domain';
 import { money } from './format';
-import { pathFor, useLang, useT } from './i18n';
+import { pathFor, useExtraName, useLang, useT } from './i18n';
 import { type Category, categories, dishes } from './menu';
 
 const dish = (id: string) => {
@@ -376,6 +376,7 @@ export function Gallery() {
   const lang = useLang();
   const callLabels = t('callLabels');
   const s = t('stateLabels');
+  const extraName = useExtraName();
   const panel = t('panels');
   const categoryItems = categories.map((id) => ({
     value: id,
@@ -618,6 +619,34 @@ export function Gallery() {
                         name: dish('empanada').name,
                         qty: 'x3',
                         price: dish('empanada').price * 3,
+                      },
+                    ]}
+                  />
+                </div>
+              ),
+            },
+            {
+              label: s.withExtras,
+              node: (
+                <div className="detail-receipt">
+                  <Receipt
+                    caption={t('preview')}
+                    total={(dish('chacarero').price + 1200 + 600) * 2}
+                    lines={[
+                      {
+                        key: 'chacarero',
+                        name: dish('chacarero').name,
+                        qty: 'x2',
+                        price: dish('chacarero').price * 2,
+                        extras: (dish('chacarero').extras ?? [])
+                          .filter((extra) =>
+                            ['palta', 'tomate'].includes(extra.id),
+                          )
+                          .map((extra) => ({
+                            name: extraName(extra),
+                            price: extra.price * 2,
+                          })),
+                        note: t('sampleNote'),
                       },
                     ]}
                   />
