@@ -479,17 +479,22 @@
 }
 [data-theme="moderno"] .scanner-window {
   border-radius: 10px;
-  background:
-    linear-gradient(var(--accent) 0 0) 0 0 / 22px 3px no-repeat,
-    linear-gradient(var(--accent) 0 0) 0 0 / 3px 22px no-repeat,
-    linear-gradient(var(--accent) 0 0) 100% 0 / 22px 3px no-repeat,
-    linear-gradient(var(--accent) 0 0) 100% 0 / 3px 22px no-repeat,
-    linear-gradient(var(--accent) 0 0) 0 100% / 22px 3px no-repeat,
-    linear-gradient(var(--accent) 0 0) 0 100% / 3px 22px no-repeat,
-    linear-gradient(var(--accent) 0 0) 100% 100% / 22px 3px no-repeat,
-    linear-gradient(var(--accent) 0 0) 100% 100% / 3px 22px no-repeat,
-    var(--secondary);
+  background: var(--secondary);
   box-shadow: none;
+}
+/* Esquinas del visor: un borde redondeado igual al de la ventana, del que
+   solo quedan las cuatro puntas, así siguen la curva sin cortarse. */
+[data-theme="moderno"] .scanner-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--accent);
+  border-radius: inherit;
+  mask:
+    linear-gradient(#000 0 0) 0 0 / 24px 24px no-repeat,
+    linear-gradient(#000 0 0) 100% 0 / 24px 24px no-repeat,
+    linear-gradient(#000 0 0) 0 100% / 24px 24px no-repeat,
+    linear-gradient(#000 0 0) 100% 100% / 24px 24px no-repeat;
 }
 [data-theme="moderno"] .scanner-laser {
   left: 8%;
