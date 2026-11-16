@@ -496,7 +496,28 @@ ol {
   padding: 0 36px;
   border-bottom: var(--sticky-line);
   background: var(--noise), var(--slate);
-  box-shadow: var(--sticky-shadow);
+}
+/* La sombra solo aparece cuando la lista ya pasa por debajo: se enciende con
+   los primeros píxeles de scroll del tablero. Sin soporte, queda solo la línea. */
+@supports (animation-timeline: scroll()) {
+  .tabs-bar {
+    animation: sticky-shadow linear both;
+    animation-timeline: scroll();
+    animation-range: 0 12px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tabs-bar {
+      animation-timing-function: steps(1, start);
+    }
+  }
+}
+@keyframes sticky-shadow {
+  from {
+    box-shadow: none;
+  }
+  to {
+    box-shadow: var(--sticky-shadow);
+  }
 }
 .tabs-bar .segmented {
   margin-bottom: 0;
