@@ -282,9 +282,12 @@
   background: none;
   clip-path: none;
   filter: none;
+  box-shadow: none;
+  border: 0;
   text-shadow: none;
   justify-self: start;
 }
+[data-theme="moderno"] .ribbon::before,
 [data-theme="moderno"] .ribbon::after {
   display: none;
 }
@@ -314,41 +317,6 @@
 }
 [data-theme="moderno"] .sold-out {
   color: var(--destructive);
-}
-[data-theme="moderno"] .wheel {
-  border: 1px solid var(--input);
-  border-radius: 8px;
-  background: var(--card);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-[data-theme="moderno"] .wheel-window {
-  font-family: Inter, sans-serif;
-  font-weight: 500;
-  color: #a1a1aa;
-  background: var(--card);
-}
-[data-theme="moderno"] .wheel-value {
-  border-block: 1px solid var(--border);
-  font-weight: 600;
-  color: var(--foreground);
-  background: var(--secondary);
-}
-[data-theme="moderno"] .wheel-arrows {
-  border-left: 1px solid var(--border);
-}
-[data-theme="moderno"] .wheel-arrows button {
-  color: var(--foreground);
-  background: var(--card);
-}
-[data-theme="moderno"] .wheel-arrows button:hover:not(:disabled) {
-  background: var(--secondary);
-}
-[data-theme="moderno"] .wheel-arrows button + button {
-  border-top: 1px solid var(--border);
-}
-[data-theme="moderno"] .wheel-arrows button:disabled {
-  color: #d4d4d8;
 }
 
 /* Boleta: tarjeta lisa con divisores */
