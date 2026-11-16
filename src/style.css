@@ -723,11 +723,13 @@ ol {
   border: 0;
   border-right: 1px solid #3c4446;
 }
-.extras legend {
-  float: left;
+/* Ícono y título centrados entre sí; el ícono ocupa la columna de las
+   casillas, así el título alinea con los nombres de los agregados. Es un div
+   y no un legend porque WebKit pega el legend al borde superior del fieldset. */
+.extras-title {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 6px;
   font:
     700 20px Inter,
@@ -813,8 +815,9 @@ ol {
   gap: 16px;
 }
 .extras-icon {
-  width: 28px;
-  height: 28px;
+  flex: none;
+  width: 24px;
+  height: 24px;
   color: #e2a157;
   filter: drop-shadow(0 1px 1px #0006);
 }

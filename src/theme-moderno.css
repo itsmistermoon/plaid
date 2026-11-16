@@ -332,7 +332,7 @@
 [data-theme="moderno"] .extras {
   border-color: var(--border);
 }
-[data-theme="moderno"] .extras legend {
+[data-theme="moderno"] .extras-title {
   font:
     600 17px Outfit,
     sans-serif;

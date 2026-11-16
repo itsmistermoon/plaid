@@ -1,6 +1,6 @@
 import { Label } from '@ui-sdk/react/label';
 import { BadgePlus } from 'lucide-react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useStore } from 'zustand';
 import { DishPlate } from '../../components/DishPlate';
 import { KitCheck } from '../../components/KitCheck';
@@ -17,6 +17,7 @@ import { store } from '../store';
 export function Detalle({ dish, onDone }: { dish: Dish; onDone: () => void }) {
   const addToCart = useStore(store, (state) => state.addToCart);
   const t = useT();
+  const extrasId = useId();
   const text = useDishText();
   const extraName = useExtraName();
   const [quantity, setQuantity] = useState(1);
@@ -59,11 +60,11 @@ export function Detalle({ dish, onDone }: { dish: Dish; onDone: () => void }) {
       </div>
       <div className="detail-foot">
         {dish.extras && (
-          <fieldset className="extras">
-            <legend>
+          <fieldset className="extras" aria-labelledby={extrasId}>
+            <div className="extras-title" id={extrasId}>
               <BadgePlus className="extras-icon" aria-hidden="true" />
               {t('extras')}
-            </legend>
+            </div>
             {dish.extras.map((extra) => (
               <Label key={extra.id} className="extra">
                 <KitCheck
