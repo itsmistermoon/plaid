@@ -8,7 +8,13 @@ import {
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { tick } from '../lib/tick';
-import { crossed, flingTarget, give, settleStep } from '../lib/wheel';
+import {
+  crossed,
+  flingTarget,
+  give,
+  settleStep,
+  toothOffset,
+} from '../lib/wheel';
 
 // Tambor vertical y dientes en el borde, mezcla del select wheel y la
 // page-wheel de spec-01 (Shu Ding, MIT), con piel propia.
@@ -79,11 +85,11 @@ export function QuantityWheel({
     teethEls.current ??= [...el.querySelectorAll<HTMLElement>('[data-tooth]')];
     const { pos } = motion.current;
     // Los dientes rodean la curva del tambor: se apiñan hacia los bordes.
-    const phase = (((pos * row) % pitch) + pitch) % pitch;
     const half = teeth.length / 2;
     for (const tooth of teethEls.current) {
       const angle =
-        ((Number(tooth.dataset.tooth) - half) * pitch + phase) / radius;
+        toothOffset(Number(tooth.dataset.tooth) - half, pos, row, pitch) /
+        radius;
       const visible = Math.abs(angle) < Math.PI / 2;
       tooth.style.transform = visible
         ? `translateY(${(radius * Math.sin(angle)).toFixed(2)}px) scaleY(${Math.cos(angle).toFixed(3)})`
