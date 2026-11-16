@@ -141,7 +141,7 @@ function TableSheet({
             onCharged={onClose}
             heading={
               <div className="table-detail-head">
-                <DialogTitle render={<h3 />}>
+                <DialogTitle render={(props) => <h3 {...props} />}>
                   {t('tableN')(table.number)}
                 </DialogTitle>
                 <DialogClose className="dark-button mobile-only">
