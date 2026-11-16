@@ -539,8 +539,7 @@
   stroke: var(--accent);
   stroke-width: 3;
 }
-[data-theme="moderno"] .table-button[data-occupied="false"] .mesa,
-[data-theme="moderno"] .table-state[data-occupied="false"] .mesa {
+[data-theme="moderno"] .table-button[data-occupied="false"] .mesa {
   opacity: 0.55;
   filter: none;
 }
@@ -648,6 +647,12 @@
 [data-theme="moderno"] .panel-uses {
   border-top: 1px solid var(--border);
   background: var(--card);
+}
+[data-theme="moderno"] .sidebar-demo,
+[data-theme="moderno"] .tabbar-demo,
+[data-theme="moderno"] .table-detail-demo {
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 }
 [data-theme="moderno"] .navbar-demo {
   border: 1px solid var(--border);

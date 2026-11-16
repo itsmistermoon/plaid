@@ -1684,12 +1684,32 @@ ol {
   background:
     var(--noise), radial-gradient(120% 90% at 50% 0%, #3d4a4e, var(--stage));
 }
-.gallery .stage-bar a {
+/* El enlace a la demo tiene ancho y alto fijos, como los demás controles de
+   la barra: caben "Abrir la demo" y "Open the demo" y nada se mueve. */
+.gallery .stage-bar > a {
+  flex: none;
+  box-sizing: border-box;
+  width: 124px;
+  height: var(--bar-h);
   text-decoration: none;
 }
-.gallery-grid {
+.gallery {
+  counter-reset: panel;
+}
+.gallery-group {
   max-width: 1120px;
-  margin: auto;
+  margin: 0 auto 28px;
+}
+.gallery-group-title {
+  margin: 0 0 10px;
+  font:
+    700 13px Inter,
+    sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   grid-auto-flow: dense;
@@ -1726,6 +1746,12 @@ ol {
   box-shadow: inset 0 1px #ffffff2e;
   text-shadow: 0 -1px #000a;
 }
+.panel {
+  counter-increment: panel;
+}
+.panel-number::before {
+  content: counter(panel, decimal-leading-zero);
+}
 .panel-number {
   font:
     700 12px "Courier Prime",
@@ -1735,6 +1761,7 @@ ol {
 .panel-stage {
   flex: 1;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   min-height: 170px;
   padding: 22px 18px;
@@ -1804,10 +1831,6 @@ ol {
   display: block;
   width: 120px;
 }
-.table-state[data-occupied="false"] .mesa {
-  opacity: 0.6;
-  filter: saturate(0.55);
-}
 .navbar-demo {
   width: 100%;
   min-width: 300px;
@@ -1819,6 +1842,94 @@ ol {
 }
 .panel-states .detail-receipt {
   padding: 0;
+}
+.panel .stage-bar {
+  max-width: none;
+  margin: 0;
+}
+.search-hint {
+  max-width: 260px;
+}
+/* Papel de la boleta bajo el stepper suelto. */
+.stepper-paper {
+  display: inline-block;
+  padding: 8px 14px;
+  font:
+    16px "Courier Prime",
+    monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper-ink);
+  background: var(--paper);
+  filter: var(--paper-shadow);
+}
+.post-it-demo {
+  width: 240px;
+}
+/* El sidebar y la tabbar con las medidas que tienen en la demo. */
+/* Marco de las piezas recortadas de una pantalla. */
+.sidebar-demo,
+.tabbar-demo,
+.table-detail-demo {
+  border-radius: 6px;
+  overflow: hidden;
+}
+.sidebar-demo {
+  display: flex;
+  width: 300px;
+  height: 400px;
+}
+.sidebar-demo .sidebar {
+  flex: 1;
+}
+.tabbar-demo {
+  width: 100%;
+  max-width: 390px;
+}
+.panel-states > li:has(.tabbar-demo) {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.sidebar-sample {
+  width: 240px;
+}
+.tabs-demo {
+  width: 100%;
+  height: 200px;
+  border-radius: 6px;
+  background: var(--noise), var(--slate);
+}
+.tabs-demo .scroll-list {
+  margin-top: 12px;
+}
+.panel-states > li:has(.tabs-demo) {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+.table-detail-demo {
+  width: 300px;
+  height: 440px;
+}
+.table-detail-demo[data-short] {
+  height: 260px;
+}
+.scanner-demo {
+  width: 220px;
+}
+.scanner-demo .scanner {
+  width: 100%;
+}
+/* La cinta cuelga del borde superior de una tarjeta, como en el detalle. */
+.ribbon-demo {
+  width: 300px;
+  padding: 26px 0 20px 24px;
+}
+.ribbon-demo[data-size="big"] {
+  width: 340px;
+}
+/* En el detalle los agregados llevan una línea que los separa del pedido;
+   sueltos en la galería no la necesitan. */
+.panel .extras {
+  border-right: 0;
 }
 .seal-badge {
   display: block;

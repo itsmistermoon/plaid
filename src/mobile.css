@@ -344,6 +344,20 @@
   .panel-states .navbar-demo {
     width: 100%;
   }
+  /* La boca de la impresora sobresale 14 px del papel: que no se recorte. */
+  .panel-stage {
+    padding-inline: 10px;
+  }
+  /* La boleta del pedido ocupa el ancho del teléfono, como en la demo. */
+  .panel-stage:has(.ticket-card) {
+    padding: 0;
+  }
+  .panel-stage .ticket-card {
+    border-radius: 0;
+  }
+  .panel-states .receipt {
+    margin-inline: 14px;
+  }
   .table-demo {
     flex-direction: column;
   }
