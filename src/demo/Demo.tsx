@@ -1,16 +1,17 @@
 import { LayoutGrid, RotateCcw } from 'lucide-react';
-import { useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 import { Link } from 'wouter';
 import { useStore } from 'zustand';
 import { LangSwitch } from '../components/LangSwitch';
 import { SchemeSwitch } from '../components/SchemeSwitch';
 import { Selector } from '../components/Selector';
 import { SelectorToggle } from '../components/SelectorToggle';
-import { StageBar } from '../components/StageBar';
+import { StageBar, StageIntro } from '../components/StageBar';
 import { ThemeSwitch } from '../components/ThemeSwitch';
 import { TourCoach } from '../components/TourCoach';
 import { TourThread } from '../components/TourThread';
 import { pathFor, useLang, useT } from '../i18n';
+import { tartanUrl } from '../tartan';
 import { tourSteps } from '../tour';
 import { Comensal } from './Comensal';
 import { Garzon } from './Garzon';
@@ -32,13 +33,11 @@ export function Demo() {
   return (
     <main
       className="app"
+      style={{ '--clan-tartan': tartanUrl() } as CSSProperties}
       data-view={view}
       data-tour-step={touring ? tourSteps[touring.step] : undefined}
     >
       <StageBar>
-        <h1>
-          Restaurant El Clan <small>{t('stageSubtitle')}</small>
-        </h1>
         <ThemeSwitch />
         <SchemeSwitch />
         <LangSwitch />
@@ -70,7 +69,7 @@ export function Demo() {
         <TourButton />
         <Link
           href={pathFor('gallery', lang)}
-          className="dark-button kit-link"
+          className="light-button kit-link"
           aria-label={t('uiKit')}
         >
           <LayoutGrid aria-hidden="true" />
@@ -90,6 +89,11 @@ export function Demo() {
           <span className="reset-label">{t('resetDemo')}</span>
         </button>
       </StageBar>
+      <StageIntro
+        title={t('stageTitle')}
+        tagline={t('stageSubtitle')}
+        description={t('stageIntro')}
+      />
       <div className="tablet">
         <span className="tablet-camera" aria-hidden="true" />
         <div className="tablet-glass">

@@ -150,7 +150,7 @@
   "src/style.css | .sidebar-logo small | color: #fff",
   "src/style.css | .sidebar-logo | text-shadow: 0 1px 2px #000a",
   "src/style.css | .sold-out | color: #ffb4a8",
-  "src/style.css | .stage-bar h1 | text-shadow: 0 1px 2px #0008",
+  "src/style.css | .stage-intro h1 | text-shadow: 0 1px 2px #0008",
   "src/style.css | .stepper button | background: linear-gradient(#fff, #d8d8d8)",
   "src/style.css | .stepper button | border: 1px solid #9a9a9a",
   "src/style.css | .stepper button | box-shadow: 0 1px 1px #0004",

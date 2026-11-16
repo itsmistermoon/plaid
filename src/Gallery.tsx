@@ -51,7 +51,7 @@ import { SearchField } from './components/SearchField';
 import { Selector } from './components/Selector';
 import { SelectorToggle } from './components/SelectorToggle';
 import { Sidebar, SidebarItem } from './components/Sidebar';
-import { StageBar } from './components/StageBar';
+import { StageBar, StageIntro } from './components/StageBar';
 import { TableButton } from './components/Table';
 import { TableDetail, TableDetailEmpty } from './components/TableDetail';
 import { ThemeSwitch } from './components/ThemeSwitch';
@@ -871,9 +871,6 @@ export function Gallery() {
       style={{ '--clan-tartan': tartanUrl() } as CSSProperties}
     >
       <StageBar>
-        <h1>
-          {t('galleryTitle')} <small>{t('gallerySubtitle')}</small>
-        </h1>
         <ThemeSwitch />
         <SchemeSwitch />
         <LangSwitch />
@@ -881,6 +878,11 @@ export function Gallery() {
           {t('openDemo')}
         </Link>
       </StageBar>
+      <StageIntro
+        title={t('galleryTitle')}
+        tagline={t('gallerySubtitle')}
+        description={t('galleryIntro')}
+      />
       <Group title={group.controls} thread="controls">
         <Panel
           title={panel.button}

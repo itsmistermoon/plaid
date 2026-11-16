@@ -1,6 +1,8 @@
 /* Original theme tokens (iClub, 2012). */
 [data-theme="original"] {
   --stage: #2b3437;
+  /* Corner radius of the segmented controls; the bar's buttons match it. */
+  --bar-radius: 7px;
   --slate: #50595c;
   --slate-card: #687275;
   --ink: #f2f4f1;
@@ -211,30 +213,40 @@ ol {
   --tour-w: 156px;
   --reset-w: 130px;
   --kit-w: 100px;
+  --open-w: 124px;
   max-width: 1120px;
   margin: 0 auto 18px;
-  display: flex;
+  display: grid;
+  grid-template-columns:
+    minmax(0, var(--theme-w)) minmax(0, var(--scheme-w))
+    minmax(0, var(--lang-w)) minmax(0, var(--role-w)) minmax(0, var(--tour-w))
+    minmax(0, var(--kit-w)) minmax(0, var(--reset-w));
+  justify-content: start;
   align-items: center;
   gap: 12px;
 }
+/* The gallery bar has fewer controls: the same cells, with the demo link last. */
+.gallery .stage-bar {
+  grid-template-columns:
+    minmax(0, var(--theme-w)) minmax(0, var(--scheme-w))
+    minmax(0, var(--lang-w)) minmax(0, var(--open-w));
+}
+/* Each control fills its grid cell; the bar's buttons share the segmented
+   control's corner radius. */
 .stage-bar .selector,
 .stage-bar button.dark-button,
-.stage-bar a.dark-button {
+.stage-bar a.light-button {
   box-sizing: border-box;
-  flex: none;
+  width: 100%;
   height: var(--bar-h);
 }
 .stage-bar button.dark-button,
-.stage-bar a.dark-button {
+.stage-bar a.light-button {
   padding: 0;
+  border-radius: var(--bar-radius);
   font-size: 13px;
   font-weight: 600;
-}
-.theme-switch {
-  width: var(--theme-w);
-}
-.scheme-switch {
-  width: var(--scheme-w);
+  text-decoration: none;
 }
 .scheme-switch svg {
   width: 15px;
@@ -248,24 +260,13 @@ ol {
 button.scheme-switch:disabled {
   cursor: not-allowed;
 }
-.lang-switch {
-  width: var(--lang-w);
+/* Title block under the control bar. */
+.stage-intro {
+  max-width: 1120px;
+  margin: 0 auto 18px;
 }
-.role-switch {
-  width: var(--role-w);
-}
-.tour-button {
-  width: var(--tour-w);
-}
-.reset-button {
-  width: var(--reset-w);
-}
-.kit-link {
-  width: var(--kit-w);
-  text-decoration: none;
-}
-.stage-bar h1 {
-  margin-right: auto;
+.stage-intro h1 {
+  margin: 0;
   white-space: nowrap;
   font:
     30px "Kaushan Script",
@@ -273,12 +274,24 @@ button.scheme-switch:disabled {
   color: var(--brand);
   text-shadow: 0 1px 2px #0008;
 }
-.stage-bar h1 small {
+.stage-intro h1 small {
+  display: block;
   font:
-    12px Inter,
+    12px / 1 Inter,
     sans-serif;
   color: var(--muted);
   text-shadow: none;
+}
+/* Two lines are always reserved, so the page below keeps its place in
+   both languages. */
+.stage-intro p {
+  max-width: 760px;
+  min-height: 42px;
+  margin: 10px 0 0;
+  font:
+    14px / 1.5 Inter,
+    sans-serif;
+  color: var(--muted);
 }
 .selector {
   margin: 0;
@@ -461,7 +474,8 @@ button.scheme-switch:disabled {
 .arrow-button svg {
   display: none;
 }
-.dark-button svg {
+.dark-button svg,
+.stage-bar .light-button svg {
   width: 17px;
   height: 17px;
 }
@@ -1857,22 +1871,17 @@ button.scheme-switch:disabled {
   background:
     var(--noise), radial-gradient(120% 90% at 50% 0%, #3d4a4e, var(--stage));
 }
-/* The demo link has a fixed width and height, like the other controls in
-   the bar: "Abrir la demo" and "Open the demo" both fit and nothing moves. */
-.gallery .stage-bar > a {
-  flex: none;
-  box-sizing: border-box;
-  width: 124px;
-  height: var(--bar-h);
-  text-decoration: none;
-}
-.gallery {
+.gallery,
+.app {
   position: relative;
   isolation: isolate;
+}
+.gallery {
   counter-reset: panel;
 }
 /* Subtle accent: the Clan tartan woven into the top of the page, fading out. */
-.gallery::before {
+.gallery::before,
+.app::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
@@ -2656,26 +2665,12 @@ button.scheme-switch:disabled {
   opacity: 0.6;
 }
 
-/* With the full name, the subtitle goes under the title so the bar
-   fits; on narrow desktops the subtitle goes away and the title shrinks. */
-.stage-bar h1 small {
-  display: block;
-  line-height: 1;
-}
+/* On narrow desktops the title shrinks and its tagline goes away. */
 @media (max-width: 1100px) {
-  .stage-bar h1 small {
+  .stage-intro h1 small {
     display: none;
   }
-  .stage-bar h1 {
+  .stage-intro h1 {
     font-size: 24px;
-  }
-}
-@media (min-width: 761px) and (max-width: 1023px) {
-  .stage-bar {
-    flex-wrap: wrap;
-    row-gap: 8px;
-  }
-  .stage-bar h1 {
-    flex-basis: 100%;
   }
 }

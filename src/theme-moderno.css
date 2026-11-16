@@ -7,6 +7,7 @@
  * preference (`data-color-scheme`: system, light or dark; see theme.ts).
  */
 [data-theme="moderno"] {
+  --bar-radius: 8px;
   color-scheme: light;
   color: var(--foreground);
   background: var(--background);
@@ -154,7 +155,7 @@
   color: var(--foreground);
   background: var(--background);
 }
-[data-theme="moderno"] .stage-bar h1 {
+[data-theme="moderno"] .stage-intro h1 {
   color: var(--accent);
   text-shadow: none;
 }
@@ -189,7 +190,7 @@
     inset 0 -1px 0 2px var(--track-edge);
 }
 [data-theme="moderno"] .tablet {
-  border: 1px solid var(--input);
+  border: 3px solid var(--input);
   background: var(--sunken);
   box-shadow:
     0 0 0 6px var(--border),
@@ -627,9 +628,6 @@
 [data-theme="moderno"] .side-total {
   color: var(--foreground);
 }
-[data-theme="moderno"] .tables {
-  gap: 14px;
-}
 
 /* Table: the card is the table, the tablecloth extends past it and the plate goes in the center */
 [data-theme="moderno"] .table-button {
@@ -723,7 +721,7 @@
 [data-theme="moderno"] .seal-glyph {
   transform-box: fill-box;
   transform-origin: center;
-  scale: 0.6;
+  scale: 0.75;
 }
 [data-theme="moderno"] .seal[data-kind="pago"] .seal-dot {
   fill: var(--destructive);

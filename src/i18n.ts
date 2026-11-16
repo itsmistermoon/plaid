@@ -40,6 +40,8 @@ const es = {
   // Demo stage
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'una reconstrucción de iClub',
+  stageIntro:
+    'Reconstrucción de iClub, una app de tablet para restaurantes de 2012 con estilo esqueumórfico, hecha con UI SDK. Compara la piel original con una moderna, desde la vista del comensal o la del garzón.',
   device: 'Dispositivo',
   diner: 'Comensal',
   waiter: 'Garzón',
@@ -179,6 +181,8 @@ const es = {
   // Gallery
   galleryTitle: 'Galería de componentes',
   gallerySubtitle: 'Restaurant El Clan · iClub',
+  galleryIntro:
+    'Los componentes de la demo: cada pieza de la reconstrucción de iClub, en su piel original y en una moderna, construida sobre UI SDK.',
   openDemo: 'Abrir la demo',
   states: 'Estados',
   presentational: 'Presentacional',
@@ -328,6 +332,8 @@ const en: Messages = {
   notFound: 'Page not found',
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'an iClub reconstruction',
+  stageIntro:
+    'A reconstruction of iClub, a 2012 skeuomorphic restaurant tablet app, built with UI SDK. Compare the original skin with a modern one, from the diner’s view or the waiter’s.',
   device: 'Device',
   diner: 'Diner',
   waiter: 'Waiter',
@@ -457,6 +463,8 @@ const en: Messages = {
   switchOff: 'OFF',
   galleryTitle: 'Component gallery',
   gallerySubtitle: 'Restaurant El Clan · iClub',
+  galleryIntro:
+    'The components behind the demo: every piece of the iClub reconstruction, in its original skin and a modern one, built on UI SDK.',
   openDemo: 'Open the demo',
   states: 'States',
   presentational: 'Presentational',

@@ -54,3 +54,36 @@ for (const width of [1440, 390]) {
     }
   });
 }
+
+// The waiter's floor has the same grid in every skin: only the skin changes.
+for (const width of [1440, 390]) {
+  test(`la sala del garzón tiene la misma grilla en todos los temas a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/demo');
+    if (width > 760) await page.locator('.role-switch button').nth(1).click();
+    else await page.locator('.role-switch').click();
+    let baseline;
+    for (const skin of skins) {
+      await chooseSkin(page, width, skin);
+      await page.evaluate(() => document.fonts.ready);
+      const boxes = await page.locator('.tables .mesa').evaluateAll((els) =>
+        els.map((el) => {
+          const { x, y, width, height } = el.getBoundingClientRect();
+          return { x, y, width, height };
+        }),
+      );
+      expect(boxes.length).toBe(12);
+      if (!baseline) baseline = boxes;
+      else
+        boxes.forEach((box, i) => {
+          for (const dimension of ['x', 'y', 'width', 'height'])
+            expect(
+              Math.abs(box[dimension] - baseline[i][dimension]),
+              `mesa ${i} ${dimension} (${skin.theme}/${skin.scheme})`,
+            ).toBeLessThanOrEqual(0.5);
+        });
+    }
+  });
+}
