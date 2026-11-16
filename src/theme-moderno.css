@@ -39,9 +39,10 @@
   --sticky-shadow: var(--shadow-sm);
   --tabbar-ink: var(--muted-foreground);
   --tabbar-ink-shadow: none;
-  --tabbar-divider: 0;
+  --tabbar-divider: 1px solid transparent;
   --tabbar-current-ink: var(--accent);
   --tabbar-current-bg: none;
+  --tabbar-current-shadow: none;
   --toast-icon-border: 0;
   --toast-icon-shadow: none;
   --toast-enviado: #2563eb;
@@ -51,6 +52,11 @@
 
   color: var(--foreground);
   background: var(--background);
+}
+/* Riel de selectores y segmentados */
+[data-theme="moderno"] {
+  --track: #e2e8f0;
+  --track-edge: #0f172a14;
 }
 [data-theme="moderno"] :focus-visible {
   outline: 2px solid var(--accent);
@@ -67,20 +73,23 @@
   color: var(--accent);
   text-shadow: none;
 }
+/* Mismos bordes que el original, pintados del color del riel: el segmento
+   activo se ve inset con un anillo interior, sin cambiar ninguna medida. */
 [data-theme="moderno"] .selector,
 [data-theme="moderno"] .segmented {
-  gap: 2px;
-  padding: 3px;
-  border: 0;
+  border-color: var(--track);
   border-radius: 8px;
-  background: #e2e8f0;
+  background: var(--track);
   box-shadow: none;
+}
+[data-theme="moderno"] .selector :is(button, a) + :is(button, a),
+[data-theme="moderno"] .segmented button + button {
+  border-left-color: var(--track);
 }
 [data-theme="moderno"] .selector button,
 [data-theme="moderno"] .selector a,
 [data-theme="moderno"] .segmented button {
-  border: 0;
-  border-radius: 6px;
+  border-radius: 7px;
   color: var(--muted-foreground);
   background: none;
   text-shadow: none;
@@ -90,7 +99,9 @@
 [data-theme="moderno"] .segmented button[aria-selected="true"] {
   color: var(--foreground);
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow:
+    inset 0 0 0 2px var(--track),
+    inset 0 -1px 0 2px var(--track-edge);
 }
 [data-theme="moderno"] .tablet {
   border: 1px solid #cbd5e1;
@@ -133,12 +144,8 @@
 [data-theme="moderno"] .arrow-button,
 [data-theme="moderno"] .dark-button,
 [data-theme="moderno"] .light-button {
-  height: 30px;
-  padding: 0 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  font-weight: 500;
-  font-size: 13px;
   color: var(--foreground);
   background: var(--card);
   box-shadow: var(--shadow-sm);
@@ -151,15 +158,16 @@
 [data-theme="moderno"] .dark-button:hover:not(:disabled) {
   background: var(--secondary);
 }
+/* El chevrón ocupa el relleno izquierdo que en el original es la punta. */
 [data-theme="moderno"] .arrow-button {
   clip-path: none;
-  padding-left: 6px;
-  border-left: 1px solid var(--border);
 }
 [data-theme="moderno"] .arrow-button svg {
   display: block;
-  width: 16px;
-  height: 16px;
+  position: absolute;
+  left: 2px;
+  width: 13px;
+  height: 13px;
 }
 [data-theme="moderno"] .light-button {
   border-color: var(--accent);
@@ -186,7 +194,7 @@
 /* Menú lateral */
 [data-theme="moderno"] .sidebar {
   background: var(--card);
-  border-right: 1px solid var(--border);
+  border-right-color: var(--border);
   box-shadow: none;
 }
 [data-theme="moderno"] .sidebar-guest,
@@ -199,7 +207,6 @@
     700 22px Outfit,
     sans-serif;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 8px;
 }
 [data-theme="moderno"] .avatar {
   width: 40px;
@@ -211,20 +218,25 @@
   background: var(--accent);
   box-shadow: none;
 }
+/* Mismo alto y relleno que el original; la píldora es el fondo recortado
+   hacia adentro, así la caja del ítem no cambia. */
 [data-theme="moderno"] .sidebar-item {
-  width: auto;
-  height: 42px;
-  margin: 2px 10px;
-  padding: 0 12px;
   gap: 14px;
-  border-radius: 8px;
+}
+[data-theme="moderno"] .sidebar:not(.tabbar) .sidebar-item {
+  border-radius: 12px;
+  border: 0 solid var(--card);
+  border-width: 2px 10px;
+  background-clip: padding-box;
   font-size: 17px;
   font-weight: 500;
   color: var(--foreground);
   text-shadow: none;
 }
-[data-theme="moderno"] .sidebar-item:hover:not(:disabled) {
-  background: var(--secondary);
+[data-theme="moderno"]
+  .sidebar:not(.tabbar)
+  .sidebar-item:hover:not(:disabled) {
+  background: var(--secondary) padding-box;
 }
 [data-theme="moderno"] .sidebar-item svg {
   width: 21px;
@@ -234,7 +246,7 @@
 }
 [data-theme="moderno"] .sidebar-item[aria-current="page"] {
   color: var(--accent);
-  background: var(--secondary);
+  background: var(--secondary) padding-box;
   box-shadow: none;
 }
 [data-theme="moderno"] .sidebar-item[aria-current="page"] svg {
@@ -278,8 +290,6 @@
   background: var(--secondary);
 }
 [data-theme="moderno"] .kit-check {
-  width: 22px;
-  height: 22px;
   border: 1px solid var(--input);
   border-radius: 5px;
   color: #fff;
@@ -424,8 +434,6 @@
   font-size: 20px;
 }
 [data-theme="moderno"] .stepper button {
-  width: 22px;
-  height: 22px;
   border: 1px solid var(--input);
   border-radius: 6px;
   color: var(--foreground);
@@ -651,12 +659,14 @@
 [data-theme="moderno"] .sidebar-demo,
 [data-theme="moderno"] .tabbar-demo,
 [data-theme="moderno"] .table-detail-demo {
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  box-shadow:
+    0 0 0 1px var(--border),
+    var(--shadow-sm);
 }
+/* Contorno como sombra: un borde achicaría las piezas que muestran. */
 [data-theme="moderno"] .navbar-demo {
-  border: 1px solid var(--border);
   border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--border);
 }
 [data-theme="moderno"] .scroll-list li {
   border-bottom: 1px solid var(--border);
@@ -664,37 +674,29 @@
 
 /* Switch del kit */
 [data-theme="moderno"] .kit-switch {
-  width: 40px;
-  height: 22px;
-  border: 0;
-  border-radius: 11px;
+  border-color: var(--input);
   background: var(--input);
   box-shadow: none;
 }
 [data-theme="moderno"] .kit-switch[data-checked] {
+  border-color: var(--accent);
   background: var(--accent);
 }
 [data-theme="moderno"] .kit-switch-on,
 [data-theme="moderno"] .kit-switch-off {
-  visibility: hidden;
+  text-shadow: none;
+}
+[data-theme="moderno"] .kit-switch-off {
+  color: var(--muted-foreground);
 }
 [data-theme="moderno"] .kit-switch-thumb {
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
   border: 0;
-  border-radius: 50%;
   background: #fff;
   box-shadow: 0 1px 2px #0f172a40;
-}
-[data-theme="moderno"] .kit-switch-thumb[data-checked] {
-  translate: 18px 0;
 }
 
 /* Búsqueda */
 [data-theme="moderno"] .search {
-  height: 34px;
   border: 1px solid var(--input);
   border-radius: 8px;
   color: var(--muted-foreground);
@@ -743,10 +745,8 @@
 
 /* Selector desplegable */
 [data-theme="moderno"] .dropdown {
-  height: 34px;
   border: 1px solid var(--input);
   border-radius: 8px;
-  font-weight: 500;
   color: var(--foreground);
   background: var(--card);
   box-shadow: var(--shadow-sm);

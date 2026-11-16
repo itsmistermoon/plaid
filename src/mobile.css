@@ -74,7 +74,7 @@
 .tabbar .sidebar-item[aria-current="page"] {
   color: var(--tabbar-current-ink);
   background: var(--tabbar-current-bg);
-  box-shadow: inset 0 2px 5px #0003;
+  box-shadow: var(--tabbar-current-shadow);
 }
 .tabbar .sidebar-item[aria-current="page"] svg {
   color: var(--tabbar-current-ink);
@@ -365,26 +365,6 @@
 
 /* Tema moderno en el teléfono */
 @media (max-width: 760px) {
-  /* Categorías como chips que se desplazan */
-  [data-theme="moderno"] .segmented {
-    gap: 6px;
-    padding: 0;
-    overflow-x: auto;
-    background: none;
-    scrollbar-width: none;
-  }
-  [data-theme="moderno"] .segmented button {
-    flex: none;
-    padding: 7px 14px;
-    border-radius: 99px;
-    background: var(--secondary);
-    border: 1px solid var(--border);
-  }
-  [data-theme="moderno"] .segmented button[aria-selected="true"] {
-    color: #fff;
-    background: var(--foreground);
-    border-color: var(--foreground);
-  }
   [data-theme="moderno"] .table-detail {
     box-shadow: 0 -8px 24px #0f172a29;
   }

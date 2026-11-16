@@ -30,6 +30,7 @@
   --tabbar-divider: 1px solid #0000004d;
   --tabbar-current-ink: var(--brand);
   --tabbar-current-bg: #0000002a;
+  --tabbar-current-shadow: inset 0 2px 5px #0003;
   --toast-icon-border: 1.5px solid #fff;
   --badge-ink: #fff;
   --toast-icon-shadow: 0 1px 2px #0008;
@@ -70,6 +71,15 @@
   /* Alto del encabezado del sidebar; la barra de pestañas lo comparte para
      que ambas líneas divisorias queden a la misma altura. */
   --head-height: 68px;
+  /* Medidas de los controles: las mismas en ambos temas. Cada tema pinta su
+     piel encima, pero nunca redefine alto, ancho fijo ni relleno. */
+  --button-h: 26px;
+  --field-h: 30px;
+  --check-size: 24px;
+  --switch-w: 74px;
+  --switch-h: 26px;
+  --step-size: 20px;
+  --nav-item-h: 46px;
   font-family: Inter, sans-serif;
   font-synthesis: none;
   color: #ecece2;
@@ -312,7 +322,7 @@ ol {
 }
 .arrow-button,
 .dark-button {
-  height: 26px;
+  height: var(--button-h);
   padding: 0 10px;
   color: #fff;
   border: 1px solid #1a1f20;
@@ -324,9 +334,9 @@ ol {
 }
 .arrow-button {
   justify-self: start;
+  position: relative;
   clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
-  padding-left: 12px;
-  border-left: 0;
+  padding-left: 16px;
 }
 .arrow-button svg {
   display: none;
@@ -336,7 +346,7 @@ ol {
   height: 17px;
 }
 .light-button {
-  min-height: 26px;
+  min-height: var(--button-h);
   padding: 0 14px;
   color: #444;
   border: 1px solid #9ea2a2;
@@ -416,7 +426,7 @@ ol {
   box-shadow: 0 1px 3px #000a;
 }
 .sidebar-item {
-  height: 46px;
+  height: var(--nav-item-h);
   width: 100%;
   border-top: 0;
   border-left: 0;
@@ -629,8 +639,8 @@ ol {
 .kit-check {
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  width: var(--check-size);
+  height: var(--check-size);
   padding: 0;
   border-radius: 3px;
   border: 1px solid #8d9597;
@@ -1149,14 +1159,14 @@ ol {
   gap: 4px;
 }
 .stepper output {
-  width: 3.5ch;
+  width: 34px;
   text-align: center;
 }
 .stepper button {
   display: grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: var(--step-size);
+  height: var(--step-size);
   padding: 0;
   border-radius: 50%;
   border: 1px solid #9a9a9a;
@@ -1958,8 +1968,8 @@ ol {
   display: inline-grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  width: 74px;
-  height: 26px;
+  width: var(--switch-w);
+  height: var(--switch-h);
   padding: 0;
   border: 1px solid #1a1f20;
   border-radius: 13px;
@@ -2008,7 +2018,7 @@ ol {
   align-items: center;
   gap: 6px;
   width: 260px;
-  height: 30px;
+  height: var(--field-h);
   padding: 0 6px 0 10px;
   border-radius: 15px;
   border: 1px solid #1a1f20;
@@ -2154,7 +2164,7 @@ ol {
   justify-content: space-between;
   gap: 10px;
   width: 200px;
-  height: 30px;
+  height: var(--field-h);
   padding: 0 10px;
   font-size: 13px;
   font-weight: 600;

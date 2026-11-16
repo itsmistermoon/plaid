@@ -61,6 +61,9 @@ Reglas de diseño de plaid (demo de Restaurant El Clan, reconstrucción de iClub
 - **Ninguna cifra que cambie puede mover el layout: se usan `tabular-nums` y columnas de ancho fijo. Los controles tienen el mismo tamaño y posición en ambos temas e idiomas, con el ancho calculado para el texto más largo entre ES y EN.**
   Why: si las cosas se mueven, la interfaz se siente desordenada.
   <!-- 2026-11-16: "establecer anchos fijos para que las columnas y el contenido no bailen" / "Deben estar en posiciones y tamaños independiente del estilo e idioma" -->
+- **Los controles (botones, búsqueda, selectores, segmentados, checkbox, switch, stepper, ítems de sidebar y tabbar) miden exactamente lo mismo en ambos temas, en escritorio y teléfono: alto, ancho fijo y relleno salen de variables compartidas (`--button-h`, `--field-h`, `--check-size`…) que ningún tema redefine. El moderno solo cambia la piel; sus contornos e insets se dibujan con sombras, colores de borde o `background-clip`, nunca con bordes, márgenes o rellenos distintos. La boleta moderna es la única excepción: es una tarjeta sin impresora, con otra tipografía, y puede medir distinto.**
+  Why: así los dos temas se comparan uno al lado del otro sin que nada cambie de tamaño.
+  <!-- 2026-11-16: moon aprueba igualar solo los controles y aceptar la boleta como excepción -->
 - **Las barras fijas (sticky), como pestañas y encabezados, tienen fondo opaco y el contenido pasa por debajo de ellas.**
   Why: si el contenido se ve a través, la interfaz parece rota.
   <!-- 2026-11-16: "que las pestañas superiores queden fijas y el menú se deslice por debajo, sin ser visible por detrás" -->

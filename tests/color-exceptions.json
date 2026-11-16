@@ -1,6 +1,5 @@
 [
   "src/mobile.css | .extras | border-bottom: 1px solid #3c4446",
-  "src/mobile.css | .tabbar .sidebar-item[aria-current=\"page\"] | box-shadow: inset 0 2px 5px #0003",
   "src/mobile.css | .table-detail | box-shadow: 0 -8px 24px #0008",
   "src/mobile.css | [data-theme=\"moderno\"] .segmented button[aria-selected=\"true\"] | color: #fff",
   "src/mobile.css | [data-theme=\"moderno\"] .table-detail | box-shadow: 0 -8px 24px #0f172a29",
