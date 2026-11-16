@@ -166,3 +166,18 @@ it('las mesas de relleno generan llamados sin tocar la Mesa 7', () => {
   expect(store.getState().tables[6].calls).toEqual([]);
   stop();
 });
+
+it('el reinicio también se conserva al recargar la sesión', () => {
+  const store = createDemoStore();
+  store.getState().setQty('empanada', 1);
+  store.getState().sendOrder();
+  store.getState().requestBill();
+  store.getState().reset();
+  const reloaded = createDemoStore();
+  expect(reloaded.getState().tables[6]).toMatchObject({
+    occupied: true,
+    orders: [],
+    calls: [],
+  });
+  expect(reloaded.getState().cart).toEqual({});
+});

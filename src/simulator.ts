@@ -27,17 +27,15 @@ export function startSimulator(
         const chosen = filler[Math.floor(clock.random() * filler.length)];
         if (chosen)
           store.setState({
-            tables: store
-              .getState()
-              .tables.map((table) =>
-                table.number === chosen.number
-                  ? {
-                      ...table,
-                      occupied: true,
-                      calls: [...table.calls, 'garzón'],
-                    }
-                  : table,
-              ),
+            tables: store.getState().tables.map((table) =>
+              table.number === chosen.number
+                ? {
+                    ...table,
+                    occupied: true,
+                    calls: [...table.calls, 'garzón'],
+                  }
+                : table,
+            ),
           });
         schedule();
       },
