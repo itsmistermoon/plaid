@@ -212,11 +212,19 @@
     gap: 16px;
     padding: 16px 16px 20px;
   }
+  /* La rueda y Agregar van juntos en una fila: el botón ocupa el resto y
+     queda al alcance del pulgar. */
   .detail-qty {
-    grid-auto-flow: column;
-    justify-content: space-between;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    padding-top: 0;
+    gap: 14px;
+  }
+  .detail-qty .wheel {
+    grid-column: auto;
+  }
+  .detail-qty .light-button {
+    min-height: 44px;
+    font-size: 16px;
   }
   .detail-receipt .receipt {
     width: auto;
