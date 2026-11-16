@@ -35,6 +35,8 @@
   --tabbar-line: var(--border);
   --tabbar-bg: var(--card);
   --tabbar-shadow: none;
+  --sticky-line: 1px solid var(--border);
+  --sticky-shadow: var(--shadow-sm);
   --tabbar-ink: var(--muted-foreground);
   --tabbar-ink-shadow: none;
   --tabbar-divider: 0;

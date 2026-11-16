@@ -34,6 +34,8 @@
   --toast-confirmado: linear-gradient(#b6d77f, #79a63f);
   --toast-servido: linear-gradient(#f0c453, #b27c0e);
   --toast-error: linear-gradient(#e74c3c, #b02a1e);
+  --sticky-line: 1px solid #3c4446;
+  --sticky-shadow: 0 1px #ffffff17, 0 6px 6px -4px #0006;
 }
 
 :root {
@@ -457,10 +459,15 @@ ol {
   z-index: 2;
   margin: calc(var(--board-top) * -1) -36px 0;
   padding: var(--board-top) 36px 12px;
+  border-bottom: var(--sticky-line);
   background: var(--noise), var(--slate);
+  box-shadow: var(--sticky-shadow);
 }
 .tabs-bar .segmented {
   margin-bottom: 0;
+}
+.tabs-bar + .dish-list {
+  margin-top: 12px;
 }
 .segmented {
   display: flex;
