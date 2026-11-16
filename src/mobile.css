@@ -213,8 +213,18 @@
   .detail-receipt .receipt {
     width: auto;
   }
+  .ticket-card {
+    flex-direction: column;
+    gap: 18px;
+    padding: 18px 14px 14px;
+  }
   .ticket-card .receipt {
     width: auto;
+    align-self: stretch;
+  }
+  .ticket-card > .light-button {
+    order: -1;
+    align-self: flex-end;
   }
 
   /* Estado: llamar al garzón y ver la cuenta */

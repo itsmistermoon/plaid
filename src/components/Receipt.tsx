@@ -1,5 +1,5 @@
 import { Minus, Plus } from 'lucide-react';
-import { type ReactNode, useLayoutEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
 import { money } from '../format';
 import { useT } from '../i18n';
 
@@ -12,13 +12,9 @@ export interface ReceiptLine {
   note?: string;
 }
 
-const reducedMotion = () =>
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 /**
- * Boleta de papel con bordes dentados y columnas fijas plato, cantidad y
- * precio. Cada vez que cambia lo impreso, el papel sale de la ranura como en
- * una impresora: avanza lo que creció, o un tirón corto si solo cambió una cifra.
+ * Boleta de papel con el borde inferior dentado y columnas fijas plato,
+ * cantidad y precio, que sale de la ranura de una impresora.
  */
 export function Receipt({
   lines,
@@ -32,38 +28,11 @@ export function Receipt({
   children?: ReactNode;
 }) {
   const t = useT();
-  const paper = useRef<HTMLDivElement>(null);
-  const height = useRef(0);
-  const printed = JSON.stringify([
-    total,
-    lines.map(({ key, name, price, extras, note }) => [
-      key,
-      name,
-      price,
-      extras,
-      note,
-    ]),
-  ]);
-  useLayoutEffect(() => {
-    const el = paper.current;
-    if (!el) return;
-    const next = el.offsetHeight;
-    const feed = height.current ? Math.max(next - height.current, 14) : next;
-    height.current = next;
-    if (reducedMotion()) return;
-    el.animate(
-      [{ transform: `translateY(${-feed}px)` }, { transform: 'translateY(0)' }],
-      {
-        duration: Math.min(900, 220 + feed * 2.5),
-        easing: 'steps(12, end)',
-      },
-    );
-  }, [printed]);
   return (
     <div className="receipt">
       <span className="receipt-slot" aria-hidden="true" />
       <div className="receipt-feed">
-        <div className="receipt-paper" ref={paper}>
+        <div className="receipt-paper">
           <table>
             <caption className="sr-only">{caption}</caption>
             <colgroup>

@@ -372,10 +372,31 @@
 
 /* Boleta: tarjeta lisa con divisores */
 [data-theme="moderno"] .receipt-slot {
-  display: none;
+  left: -6px;
+  right: -6px;
+  top: -8px;
+  height: 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="moderno"] .receipt-slot::before {
+  left: 14px;
+  right: 26px;
+  top: 4px;
+  height: 6px;
+  background: var(--foreground);
+  box-shadow: none;
+}
+[data-theme="moderno"] .receipt-slot::after {
+  right: 9px;
+  top: 4px;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 [data-theme="moderno"] .receipt-paper {
-  padding: 4px 0 0;
+  padding: 12px 0 0;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-family: Inter, sans-serif;
