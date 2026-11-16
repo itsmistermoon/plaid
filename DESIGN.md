@@ -13,9 +13,10 @@ Reglas de diseño de plaid (demo de El Clan, reconstrucción de iClub). Cada reg
 - **Las piezas emblemáticas del original (lector QR, mantel, sellos, boleta) conservan su anatomía: las mismas partes, en la misma posición y con las mismas proporciones.**
   Why: son la firma visual de iClub.
   <!-- 2026-11-16: "el lector qr puede ser más similar al diseño original" -->
-- **La cinta de título es una tela que viene desde atrás del panel y se pliega por encima de su borde. Termina en cola de golondrina con dos puntas, nunca desborda el layout y usa el verde de acento saturado, nunca una versión pálida.**
-  Why: debe leerse como una tela física que envuelve el panel.
-  <!-- 2026-11-16: "una tela que viene plegándose desde atrás del contenedor principal, además usa un color muy pálido" / "no tiene las dos puntas" / "el pliegue debe ir por encima del borde del contenedor" -->
+- **La cinta de título es una tela que cuelga desde el borde superior del panel, sin pliegue ni parte trasera. Termina en cola de golondrina con dos puntas, nunca desborda el layout y usa el verde de acento saturado, nunca una versión pálida.**
+  Why: el efecto de tela plegándose desde atrás no se leía convincente; solo queda la parte que va por encima.
+  <!-- 2026-11-16: "una tela que viene plegándose desde atrás del contenedor principal, además usa un color muy pálido" / "no tiene las dos puntas" -->
+  <!-- 2026-11-16: "con este efecto me rindo, deja solo la parte que queda por encima y elimina el efecto de pliegue hacia atrás" -->
 - **El mantel cuadrillé es más grande que la mesa: sobrepasa sus puntas y se recorta.**
   Why: así es el original.
   <!-- 2026-11-15: "Que el mantel sobrepase sus puntas igual que en el original" -->

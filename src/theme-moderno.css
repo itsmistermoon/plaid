@@ -314,9 +314,6 @@
   clip-path: none;
   text-shadow: none;
 }
-[data-theme="moderno"] .ribbon::before,
-[data-theme="moderno"] .ribbon::after,
-[data-theme="moderno"] .ribbon-back,
 [data-theme="moderno"] .ribbon-stitch {
   display: none;
 }

@@ -55,18 +55,7 @@
     linear-gradient(#fff, #e6e6e6 55%, #fbfbfb);
   --paper-shadow: drop-shadow(0 3px 3px #0007);
   --ribbon-shadow: drop-shadow(0 3px 3px #0007);
-  --ribbon-back:
-    repeating-linear-gradient(90deg, #ffffff0a 0 1px, #0000 1px 3px),
-    linear-gradient(#0d3f21, #17633a);
-  --ribbon-back-shine: inset 0 1px #ffffff21;
-  --ribbon-flap: linear-gradient(#082a16, #0f3f22);
-  --ribbon-cloth: /* pliegue sobre el borde: arista con brillo y la tela que cae en sombra */
-    linear-gradient(
-      #ffffff59 0 1px,
-      #0000003d 1px 2px,
-      #0000001a 4px,
-      #0000 10px
-    ),
+  --ribbon-cloth:
     linear-gradient(90deg, #ffffff99 0 5px, #0000 5px 9px) left 6px / 9px 1px
     repeat-x,
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
@@ -630,7 +619,6 @@ ol {
 .detail {
   position: relative;
   display: grid;
-  --flap: 9px;
   grid-template-columns: 283px minmax(0, 1fr);
   grid-template-rows: auto 1fr auto;
   column-gap: 32px;
@@ -642,47 +630,14 @@ ol {
   height: 232px;
   box-shadow: 0 2px 4px #0006;
 }
-/* Cinta de tela verde que viene desde atrás de la tarjeta: la parte de atrás
-   asoma sobre el borde, más ancha y en sombra; al doblarse sobre el borde las
-   puntas oscuras bajan por detrás y la tela del frente pasa por delante del
-   borde, con brillo en el pliegue. Termina abajo en cola de golondrina con una
-   costura punteada que sigue su borde. */
+/* Cinta de tela verde que cuelga desde el borde superior de la tarjeta.
+   Termina abajo en cola de golondrina con una costura punteada que sigue su
+   borde. */
 .ribbon {
-  --over: 12px;
   position: relative;
   max-width: 100%;
-  margin: calc(-26px - var(--over)) calc(24px + var(--flap)) 0 0;
-  padding-top: var(--over);
+  margin: -26px 24px 0 0;
   filter: var(--ribbon-shadow);
-}
-.ribbon-back {
-  position: absolute;
-  top: 0;
-  left: calc(var(--flap) * -1);
-  right: calc(var(--flap) * -1);
-  height: var(--over);
-  border-radius: 2px 2px 0 0;
-  background: var(--ribbon-back);
-  box-shadow: var(--ribbon-back-shine);
-}
-/* Puntas dobladas: triángulos oscuros que bajan por detrás desde los
-   extremos de la parte de atrás hasta el canto de la tela del frente. */
-.ribbon::before,
-.ribbon::after {
-  content: "";
-  position: absolute;
-  top: var(--over);
-  width: var(--flap);
-  height: var(--flap);
-  background: var(--ribbon-flap);
-}
-.ribbon::before {
-  left: calc(var(--flap) * -1);
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
-}
-.ribbon::after {
-  right: calc(var(--flap) * -1);
-  clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 .ribbon-cloth {
   position: relative;
@@ -714,7 +669,7 @@ ol {
 .detail-text {
   min-width: 0;
   /* El borde derecho de la nota coincide con el de la cinta. */
-  padding: 20px calc(24px + var(--flap)) 0 0;
+  padding: 20px 24px 0 0;
   overflow-wrap: break-word;
   font-size: 16px;
   line-height: 1.5;

@@ -32,7 +32,6 @@ export function Detalle({ dish, onDone }: { dish: Dish; onDone: () => void }) {
     <section className="card detail" aria-label={dish.name}>
       <DishPlate dish={dish} size="big" />
       <h3 className="ribbon">
-        <span className="ribbon-back" aria-hidden="true" />
         <span className="ribbon-cloth">
           <svg
             className="ribbon-stitch"
