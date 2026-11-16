@@ -223,6 +223,7 @@
   }
   .ticket-card {
     flex-direction: column;
+    justify-content: flex-start;
     gap: 18px;
     padding: 18px 14px 14px;
   }

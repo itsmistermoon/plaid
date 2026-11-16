@@ -1183,8 +1183,9 @@ ol {
 
 .ticket-card {
   display: flex;
+  justify-content: center;
   align-items: flex-start;
-  gap: 36px;
+  gap: 40px;
   min-height: 100%;
   padding: 30px 26px 26px;
 }
