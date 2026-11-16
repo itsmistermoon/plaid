@@ -1,3 +1,4 @@
+import { Scanner } from '../components/Scanner';
 import { useT } from '../i18n';
 
 export function Portada({ onEnter }: { onEnter: () => void }) {
@@ -5,16 +6,7 @@ export function Portada({ onEnter }: { onEnter: () => void }) {
   return (
     <div className="screen portada" data-surface="comensal">
       <h2 className="sr-only">{t('welcome')}</h2>
-      <div className="scanner" aria-hidden="true">
-        <span className="scanner-window">
-          <span className="scanner-laser" />
-        </span>
-        <span className="scanner-leds">
-          <i />
-          <i />
-          <i />
-        </span>
-      </div>
+      <Scanner />
       <p className="portada-text">{t('scanQr')}</p>
       <button
         type="button"

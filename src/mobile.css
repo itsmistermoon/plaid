@@ -7,6 +7,85 @@
   display: none;
 }
 
+/* Barra de controles compacta: la pone `StageBar` en teléfono; cada elección
+   binaria es un solo botón que muestra el valor actual y alterna. */
+.stage-bar[data-phone] {
+  --bar-h: 32px;
+  --theme-w: 96px;
+  --lang-w: 56px;
+  --role-w: 100px;
+  --tour-w: 32px;
+  --reset-w: 32px;
+}
+.stage-bar[data-phone] .selector-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.stage-bar[data-phone] .selector-toggle svg {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  opacity: 0.7;
+}
+
+/* Barra inferior del teléfono: el comensal la pide en teléfono y la galería
+   la muestra a cualquier ancho. */
+.tabbar {
+  order: 2;
+  flex-direction: row;
+  border-right: 0;
+  border-top: 1px solid var(--tabbar-line);
+  background: var(--tabbar-bg);
+  box-shadow: var(--tabbar-shadow);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tabbar :is(.sidebar-guest, .sidebar-logo, .sidebar-item:not([data-tab])) {
+  display: none;
+}
+.tabbar .sidebar-item {
+  position: relative;
+  flex: 1;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  margin: 0;
+  padding: 7px 0 8px;
+  border-bottom: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font:
+    600 11px Inter,
+    sans-serif;
+  color: var(--tabbar-ink);
+  text-shadow: var(--tabbar-ink-shadow);
+}
+.tabbar .sidebar-item + .sidebar-item {
+  border-left: var(--tabbar-divider);
+}
+.tabbar .sidebar-item svg {
+  width: 22px;
+  height: 22px;
+  color: var(--tabbar-ink);
+}
+.tabbar .sidebar-item[aria-current="page"] {
+  color: var(--tabbar-current-ink);
+  background: var(--tabbar-current-bg);
+  box-shadow: inset 0 2px 5px #0003;
+}
+.tabbar .sidebar-item[aria-current="page"] svg {
+  color: var(--tabbar-current-ink);
+}
+.tabbar .sidebar-item .count {
+  position: absolute;
+  top: 3px;
+  left: calc(50% + 6px);
+  margin: 0;
+}
+
 @media (max-width: 760px) {
   .desktop-only {
     display: none;
@@ -26,12 +105,6 @@
     flex-direction: column;
   }
   .stage-bar {
-    --bar-h: 32px;
-    --theme-w: 96px;
-    --lang-w: 56px;
-    --role-w: 100px;
-    --tour-w: 32px;
-    --reset-w: 32px;
     max-width: none;
     margin: 0;
     padding: 8px;
@@ -40,20 +113,6 @@
   }
   .app .stage-bar h1 {
     display: none;
-  }
-  /* Cada elección binaria es un solo botón: muestra el valor actual y alterna. */
-  .stage-bar .selector-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-size: 12px;
-  }
-  .stage-bar .selector-toggle svg {
-    flex: none;
-    width: 12px;
-    height: 12px;
-    opacity: 0.7;
   }
   .reset-label {
     display: none;
@@ -100,59 +159,6 @@
   [data-surface="comensal"] .screen-body {
     grid-template: minmax(0, 1fr) auto / 1fr;
   }
-  .tabbar {
-    order: 2;
-    flex-direction: row;
-    border-right: 0;
-    border-top: 1px solid var(--tabbar-line);
-    background: var(--tabbar-bg);
-    box-shadow: var(--tabbar-shadow);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  .tabbar :is(.sidebar-guest, .sidebar-logo, .sidebar-item:not([data-tab])) {
-    display: none;
-  }
-  .tabbar .sidebar-item {
-    position: relative;
-    flex: 1;
-    height: auto;
-    flex-direction: column;
-    justify-content: center;
-    gap: 2px;
-    margin: 0;
-    padding: 7px 0 8px;
-    border-bottom: 0;
-    border-radius: 0;
-    box-shadow: none;
-    font:
-      600 11px Inter,
-      sans-serif;
-    color: var(--tabbar-ink);
-    text-shadow: var(--tabbar-ink-shadow);
-  }
-  .tabbar .sidebar-item + .sidebar-item {
-    border-left: var(--tabbar-divider);
-  }
-  .tabbar .sidebar-item svg {
-    width: 22px;
-    height: 22px;
-    color: var(--tabbar-ink);
-  }
-  .tabbar .sidebar-item[aria-current="page"] {
-    color: var(--tabbar-current-ink);
-    background: var(--tabbar-current-bg);
-    box-shadow: inset 0 2px 5px #0003;
-  }
-  .tabbar .sidebar-item[aria-current="page"] svg {
-    color: var(--tabbar-current-ink);
-  }
-  .tabbar .sidebar-item .count {
-    position: absolute;
-    top: 3px;
-    left: calc(50% + 6px);
-    margin: 0;
-  }
-
   /* Portada */
   .scanner {
     width: 64%;

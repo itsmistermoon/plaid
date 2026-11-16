@@ -1,0 +1,123 @@
+import { MousePointerClick } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { lineKey, lineSummary } from '../demo/lines';
+import { billTotal, type CallKind, type Table } from '../domain';
+import { money } from '../format';
+import { useExtraName, useT } from '../i18n';
+
+/** Lo que el garzón ve y hace sobre una mesa: llamados, pedidos y cuenta fija abajo. */
+export function TableDetail({
+  table,
+  heading,
+  onAttend,
+  onConfirm,
+  onServe,
+  onCharge,
+}: {
+  table: Table;
+  heading: ReactNode;
+  onAttend?: (call: CallKind) => void;
+  onConfirm?: (orderId: string) => void;
+  onServe?: (orderId: string) => void;
+  onCharge?: () => void;
+}) {
+  const t = useT();
+  const extraName = useExtraName();
+  return (
+    <>
+      <div className="table-detail-scroll">
+        {heading}
+        <p className="muted">{table.occupied ? t('occupied') : t('free')}</p>
+        <h4>{t('calls')}</h4>
+        {table.calls.length ? (
+          <ul className="side-list">
+            {[...new Set(table.calls)].map((call) => (
+              <li key={call} data-kind={call}>
+                <span>{t('callLabels')[call]}</span>
+                <button
+                  type="button"
+                  className="dark-button"
+                  onClick={() => onAttend?.(call)}
+                >
+                  {t('attend')}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="muted">{t('noCalls')}</p>
+        )}
+        <h4>{t('orders')}</h4>
+        {table.orders.length ? (
+          <ul className="table-orders">
+            {table.orders.map((order, index) => (
+              <li key={order.id} className="table-order">
+                <div className="table-order-head">
+                  <span className="table-order-title">
+                    {t('orderN')(index + 1)}
+                  </span>
+                  <span className="status-badge" data-status={order.status}>
+                    {t('statuses')[order.status]}
+                  </span>
+                  {order.status === 'enviado' && (
+                    <button
+                      type="button"
+                      className="dark-button"
+                      data-tour="servir"
+                      onClick={() => onConfirm?.(order.id)}
+                    >
+                      {t('confirm')}
+                    </button>
+                  )}
+                  {order.status === 'confirmado' && (
+                    <button
+                      type="button"
+                      className="dark-button"
+                      data-tour="servir"
+                      onClick={() => onServe?.(order.id)}
+                    >
+                      {t('serve')}
+                    </button>
+                  )}
+                </div>
+                <ul className="table-order-lines">
+                  {order.lines.map((line) => (
+                    <li key={lineKey(line)}>{lineSummary(line, extraName)}</li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="muted">{t('noOrders')}</p>
+        )}
+      </div>
+      {/* La cuenta y su acción quedan fijas abajo; lo largo hace scroll arriba. */}
+      <section className="table-detail-bill" aria-label={t('bill')}>
+        <h4>{t('bill')}</h4>
+        <p className="side-total">{money(billTotal(table))}</p>
+        {table.occupied && (
+          <button
+            type="button"
+            className="light-button"
+            data-tour="cobrar"
+            onClick={onCharge}
+          >
+            {t('chargeAndFree')}
+          </button>
+        )}
+      </section>
+    </>
+  );
+}
+
+/** Estado vacío del detalle: todavía no se eligió una mesa. */
+export function TableDetailEmpty() {
+  const t = useT();
+  return (
+    <div className="sidebar-empty">
+      <MousePointerClick size={36} strokeWidth={1.5} aria-hidden="true" />
+      <p>{t('pickTable')}</p>
+    </div>
+  );
+}

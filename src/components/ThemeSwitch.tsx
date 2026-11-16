@@ -2,6 +2,7 @@ import { usePreference } from '@ui-sdk/react/preferences';
 import { useMedia } from '../demo/useMedia';
 import { useT } from '../i18n';
 import { theme } from '../theme';
+import { Selector } from './Selector';
 import { SelectorToggle } from './SelectorToggle';
 
 const options = ['original', 'moderno'] as const;
@@ -26,18 +27,15 @@ export function ThemeSwitch() {
     );
   }
   return (
-    <fieldset className="selector theme-switch">
-      <legend className="sr-only">{t('themeSwitch')}</legend>
-      {options.map((option) => (
-        <button
-          key={option}
-          type="button"
-          aria-pressed={value === option}
-          onClick={(event) => choose(option, event.nativeEvent)}
-        >
-          {t('themes')[option]}
-        </button>
-      ))}
-    </fieldset>
+    <Selector
+      className="theme-switch"
+      legend={t('themeSwitch')}
+      value={value === 'original' ? 'original' : 'moderno'}
+      options={options.map((option) => ({
+        value: option,
+        label: t('themes')[option],
+      }))}
+      onChange={choose}
+    />
   );
 }

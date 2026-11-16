@@ -2,7 +2,9 @@ import { RotateCcw } from 'lucide-react';
 import { useState } from 'react';
 import { useStore } from 'zustand';
 import { LangSwitch } from '../components/LangSwitch';
+import { Selector } from '../components/Selector';
 import { SelectorToggle } from '../components/SelectorToggle';
+import { StageBar } from '../components/StageBar';
 import { ThemeSwitch } from '../components/ThemeSwitch';
 import { TourCoach } from '../components/TourCoach';
 import { useT } from '../i18n';
@@ -29,7 +31,7 @@ export function Demo() {
       data-view={view}
       data-tour-step={touring ? tourSteps[touring.step] : undefined}
     >
-      <header className="stage-bar">
+      <StageBar>
         <h1>
           Restaurant El Clan <small>{t('stageSubtitle')}</small>
         </h1>
@@ -45,25 +47,20 @@ export function Demo() {
             onClick={() => setView(view === 'garzon' ? 'comensal' : 'garzon')}
           />
         ) : (
-          <fieldset className="selector role-switch">
-            <legend className="sr-only">{t('device')}</legend>
-            <button
-              type="button"
-              aria-pressed={view === 'comensal'}
-              data-tour="cuenta"
-              onClick={() => setView('comensal')}
-            >
-              {t('diner')}
-            </button>
-            <button
-              type="button"
-              aria-pressed={view === 'garzon'}
-              data-tour="sala servir cobrar"
-              onClick={() => setView('garzon')}
-            >
-              {t('waiter')}
-            </button>
-          </fieldset>
+          <Selector
+            className="role-switch"
+            legend={t('device')}
+            value={view}
+            options={[
+              { value: 'comensal', label: t('diner'), tour: 'cuenta' },
+              {
+                value: 'garzon',
+                label: t('waiter'),
+                tour: 'sala servir cobrar',
+              },
+            ]}
+            onChange={setView}
+          />
         )}
         <TourButton />
         <button
@@ -79,7 +76,7 @@ export function Demo() {
           <RotateCcw aria-hidden="true" />
           <span className="reset-label">{t('resetDemo')}</span>
         </button>
-      </header>
+      </StageBar>
       <div className="tablet">
         <span className="tablet-camera" aria-hidden="true" />
         <div className="tablet-glass">

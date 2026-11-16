@@ -1,4 +1,4 @@
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ShoppingCart } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 /** Barra oscura y brillante de la pantalla: acción, título y acción. */
@@ -44,5 +44,42 @@ export function ArrowButton({
       <ChevronLeft aria-hidden="true" strokeWidth={3} />
       {children}
     </button>
+  );
+}
+
+/** Botón del carrito en la barra, con la cantidad de unidades. */
+export function CartButton({
+  count,
+  label,
+  className,
+  tour,
+  onClick,
+}: {
+  count: number;
+  label: string;
+  className?: string;
+  tour?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={`dark-button cart-button${className ? ` ${className}` : ''}`}
+      data-tour={tour}
+      aria-label={label}
+      onClick={onClick}
+    >
+      <ShoppingCart aria-hidden="true" strokeWidth={2.5} />
+      {count > 0 && <span className="count">{count}</span>}
+    </button>
+  );
+}
+
+/** Llamados pendientes del garzón, en la barra. */
+export function PendingCalls({ children }: { children: ReactNode }) {
+  return (
+    <span className="dark-button pending" role="status">
+      {children}
+    </span>
   );
 }

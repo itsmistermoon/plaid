@@ -1,13 +1,12 @@
-import { Label } from '@ui-sdk/react/label';
-import { BadgePlus } from 'lucide-react';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 import { useStore } from 'zustand';
 import { DishPlate } from '../../components/DishPlate';
-import { KitCheck } from '../../components/KitCheck';
+import { Extras } from '../../components/Extras';
+import { PostIt } from '../../components/PostIt';
 import { QuantityWheel } from '../../components/QuantityWheel';
 import { Receipt } from '../../components/Receipt';
+import { Ribbon } from '../../components/Ribbon';
 import { type Line, unitPrice } from '../../domain';
-import { money } from '../../format';
 import { useDishText, useExtraName, useT } from '../../i18n';
 import type { Dish } from '../../menu';
 import { receiptLine } from '../lines';
@@ -17,7 +16,6 @@ import { store } from '../store';
 export function Detalle({ dish, onDone }: { dish: Dish; onDone: () => void }) {
   const addToCart = useStore(store, (state) => state.addToCart);
   const t = useT();
-  const extrasId = useId();
   const text = useDishText();
   const extraName = useExtraName();
   const [quantity, setQuantity] = useState(1);
@@ -32,60 +30,25 @@ export function Detalle({ dish, onDone }: { dish: Dish; onDone: () => void }) {
   return (
     <section className="card detail" aria-label={dish.name}>
       <DishPlate dish={dish} size="big" />
-      <h3 className="ribbon">
-        <span className="ribbon-cloth">
-          <svg
-            className="ribbon-stitch"
-            viewBox="0 0 100 26"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <polyline points="0,20 50,7 100,20" />
-          </svg>
-          {dish.name}
-        </span>
-      </h3>
+      <Ribbon>{dish.name}</Ribbon>
       <div className="detail-text">
         <p>{text(dish)}</p>
-        <label className="post-it">
-          <span className="sr-only">{t('kitchenNote')}</span>
-          <textarea
-            value={note}
-            maxLength={120}
-            placeholder={t('addNote')}
-            disabled={dish.soldOut}
-            onChange={(event) => setNote(event.target.value)}
-          />
-        </label>
+        <PostIt
+          label={t('kitchenNote')}
+          placeholder={t('addNote')}
+          value={note}
+          disabled={dish.soldOut}
+          onChange={setNote}
+        />
       </div>
       <div className="detail-foot">
         {dish.extras && (
-          <fieldset className="extras" aria-labelledby={extrasId}>
-            <div className="extras-title" id={extrasId}>
-              <BadgePlus className="extras-icon" aria-hidden="true" />
-              {t('extras')}
-            </div>
-            {dish.extras.map((extra) => (
-              <Label key={extra.id} className="extra">
-                <KitCheck
-                  label={`${extraName(extra)}, ${money(extra.price)}`}
-                  disabled={dish.soldOut}
-                  checked={extras.includes(extra.id)}
-                  onChange={(checked) =>
-                    setExtras((current) =>
-                      checked
-                        ? [...current, extra.id]
-                        : current.filter((id) => id !== extra.id),
-                    )
-                  }
-                />
-                <span aria-hidden="true">{extraName(extra)}</span>
-                <span className="extra-price" aria-hidden="true">
-                  +{money(extra.price)}
-                </span>
-              </Label>
-            ))}
-          </fieldset>
+          <Extras
+            extras={dish.extras}
+            selected={extras}
+            disabled={dish.soldOut}
+            onChange={setExtras}
+          />
         )}
         <div className="detail-order">
           <div className="detail-qty">
