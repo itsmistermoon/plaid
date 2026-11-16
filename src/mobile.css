@@ -355,8 +355,17 @@
   .panel-stage .ticket-card {
     border-radius: 0;
   }
-  .panel-states .receipt {
-    margin-inline: 14px;
+  /* En el teléfono la boleta se ajusta al ancho del panel, como en la demo. */
+  .panel-states > li:has(.printer-demo) {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .printer-demo {
+    width: 100%;
+    padding-inline: 22px;
+  }
+  .printer-demo .receipt {
+    width: 100%;
   }
   .table-demo {
     flex-direction: column;

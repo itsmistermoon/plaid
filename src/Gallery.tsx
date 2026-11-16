@@ -88,12 +88,15 @@ function Panel({
   uses,
   states = [],
   wide,
+  tall,
   children,
 }: {
   title: string;
   uses: string[];
   states?: { label: string; node: ReactNode }[];
   wide?: boolean | 'full';
+  /** Ocupa dos filas de la grilla, junto a dos paneles anchos apilados. */
+  tall?: boolean;
   children: ReactNode;
 }) {
   const t = useT();
@@ -103,6 +106,7 @@ function Panel({
       className="panel"
       aria-labelledby={id}
       data-wide={wide || undefined}
+      data-tall={tall || undefined}
     >
       <h3 className="panel-caption" id={id}>
         <span className="panel-number" aria-hidden="true" />
@@ -204,7 +208,12 @@ function CheckDemo() {
         checked={checked}
         onChange={setChecked}
       />
-      <span className="hint">{checked ? t('inOrder') : t('notAdded')}</span>
+      {/* Las dos etiquetas ocupan la misma celda y solo se ve una: el ancho
+          es el de la más larga y cambiar de estado no mueve nada. */}
+      <span className="hint swap-label">
+        <span hidden={checked}>{t('notAdded')}</span>
+        <span hidden={!checked}>{t('inOrder')}</span>
+      </span>
     </label>
   );
 }
@@ -565,11 +574,13 @@ const longOrder = [
 function Printer({ lines }: { lines: Line[] }) {
   const t = useT();
   return (
-    <Receipt
-      caption={t('preview')}
-      lines={useLines(lines)}
-      total={cartTotal(lines)}
-    />
+    <div className="printer-demo">
+      <Receipt
+        caption={t('preview')}
+        lines={useLines(lines)}
+        total={cartTotal(lines)}
+      />
+    </div>
   );
 }
 
@@ -1117,11 +1128,6 @@ export function Gallery() {
         </Panel>
       </Group>
       <Group title={group.restaurant}>
-        <Panel title={panel.scanner} uses={[]}>
-          <div className="scanner-demo">
-            <Scanner />
-          </div>
-        </Panel>
         <Panel
           title={panel.ribbon}
           uses={[]}
@@ -1150,20 +1156,29 @@ export function Gallery() {
           </div>
         </Panel>
         <Panel
-          title={panel.plate}
+          title={panel.tableDetail}
           uses={[]}
+          tall
           states={[
             {
-              label: s.soldOut,
+              label: s.freeTable,
               node: (
-                <span className="dish" data-sold-out>
-                  <DishPlate dish={dish('chemilico')} />
-                </span>
+                <TableDetailFrame>
+                  <TableDetail
+                    table={{
+                      number: 3,
+                      occupied: false,
+                      calls: [],
+                      orders: [],
+                    }}
+                    heading={<TableHeading number={3} />}
+                  />
+                </TableDetailFrame>
               ),
             },
           ]}
         >
-          <PlateDemo />
+          <TableDetailDemo />
         </Panel>
         <Panel
           title={panel.table}
@@ -1197,6 +1212,37 @@ export function Gallery() {
           ]}
         >
           <TableDemo />
+        </Panel>
+        <Panel title={panel.scanner} uses={[]}>
+          <div className="scanner-demo">
+            <Scanner />
+          </div>
+        </Panel>
+        <Panel
+          title={panel.plate}
+          uses={[]}
+          states={[
+            {
+              label: s.soldOut,
+              node: (
+                <span className="dish" data-sold-out>
+                  <DishPlate dish={dish('chemilico')} />
+                </span>
+              ),
+            },
+          ]}
+        >
+          <PlateDemo />
+        </Panel>
+        <Panel
+          title={panel.seal}
+          uses={[]}
+          states={callKinds.map((kind) => ({
+            label: callLabels[kind],
+            node: <SealBadge kind={kind} label={callLabels[kind]} />,
+          }))}
+        >
+          <SealDemo />
         </Panel>
         <Panel
           title={panel.receipt}
@@ -1243,41 +1289,6 @@ export function Gallery() {
           ]}
         >
           <Printer lines={[line('empanada', 2), line('italiano', 1)]} />
-        </Panel>
-        <Panel
-          title={panel.seal}
-          uses={[]}
-          states={callKinds.map((kind) => ({
-            label: callLabels[kind],
-            node: <SealBadge kind={kind} label={callLabels[kind]} />,
-          }))}
-        >
-          <SealDemo />
-        </Panel>
-        <Panel
-          title={panel.tableDetail}
-          uses={[]}
-          wide
-          states={[
-            {
-              label: s.freeTable,
-              node: (
-                <TableDetailFrame>
-                  <TableDetail
-                    table={{
-                      number: 3,
-                      occupied: false,
-                      calls: [],
-                      orders: [],
-                    }}
-                    heading={<TableHeading number={3} />}
-                  />
-                </TableDetailFrame>
-              ),
-            },
-          ]}
-        >
-          <TableDetailDemo />
         </Panel>
       </Group>
       <OrderToastRegion />

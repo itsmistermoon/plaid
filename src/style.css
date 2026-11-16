@@ -40,6 +40,13 @@
   --toast-error: linear-gradient(#e74c3c, #b02a1e);
   --sticky-line: 1px solid #3c4446;
   --sticky-shadow: 0 1px #ffffff17, 0 6px 6px -4px #0006;
+  --bill-shadow: inset 0 1px #ffffff17, 0 -6px 8px -4px #0009;
+  --dark-edge: #1a1f20;
+  --dark-face:
+    linear-gradient(#ffffff2e, #ffffff2e) 0 0 / 100% 1px no-repeat,
+    linear-gradient(#636d6f, #353c3e);
+  --dark-lift: drop-shadow(0 1px #ffffff1a);
+  --crop-frame: 0 0 0 1px var(--dark-edge), 0 4px 10px #0006;
 
   /* Impresora, papel y cinta. */
   --printer-body:
@@ -57,8 +64,6 @@
   --paper-shadow: drop-shadow(0 3px 3px #0007);
   --ribbon-shadow: drop-shadow(0 3px 3px #0007);
   --ribbon-cloth:
-    linear-gradient(90deg, #ffffff99 0 5px, #0000 5px 9px) left 6px / 9px 1px
-    repeat-x,
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
     repeating-linear-gradient(0deg, #0000000f 0 1px, #0000 1px 3px),
     linear-gradient(#3fb36c, #24944f 55%, #1a7d41);
@@ -335,8 +340,35 @@ ol {
 .arrow-button {
   justify-self: start;
   position: relative;
-  clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
+  isolation: isolate;
   padding-left: 16px;
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+  filter: var(--dark-lift);
+}
+/* La punta se dibuja con dos capas recortadas: el borde (::before) y, 1 px
+   adentro, el cuerpo con su degradado y brillo (::after). Recortar el botón
+   entero cortaba el borde en la diagonal. Las cifras valen para
+   --button-h: 26px; el cuerpo corre 1,26 px, el grosor del borde medido
+   perpendicular a la diagonal. */
+.arrow-button::before,
+.arrow-button::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+}
+.arrow-button::before {
+  inset: -1px;
+  border-radius: 0 4px 4px 0;
+  background: var(--dark-edge);
+  clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
+}
+.arrow-button::after {
+  inset: 0;
+  border-radius: 0 3px 3px 0;
+  background: var(--dark-face);
+  clip-path: polygon(9.5px 0, 100% 0, 100% 100%, 9.5px 100%, 0.25px 50%);
 }
 .arrow-button svg {
   display: none;
@@ -582,8 +614,8 @@ ol {
   place-items: center;
   width: 133px;
   height: 100px;
-  color: #8a7b4c;
-  background: linear-gradient(#fffbe3, #d8cc98);
+  padding: 1px;
+  background: var(--dark-edge);
   mask:
     radial-gradient(circle var(--r) at 0 0, #0000 98%, #000) top left,
     radial-gradient(circle var(--r) at 100% 0, #0000 98%, #000) top right,
@@ -592,10 +624,28 @@ ol {
   mask-size: 51% 51%;
   mask-repeat: no-repeat;
 }
+/* La foto va 1 px adentro y sus esquinas cóncavas son concéntricas con las
+   de la placa: el fondo oscuro queda como un contorno de 1 px que sigue la
+   curva. */
 .dish-plate img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  --ri: calc(var(--r) + 1px);
+  mask:
+    radial-gradient(circle var(--ri) at -1px -1px, #0000 98%, #000) top left,
+    radial-gradient(circle var(--ri) at calc(100% + 1px) -1px, #0000 98%, #000)
+    top right,
+    radial-gradient(circle var(--ri) at -1px calc(100% + 1px), #0000 98%, #000)
+    bottom left,
+    radial-gradient(
+      circle var(--ri) at calc(100% + 1px) calc(100% + 1px),
+      #0000 98%,
+      #000
+    )
+    bottom right;
+  mask-size: 51% 51%;
+  mask-repeat: no-repeat;
 }
 .dish-plate[data-size="big"] {
   --r: 14px;
@@ -697,16 +747,15 @@ ol {
 }
 .ribbon-stitch {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 26px;
+  inset: 0 6px 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 6px);
   fill: none;
   stroke: #ffffff99;
   stroke-dasharray: 5 4;
   overflow: visible;
 }
-.ribbon-stitch polyline {
+.ribbon-stitch * {
   vector-effect: non-scaling-stroke;
 }
 .detail-text {
@@ -1457,6 +1506,11 @@ ol {
   gap: 8px;
   padding: 14px 20px 20px;
   border-top: var(--sticky-line);
+  /* Fija abajo: su sombra cae hacia arriba, sobre la lista que pasa por
+     debajo. */
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--bill-shadow);
 }
 .table-detail h3 {
   font:
@@ -1739,6 +1793,9 @@ ol {
 .panel[data-wide="true"] {
   grid-column: span 2;
 }
+.panel[data-tall] {
+  grid-row: span 2;
+}
 .panel[data-wide="full"] {
   grid-column: 1 / -1;
 }
@@ -1779,6 +1836,7 @@ ol {
 .panel-states {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: flex-end;
   gap: 14px 18px;
   padding: 14px;
@@ -1788,7 +1846,7 @@ ol {
 .panel-states > li {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 6px;
 }
 .panel-states small,
@@ -1811,6 +1869,20 @@ ol {
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
+}
+.swap-label {
+  display: inline-grid;
+}
+.swap-label > * {
+  grid-area: 1 / 1;
+}
+.swap-label > [hidden] {
+  display: block;
+  visibility: hidden;
+}
+.panel .stack {
+  align-items: center;
+  text-align: center;
 }
 .hint {
   font-size: 12px;
@@ -1847,6 +1919,14 @@ ol {
   border-radius: 4px;
   overflow: hidden;
 }
+/* Las piezas recortadas de una pantalla llevan contorno en todos sus bordes,
+   como sombra para no achicar lo que muestran. */
+.navbar-demo,
+.sidebar-demo,
+.tabbar-demo,
+.table-detail-demo {
+  box-shadow: var(--crop-frame);
+}
 .panel-states .navbar-demo {
   width: 500px;
 }
@@ -1871,6 +1951,11 @@ ol {
   color: var(--paper-ink);
   background: var(--paper);
   filter: var(--paper-shadow);
+}
+/* La impresora sobresale 14 px a los lados y 16 px arriba de su papel:
+   el marco le reserva ese espacio y algo de aire dentro del panel. */
+.printer-demo {
+  padding: 24px 22px 8px;
 }
 .post-it-demo {
   width: 240px;
@@ -1912,7 +1997,7 @@ ol {
   margin-top: 12px;
 }
 .panel-states > li:has(.tabs-demo) {
-  flex: 1 1 260px;
+  flex: 1 1 100%;
   min-width: 0;
 }
 .table-detail-demo {
@@ -1981,7 +2066,6 @@ ol {
   box-shadow:
     inset 0 2px 4px #000a,
     0 1px #ffffff1f;
-  overflow: hidden;
 }
 .kit-switch[data-checked] {
   background: linear-gradient(#5b8c2c, #86b84d);
@@ -2006,7 +2090,7 @@ ol {
   transition: translate 200ms var(--ease-out);
 }
 .kit-switch-thumb[data-checked] {
-  translate: 35px 0;
+  translate: 34px 0;
 }
 .kit-switch[data-disabled] {
   opacity: 0.5;

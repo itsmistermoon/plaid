@@ -57,6 +57,7 @@
 [data-theme="moderno"] {
   --track: #e2e8f0;
   --track-edge: #0f172a14;
+  --bill-shadow: 0 -4px 8px -4px #0f172a1f;
 }
 [data-theme="moderno"] :focus-visible {
   outline: 2px solid var(--accent);
@@ -160,7 +161,11 @@
 }
 /* El chevrón ocupa el relleno izquierdo que en el original es la punta. */
 [data-theme="moderno"] .arrow-button {
-  clip-path: none;
+  filter: none;
+}
+[data-theme="moderno"] .arrow-button::before,
+[data-theme="moderno"] .arrow-button::after {
+  content: none;
 }
 [data-theme="moderno"] .arrow-button svg {
   display: block;
@@ -287,7 +292,11 @@
   mask: none;
   overflow: hidden;
   border-radius: 8px;
-  background: var(--secondary);
+  background: var(--border);
+}
+[data-theme="moderno"] .dish-plate img {
+  mask: none;
+  border-radius: 7px;
 }
 [data-theme="moderno"] .kit-check {
   border: 1px solid var(--input);
