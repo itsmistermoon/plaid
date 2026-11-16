@@ -16,6 +16,29 @@
   --total: #a3622b;
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* Piel de las piezas que ambos temas comparten: el moderno solo cambia estos valores. */
+  --step-line: currentColor;
+  --step-done-line: #4f7f22;
+  --step-done-bg: linear-gradient(#9fd164, #5a8f28);
+  --step-done-shadow:
+    inset 0 1px #ffffff60,
+    0 1px 2px #0006;
+  --step-now-shadow: var(--step-done-shadow);
+  --tabbar-line: #4f7f22;
+  --tabbar-bg: linear-gradient(#b4dc7c, #78ad41 55%, #6a9d37);
+  --tabbar-shadow: inset 0 1px #ffffff70;
+  --tabbar-ink: #fff;
+  --tabbar-ink-shadow: 0 -1px #0005;
+  --tabbar-divider: 1px solid #0000001f;
+  --tabbar-current-ink: #fff;
+  --tabbar-current-bg: #0000002a;
+  --toast-icon-border: 1.5px solid #fff;
+  --toast-icon-shadow: 0 1px 2px #0008;
+  --toast-enviado: linear-gradient(#4ca4d6, #105b92);
+  --toast-confirmado: linear-gradient(#b6d77f, #79a63f);
+  --toast-servido: linear-gradient(#f0c453, #b27c0e);
+  --toast-error: linear-gradient(#e74c3c, #b02a1e);
 }
 
 :root {
@@ -1118,7 +1141,7 @@ ol {
   height: 30px;
   border-radius: 50%;
   font-size: 12px;
-  border: 1px solid currentColor;
+  border: 1px solid var(--step-line);
   transition:
     background-color 300ms var(--ease-out),
     box-shadow 300ms var(--ease-out);
@@ -1134,11 +1157,12 @@ ol {
 .steps li[data-state="done"] .step-dot,
 .steps li[data-state="now"] .step-dot {
   color: #fff;
-  border-color: #4f7f22;
-  background: linear-gradient(#9fd164, #5a8f28);
-  box-shadow:
-    inset 0 1px #ffffff60,
-    0 1px 2px #0006;
+  border-color: var(--step-done-line);
+  background: var(--step-done-bg);
+  box-shadow: var(--step-done-shadow);
+}
+.steps li[data-state="now"] .step-dot {
+  box-shadow: var(--step-now-shadow);
 }
 
 /* Portada QR */
@@ -1922,18 +1946,18 @@ ol {
   height: 30px;
   border-radius: 50%;
   color: #fff;
-  border: 1.5px solid #fff;
-  background: linear-gradient(#4ca4d6, #105b92);
-  box-shadow: 0 1px 2px #0008;
+  border: var(--toast-icon-border);
+  background: var(--toast-enviado);
+  box-shadow: var(--toast-icon-shadow);
 }
 .toast-icon[data-kind="confirmado"] {
-  background: linear-gradient(#b6d77f, #79a63f);
+  background: var(--toast-confirmado);
 }
 .toast-icon[data-kind="servido"] {
-  background: linear-gradient(#f0c453, #b27c0e);
+  background: var(--toast-servido);
 }
 .toast-icon[data-kind="error"] {
-  background: linear-gradient(#e74c3c, #b02a1e);
+  background: var(--toast-error);
 }
 .toast-icon svg {
   width: 16px;

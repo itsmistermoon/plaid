@@ -85,9 +85,9 @@
     order: 2;
     flex-direction: row;
     border-right: 0;
-    border-top: 1px solid #4f7f22;
-    background: linear-gradient(#b4dc7c, #78ad41 55%, #6a9d37);
-    box-shadow: inset 0 1px #ffffff70;
+    border-top: 1px solid var(--tabbar-line);
+    background: var(--tabbar-bg);
+    box-shadow: var(--tabbar-shadow);
     padding-bottom: env(safe-area-inset-bottom);
   }
   .tabbar :is(.sidebar-guest, .sidebar-logo, .sidebar-item:not([data-tab])) {
@@ -100,29 +100,32 @@
     flex-direction: column;
     justify-content: center;
     gap: 2px;
+    margin: 0;
     padding: 7px 0 8px;
     border-bottom: 0;
+    border-radius: 0;
     box-shadow: none;
     font:
       600 11px Inter,
       sans-serif;
-    color: #fff;
-    text-shadow: 0 -1px #0005;
+    color: var(--tabbar-ink);
+    text-shadow: var(--tabbar-ink-shadow);
   }
   .tabbar .sidebar-item + .sidebar-item {
-    border-left: 1px solid #0000001f;
+    border-left: var(--tabbar-divider);
   }
   .tabbar .sidebar-item svg {
     width: 22px;
     height: 22px;
-    color: #fff;
+    color: var(--tabbar-ink);
   }
   .tabbar .sidebar-item[aria-current="page"] {
-    background: #0000002a;
+    color: var(--tabbar-current-ink);
+    background: var(--tabbar-current-bg);
     box-shadow: inset 0 2px 5px #0003;
   }
   .tabbar .sidebar-item[aria-current="page"] svg {
-    color: #fff;
+    color: var(--tabbar-current-ink);
   }
   .tabbar .sidebar-item .count {
     position: absolute;
@@ -295,29 +298,6 @@
 
 /* Tema moderno en el teléfono */
 @media (max-width: 760px) {
-  [data-theme="moderno"] .tabbar {
-    border-top: 1px solid var(--border);
-    background: var(--card);
-    box-shadow: none;
-  }
-  [data-theme="moderno"] .tabbar .sidebar-item {
-    margin: 0;
-    border-radius: 0;
-    font-size: 11px;
-    color: var(--muted-foreground);
-    text-shadow: none;
-  }
-  [data-theme="moderno"] .tabbar .sidebar-item + .sidebar-item {
-    border-left: 0;
-  }
-  [data-theme="moderno"] .tabbar .sidebar-item svg {
-    color: var(--muted-foreground);
-  }
-  [data-theme="moderno"] .tabbar .sidebar-item[aria-current="page"],
-  [data-theme="moderno"] .tabbar .sidebar-item[aria-current="page"] svg {
-    color: var(--accent);
-    background: none;
-  }
   /* Categorías como chips que se desplazan */
   [data-theme="moderno"] .segmented {
     gap: 6px;

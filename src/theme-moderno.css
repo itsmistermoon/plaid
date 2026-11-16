@@ -26,6 +26,27 @@
   --total: var(--foreground);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
+  /* Piel de las piezas compartidas (ver style.css) */
+  --step-line: var(--input);
+  --step-done-line: var(--accent);
+  --step-done-bg: var(--accent);
+  --step-done-shadow: none;
+  --step-now-shadow: 0 0 0 4px var(--accent-soft);
+  --tabbar-line: var(--border);
+  --tabbar-bg: var(--card);
+  --tabbar-shadow: none;
+  --tabbar-ink: var(--muted-foreground);
+  --tabbar-ink-shadow: none;
+  --tabbar-divider: 0;
+  --tabbar-current-ink: var(--accent);
+  --tabbar-current-bg: none;
+  --toast-icon-border: 0;
+  --toast-icon-shadow: none;
+  --toast-enviado: #2563eb;
+  --toast-confirmado: var(--accent);
+  --toast-servido: #d97706;
+  --toast-error: var(--destructive);
+
   color: var(--foreground);
   background: var(--background);
 }
@@ -422,24 +443,6 @@
   border-top: 1px solid var(--border);
   box-shadow: none;
 }
-[data-theme="moderno"] .steps li[data-state="done"],
-[data-theme="moderno"] .steps li[data-state="now"] {
-  color: var(--foreground);
-}
-[data-theme="moderno"] .step-dot {
-  border-color: var(--input);
-  color: var(--muted-foreground);
-}
-[data-theme="moderno"] .steps li[data-state="done"] .step-dot,
-[data-theme="moderno"] .steps li[data-state="now"] .step-dot {
-  border-color: var(--accent);
-  color: #fff;
-  background: var(--accent);
-  box-shadow: none;
-}
-[data-theme="moderno"] .steps li[data-state="now"] .step-dot {
-  box-shadow: 0 0 0 4px var(--accent-soft);
-}
 
 /* Portada QR */
 [data-theme="moderno"] .scanner {
@@ -756,18 +759,4 @@
   color: var(--foreground);
   background: var(--card);
   box-shadow: 0 8px 24px #18181b1f;
-}
-[data-theme="moderno"] .toast-icon {
-  border: 0;
-  box-shadow: none;
-  background: #2563eb;
-}
-[data-theme="moderno"] .toast-icon[data-kind="confirmado"] {
-  background: var(--accent);
-}
-[data-theme="moderno"] .toast-icon[data-kind="servido"] {
-  background: #d97706;
-}
-[data-theme="moderno"] .toast-icon[data-kind="error"] {
-  background: var(--destructive);
 }
