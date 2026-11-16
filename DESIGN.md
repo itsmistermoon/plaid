@@ -42,6 +42,10 @@ Reglas de diseño de plaid (demo de El Clan, reconstrucción de iClub). Cada reg
   Why: la tabbar verde brillante competía con el contenido y no se veía parte de la misma app.
   <!-- 2026-11-16: aprobado por moon tras auditoría -->
 
+- **En el tema moderno, las superficies usan grises neutros (zinc/neutral), nunca grises cálidos o beige.**
+  Why: los grises cálidos en fondos, pestañas y paneles delatan una interfaz genérica hecha por IA.
+  <!-- 2026-11-16: "cambia esos colores medio cálidos en las superficies que gritan hecho por Claude" -->
+
 ## Typography
 
 - **Tipografías: Courier Prime para la boleta, Outfit 700 para los títulos, Kaushan Script para el logo e Inter para la interfaz. No se agregan otras.**

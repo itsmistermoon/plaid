@@ -853,16 +853,16 @@ ol {
 }
 [data-theme="moderno"] .wheel {
   --wheel-frame: #fff;
-  --wheel-border: #d9dcdc;
-  --wheel-line: #e6e8e8;
+  --wheel-border: #d1d5db;
+  --wheel-line: #e5e7eb;
   --wheel-shadow: none;
   --wheel-drum: #fff;
-  --wheel-lens: #f2f4f4;
-  --wheel-ink: #1d2325;
-  --wheel-muted: #9aa1a3;
-  --wheel-tooth: #d3d7d8;
-  --wheel-mark: #1d2325;
-  --wheel-arrow: #50595c;
+  --wheel-lens: #f3f4f6;
+  --wheel-ink: #111827;
+  --wheel-muted: #9ca3af;
+  --wheel-tooth: #d1d5db;
+  --wheel-mark: #111827;
+  --wheel-arrow: #4b5563;
 }
 .wheel-window {
   position: relative;

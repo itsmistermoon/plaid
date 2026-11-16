@@ -3,20 +3,20 @@
  * acento. Misma estructura que el original; solo cambia la piel.
  */
 [data-theme="moderno"] {
-  --background: #f4f4f5;
+  --background: #f3f4f6;
   --card: #fff;
-  --foreground: #18181b;
-  --muted-foreground: #71717a;
-  --border: #e4e4e7;
-  --input: #d4d4d8;
-  --secondary: #f4f4f5;
+  --foreground: #111827;
+  --muted-foreground: #6b7280;
+  --border: #e5e7eb;
+  --input: #d1d5db;
+  --secondary: #f3f4f6;
   --accent: #4e8b30;
   --accent-hover: #437a28;
   --accent-soft: #eef5e8;
   --destructive: #dc2626;
   --radius: 10px;
-  --shadow-sm: 0 1px 2px #18181b0d;
-  --shadow: 0 1px 3px #18181b14, 0 1px 2px #18181b0f;
+  --shadow-sm: 0 1px 2px #1118270d;
+  --shadow: 0 1px 3px #11182714, 0 1px 2px #1118270f;
 
   /* Tokens que comparte con el original */
   --ink: var(--foreground);
@@ -73,7 +73,7 @@
   padding: 3px;
   border: 0;
   border-radius: 8px;
-  background: #e4e4e7;
+  background: #e5e7eb;
   box-shadow: none;
 }
 [data-theme="moderno"] .selector button,
@@ -93,14 +93,14 @@
   box-shadow: var(--shadow);
 }
 [data-theme="moderno"] .tablet {
-  border: 1px solid #d4d4d8;
-  background: #fafafa;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
   box-shadow:
-    0 0 0 6px #e4e4e7,
-    0 24px 48px #18181b1f;
+    0 0 0 6px #e5e7eb,
+    0 24px 48px #1118271f;
 }
 [data-theme="moderno"] .tablet-camera {
-  background: #d4d4d8;
+  background: #d1d5db;
   box-shadow: none;
 }
 [data-theme="moderno"] .tablet-glass {
@@ -569,7 +569,7 @@
   stroke-width: 1.5;
 }
 [data-theme="moderno"] .plate {
-  filter: drop-shadow(0 1px 2px #18181b1a);
+  filter: drop-shadow(0 1px 2px #1118271a);
 }
 [data-theme="moderno"] .plate > rect {
   x: 36px;
@@ -637,7 +637,7 @@
   color: var(--accent);
 }
 [data-theme="moderno"] .panel-states {
-  background: #fafafa;
+  background: #f9fafb;
   border-top: 1px solid var(--border);
 }
 [data-theme="moderno"] .panel-uses {
@@ -676,7 +676,7 @@
   border: 0;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 1px 2px #18181b40;
+  box-shadow: 0 1px 2px #11182740;
 }
 [data-theme="moderno"] .kit-switch-thumb[data-checked] {
   translate: 18px 0;
@@ -698,7 +698,7 @@
   outline: 2px solid var(--accent);
 }
 [data-theme="moderno"] .search-clear {
-  background: #a1a1aa;
+  background: #9ca3af;
 }
 [data-theme="moderno"] .search[data-invalid] {
   border-color: var(--destructive);
@@ -723,7 +723,7 @@
   height: 8px;
   border: 0;
   border-radius: 999px;
-  background: #e4e4e7;
+  background: #e5e7eb;
   box-shadow: none;
 }
 [data-theme="moderno"] .progress-fill {
@@ -753,7 +753,7 @@
   border-radius: 8px;
   color: var(--foreground);
   background: var(--card);
-  box-shadow: 0 8px 24px #18181b1f;
+  box-shadow: 0 8px 24px #1118271f;
 }
 [data-theme="moderno"] .dropdown-item[data-highlighted] {
   background: var(--secondary);
@@ -768,7 +768,7 @@
   border-radius: var(--radius);
   color: var(--foreground);
   background: var(--card);
-  box-shadow: 0 8px 24px #18181b1f;
+  box-shadow: 0 8px 24px #1118271f;
 }
 
 /* Columna de acción de la boleta */

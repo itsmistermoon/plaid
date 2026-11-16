@@ -355,6 +355,6 @@
     border-color: var(--foreground);
   }
   [data-theme="moderno"] .table-detail {
-    box-shadow: 0 -8px 24px #18181b29;
+    box-shadow: 0 -8px 24px #11182729;
   }
 }
