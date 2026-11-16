@@ -536,8 +536,10 @@ ol {
     sans-serif;
   text-shadow: 0 -1px #2d4a14;
   background:
-    linear-gradient(90deg, #ffffff8c 0 5px, #0000 5px 9px) left 5px / 9px 1px repeat-x,
-    linear-gradient(90deg, #ffffff8c 0 5px, #0000 5px 9px) left calc(100% - 5px) / 9px 1px repeat-x,
+    linear-gradient(90deg, #ffffff8c 0 5px, #0000 5px 9px) left 5px / 9px 1px
+    repeat-x,
+    linear-gradient(90deg, #ffffff8c 0 5px, #0000 5px 9px) left calc(100% - 5px)
+    / 9px 1px repeat-x,
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
     repeating-linear-gradient(0deg, #0000000d 0 1px, #0000 1px 3px),
     linear-gradient(#7fb04c, #5f9233 55%, #4e7e27);
