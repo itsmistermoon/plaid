@@ -8,6 +8,7 @@ import {
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useT } from '../i18n';
+import { unlockAudio } from '../lib/sound';
 import { tick } from '../lib/tick';
 import {
   crossed,
@@ -205,7 +206,13 @@ export function QuantityWheel({
       disabled={disabled}
       onValueChange={(next) => onChange(next ?? min)}
     >
-      <NumberInputGroup className="wheel">
+      <NumberInputGroup
+        className="wheel"
+        // Cada gesto sobre la rueda habilita el audio de los clics que siguen.
+        onPointerDownCapture={unlockAudio}
+        onKeyDownCapture={unlockAudio}
+        onTouchEndCapture={unlockAudio}
+      >
         <span
           ref={windowEl}
           className="wheel-window"
