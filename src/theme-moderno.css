@@ -2,6 +2,15 @@
  * Modern theme: flat, shadcn/ui style, with the tablecloth green as its
  * accent. Same structure as the original; only the skin changes.
  */
+/* Shades of the single green, all mixed from --accent. */
+[data-theme="moderno"] {
+  --accent-hover: color-mix(in srgb, var(--accent), #000 13%);
+  --accent-soft: color-mix(in srgb, var(--accent), #fff 90%);
+  --accent-tint: color-mix(in srgb, var(--accent), #fff 84%);
+  --accent-tint-strong: color-mix(in srgb, var(--accent), #fff 74%);
+  --accent-ink: color-mix(in srgb, var(--accent), #000 40%);
+  --accent-glow: color-mix(in srgb, var(--accent) 40%, transparent);
+}
 [data-theme="moderno"] {
   --background: #f1f5f9;
   --card: #fff;
@@ -10,9 +19,8 @@
   --border: #e2e8f0;
   --input: #cbd5e1;
   --secondary: #f1f5f9;
+  /* The single green of the modern theme: every other green is mixed from it. */
   --accent: #4e8b30;
-  --accent-hover: #437a28;
-  --accent-soft: #eef5e8;
   --destructive: #dc2626;
   --radius: 10px;
   --shadow-sm: 0 1px 2px #0f172a0d;
@@ -453,8 +461,8 @@
   background: var(--secondary);
 }
 [data-theme="moderno"] .notice {
-  border: 1px solid #cfe3c2;
-  color: #2f5a1b;
+  border: 1px solid var(--accent-tint-strong);
+  color: var(--accent-ink);
   background: var(--accent-soft);
   box-shadow: none;
 }
@@ -502,7 +510,7 @@
   right: 8%;
   height: 2px;
   background: var(--accent);
-  box-shadow: 0 0 10px 1px #4e8b3066;
+  box-shadow: 0 0 10px 1px var(--accent-glow);
 }
 [data-theme="moderno"] .scanner-laser::before,
 [data-theme="moderno"] .scanner-laser::after {
@@ -570,10 +578,10 @@
   fill: var(--card);
 }
 [data-theme="moderno"] .cloth {
-  fill: #e6f0de;
+  fill: var(--accent-tint);
 }
 [data-theme="moderno"] .mesa[data-occupied="true"] .cloth {
-  fill: #cfe4bf;
+  fill: var(--accent-tint-strong);
 }
 [data-theme="moderno"] .cloth-shine {
   stroke: #fff;
