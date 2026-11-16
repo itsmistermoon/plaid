@@ -15,7 +15,6 @@
   "src/style.css | .avatar | color: #3d4547",
   "src/style.css | .board | scrollbar-color: #2b3133 transparent",
   "src/style.css | .card | box-shadow: inset 0 1px #ffffff1c,\n    0 1px 3px #0005",
-  "src/style.css | .cloth-band | fill: #4e9a28",
   "src/style.css | .cloth-base | fill: #c3e187",
   "src/style.css | .cloth-cross | fill: #24731f",
   "src/style.css | .cloth-shadow | fill: #263c16",

@@ -63,12 +63,17 @@
     linear-gradient(#fff, #e6e6e6 55%, #fbfbfb);
   --paper-shadow: drop-shadow(0 3px 3px #0007);
   --ribbon-shadow: drop-shadow(0 3px 3px #0007);
+  --plaid-green: #4e9a28;
   --ribbon-cloth:
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
     repeating-linear-gradient(0deg, #0000000f 0 1px, #0000 1px 3px),
-    linear-gradient(#3fb36c, #24944f 55%, #1a7d41);
+    linear-gradient(
+      color-mix(in srgb, var(--plaid-green), #fff 26%),
+      color-mix(in srgb, var(--plaid-green), #fff 12%) 55%,
+      color-mix(in srgb, var(--plaid-green), #000 6%)
+    );
   --ribbon-ink: #fff;
-  --ribbon-ink-shadow: 0 -1px #0b3a1c;
+  --ribbon-ink-shadow: 0 -1px color-mix(in srgb, var(--plaid-green), #000 70%);
   --total-shadow: 0 -1px #0008;
 }
 
@@ -1643,7 +1648,7 @@ ol {
   fill: #c3e187;
 }
 .cloth-band {
-  fill: #4e9a28;
+  fill: var(--plaid-green);
   opacity: 0.68;
 }
 .cloth-cross {
