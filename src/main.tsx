@@ -5,6 +5,7 @@ import '@fontsource/inter/400.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Redirect, Route, Switch } from 'wouter';
+import { Demo } from './Demo';
 import './style.css';
 
 function App() {
@@ -12,9 +13,7 @@ function App() {
     <Switch>
       <Route path="/" component={() => <Redirect to="/demo" replace />} />
       <Route path="/demo">
-        <main>
-          <h1>Demo de El Clan</h1>
-        </main>
+        <Demo />
       </Route>
       <Route path="/componentes">
         <main>
