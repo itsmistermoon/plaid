@@ -131,7 +131,7 @@
   background: var(--card);
   border-color: var(--border);
   border-radius: var(--radius);
-  box-shadow: 0 4px 16px #11182714;
+  box-shadow: 0 4px 16px #0f172a14;
 }
 [data-theme="moderno"] .tour-hand {
   color: var(--accent);

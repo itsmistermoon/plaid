@@ -856,15 +856,15 @@ ol {
 }
 [data-theme="moderno"] .wheel {
   --wheel-frame: #fff;
-  --wheel-border: #d1d5db;
-  --wheel-line: #e5e7eb;
+  --wheel-border: #cbd5e1;
+  --wheel-line: #e2e8f0;
   --wheel-shadow: none;
   --wheel-drum: #fff;
-  --wheel-lens: #f3f4f6;
-  --wheel-ink: #111827;
-  --wheel-muted: #9ca3af;
-  --wheel-tooth: #d1d5db;
-  --wheel-mark: #111827;
+  --wheel-lens: #f1f5f9;
+  --wheel-ink: #0f172a;
+  --wheel-muted: #94a3b8;
+  --wheel-tooth: #cbd5e1;
+  --wheel-mark: #0f172a;
   --wheel-arrow: #4b5563;
 }
 .wheel-window {
