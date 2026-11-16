@@ -11,7 +11,21 @@ export interface Dish {
   description: string;
   price: number;
   soldOut?: boolean;
+  extras?: Extra[];
 }
+/** Agregado opcional de un plato, con su precio por unidad. */
+export interface Extra {
+  id: string;
+  name: string;
+  price: number;
+}
+const sandwichExtras: Extra[] = [
+  { id: 'palta', name: 'Palta', price: 1200 },
+  { id: 'queso', name: 'Queso', price: 900 },
+  { id: 'tomate', name: 'Tomate', price: 600 },
+  { id: 'huevo', name: 'Huevo frito', price: 1000 },
+  { id: 'tocino', name: 'Tocino', price: 1300 },
+];
 export const categories: Category[] = [
   'Entradas',
   'Sándwiches',
@@ -35,6 +49,10 @@ export const dishes: Dish[] = [
     description:
       'Porción de papas cortadas a mano, fritas dos veces, con sal de mar y mayonesa casera.',
     price: 3500,
+    extras: [
+      { id: 'cheddar', name: 'Queso cheddar', price: 1500 },
+      { id: 'huevo', name: 'Huevo frito', price: 1000 },
+    ],
   },
   {
     id: 'ensalada',
@@ -51,6 +69,7 @@ export const dishes: Dish[] = [
     description:
       'Churrasco de vacuno, porotos verdes, tomate y ají verde en pan frica.',
     price: 6900,
+    extras: sandwichExtras,
   },
   {
     id: 'barros-luco',
@@ -59,6 +78,7 @@ export const dishes: Dish[] = [
     description:
       'Churrasco de vacuno con queso mantecoso derretido en marraqueta tostada.',
     price: 6400,
+    extras: sandwichExtras,
   },
   {
     id: 'italiano',
@@ -67,6 +87,7 @@ export const dishes: Dish[] = [
     description:
       'Lomito de cerdo con palta, tomate y mayonesa casera; los colores de la bandera italiana.',
     price: 6200,
+    extras: sandwichExtras,
   },
   {
     id: 'chemilico',
@@ -76,6 +97,7 @@ export const dishes: Dish[] = [
       'Churrasco con huevo frito y cebolla caramelizada en pan amasado.',
     price: 6600,
     soldOut: true,
+    extras: sandwichExtras,
   },
   {
     id: 'pastel',
@@ -99,6 +121,7 @@ export const dishes: Dish[] = [
     description:
       'Lomo vetado a la plancha con papas fritas, cebolla frita y dos huevos.',
     price: 13400,
+    extras: [{ id: 'huevo', name: 'Huevo extra', price: 1000 }],
   },
   {
     id: 'porotos',
