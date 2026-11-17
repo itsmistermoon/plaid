@@ -2,8 +2,8 @@ import { CircleHelp } from 'lucide-react';
 import { useStore } from 'zustand';
 import { Tip } from '../components/Tip';
 import { useT } from '../i18n';
-import { useMedia } from './useMedia';
 import { store } from './store';
+import { useMedia } from './useMedia';
 
 /** Bar button that starts, skips or resumes the guided tour. */
 export function TourButton() {
