@@ -1,13 +1,28 @@
-# plaid
+# Plaid UI Kit
 
-Plaid is a skeuomorphic UI kit built on [UI SDK](https://ui-sdk.dev), and Restaurant El Clan is a demo app made with it: a reconstruction of iClub built for moon's portfolio. Textures, relief and real-looking materials (tablecloth, paper receipts, seals, a leather-bound reservation book) sit on top of the accessible behavior of a modern component library. The look is deliberately the skeuomorphic style of the early 2010s, before flat design, chosen on purpose rather than left over from the past.
+A component kit built on [UI SDK](https://ui-sdk.dev), and Restaurant El Clan, a complete restaurant app made with it. I'm Juan Pablo Armstrong; I designed and coded both.
 
-Every piece comes in two skins, Plaid (tactile) and Slate (flat), so the two approaches can be compared side by side. The UI is available in Spanish and English.
+[Demo](https://plaid-ui-kit.vercel.app/) · [UI kit](https://plaid-ui-kit.vercel.app/componentes) · [Case study](https://jparmstrong.vercel.app/en/plaid-ui-kit)
 
-## Live
+## Origin
 
-- **[Demo](https://plaid-ui-kit.vercel.app/)**: a whole restaurant on a tablet. Order from the table, follow your order and pay the bill, or switch to the waiter or kitchen view to run the floor. Change the skin, language or theme and try everything.
-- **[UI kit](https://plaid-ui-kit.vercel.app/componentes)**: the component gallery. Every piece in its states, grouped as standalone components, restaurant components and the tartan designer, each with the UI SDK primitives it uses.
+Plaid rebuilds iClub, an Android app for ordering from the table in restaurants, on tablets. From December 2011 to April 2012 I designed its whole interface as a freelance UI designer ([iClub on Behance](https://www.behance.net/gallery/43812871/iClub-Interactive-menu-for-restaurants-on-tablets)). Fourteen years later I rebuilt it, this time writing the code as well.
+
+It keeps the skeuomorphic style of that time: screens that imitate real materials, with depth and shadows. Here that means a tablecloth, paper receipts, seals and a leather-bound reservation book. UI SDK provides the accessible behavior (menus, dialogs, selects, the command palette) and Plaid only adds the look.
+
+Every piece comes in two skins, Plaid (tactile) and Slate (flat), so you can compare them side by side. The UI is in Spanish and English.
+
+## What's in it
+
+- **[Demo](https://plaid-ui-kit.vercel.app/)**: a whole restaurant on a tablet. The diner orders from the table, follows the order and pays the bill. The waiter sees the floor, moves and joins tables, and takes payment. The kitchen gets tickets on a rail.
+- **[UI kit](https://plaid-ui-kit.vercel.app/componentes)**: the component gallery. 27 panels show every piece in its states and the UI SDK primitives it uses, grouped as standalone components, restaurant components and a tartan designer.
+
+The design rules are written down in [`DESIGN.md`](DESIGN.md), each with its reason.
+
+## Tests
+
+- **Unit tests** (Vitest, `pnpm test`): app logic, plus a color test that reads every stylesheet with PostCSS and fails if a color is written outside the design tokens. The few allowed exceptions are listed in `tests/color-exceptions.json`.
+- **Layout tests** (Playwright, `pnpm test:layout`): they measure the position and size of controls in each skin, language and light or dark mode, so switching any of them never moves or resizes a control.
 
 ## Development
 
@@ -23,6 +38,7 @@ The demo lives at `/demo` and the gallery in three views: `/componentes` (standa
 ```sh
 pnpm build
 pnpm test
+pnpm test:layout
 pnpm lint
 ```
 
