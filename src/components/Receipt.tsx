@@ -20,11 +20,18 @@ export function Receipt({
   lines,
   total,
   caption,
+  tip,
+  shares = [],
   children,
 }: {
   lines: ReceiptLine[];
+  /** The figure to pay, tip included. */
   total: number;
   caption: string;
+  /** Printed as one more line when its amount is not zero. */
+  tip?: { percent: number; amount: number };
+  /** What each person pays when the bill is split: printed as tear-off stubs. */
+  shares?: number[];
   children?: ReactNode;
 }) {
   const t = useT();
@@ -75,10 +82,34 @@ export function Receipt({
                 )}
               </tbody>
             ))}
+            {!!tip?.amount && (
+              <tbody className="receipt-tip">
+                <tr>
+                  <th scope="row">{t('tip')}</th>
+                  <td>{tip.percent}%</td>
+                  <td>{money(tip.amount)}</td>
+                </tr>
+              </tbody>
+            )}
           </table>
           <p className="receipt-total">
             {t('total')}: {money(total)}
           </p>
+          {shares.length > 1 && (
+            <ul
+              className="receipt-stubs"
+              aria-label={t('splitInto')(shares.length)}
+            >
+              {shares.map((share, index) => (
+                <li key={index}>
+                  <span>
+                    {index + 1}/{shares.length}
+                  </span>
+                  <strong>{money(share)}</strong>
+                </li>
+              ))}
+            </ul>
+          )}
           {children}
         </div>
       </div>
@@ -124,9 +155,12 @@ export function Stepper({
  */
 export function ReceiptActions({
   total,
+  shares,
   children,
 }: {
   total: number;
+  /** A split bill: the line under the total says what each person pays. */
+  shares?: number[];
   children: ReactNode;
 }) {
   const t = useT();
@@ -135,7 +169,29 @@ export function ReceiptActions({
       <p className="receipt-actions-total">
         <span>{t('total')}</span>
         <strong>{money(total)}</strong>
+        {/* The line keeps its place when the bill is not split. */}
+        {shares && (
+          <small data-hidden={shares.length < 2 || undefined}>
+            {t('perPerson')}: {money(shares[0])}
+          </small>
+        )}
       </p>
+      {children}
+    </div>
+  );
+}
+
+/** A choice of the action column with its visible label. */
+export function ReceiptOption({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="receipt-option">
+      <span aria-hidden="true">{label}</span>
       {children}
     </div>
   );

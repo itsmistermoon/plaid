@@ -1,11 +1,15 @@
 import {
   BookOpen,
+  CircleHelp,
   Clock,
   ConciergeBell,
+  LayoutGrid,
   ReceiptText,
+  RotateCcw,
   ShoppingCart,
 } from 'lucide-react';
 import {
+  type CSSProperties,
   type ReactNode,
   useId,
   useLayoutEffect,
@@ -13,19 +17,25 @@ import {
   useState,
 } from 'react';
 import { Link } from 'wouter';
+import { Badge } from './components/Badge';
 import { CategoryTabs } from './components/CategoryTabs';
+import { Chalkboard } from './components/Chalkboard';
+import { CommandPalette } from './components/CommandPalette';
+import { DietFilter } from './components/DietFilter';
 import { DishPlate } from './components/DishPlate';
 import { Dropdown } from './components/Dropdown';
 import { Extras } from './components/Extras';
 import { KitCheck } from './components/KitCheck';
 import { KitSwitch } from './components/KitSwitch';
 import { LangSwitch } from './components/LangSwitch';
+import { MoveMenu } from './components/MoveMenu';
 import {
   ArrowButton,
   CartButton,
   Navbar,
   PendingCalls,
 } from './components/Navbar';
+import { NotePresets } from './components/NotePresets';
 import {
   OrderToastRegion,
   showOrderToast,
@@ -39,37 +49,72 @@ import {
   Receipt,
   ReceiptActions,
   type ReceiptLine,
+  ReceiptOption,
   Stepper,
 } from './components/Receipt';
+import { ReservationBook } from './components/ReservationBook';
 import { Ribbon } from './components/Ribbon';
 import { Scanner } from './components/Scanner';
+import { SchemeSwitch } from './components/SchemeSwitch';
 import { Scroller } from './components/Scroller';
 import { SealBadge } from './components/Seal';
 import { SearchField } from './components/SearchField';
 import { Selector } from './components/Selector';
 import { SelectorToggle } from './components/SelectorToggle';
 import { Sidebar, SidebarItem } from './components/Sidebar';
-import { StageBar } from './components/StageBar';
+import { StageBar, StageIntro } from './components/StageBar';
 import { TableButton } from './components/Table';
 import { TableDetail, TableDetailEmpty } from './components/TableDetail';
+import { TartanDesigner } from './components/TartanDesigner';
 import { ThemeSwitch } from './components/ThemeSwitch';
+import { KitchenTicket, TicketRail } from './components/TicketRail';
+import { Tip } from './components/Tip';
+import { type TipPercent, TipSelector } from './components/TipSelector';
 import { lineKey, receiptLine } from './demo/lines';
 import {
   billTotal,
   type CallKind,
   cartTotal,
   type Line,
+  type Order,
+  type Reservation,
+  splitShares,
   type Table,
+  tipAmount,
+  type View,
+  views,
 } from './domain';
 import { money } from './format';
 import { pathFor, useExtraName, useLang, useT } from './i18n';
-import { type Category, categories, dishes } from './menu';
+import {
+  type Category,
+  categories,
+  type Diet,
+  dishes,
+  soldOutDishes,
+  specials,
+  type Tab,
+} from './menu';
+import {
+  fullSett,
+  sett,
+  settSize,
+  type TartanColor,
+  type TartanLayer,
+  tartanColors,
+  tartanUrl,
+  threadcount,
+} from './tartan';
 
 const dish = (id: string) => {
   const found = dishes.find((item) => item.id === id);
   if (!found) throw new Error(`No existe el plato ${id}`);
   return found;
 };
+const uiSdkUrl = 'https://ui-sdk.dev';
+
+export const galleryViews = ['components', 'restaurant', 'tartan'] as const;
+export type GalleryView = (typeof galleryViews)[number];
 const callKinds: CallKind[] = ['pedido', 'garzón', 'pago'];
 const line = (dishId: string, qty: number, extras: string[] = []): Line => ({
   dishId,
@@ -83,6 +128,8 @@ const line = (dishId: string, qty: number, extras: string[] = []): Line => ({
  * variants below, and a footer saying whether it is presentational or UI SDK.
  * The number comes from a CSS counter, so page order is the numbering.
  */
+const noop = () => undefined;
+
 function Panel({
   title,
   uses,
@@ -124,17 +171,39 @@ function Panel({
         </ul>
       )}
       <p className="panel-uses">
-        {uses.length ? `UI SDK: ${uses.join(', ')}` : t('presentational')}
+        {uses.length ? (
+          <>
+            <a href={uiSdkUrl} target="_blank" rel="noopener noreferrer">
+              UI SDK
+            </a>
+            : {uses.join(', ')}
+          </>
+        ) : (
+          t('presentational')
+        )}
       </p>
     </section>
   );
 }
 
 /** A group of panels with its title. */
-function Group({ title, children }: { title: string; children: ReactNode }) {
+function Group({
+  title,
+  thread,
+  children,
+}: {
+  title: string;
+  /** Which thread this group's panel headers carry. */
+  thread: 'controls' | 'containers' | 'restaurant' | 'tartan';
+  children: ReactNode;
+}) {
   const id = useId();
   return (
-    <section className="gallery-group" aria-labelledby={id}>
+    <section
+      className="gallery-group"
+      data-thread={thread}
+      aria-labelledby={id}
+    >
       <h2 className="gallery-group-title" id={id}>
         {title}
       </h2>
@@ -184,17 +253,19 @@ function WheelDemo() {
   return <QuantityWheel value={qty} onChange={setQty} label={t('quantity')} />;
 }
 
-/** The stepper sits on the receipt paper. */
+/** The stepper in context: a receipt line on a full strip of paper. */
 function StepperOnPaper({ qty }: { qty: number }) {
   const [value, setValue] = useState(qty);
+  const name = dish('italiano').name;
   return (
-    <span className="stepper-paper">
+    <div className="receipt-paper stepper-paper">
+      <span>{name}</span>
       <Stepper
-        name="Italiano"
+        name={name}
         qty={value}
         onChange={(next) => setValue(Math.max(1, next))}
       />
-    </span>
+    </div>
   );
 }
 
@@ -277,31 +348,32 @@ function DropdownDemo() {
   );
 }
 
-type View = 'comensal' | 'garzon';
-
 /** The demo bar's role selector, in both forms. */
 function RoleSwitch({ phone }: { phone?: boolean }) {
   const [view, setView] = useState<View>('comensal');
   const t = useT();
+  const roles = {
+    comensal: t('diner'),
+    garzon: t('waiter'),
+    cocina: t('kitchen'),
+  };
+  const next = views[(views.indexOf(view) + 1) % views.length];
   return (
     <div className="stage-bar" data-phone={phone || undefined}>
       {phone ? (
         <SelectorToggle
           className="role-switch"
           label={t('device')}
-          current={view === 'garzon' ? t('waiter') : t('diner')}
-          next={view === 'garzon' ? t('diner') : t('waiter')}
-          onClick={() => setView(view === 'garzon' ? 'comensal' : 'garzon')}
+          current={roles[view]}
+          next={roles[next]}
+          onClick={() => setView(next)}
         />
       ) : (
         <Selector
           className="role-switch"
           legend={t('device')}
           value={view}
-          options={[
-            { value: 'comensal', label: t('diner') },
-            { value: 'garzon', label: t('waiter') },
-          ]}
+          options={views.map((value) => ({ value, label: roles[value] }))}
           onChange={setView}
         />
       )}
@@ -358,6 +430,7 @@ function PostItDemo() {
         value={note}
         onChange={setNote}
       />
+      <NotePresets note={note} onChange={setNote} />
     </div>
   );
 }
@@ -442,9 +515,14 @@ function SidebarSample({ children }: { children: ReactNode }) {
   return <div className="sidebar sidebar-sample">{children}</div>;
 }
 
+function DietFilterDemo({ initial = [] }: { initial?: Diet[] }) {
+  const [chosen, setChosen] = useState(initial);
+  return <DietFilter value={chosen} onChange={setChosen} />;
+}
+
 /** Tabs over a board with the menu below; `scrolled` leaves it scrolled. */
 function CategoryTabsDemo({ scrolled }: { scrolled?: boolean }) {
-  const [category, setCategory] = useState<Category>('Sándwiches');
+  const [category, setCategory] = useState<Tab>('Sándwiches');
   const board = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     if (scrolled && board.current) board.current.scrollTop = 48;
@@ -476,7 +554,19 @@ function ToastDemo() {
           key={kind}
           type="button"
           className="dark-button"
-          onClick={() => showOrderToast(kind, ...t('toasts')[kind])}
+          onClick={() =>
+            showOrderToast(
+              kind,
+              t('toasts')[kind],
+              // Like Sonner's Undo: a sent order can still be taken back.
+              kind === 'enviado'
+                ? {
+                    label: t('undo'),
+                    onAction: () => showOrderToast('error', t('undone')),
+                  }
+                : undefined,
+            )
+          }
         >
           {t('statuses')[kind]}
         </button>
@@ -485,15 +575,109 @@ function ToastDemo() {
   );
 }
 
-function StaticToast({ kind }: { kind: ToastKind }) {
-  const [title, description] = useT()('toasts')[kind];
+/** The palette with a few sample commands: running one shows a notice. */
+function PaletteDemo() {
+  const t = useT();
+  const table = t('tableN');
+  const items = [
+    {
+      label: `${table(2)} · ${t('attend')} · ${t('callLabels').garzón}`,
+      icon: <ConciergeBell />,
+    },
+    {
+      label: `${table(7)} · ${t('serve')} · ${t('orderN')(1)}`,
+      icon: <ReceiptText />,
+    },
+    { label: `${table(7)} · ${t('chargeAndFree')}`, icon: <ReceiptText /> },
+  ].map((item) => ({ ...item, value: item.label }));
   return (
-    <div className="toast" data-static>
+    <div className="palette-demo">
+      <CommandPalette
+        title={t('paletteTitle')}
+        placeholder={t('paletteHint')}
+        groups={[{ label: t('paletteActions'), items }]}
+        onRun={(value) => showOrderToast('confirmado', [value, t('advance')])}
+      />
+    </div>
+  );
+}
+
+/** Icon-only buttons of the phone bar, each named by its tooltip. */
+function TipDemo({ blocked }: { blocked?: boolean }) {
+  const t = useT();
+  const buttons = [
+    { icon: CircleHelp, name: t('tour') },
+    { icon: LayoutGrid, name: t('uiKit') },
+    { icon: RotateCcw, name: t('resetDemo') },
+  ];
+  return (
+    <div className="row tip-demo">
+      {buttons.slice(0, blocked ? 1 : 3).map(({ icon: Icon, name }) => (
+        <Tip
+          key={name}
+          hint={blocked ? t('schemeSlateOnly') : name}
+          naming={!blocked}
+          render={
+            <button
+              type="button"
+              className="dark-button"
+              aria-label={name}
+              aria-disabled={blocked || undefined}
+            />
+          }
+        >
+          <Icon aria-hidden="true" />
+        </Tip>
+      ))}
+    </div>
+  );
+}
+
+function StaticToast({
+  kind,
+  withAction,
+}: {
+  kind: ToastKind;
+  withAction?: boolean;
+}) {
+  const t = useT();
+  const [title, description] = t('toasts')[kind];
+  return (
+    <div className="toast-card" data-static>
       <ToastFace
         kind={kind}
         title={<span className="toast-title">{title}</span>}
         description={<span className="toast-description">{description}</span>}
+        action={
+          withAction && (
+            <button type="button" className="light-button toast-action">
+              {t('undo')}
+            </button>
+          )
+        }
       />
+    </div>
+  );
+}
+
+function BadgeDemo() {
+  const t = useT();
+  return (
+    <div className="stack">
+      <div className="row">
+        {statusSteps.map((kind) => (
+          <Badge key={kind} variant={kind}>
+            {t('statuses')[kind]}
+          </Badge>
+        ))}
+      </div>
+      <div className="row">
+        {callKinds.map((kind) => (
+          <Badge key={kind} variant={kind}>
+            {t('callLabels')[kind]}
+          </Badge>
+        ))}
+      </div>
     </div>
   );
 }
@@ -524,13 +708,17 @@ function ReceiptDemo() {
     line('empanada', 2),
     line('italiano', 1, ['palta']),
   ]);
+  const [percent, setPercent] = useState<TipPercent>(10);
+  const tip = tipAmount(cartTotal(cart), percent);
+  const total = cartTotal(cart) + tip;
   const t = useT();
   const extraName = useExtraName();
   return (
     <section className="card ticket-card" aria-label={t('sampleReceipt')}>
       <Receipt
         caption={t('sampleReceipt')}
-        total={cartTotal(cart)}
+        total={total}
+        tip={{ percent, amount: tip }}
         lines={cart.map((item) =>
           receiptLine(
             item,
@@ -550,7 +738,10 @@ function ReceiptDemo() {
           ),
         )}
       />
-      <ReceiptActions total={cartTotal(cart)}>
+      <ReceiptActions total={total}>
+        <ReceiptOption label={t('tip')}>
+          <TipSelector value={percent} onChange={setPercent} />
+        </ReceiptOption>
         <button type="button" className="light-button">
           {t('placeOrder')}
         </button>
@@ -577,7 +768,7 @@ const longOrder = [
   line('helado', 1),
 ];
 
-function Printer({ lines }: { lines: Line[] }) {
+function Printer({ lines, people = 1 }: { lines: Line[]; people?: number }) {
   const t = useT();
   return (
     <div className="printer-demo">
@@ -585,6 +776,7 @@ function Printer({ lines }: { lines: Line[] }) {
         caption={t('preview')}
         lines={useLines(lines)}
         total={cartTotal(lines)}
+        shares={splitShares(cartTotal(lines), people)}
       />
     </div>
   );
@@ -674,7 +866,86 @@ const sampleTable = (): Table => ({
   ],
 });
 
-/** Table detail with local state: attend, confirm, serve and charge. */
+const sampleOrder = (status: Order['status']): Order => ({
+  id: status,
+  status,
+  lines: [line('italiano', 2, ['palta']), line('cerveza', 1)],
+});
+
+/** A rail of the Cocina whose ticket moves through the three statuses. */
+function TicketRailDemo() {
+  const [status, setStatus] = useState<Order['status']>('enviado');
+  return (
+    <div className="kitchen rail-demo">
+      <TicketRail status={status} count={2}>
+        <KitchenTicket
+          table={7}
+          number={1}
+          order={sampleOrder(status)}
+          onAdvance={() =>
+            setStatus(status === 'enviado' ? 'confirmado' : 'servido')
+          }
+        />
+        <KitchenTicket
+          table={3}
+          number={2}
+          order={{ id: 'b', status, lines: [line('pastel', 1)] }}
+          onAdvance={() => setStatus('enviado')}
+        />
+      </TicketRail>
+    </div>
+  );
+}
+
+/** The reservation book with local state. */
+function BookDemo() {
+  const [reservations, setReservations] = useState<Reservation[]>([
+    { id: 'a', table: 4, day: 0, time: '21:00', name: 'Soto' },
+    { id: 'b', table: 11, day: 0, time: '20:00', name: 'Rojas' },
+    { id: 'c', table: 2, day: 1, time: '13:00', name: 'Vidal' },
+  ]);
+  return (
+    <div className="book book-demo">
+      <ReservationBook
+        reservations={reservations}
+        tables={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
+        onReserve={(item) =>
+          setReservations([
+            ...reservations,
+            { ...item, id: `${reservations.length}${item.name}` },
+          ])
+        }
+        onCancel={(id) =>
+          setReservations(reservations.filter((item) => item.id !== id))
+        }
+      />
+    </div>
+  );
+}
+
+const sampleTargets = [1, 2, 4, 5, 6].map((number) => ({
+  number,
+  occupied: number % 2 === 0,
+}));
+
+/** The move menu on its own: choosing a Mesa shows the notice with Undo. */
+function MoveMenuDemo() {
+  const t = useT();
+  return (
+    <MoveMenu
+      targets={sampleTargets}
+      onMove={(to) =>
+        showOrderToast(
+          'confirmado',
+          t(to % 2 === 0 ? 'merged' : 'transferred')(3, to),
+          { label: t('undo'), onAction: () => {} },
+        )
+      }
+    />
+  );
+}
+
+/** Table detail with local state: attend, confirm, serve, charge and move. */
 function TableDetailDemo() {
   const [table, setTable] = useState(sampleTable);
   const setStatus = (id: string, status: 'confirmado' | 'servido') =>
@@ -700,6 +971,10 @@ function TableDetailDemo() {
               ? { ...table, occupied: false, calls: [], orders: [] }
               : sampleTable(),
           )
+        }
+        moveTargets={sampleTargets}
+        onMove={() =>
+          setTable({ ...table, occupied: false, calls: [], orders: [] })
         }
       />
     </TableDetailFrame>
@@ -734,30 +1009,120 @@ function TableDetailFrame({
   );
 }
 
-export function Gallery() {
+function TartanSwatch({ layer }: { layer?: TartanLayer }) {
+  return (
+    <span
+      className="tartan-swatch"
+      style={{ backgroundImage: tartanUrl(layer) }}
+    />
+  );
+}
+
+/** The Clan tartan: the cloth, its sett, its colors and how it is woven. */
+function TartanGroup() {
   const t = useT();
-  const lang = useLang();
-  const callLabels = t('callLabels');
-  const s = t('stateLabels');
   const panel = t('panels');
-  const group = t('groups');
+  const text = t('tartan');
+  return (
+    <Group title={t('groups').tartan} thread="tartan">
+      <Panel title={panel.tartanCloth} uses={[]}>
+        <div className="tartan-cloth">
+          <TartanSwatch />
+          <p className="hint">{text.intro}</p>
+        </div>
+      </Panel>
+      <Panel title={panel.tartanSett} uses={[]}>
+        <div className="tartan-sett">
+          <code>{threadcount}</code>
+          <ol aria-label={threadcount}>
+            {sett.map(([color, count], index) => (
+              <li
+                key={index}
+                style={{ flexGrow: count, background: tartanColors[color] }}
+                title={`${text.colors[color][0]} · ${text.threads(count)}`}
+              />
+            ))}
+          </ol>
+          <div
+            className="tartan-repeat"
+            aria-label={text.repeat(settSize)}
+            role="img"
+          >
+            {fullSett.map(([color, count], index) => (
+              <span
+                key={index}
+                style={{ flexGrow: count, background: tartanColors[color] }}
+              />
+            ))}
+          </div>
+          <p className="hint">{text.repeat(settSize)}</p>
+        </div>
+      </Panel>
+      <Panel title={panel.tartanColors} uses={[]}>
+        <ul className="tartan-colors">
+          {(Object.keys(tartanColors) as TartanColor[]).map((color) => (
+            <li key={color}>
+              <span
+                className="tartan-chip"
+                style={{ background: tartanColors[color] }}
+              >
+                {color}
+              </span>
+              <span>
+                <strong>{text.colors[color][0]}</strong>
+                <small className="hint">
+                  {text.colors[color][1]} · {tartanColors[color]}
+                </small>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Panel>
+      <Panel
+        title={panel.tartanDesigner}
+        uses={['NumberInput', 'Toast']}
+        wide="full"
+      >
+        <TartanDesigner />
+      </Panel>
+      <Panel
+        title={panel.tartanWeave}
+        uses={[]}
+        wide="full"
+        states={[
+          { label: text.warp, node: <TartanSwatch layer="warp" /> },
+          { label: text.weft, node: <TartanSwatch layer="weft" /> },
+          { label: text.check, node: <TartanSwatch /> },
+        ]}
+      >
+        <p className="hint tartan-tokens">
+          {text.tokens
+            .split(/(--[\w*-]+)/)
+            .map((part, index) =>
+              part.startsWith('--') ? (
+                <code key={part}>{part}</code>
+              ) : (
+                <span key={`${index}${part}`}>{part}</span>
+              ),
+            )}
+        </p>
+      </Panel>
+    </Group>
+  );
+}
+
+function ComponentsView() {
+  const t = useT();
   const categoryItems = categories.map((id) => ({
     value: id,
     label: t('categories')[id],
   }));
+  const s = t('stateLabels');
+  const panel = t('panels');
+  const group = t('groups');
   return (
-    <main className="gallery">
-      <StageBar>
-        <h1>
-          {t('galleryTitle')} <small>{t('gallerySubtitle')}</small>
-        </h1>
-        <ThemeSwitch />
-        <LangSwitch />
-        <Link href={pathFor('demo', lang)} className="light-button">
-          {t('openDemo')}
-        </Link>
-      </StageBar>
-      <Group title={group.controls}>
+    <>
+      <Group title={group.controls} thread="controls">
         <Panel
           title={panel.button}
           uses={[]}
@@ -867,6 +1232,16 @@ export function Gallery() {
           ]}
         >
           <ExtrasDemo />
+        </Panel>
+        <Panel
+          title={panel.badge}
+          uses={[]}
+          states={['1', '24', '99+'].map((count) => ({
+            label: `${s.count} ${count}`,
+            node: <Badge variant="count">{count}</Badge>,
+          }))}
+        >
+          <BadgeDemo />
         </Panel>
         <Panel
           title={panel.switch}
@@ -1013,8 +1388,45 @@ export function Gallery() {
         >
           <PostItDemo />
         </Panel>
+        <Panel title={panel.palette} uses={['Dialog', 'Command']}>
+          <PaletteDemo />
+        </Panel>
+        <Panel
+          title={panel.tooltip}
+          uses={['Tooltip']}
+          states={[{ label: s.explains, node: <TipDemo blocked /> }]}
+        >
+          <TipDemo />
+        </Panel>
+        <Panel
+          title={panel.toast}
+          uses={['Toast']}
+          wide="full"
+          states={[
+            { label: s.confirmed, node: <StaticToast kind="confirmado" /> },
+            {
+              label: s.withAction,
+              node: <StaticToast kind="enviado" withAction />,
+            },
+            { label: s.error, node: <StaticToast kind="error" /> },
+          ]}
+        >
+          <ToastDemo />
+        </Panel>
       </Group>
-      <Group title={group.containers}>
+    </>
+  );
+}
+
+function RestaurantView() {
+  const t = useT();
+  const callLabels = t('callLabels');
+  const s = t('stateLabels');
+  const panel = t('panels');
+  const group = t('groups');
+  return (
+    <>
+      <Group title={group.containers} thread="containers">
         <Panel
           title={panel.navbar}
           uses={[]}
@@ -1094,6 +1506,18 @@ export function Gallery() {
           <CategoryTabsDemo />
         </Panel>
         <Panel
+          title={panel.dietFilter}
+          uses={[]}
+          states={[
+            {
+              label: t('diets').vegetarian,
+              node: <DietFilterDemo initial={['vegetarian']} />,
+            },
+          ]}
+        >
+          <DietFilterDemo />
+        </Panel>
+        <Panel
           title={panel.tabbar}
           uses={[]}
           wide
@@ -1117,19 +1541,8 @@ export function Gallery() {
             <TableDetailEmpty />
           </TableDetailFrame>
         </Panel>
-        <Panel
-          title={panel.toast}
-          uses={['Toast']}
-          wide="full"
-          states={[
-            { label: s.confirmed, node: <StaticToast kind="confirmado" /> },
-            { label: s.error, node: <StaticToast kind="error" /> },
-          ]}
-        >
-          <ToastDemo />
-        </Panel>
       </Group>
-      <Group title={group.restaurant}>
+      <Group title={group.restaurant} thread="restaurant">
         <Panel
           title={panel.ribbon}
           uses={[]}
@@ -1156,6 +1569,62 @@ export function Gallery() {
           <div className="card ribbon-demo" data-size="big">
             <Ribbon>Chacarero</Ribbon>
           </div>
+        </Panel>
+        <Panel
+          title={panel.chalkboard}
+          uses={[]}
+          wide
+          states={[
+            {
+              label: s.noSoldOut,
+              node: (
+                <Chalkboard specials={specials} soldOut={[]} onOpen={noop} />
+              ),
+            },
+          ]}
+        >
+          <Chalkboard
+            specials={specials}
+            soldOut={soldOutDishes}
+            onOpen={noop}
+          />
+        </Panel>
+        <Panel title={panel.book} uses={['Dialog', 'Select', 'Input']} wide>
+          <BookDemo />
+        </Panel>
+        <Panel title={panel.moveMenu} uses={['Menu', 'Toast']}>
+          <MoveMenuDemo />
+        </Panel>
+        <Panel
+          title={panel.ticketRail}
+          uses={[]}
+          wide="full"
+          states={[
+            {
+              label: s.served,
+              node: (
+                <ul className="rail-tickets">
+                  <KitchenTicket
+                    table={7}
+                    number={1}
+                    order={sampleOrder('servido')}
+                  />
+                </ul>
+              ),
+            },
+            {
+              label: s.noOrders,
+              node: (
+                <div className="kitchen rail-demo">
+                  <TicketRail status="confirmado" count={0}>
+                    {null}
+                  </TicketRail>
+                </div>
+              ),
+            },
+          ]}
+        >
+          <TicketRailDemo />
         </Panel>
         <Panel
           title={panel.tableDetail}
@@ -1185,13 +1654,34 @@ export function Gallery() {
         <Panel
           title={panel.table}
           uses={[]}
-          wide
+          wide="full"
           states={[
             {
               label: s.free,
               node: (
                 <span className="table-state">
                   <TableButton number={3} occupied={false} calls={[]} />
+                </span>
+              ),
+            },
+            {
+              label: s.reserved,
+              node: (
+                <span className="table-state">
+                  <TableButton
+                    number={11}
+                    occupied={false}
+                    calls={[]}
+                    reserved="20:00"
+                  />
+                </span>
+              ),
+            },
+            {
+              label: s.occupiedF,
+              node: (
+                <span className="table-state">
+                  <TableButton number={4} occupied calls={[]} />
                 </span>
               ),
             },
@@ -1203,6 +1693,14 @@ export function Gallery() {
                 </span>
               ),
             },
+            ...callKinds.map((kind, index) => ({
+              label: callLabels[kind],
+              node: (
+                <span className="table-state">
+                  <TableButton number={6 + index} occupied calls={[kind]} />
+                </span>
+              ),
+            })),
             {
               label: s.combinedCalls,
               node: (
@@ -1274,6 +1772,17 @@ export function Gallery() {
                 </div>
               ),
             },
+            {
+              label: s.splitBill,
+              node: (
+                <div className="detail-receipt">
+                  <Printer
+                    people={3}
+                    lines={[line('italiano', 2), line('cerveza', 3)]}
+                  />
+                </div>
+              ),
+            },
           ]}
         >
           <ReceiptDemo />
@@ -1293,6 +1802,61 @@ export function Gallery() {
           <Printer lines={[line('empanada', 2), line('italiano', 1)]} />
         </Panel>
       </Group>
+    </>
+  );
+}
+
+export function Gallery({ view }: { view: GalleryView }) {
+  const t = useT();
+  const lang = useLang();
+  return (
+    <main
+      className="gallery"
+      style={{ '--clan-tartan': tartanUrl() } as CSSProperties}
+    >
+      <StageBar>
+        <ThemeSwitch />
+        <SchemeSwitch />
+        <LangSwitch />
+        <nav className="selector gallery-views" aria-label={t('galleryViews')}>
+          {galleryViews.map((item) => (
+            <Link
+              key={item}
+              href={pathFor(item, lang)}
+              aria-current={view === item ? 'page' : undefined}
+            >
+              {t('viewLabels')[item]}
+            </Link>
+          ))}
+        </nav>
+        <Link href={pathFor('demo', lang)} className="light-button">
+          {t('openDemo')}
+        </Link>
+      </StageBar>
+      <StageIntro
+        title={t('galleryTitle')}
+        tagline={t('gallerySubtitle')}
+        description={
+          <>
+            {t('galleryIntro')}{' '}
+            <a href={uiSdkUrl} target="_blank" rel="noopener noreferrer">
+              UI SDK
+            </a>
+            {t('galleryIntroMid')}{' '}
+            <a
+              href="https://github.com/itsmistermoon/plaid"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+            .
+          </>
+        }
+      />
+      {view === 'components' && <ComponentsView />}
+      {view === 'restaurant' && <RestaurantView />}
+      {view === 'tartan' && <TartanGroup />}
       <OrderToastRegion />
     </main>
   );

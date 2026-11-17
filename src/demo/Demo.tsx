@@ -1,15 +1,22 @@
 import { LayoutGrid, RotateCcw } from 'lucide-react';
-import { useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 import { Link } from 'wouter';
 import { useStore } from 'zustand';
 import { LangSwitch } from '../components/LangSwitch';
+import { OrderToastRegion } from '../components/OrderToast';
+import { SchemeSwitch } from '../components/SchemeSwitch';
 import { Selector } from '../components/Selector';
 import { SelectorToggle } from '../components/SelectorToggle';
-import { StageBar } from '../components/StageBar';
+import { StageBar, StageIntro } from '../components/StageBar';
 import { ThemeSwitch } from '../components/ThemeSwitch';
+import { Tip } from '../components/Tip';
 import { TourCoach } from '../components/TourCoach';
+import { TourThread } from '../components/TourThread';
+import { views } from '../domain';
 import { pathFor, useLang, useT } from '../i18n';
+import { tartanUrl } from '../tartan';
 import { tourSteps } from '../tour';
+import { Cocina } from './Cocina';
 import { Comensal } from './Comensal';
 import { Garzon } from './Garzon';
 import { Portada } from './Portada';
@@ -27,26 +34,32 @@ export function Demo() {
   const [revision, setRevision] = useState(0);
   const [entered, setEntered] = useState(false);
   useSimulator();
+  const roles = {
+    comensal: t('diner'),
+    garzon: t('waiter'),
+    cocina: t('kitchen'),
+  };
+  // On phones the role is one button that cycles through the three.
+  const nextView = views[(views.indexOf(view) + 1) % views.length];
   return (
     <main
       className="app"
+      style={{ '--clan-tartan': tartanUrl() } as CSSProperties}
       data-view={view}
       data-tour-step={touring ? tourSteps[touring.step] : undefined}
     >
       <StageBar>
-        <h1>
-          Restaurant El Clan <small>{t('stageSubtitle')}</small>
-        </h1>
         <ThemeSwitch />
+        <SchemeSwitch />
         <LangSwitch />
         {phone ? (
           <SelectorToggle
             className="role-switch"
             label={t('device')}
-            current={view === 'garzon' ? t('waiter') : t('diner')}
-            next={view === 'garzon' ? t('diner') : t('waiter')}
-            data-tour={view === 'garzon' ? 'cuenta' : 'sala servir cobrar'}
-            onClick={() => setView(view === 'garzon' ? 'comensal' : 'garzon')}
+            current={roles[view]}
+            next={roles[nextView]}
+            data-tour={view === 'comensal' ? 'sala servir cobrar' : 'cuenta'}
+            onClick={() => setView(nextView)}
           />
         ) : (
           <Selector
@@ -54,44 +67,66 @@ export function Demo() {
             legend={t('device')}
             value={view}
             options={[
-              { value: 'comensal', label: t('diner'), tour: 'cuenta' },
+              { value: 'comensal', label: roles.comensal, tour: 'cuenta' },
               {
                 value: 'garzon',
-                label: t('waiter'),
+                label: roles.garzon,
                 tour: 'sala servir cobrar',
               },
+              { value: 'cocina', label: roles.cocina },
             ]}
             onChange={setView}
           />
         )}
         <TourButton />
-        <Link
-          href={pathFor('gallery', lang)}
-          className="dark-button kit-link"
-          aria-label={t('uiKit')}
+        <Tip
+          hint={t('uiKit')}
+          naming
+          disabled={!phone}
+          render={
+            <Link
+              href={pathFor('components', lang)}
+              className="light-button kit-link"
+              aria-label={t('uiKit')}
+            />
+          }
         >
           <LayoutGrid aria-hidden="true" />
           <span className="reset-label">{t('uiKit')}</span>
-        </Link>
-        <button
-          type="button"
-          className="dark-button reset-button"
-          aria-label={t('resetDemo')}
-          onClick={() => {
-            reset();
-            setEntered(false);
-            setRevision((value) => value + 1);
-          }}
+        </Tip>
+        <Tip
+          hint={t('resetDemo')}
+          naming
+          disabled={!phone}
+          render={
+            <button
+              type="button"
+              className="dark-button reset-button"
+              aria-label={t('resetDemo')}
+              onClick={() => {
+                reset();
+                setEntered(false);
+                setRevision((value) => value + 1);
+              }}
+            />
+          }
         >
           <RotateCcw aria-hidden="true" />
           <span className="reset-label">{t('resetDemo')}</span>
-        </button>
+        </Tip>
       </StageBar>
+      <StageIntro
+        title={t('stageTitle')}
+        tagline={t('stageSubtitle')}
+        description={t('stageIntro')}
+      />
       <div className="tablet">
         <span className="tablet-camera" aria-hidden="true" />
         <div className="tablet-glass">
           {view === 'garzon' ? (
             <Garzon key={revision} />
+          ) : view === 'cocina' ? (
+            <Cocina />
           ) : entered ? (
             <Comensal key={revision} onHome={() => setEntered(false)} />
           ) : (
@@ -99,6 +134,10 @@ export function Demo() {
           )}
         </div>
       </div>
+      <OrderToastRegion />
+      {touring && tourSteps[touring.step] && (
+        <TourThread step={tourSteps[touring.step]} />
+      )}
       {touring && (
         <TourCoach tour={touring} onSkip={skipTour} onEnd={endTour} />
       )}

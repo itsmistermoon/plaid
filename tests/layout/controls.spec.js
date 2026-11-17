@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { chooseSkin, skins } from './skins.js';
 
 for (const width of [1440, 390]) {
   test(`los controles mantienen su geometría a ${width}px`, async ({
@@ -9,6 +10,7 @@ for (const width of [1440, 390]) {
     await page.evaluate(() => document.fonts.ready);
     const selectors = [
       '.theme-switch',
+      '.scheme-switch',
       '.lang-switch',
       '.role-switch',
       '.tour-button',
@@ -16,23 +18,15 @@ for (const width of [1440, 390]) {
       '.reset-button',
     ];
     let baseline;
-    for (const theme of ['original', 'moderno']) {
+    for (const skin of skins) {
+      const { theme, scheme } = skin;
       for (const lang of ['es', 'en']) {
-        if (width > 760) {
-          await page
-            .locator('.theme-switch button')
-            .nth(theme === 'original' ? 0 : 1)
-            .click();
+        // On phones every choice is a single button that toggles.
+        await chooseSkin(page, width, skin);
+        if (width > 760)
           await page.locator(`.lang-switch a[hreflang="${lang}"]`).click();
-        } else {
-          // On phones every choice is a single button that toggles.
-          const current = await page.locator('html').getAttribute('data-theme');
-          if (current !== theme) await page.locator('.theme-switch').click();
-          const english = page.url().includes('/en/');
-          if (english !== (lang === 'en'))
-            await page.locator('.lang-switch').click();
-        }
-        await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+        else if (page.url().includes('/en/') !== (lang === 'en'))
+          await page.locator('.lang-switch').click();
         await expect(page).toHaveURL(lang === 'es' ? /\/demo$/ : /\/en\/demo$/);
         await page.evaluate(() => document.fonts.ready);
         const boxes = [];
@@ -43,7 +37,7 @@ for (const width of [1440, 390]) {
           // The longest text across themes and languages fits without overflowing.
           expect(
             await control.evaluate((el) => el.scrollWidth <= el.clientWidth),
-            `${selector} desborda (${theme}/${lang})`,
+            `${selector} desborda (${theme}/${scheme}/${lang})`,
           ).toBe(true);
         }
         if (!baseline) baseline = boxes;
@@ -52,7 +46,7 @@ for (const width of [1440, 390]) {
             for (const dimension of ['x', 'y', 'width', 'height']) {
               expect(
                 Math.abs(boxes[i][dimension] - baseline[i][dimension]),
-                `${selectors[i]} ${dimension} (${theme}/${lang})`,
+                `${selectors[i]} ${dimension} (${theme}/${scheme}/${lang})`,
               ).toBeLessThanOrEqual(0.5);
             }
           }
@@ -60,3 +54,122 @@ for (const width of [1440, 390]) {
     }
   });
 }
+
+// The waiter's floor has the same grid in every skin: only the skin changes.
+for (const width of [1440, 390]) {
+  test(`la sala del garzón tiene la misma grilla en todos los temas a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/demo');
+    if (width > 760) await page.locator('.role-switch button').nth(1).click();
+    else await page.locator('.role-switch').click();
+    let baseline;
+    for (const skin of skins) {
+      await chooseSkin(page, width, skin);
+      await page.evaluate(() => document.fonts.ready);
+      const boxes = await page.locator('.tables .mesa').evaluateAll((els) =>
+        els.map((el) => {
+          const { x, y, width, height } = el.getBoundingClientRect();
+          return { x, y, width, height };
+        }),
+      );
+      expect(boxes.length).toBe(12);
+      if (!baseline) baseline = boxes;
+      else
+        boxes.forEach((box, i) => {
+          for (const dimension of ['x', 'y', 'width', 'height'])
+            expect(
+              Math.abs(box[dimension] - baseline[i][dimension]),
+              `mesa ${i} ${dimension} (${skin.theme}/${skin.scheme})`,
+            ).toBeLessThanOrEqual(0.5);
+        });
+    }
+  });
+}
+
+// The Cocina has its three rails in the same place in every skin.
+for (const width of [1440, 390]) {
+  test(`los rieles de la cocina miden lo mismo en todos los temas a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/demo');
+    if (width > 760) await page.locator('.role-switch button').nth(2).click();
+    else for (let i = 0; i < 2; i++) await page.locator('.role-switch').click();
+    let baseline;
+    for (const skin of skins) {
+      await chooseSkin(page, width, skin);
+      await page.evaluate(() => document.fonts.ready);
+      const boxes = await page
+        .locator('.kitchen .rail-bar')
+        .evaluateAll((els) =>
+          els.map((el) => {
+            const { x, width, height } = el.getBoundingClientRect();
+            return { x, width, height };
+          }),
+        );
+      expect(boxes.length).toBe(3);
+      if (!baseline) baseline = boxes;
+      else
+        boxes.forEach((box, i) => {
+          for (const dimension of ['x', 'width', 'height'])
+            expect(
+              Math.abs(box[dimension] - baseline[i][dimension]),
+              `riel ${i} ${dimension} (${skin.theme}/${skin.scheme})`,
+            ).toBeLessThanOrEqual(0.5);
+        });
+    }
+  });
+}
+
+// The Carta's tabs (Hoy plus five categories) are fixed in place and size in
+// every skin and language, and each label fits its share.
+for (const width of [1440, 390]) {
+  test(`las pestañas de la carta no se mueven ni desbordan a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/demo');
+    await page.locator('.portada .light-button').click();
+    const tabs = page.locator('.tabs-bar [role="tab"]');
+    await expect(tabs).toHaveCount(6);
+    let baseline;
+    for (const skin of skins) {
+      for (const lang of ['es', 'en']) {
+        await chooseSkin(page, width, skin);
+        if (width > 760)
+          await page.locator(`.lang-switch a[hreflang="${lang}"]`).click();
+        else if (page.url().includes('/en/') !== (lang === 'en'))
+          await page.locator('.lang-switch').click();
+        await page.evaluate(() => document.fonts.ready);
+        // "Hoy" is the first tab and opens on the chalkboard.
+        await expect(tabs.first()).toHaveAttribute('aria-selected', 'true');
+        await expect(page.locator('.chalkboard')).toBeVisible();
+        const boxes = await tabs.evaluateAll((els) =>
+          els.map((el) => {
+            const { x, width: w } = el.getBoundingClientRect();
+            return { x, w, fits: el.scrollWidth <= el.clientWidth };
+          }),
+        );
+        for (const box of boxes)
+          expect(box.fits, `una pestaña desborda (${skin.theme}/${lang})`).toBe(
+            true,
+          );
+        if (!baseline) baseline = boxes;
+        else
+          boxes.forEach((box, i) => {
+            expect(Math.abs(box.x - baseline[i].x)).toBeLessThanOrEqual(0.5);
+            expect(Math.abs(box.w - baseline[i].w)).toBeLessThanOrEqual(0.5);
+          });
+      }
+    }
+  });
+}
+
+test('tocar un especial abre su detalle', async ({ page }) => {
+  await page.goto('/demo');
+  await page.locator('.portada .light-button').click();
+  await page.locator('.special').first().click();
+  await expect(page.locator('.detail')).toBeVisible();
+});

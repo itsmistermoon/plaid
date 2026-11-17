@@ -4,18 +4,29 @@ import { dishes } from './menu';
 
 it('lee la página y el idioma desde la ruta', () => {
   expect(routeFor('/demo')).toEqual({ page: 'demo', lang: 'es' });
-  expect(routeFor('/componentes')).toEqual({ page: 'gallery', lang: 'es' });
+  expect(routeFor('/componentes')).toEqual({ page: 'components', lang: 'es' });
+  expect(routeFor('/componentes/restaurant')).toEqual({
+    page: 'restaurant',
+    lang: 'es',
+  });
+  expect(routeFor('/en/components/tartan')).toEqual({
+    page: 'tartan',
+    lang: 'en',
+  });
   expect(routeFor('/en/demo')).toEqual({ page: 'demo', lang: 'en' });
-  expect(routeFor('/en/components/')).toEqual({ page: 'gallery', lang: 'en' });
+  expect(routeFor('/en/components/')).toEqual({
+    page: 'components',
+    lang: 'en',
+  });
   expect(routeFor('/en/componentes')).toBeNull();
   expect(routeFor('/components')).toBeNull();
 });
 
 it('arma la ruta equivalente en el otro idioma', () => {
   expect(pathFor('demo', 'en')).toBe('/en/demo');
-  expect(pathFor('gallery', 'es')).toBe('/componentes');
+  expect(pathFor('components', 'es')).toBe('/componentes');
   for (const lang of ['es', 'en'] as const)
-    for (const page of ['demo', 'gallery'] as const)
+    for (const page of ['demo', 'components', 'restaurant', 'tartan'] as const)
       expect(routeFor(pathFor(page, lang))).toEqual({ page, lang });
 });
 

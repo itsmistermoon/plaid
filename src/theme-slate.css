@@ -1,0 +1,1004 @@
+/*
+ * Slate theme: flat, shadcn/ui style, with the tablecloth green as its
+ * accent. same structure as Plaid; only the skin changes.
+ *
+ * It has a light and a dark scheme. Every color token is a `light-dark()`
+ * pair, resolved by `color-scheme`, which follows the color-scheme
+ * preference (`data-color-scheme`: system, light or dark; see theme.ts).
+ */
+[data-theme="slate"] {
+  --bar-radius: 8px;
+  color-scheme: light;
+  color: var(--foreground);
+  background: var(--background);
+}
+[data-theme="slate"][data-color-scheme="dark"] {
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme="slate"][data-color-scheme="system"] {
+    color-scheme: dark;
+  }
+}
+/* Shades of the single green, all mixed from --accent. */
+[data-theme="slate"] {
+  --accent-hover: color-mix(in srgb, var(--accent), light-dark(#000, #fff) 13%);
+  --accent-soft: color-mix(in srgb, var(--accent), var(--card) 90%);
+  --accent-tint: color-mix(in srgb, var(--accent), var(--card) 84%);
+  --accent-tint-strong: color-mix(in srgb, var(--accent), var(--card) 74%);
+  --accent-ink: color-mix(in srgb, var(--accent), light-dark(#000, #fff) 40%);
+  --accent-glow: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+[data-theme="slate"] {
+  /* Slate scale: light surfaces, or #0f172a / #1e293b / #334155 in the dark. */
+  --background: light-dark(#f1f5f9, #0f172a);
+  --gallery-bar: var(--background);
+  --gallery-bar-line: var(--border);
+  --card: light-dark(#fff, #1e293b);
+  --sunken: light-dark(#f8fafc, #172033);
+  --foreground: light-dark(#0f172a, #f1f5f9);
+  --muted-foreground: light-dark(#64748b, #a3b1c6);
+  --border: light-dark(#e2e8f0, #334155);
+  --input: light-dark(#cbd5e1, #475569);
+  --secondary: light-dark(#f1f5f9, #334155);
+  /* The single green of the Slate theme: every other green is mixed from it.
+     Lighter in the dark scheme, with dark ink on it, to keep AA contrast. */
+  --accent: light-dark(#4e8b30, #6fb04c);
+  --on-accent: light-dark(#fff, #0f172a);
+  --destructive: light-dark(#dc2626, #f87171);
+  --radius: 10px;
+  --shadow-sm: 0 1px 2px light-dark(#0f172a0d, #0006);
+  --shadow:
+    0 1px 3px light-dark(#0f172a14, #0008),
+    0 1px 2px light-dark(#0f172a0f, #0006);
+  --shadow-overlay: 0 8px 24px light-dark(#0f172a1f, #000a);
+  --shadow-sheet: 0 -8px 24px light-dark(#0f172a29, #000a);
+  --shadow-device: 0 24px 48px light-dark(#0f172a1f, #0009);
+  --plate-shadow: drop-shadow(0 1px 2px light-dark(#0f172a1a, #0008));
+  --thumb: light-dark(#fff, #f1f5f9);
+  --thumb-shadow: 0 1px 2px light-dark(#0f172a40, #000a);
+  --clear-face: light-dark(#94a3b8, #64748b);
+  --invalid-ring: 0 0 0 3px
+    color-mix(in srgb, var(--destructive) 15%, transparent);
+
+  /* Tokens shared with Plaid */
+  --ink: var(--foreground);
+  --muted: var(--muted-foreground);
+  --brand: var(--accent);
+  --paper-ink: var(--foreground);
+  --total: var(--foreground);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* Skin of the shared pieces (see style.css) */
+  --step-line: var(--input);
+  --step-done-line: var(--accent);
+  --step-done-bg: var(--accent);
+  --step-done-shadow: none;
+  --step-now-shadow: 0 0 0 4px var(--accent-soft);
+  --tabbar-line: var(--border);
+  --tabbar-bg: var(--card);
+  --tabbar-shadow: none;
+  --sticky-line: 1px solid var(--border);
+  --sticky-shadow: var(--shadow-sm);
+  --tabbar-ink: var(--muted-foreground);
+  --tabbar-ink-shadow: none;
+  --tabbar-divider: 1px solid transparent;
+  --tabbar-current-ink: var(--accent);
+  --tabbar-current-bg: none;
+  --tabbar-current-shadow: none;
+  --thread-reserva: light-dark(#0d9488, #2dd4bf);
+  --book-binding: 10px;
+  --book-edge: 1px solid var(--border);
+  --book-cover: var(--card);
+  --book-title: var(--foreground);
+  --book-ink: var(--foreground);
+  --book-paper: none;
+  --book-paper-shadow: none;
+  --book-rule: 1px solid var(--border);
+  --book-font: 14px Inter, sans-serif;
+  --book-entry: var(--secondary);
+  --backdrop: light-dark(#0f172a66, #000a);
+  --popup-edge: 1px solid var(--border);
+  --popup-face: var(--card);
+  --popup-shadow: var(--shadow-overlay);
+  --keys-face: var(--secondary);
+  --rail-edge: 0;
+  --rail-body: var(--track);
+  --rail-shadow: none;
+  --ticket-ink: var(--foreground);
+  --ticket-font: 12.5px / 1.35 Inter, sans-serif;
+  --ticket-face: var(--card);
+  --ticket-shadow: none;
+  --ticket-mask: none;
+  --stub-line: 1px dashed var(--input);
+  --stub-muted: var(--muted-foreground);
+  --tip-ink: var(--background);
+  --tip-face: var(--foreground);
+  --tip-arrow: var(--foreground);
+  --tip-border: 1px solid var(--foreground);
+  --tip-radius: 6px;
+  --tip-shadow: var(--shadow);
+  --toast-icon-border: 0;
+  --toast-icon-shadow: none;
+  --toast-icon-ink: var(--on-accent);
+  --badge-ink: var(--on-accent);
+  --toast-enviado: var(--thread-pedido);
+  --toast-confirmado: var(--accent);
+  --toast-servido: light-dark(#d97706, #fbbf24);
+  --toast-error: var(--destructive);
+  --badge-enviado: var(--toast-enviado);
+  --badge-confirmado: var(--toast-confirmado);
+  --badge-servido: var(--toast-servido);
+  --badge-pedido: var(--thread-pedido);
+  --badge-garzon: var(--thread-garzon);
+  --badge-pago: var(--thread-pago);
+}
+/* Selector and segmented-control rail */
+[data-theme="slate"] {
+  --track: light-dark(#e2e8f0, #334155);
+  --track-edge: light-dark(#0f172a14, #0006);
+  --bill-shadow: 0 -4px 8px -4px light-dark(#0f172a1f, #0009);
+}
+/* Textile tokens (see style.css): stitch and call threads. */
+[data-theme="slate"] {
+  --stitch: light-dark(#fff, #0f172a);
+  --stitch-dash: 5 4;
+  --clan-tartan-opacity: 0.06;
+  --tartan-chip-ink: #0009;
+  --tartan-frame: 0 0 0 1px var(--border);
+  --tartan-fade: linear-gradient(#000, #0000);
+  --thread-pedido: light-dark(#2563eb, #60a5fa);
+  --thread-garzon: light-dark(#7c3aed, #a78bfa);
+  --thread-pago: var(--destructive);
+  /* Subtler threads and stitches on the flat theme. */
+  --weave-shade: light-dark(#0f172a1f, #0006);
+  --weave-opacity: 0.6;
+  --table-wood-top: #ddb585;
+  --table-wood-mid: #ae7848;
+  --table-wood-bottom: #79502e;
+  --table-wood-edge: #553e29;
+  /* Call threads woven into the tablecloth: present but quiet. */
+  --cloth-call-opacity: 0.5;
+  --cloth-call-width: 1.6;
+  --list-stitch: repeating-linear-gradient(
+    90deg,
+    var(--input) 0 5px,
+    #0000 5px 9px
+  );
+  /* Minimal plaid: crossed 1px lines of the accent green at 10% / 7%. */
+  --plaid-lines:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 10%, transparent) 0 1px,
+      #0000 1px
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--accent) 10%, transparent) 0 1px,
+      #0000 1px
+    ),
+    linear-gradient(
+      90deg,
+      #0000 11px,
+      color-mix(in srgb, var(--accent) 7%, transparent) 11px 12px,
+      #0000 12px
+    ),
+    linear-gradient(
+      #0000 11px,
+      color-mix(in srgb, var(--accent) 7%, transparent) 11px 12px,
+      #0000 12px
+    );
+}
+[data-theme="slate"] :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Stage and frame */
+[data-theme="slate"] .app,
+[data-theme="slate"] .gallery {
+  color: var(--foreground);
+  background: var(--background);
+}
+[data-theme="slate"] .stage-intro p a {
+  color: var(--accent);
+}
+[data-theme="slate"] .stage-intro h1 {
+  color: var(--accent);
+  text-shadow: none;
+}
+/* Same borders as Plaid, painted in the rail's color: the active
+   segment looks inset with an inner ring, without changing any measurement. */
+[data-theme="slate"] .selector,
+[data-theme="slate"] .segmented {
+  border-color: var(--track);
+  border-radius: 8px;
+  background: var(--track);
+  box-shadow: none;
+}
+[data-theme="slate"] .selector :is(button, a) + :is(button, a),
+[data-theme="slate"] .segmented button + button {
+  border-left-color: var(--track);
+}
+[data-theme="slate"] .selector button,
+[data-theme="slate"] .selector a,
+[data-theme="slate"] .segmented button {
+  border-radius: 7px;
+  color: var(--muted-foreground);
+  background: none;
+  text-shadow: none;
+}
+[data-theme="slate"] .selector button[aria-pressed="true"],
+[data-theme="slate"] .selector a[aria-current="page"],
+[data-theme="slate"] .segmented button[aria-selected="true"] {
+  color: var(--foreground);
+  background: var(--card);
+  box-shadow:
+    inset 0 0 0 2px var(--track),
+    inset 0 -1px 0 2px var(--track-edge);
+}
+[data-theme="slate"] .tablet {
+  border: 3px solid var(--input);
+  background: var(--sunken);
+  box-shadow:
+    0 0 0 6px var(--border),
+    var(--shadow-device);
+}
+[data-theme="slate"] .tablet-camera {
+  background: var(--input);
+  box-shadow: none;
+}
+[data-theme="slate"] .tablet-glass {
+  background: var(--card);
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+/* Pantalla */
+[data-theme="slate"] .screen {
+  color: var(--foreground);
+  background: var(--background);
+}
+[data-theme="slate"] .navbar {
+  color: var(--foreground);
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+}
+[data-theme="slate"] .navbar h2 {
+  font-size: 18px;
+  color: var(--foreground);
+  text-shadow: none;
+}
+[data-theme="slate"] .navbar h2[data-logo] {
+  font-size: 25px;
+  color: var(--accent);
+}
+
+/* Botones */
+[data-theme="slate"] .arrow-button,
+[data-theme="slate"] .dark-button,
+[data-theme="slate"] .light-button {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--foreground);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  text-shadow: none;
+  transition:
+    background-color 150ms,
+    transform 160ms var(--ease-out);
+}
+[data-theme="slate"] .arrow-button:hover:not(:disabled),
+[data-theme="slate"] .dark-button:hover:not(:disabled) {
+  background: var(--secondary);
+}
+/* The chevron takes the left padding that is the tip in Plaid. */
+[data-theme="slate"] .arrow-button {
+  filter: none;
+}
+[data-theme="slate"] .arrow-button::before,
+[data-theme="slate"] .arrow-button::after {
+  content: none;
+}
+[data-theme="slate"] .arrow-button svg {
+  display: block;
+  position: absolute;
+  left: 2px;
+  width: 13px;
+  height: 13px;
+}
+[data-theme="slate"] .light-button {
+  border-color: var(--accent);
+  color: var(--on-accent);
+  background: var(--accent);
+}
+[data-theme="slate"] .light-button:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+[data-theme="slate"] .arrow-button:disabled,
+[data-theme="slate"] .dark-button:disabled,
+[data-theme="slate"] .light-button:disabled {
+  opacity: 0.5;
+}
+[data-theme="slate"] .count {
+  border: 2px solid var(--card);
+  color: var(--on-accent);
+  background: var(--accent);
+  box-shadow: none;
+}
+[data-theme="slate"] .sidebar-item .count {
+  border: 0;
+}
+
+/* Side menu */
+[data-theme="slate"] .sidebar {
+  background: var(--card);
+  border-right-color: var(--border);
+  box-shadow: none;
+}
+[data-theme="slate"] .sidebar-guest,
+[data-theme="slate"] .sidebar-item {
+  border-bottom: 0;
+  box-shadow: none;
+}
+[data-theme="slate"] .sidebar-guest {
+  font:
+    700 22px Outfit,
+    sans-serif;
+  border-bottom: 1px solid var(--border);
+}
+[data-theme="slate"] .avatar {
+  width: 40px;
+  height: 40px;
+  font-size: 19px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--on-accent);
+  background: var(--accent);
+  box-shadow: none;
+}
+/* Same height and padding as Plaid; the pill is the background clipped
+   inward, so the item's box does not change. */
+[data-theme="slate"] .sidebar-item {
+  gap: 14px;
+}
+[data-theme="slate"] .sidebar:not(.tabbar) .sidebar-item {
+  border-radius: 12px;
+  border: 0 solid var(--card);
+  border-width: 2px 10px;
+  background-clip: padding-box;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--foreground);
+  text-shadow: none;
+}
+[data-theme="slate"] .sidebar:not(.tabbar) .sidebar-item:hover:not(:disabled) {
+  background: var(--secondary) padding-box;
+}
+[data-theme="slate"] .sidebar-item svg {
+  width: 21px;
+  height: 21px;
+  color: var(--muted-foreground);
+  filter: none;
+}
+[data-theme="slate"] .sidebar-item[aria-current="page"] {
+  color: var(--accent);
+  background: var(--secondary) padding-box;
+  box-shadow: none;
+}
+[data-theme="slate"] .sidebar-item[aria-current="page"] svg {
+  color: var(--accent);
+}
+[data-theme="slate"] .sidebar-logo {
+  text-shadow: none;
+}
+[data-theme="slate"] .sidebar-logo small {
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .tabs-bar {
+  background: var(--background);
+}
+[data-theme="slate"] .board {
+  scrollbar-color: var(--input) transparent;
+}
+[data-theme="slate"] .card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="slate"] .card:not(.ticket-card, .ribbon-demo) {
+  background-color: var(--card);
+  background-image: var(--plaid-lines);
+  background-size: 24px 24px;
+}
+
+/* Carta */
+
+/* Specials: a plain card, no board or frame. */
+[data-theme="slate"] .chalkboard {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--card);
+  background-image: var(--plaid-lines);
+  background-size: 24px 24px;
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="slate"] .chalk-title,
+[data-theme="slate"] .chalk-sub,
+[data-theme="slate"] .special-name {
+  font-family: Outfit, sans-serif;
+}
+[data-theme="slate"] .chalk-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--foreground);
+}
+[data-theme="slate"] .chalk-sub {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .special-name {
+  font-size: 16px;
+  font-weight: 700;
+}
+[data-theme="slate"] .special-price {
+  font-family: "Courier Prime", monospace;
+}
+[data-theme="slate"] .special-text,
+[data-theme="slate"] .chalk-sold li {
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .chalk-sold li {
+  font:
+    14px Inter,
+    sans-serif;
+}
+[data-theme="slate"] .specials li + li {
+  border-top: 1px solid var(--border);
+}
+[data-theme="slate"] .special:hover .special-name {
+  color: var(--accent);
+}
+[data-theme="slate"] .dish-text p {
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .dish-text h3 {
+  font-family: Outfit, sans-serif;
+  font-size: 16px;
+}
+[data-theme="slate"] .dish-price {
+  font-family: "Courier Prime", monospace;
+  text-shadow: none;
+}
+[data-theme="slate"] .dish-plate {
+  mask: none;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--border);
+}
+[data-theme="slate"] .dish-plate img {
+  mask: none;
+  border-radius: 7px;
+}
+[data-theme="slate"] .kit-check {
+  border: 1px solid var(--input);
+  border-radius: 5px;
+  color: var(--on-accent);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="slate"] .kit-check[data-checked] {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+[data-theme="slate"] .kit-check svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Detalle */
+[data-theme="slate"] .detail > .dish-plate {
+  box-shadow: none;
+}
+[data-theme="slate"] .ribbon {
+  margin: 0;
+  padding: 0;
+  filter: none;
+  justify-self: start;
+}
+[data-theme="slate"] .ribbon-cloth {
+  min-width: 0;
+  padding: 0;
+  text-align: left;
+  font:
+    700 26px Outfit,
+    sans-serif;
+  color: var(--foreground);
+  background: none;
+  clip-path: none;
+  text-shadow: none;
+}
+[data-theme="slate"] .ribbon-stitch {
+  display: none;
+}
+[data-theme="slate"] .detail-text {
+  padding-top: 10px;
+  color: var(--muted-foreground);
+  text-shadow: none;
+}
+[data-theme="slate"] .detail-foot {
+  border-top: 1px solid var(--border);
+  box-shadow: none;
+}
+[data-theme="slate"] .extras {
+  border-color: var(--border);
+}
+[data-theme="slate"] .extras-title {
+  font:
+    600 17px Outfit,
+    sans-serif;
+}
+[data-theme="slate"] .extra-price {
+  color: var(--muted-foreground);
+}
+/* The note is a plain text field, with no pin. */
+[data-theme="slate"] .post-it {
+  margin-top: 18px;
+  border: 1px solid var(--input);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="slate"] .post-it::before,
+[data-theme="slate"] .post-it::after {
+  display: none;
+}
+[data-theme="slate"] .post-it textarea {
+  padding: 12px 14px;
+  font-style: normal;
+  font-size: 14px;
+  color: var(--foreground);
+}
+[data-theme="slate"] .post-it textarea::placeholder {
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .post-it:focus-within {
+  border-color: var(--accent);
+}
+[data-theme="slate"] .post-it textarea:focus-visible {
+  outline: 0;
+}
+[data-theme="slate"] .extras-icon {
+  color: var(--accent);
+  filter: none;
+}
+[data-theme="slate"] .sold-out {
+  color: var(--destructive);
+}
+
+/* Receipt: clean card, no printer or paper */
+[data-theme="slate"] .receipt-slot {
+  display: none;
+}
+[data-theme="slate"] .receipt-feed {
+  top: 0;
+  margin-bottom: 0;
+  clip-path: none;
+}
+[data-theme="slate"] .receipt-paper {
+  padding: 12px 0 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: Inter, sans-serif;
+  background: var(--card);
+  filter: none;
+  mask: none;
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="slate"] .receipt table {
+  font-size: 14px;
+}
+[data-theme="slate"] .receipt th,
+[data-theme="slate"] .receipt td {
+  border-bottom: 1px solid var(--border);
+}
+[data-theme="slate"] .receipt tbody + tbody {
+  border-top: 0;
+}
+[data-theme="slate"] .receipt tbody > tr:not(:last-child) > * {
+  border-bottom: 0;
+}
+[data-theme="slate"] .receipt tbody:last-of-type > tr:last-child > * {
+  padding-bottom: 10px;
+}
+[data-theme="slate"] .receipt-note td {
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .receipt-total {
+  padding: 12px 14px;
+  border: 0;
+  text-align: right;
+  font-size: 20px;
+  color: var(--foreground);
+}
+[data-theme="slate"] .receipt-stubs {
+  border-top: var(--stub-line);
+  border-bottom: 0;
+}
+[data-theme="slate"] .detail-receipt .receipt-total {
+  font-size: 20px;
+}
+[data-theme="slate"] .stepper button {
+  border: 1px solid var(--input);
+  border-radius: 6px;
+  color: var(--foreground);
+  background: var(--card);
+  box-shadow: none;
+}
+[data-theme="slate"] .stepper button:hover {
+  background: var(--secondary);
+}
+[data-theme="slate"] .notice {
+  border: 1px solid var(--accent-tint-strong);
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  box-shadow: none;
+}
+[data-theme="slate"] .empty {
+  color: var(--muted-foreground);
+}
+
+/* Order status */
+
+/* Portada QR */
+[data-theme="slate"] .scanner {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+[data-theme="slate"] .scanner::before {
+  display: none;
+}
+[data-theme="slate"] .scanner-window {
+  border-radius: 10px;
+  background: var(--secondary);
+  box-shadow: none;
+}
+/* Viewfinder corners: a rounded border matching the window's, of which
+   only the four tips remain, so they follow the curve without being cut. */
+[data-theme="slate"] .scanner-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--accent);
+  border-radius: inherit;
+  mask:
+    linear-gradient(var(--accent) 0 0) 0 0 / 24px 24px no-repeat,
+    linear-gradient(var(--accent) 0 0) 100% 0 / 24px 24px no-repeat,
+    linear-gradient(var(--accent) 0 0) 0 100% / 24px 24px no-repeat,
+    linear-gradient(var(--accent) 0 0) 100% 100% / 24px 24px no-repeat;
+}
+[data-theme="slate"] .scanner-laser {
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 10px 1px var(--accent-glow);
+}
+[data-theme="slate"] .scanner-laser::before,
+[data-theme="slate"] .scanner-laser::after {
+  display: none;
+}
+[data-theme="slate"] .scanner-leds i {
+  background: var(--accent);
+  box-shadow: none;
+}
+[data-theme="slate"] .portada-text {
+  color: var(--muted-foreground);
+  text-shadow: none;
+}
+
+/* Garzón */
+[data-theme="slate"] .table-detail h3 {
+  font-size: 24px;
+}
+[data-theme="slate"] .table-detail h4 {
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .side-list li {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+[data-theme="slate"] .table-order {
+  padding: 8px 10px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+[data-theme="slate"] .table-order-lines {
+  border-left-color: var(--border);
+}
+[data-theme="slate"] .side-total {
+  color: var(--foreground);
+}
+
+/* Table: the card is the table, the tablecloth extends past it and the plate goes in the center */
+[data-theme="slate"] .table-button {
+  border-radius: 14px;
+}
+[data-theme="slate"] .table-button[aria-pressed="true"] .mesa {
+  filter: none;
+}
+[data-theme="slate"] .table-button[aria-pressed="true"] .table-outline {
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+[data-theme="slate"] .table-button[data-occupied="false"] .mesa {
+  opacity: 0.55;
+  filter: none;
+}
+[data-theme="slate"] .table-shadow,
+[data-theme="slate"] .grain,
+[data-theme="slate"] .cloth-shadow,
+[data-theme="slate"] .plate > path {
+  display: none;
+}
+[data-theme="slate"] .wood {
+  fill: var(--card);
+}
+[data-theme="slate"] .cloth {
+  fill: var(--accent-tint);
+}
+[data-theme="slate"] .mesa[data-occupied="true"] .cloth {
+  fill: var(--accent-tint-strong);
+}
+[data-theme="slate"] .cloth-shine {
+  stroke: var(--stitch);
+  stroke-width: 1.5;
+  stroke-dasharray: var(--stitch-dash);
+  opacity: 1;
+  /* The stitching goes inward from the tablecloth's edge, not on top of it. */
+  transform: scale(0.93);
+  transform-box: view-box;
+  transform-origin: center;
+}
+[data-theme="slate"] .table-outline {
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+[data-theme="slate"] .plate {
+  filter: var(--plate-shadow);
+}
+[data-theme="slate"] .plate > rect {
+  x: 36px;
+  y: 80px;
+  width: 128px;
+  height: 42px;
+  rx: 9px;
+  fill: var(--card);
+  stroke: var(--border);
+}
+[data-theme="slate"] .plate text {
+  font:
+    600 15px Inter,
+    sans-serif;
+  fill: var(--foreground);
+}
+[data-theme="slate"] .table-number circle {
+  fill: var(--foreground);
+  stroke: none;
+}
+[data-theme="slate"] .table-number text {
+  fill: var(--card);
+}
+[data-theme="slate"] .mesa[data-occupied="true"] .table-number text {
+  fill: var(--on-accent);
+}
+[data-theme="slate"] .mesa[data-occupied="true"] .table-number circle {
+  fill: var(--accent);
+}
+[data-theme="slate"] .seal {
+  filter: none;
+}
+[data-theme="slate"] .seal-icon {
+  color: var(--on-accent);
+}
+[data-theme="slate"] .seal-face {
+  display: none;
+}
+[data-theme="slate"] .seal-dot {
+  display: inline;
+  stroke: var(--card);
+  stroke-width: 2.5;
+}
+[data-theme="slate"] .seal-glyph {
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: 0.75;
+}
+[data-theme="slate"] .seal[data-kind="pago"] .seal-dot {
+  fill: var(--destructive);
+}
+[data-theme="slate"] .seal[data-kind="pedido"] .seal-dot {
+  fill: var(--thread-pedido);
+}
+[data-theme="slate"] .seal[data-kind="garzón"] .seal-dot {
+  fill: var(--thread-garzon);
+}
+
+/* Gallery */
+[data-theme="slate"] .panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="slate"] .panel-caption {
+  color: var(--foreground);
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+  text-shadow: none;
+}
+[data-theme="slate"] .panel-number {
+  color: var(--accent);
+}
+[data-theme="slate"] .panel-states {
+  background: var(--sunken);
+  border-top: 1px solid var(--border);
+}
+[data-theme="slate"] .panel-uses {
+  border-top: 1px solid var(--border);
+  background: var(--card);
+}
+[data-theme="slate"] .sidebar-demo,
+[data-theme="slate"] .tabbar-demo,
+[data-theme="slate"] .table-detail-demo {
+  box-shadow:
+    0 0 0 1px var(--border),
+    var(--shadow-sm);
+}
+/* Outline as a shadow: a border would shrink the pieces they show. */
+[data-theme="slate"] .navbar-demo {
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+/* Kit switch */
+[data-theme="slate"] .kit-switch {
+  border-color: var(--input);
+  background: var(--input);
+  box-shadow: none;
+}
+[data-theme="slate"] .kit-switch[data-checked] {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+[data-theme="slate"] .kit-switch-on,
+[data-theme="slate"] .kit-switch-off {
+  text-shadow: none;
+}
+[data-theme="slate"] .kit-switch-on {
+  color: var(--on-accent);
+}
+[data-theme="slate"] .kit-switch-off {
+  color: var(--foreground);
+}
+[data-theme="slate"] .kit-switch-thumb {
+  border: 0;
+  background: var(--thumb);
+  box-shadow: var(--thumb-shadow);
+}
+
+/* Search */
+[data-theme="slate"] .search {
+  border: 1px solid var(--input);
+  border-radius: 8px;
+  color: var(--muted-foreground);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="slate"] .search input {
+  color: var(--foreground);
+}
+[data-theme="slate"] .search:focus-within {
+  outline: 2px solid var(--accent);
+}
+[data-theme="slate"] .search-clear {
+  background: var(--clear-face);
+}
+[data-theme="slate"] .search[data-invalid] {
+  border-color: var(--destructive);
+  box-shadow: var(--invalid-ring);
+}
+
+/* Scrollbar */
+[data-theme="slate"] .scroller {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: none;
+}
+[data-theme="slate"] .scroller-thumb {
+  border-radius: 999px;
+  background: var(--input);
+  box-shadow: none;
+}
+
+/* Progress bar */
+[data-theme="slate"] .progress-track {
+  height: 8px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--track);
+  box-shadow: none;
+}
+[data-theme="slate"] .progress-fill {
+  background: var(--accent);
+  box-shadow: none;
+}
+
+/* Selector desplegable */
+[data-theme="slate"] .dropdown {
+  border: 1px solid var(--input);
+  border-radius: 8px;
+  color: var(--foreground);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="slate"] .dropdown[data-placeholder] {
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .dropdown[data-invalid] {
+  border-color: var(--destructive);
+  box-shadow: var(--invalid-ring);
+}
+[data-theme="slate"] .dropdown-list {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--foreground);
+  background: var(--card);
+  box-shadow: var(--shadow-overlay);
+}
+[data-theme="slate"] .dropdown-item[data-highlighted] {
+  background: var(--secondary);
+}
+[data-theme="slate"] .dropdown-item[data-highlighted] svg {
+  color: var(--accent);
+}
+
+/* Toast */
+[data-theme="slate"] .toast-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--foreground);
+  background: var(--card);
+  box-shadow: var(--shadow-overlay);
+}
+
+/* Receipt action column */
+[data-theme="slate"] .receipt-actions-total span {
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .receipt-actions-total strong {
+  color: var(--foreground);
+  text-shadow: none;
+}
+[data-theme="slate"] .detail-receipt .receipt table {
+  font-size: 14px;
+}
+
+/* Cocina: flat cards under a plain track, no paper and no steel. */
+[data-theme="slate"] .rail-tickets {
+  margin-top: 8px;
+  min-height: 82px;
+}
+[data-theme="slate"] .ticket {
+  border-radius: var(--radius);
+  box-shadow:
+    inset 0 0 0 1px var(--border),
+    var(--shadow-sm);
+}

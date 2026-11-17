@@ -7,14 +7,20 @@ export function Table({
   number,
   occupied,
   calls,
+  reserved,
 }: {
   number: number;
   occupied: boolean;
   calls: CallKind[];
+  /** Hour of today's reservation: a free Mesa says so on its plate. */
+  reserved?: string;
 }) {
   const t = useT();
   const id = useId().replace(/:/g, '');
   const unique = [...new Set(calls)];
+  const held = !occupied && reserved;
+  // A reservation weaves its own thread into the cloth, like an open call.
+  const threads = [...unique, ...(held ? ['reserva'] : [])];
   return (
     <svg
       className="mesa"
@@ -31,12 +37,36 @@ export function Table({
           patternTransform="rotate(45)"
         >
           <rect width="28" height="28" className="cloth-base" />
-          <path d="M0 0h14v28H0zM0 0h28v14H0z" className="cloth-band" />
+          <g className="cloth-band">
+            <path d="M0 0h14v28H0z" className="cloth-warp" />
+            <path d="M0 0h28v14H0z" className="cloth-weft" />
+          </g>
           <path d="M0 0h14v14H0z" className="cloth-cross" />
           <path
             d="M2 0v28M6 0v28M10 0v28M14 0v28M18 0v28M22 0v28M26 0v28M0 2h28M0 6h28M0 10h28M0 14h28M0 18h28M0 22h28M0 26h28"
             className="cloth-thread"
           />
+        </pattern>
+        {/* Each open call weaves a thread of its color into the cloth, in
+            the warp and in the weft, through the light squares. */}
+        <pattern
+          id={`${id}calls`}
+          width="28"
+          height="28"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          {threads.map((call, index) => {
+            const at = 21 + (index - (threads.length - 1) / 2) * 4;
+            return (
+              <path
+                key={call}
+                className="cloth-call"
+                data-kind={call}
+                d={`M${at} 0v28M0 ${at}h28`}
+              />
+            );
+          })}
         </pattern>
         <filter id={`${id}grain`}>
           <feTurbulence
@@ -48,9 +78,9 @@ export function Table({
           <feColorMatrix type="saturate" values="0" />
         </filter>
         <linearGradient id={`${id}wood`} x2="0" y2="1">
-          <stop stopColor="#ddb585" />
-          <stop offset=".5" stopColor="#ae7848" />
-          <stop offset="1" stopColor="#79502e" />
+          <stop style={{ stopColor: 'var(--table-wood-top)' }} />
+          <stop offset=".5" style={{ stopColor: 'var(--table-wood-mid)' }} />
+          <stop offset="1" style={{ stopColor: 'var(--table-wood-bottom)' }} />
         </linearGradient>
         <linearGradient id={`${id}plate`} x2="0" y2="1">
           <stop stopColor="#fffbd6" />
@@ -96,6 +126,13 @@ export function Table({
           d="M100 -28 228 100 100 228 -28 100Z"
           fill={`url(#${id}checks)`}
         />
+        {threads.length > 0 && (
+          <path
+            className="cloth-calls"
+            d="M100 -28 228 100 100 228 -28 100Z"
+            fill={`url(#${id}calls)`}
+          />
+        )}
         <path className="cloth-shine" d="M100 -26 226 100 100 226 -26 100Z" />
       </g>
       <rect
@@ -117,7 +154,11 @@ export function Table({
         />
         <path d="M42 83H158Q158 89 164 89V114Q158 114 158 120H42Q42 114 36 114V89Q42 89 42 83Z" />
         <text x="100" y="107" textAnchor="middle">
-          {occupied ? t('plateOccupied') : t('plateFree')}
+          {occupied
+            ? t('plateOccupied')
+            : held
+              ? t('plateReserved')(held)
+              : t('plateFree')}
         </text>
       </g>
       <g className="table-number">
@@ -142,6 +183,7 @@ export function TableButton({
   number,
   occupied,
   calls,
+  reserved,
   pressed,
   tour,
   onClick,
@@ -149,6 +191,7 @@ export function TableButton({
   number: number;
   occupied: boolean;
   calls: CallKind[];
+  reserved?: string;
   pressed?: boolean;
   tour?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -164,9 +207,15 @@ export function TableButton({
       data-tour={tour}
       onClick={onClick}
     >
-      <Table number={number} occupied={occupied} calls={calls} />
+      <Table
+        number={number}
+        occupied={occupied}
+        calls={calls}
+        reserved={reserved}
+      />
       <span className="sr-only">
         {t('tableSummary')(number, occupied)}
+        {!occupied && reserved ? `, ${t('plateReserved')(reserved)}` : ''}
         {unique.length
           ? `, ${t('callsSummary')}: ${unique.map((call) => t('callLabels')[call]).join(', ')}`
           : ''}

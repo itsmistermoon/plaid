@@ -2,8 +2,17 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 beforeEach(() => sessionStorage.clear());
 
-import { billTotal, cartTotal, createDemoStore } from './domain';
-import { startSimulator } from './simulator';
+import {
+  billTotal,
+  cartTotal,
+  createDemoStore,
+  pendingOrders,
+  reservationToday,
+  splitShares,
+  tipAmount,
+  toggleNotePreset,
+} from './domain';
+import { fillerStep, kitchenStep, startSimulator } from './simulator';
 
 it('actualiza el carrito y su total al cambiar cantidades', () => {
   const store = createDemoStore();
@@ -313,3 +322,130 @@ it.each([0, 0.3, 0.5, 0.99])(
     stop();
   },
 );
+
+it('rounds the tip to the peso', () => {
+  expect(tipAmount(20900, 10)).toBe(2090);
+  expect(tipAmount(3333, 15)).toBe(500);
+  expect(tipAmount(20900, 0)).toBe(0);
+});
+
+it('splits a bill into whole pesos that add up to the total', () => {
+  expect(splitShares(22990, 1)).toEqual([22990]);
+  expect(splitShares(22990, 2)).toEqual([11495, 11495]);
+  expect(splitShares(10000, 3)).toEqual([3334, 3333, 3333]);
+  expect(splitShares(22990, 4).reduce((sum, share) => sum + share, 0)).toBe(
+    22990,
+  );
+});
+
+it('toggles a usual request in the kitchen note', () => {
+  expect(toggleNotePreset('', 'Sin cebolla')).toBe('Sin cebolla');
+  expect(toggleNotePreset('bien cocido', 'Sin cebolla')).toBe(
+    'bien cocido, Sin cebolla',
+  );
+  expect(toggleNotePreset('bien cocido, Sin cebolla', 'Sin cebolla')).toBe(
+    'bien cocido',
+  );
+});
+
+it('the filler tables send real Pedidos and the simulated Cocina serves them', () => {
+  const store = createDemoStore();
+  let tables = fillerStep(store.getState().tables, () => 0);
+  expect(tables[0].orders).toHaveLength(1);
+  expect(tables[0].orders[0].status).toBe('enviado');
+  tables = kitchenStep(tables);
+  expect(tables[0].orders[0].status).toBe('confirmado');
+  tables = kitchenStep(tables);
+  expect(tables[0].orders[0].status).toBe('servido');
+  expect(kitchenStep(tables)).toBe(tables);
+});
+
+it('the simulated Cocina never touches Mesa 7 and rests in the Cocina view', () => {
+  vi.useFakeTimers();
+  const store = createDemoStore();
+  store.getState().setQty({ dishId: 'empanada' }, 1);
+  store.getState().sendOrder();
+  expect(pendingOrders(store.getState().tables)).toBe(1);
+  expect(kitchenStep(store.getState().tables)).toBe(store.getState().tables);
+  store.getState().setView('cocina');
+  const stop = startSimulator(store, {
+    random: () => 0,
+    setTimeout,
+    clearTimeout,
+  });
+  vi.advanceTimersByTime(3000);
+  expect(store.getState().tables[0].orders[0].status).toBe('enviado');
+  expect(store.getState().tables[6].orders[0].status).toBe('enviado');
+  stop();
+});
+
+it('freeing a filler table clears its Pedidos', () => {
+  const store = createDemoStore();
+  const tables = store.getState().tables.map((table) =>
+    table.number === 1
+      ? {
+          ...table,
+          occupied: true,
+          calls: ['pago' as const],
+          orders: [{ id: 'a', status: 'servido' as const, lines: [] }],
+        }
+      : table,
+  );
+  expect(fillerStep(tables, () => 0)[0]).toMatchObject({
+    occupied: false,
+    orders: [],
+    calls: [],
+  });
+});
+
+it('moves a table to a free one, merges it into an occupied one and undoes it', () => {
+  const store = createDemoStore();
+  store.getState().setQty({ dishId: 'empanada' }, 1);
+  store.getState().sendOrder();
+  store.getState().callWaiter();
+  const before = store.getState().tables;
+  store.getState().moveTable(7, 3);
+  expect(store.getState().tables[6]).toMatchObject({
+    occupied: false,
+    orders: [],
+    calls: [],
+  });
+  expect(store.getState().tables[2]).toMatchObject({
+    occupied: true,
+    calls: ['pedido', 'garzón'],
+  });
+  expect(store.getState().tables[2].orders).toHaveLength(1);
+  // Merge: Mesa 7 orders again and Mesa 3 joins it.
+  store.getState().setQty({ dishId: 'italiano' }, 1);
+  store.getState().sendOrder();
+  store.getState().moveTable(3, 7);
+  expect(store.getState().tables[6].orders).toHaveLength(2);
+  expect(store.getState().tables[6].calls).toEqual(['pedido', 'garzón']);
+  expect(store.getState().tables[2].occupied).toBe(false);
+  // A free table has nothing to move.
+  store.getState().moveTable(3, 5);
+  expect(store.getState().tables[4].occupied).toBe(false);
+  store.getState().restoreTables([before[6], before[2]]);
+  expect(store.getState().tables).toEqual(before);
+});
+
+it('writes and cancels reservations, one per Mesa and hour', () => {
+  const store = createDemoStore();
+  const { reserve, cancelReservation } = store.getState();
+  const before = store.getState().reservations.length;
+  reserve({ table: 5, day: 0, time: '22:00', name: ' Lagos ' });
+  reserve({ table: 5, day: 0, time: '22:00', name: 'Otro' });
+  reserve({ table: 5, day: 0, time: '13:00', name: '  ' });
+  reserve({ table: 5, day: 0, time: '14:00', name: 'Mella' });
+  const { reservations } = store.getState();
+  expect(reservations).toHaveLength(before + 2);
+  expect(reservationToday(reservations, 5)).toMatchObject({
+    time: '14:00',
+    name: 'Mella',
+  });
+  expect(reservationToday(reservations, 2)).toBeUndefined();
+  cancelReservation(reservationToday(reservations, 5)?.id ?? '');
+  expect(reservationToday(store.getState().reservations, 5)?.name).toBe(
+    'Lagos',
+  );
+});

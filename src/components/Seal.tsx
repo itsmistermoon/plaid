@@ -1,8 +1,8 @@
-import { DollarSign, HandPlatter, Utensils } from 'lucide-react';
+import { ConciergeBell, DollarSign, Utensils } from 'lucide-react';
 import { useId } from 'react';
 import type { CallKind } from '../domain';
 
-const sealIcons = { pago: DollarSign, pedido: Utensils, garzón: HandPlatter };
+const sealIcons = { pago: DollarSign, pedido: Utensils, garzón: ConciergeBell };
 
 /** 14-point Sello of a Llamado, centered at (x, 153) inside the table. */
 export function Seal({ kind, x }: { kind: CallKind; x: number }) {
@@ -26,14 +26,14 @@ export function Seal({ kind, x }: { kind: CallKind; x: number }) {
         className="seal-face"
         fill={`url(#${gradient})`}
       />
-      {/* Flat face of the modern theme; the original hides it. */}
-      <circle className="seal-dot" cx={x} cy={153} r={15} />
+      {/* Flat face of the Slate theme; Plaid hides it. */}
+      <circle className="seal-dot" cx={x} cy={153} r={16} />
       <g className="seal-glyph">
         <Icon
-          x={x - 13}
-          y={140}
-          width={26}
-          height={26}
+          x={x - 15}
+          y={138}
+          width={30}
+          height={30}
           strokeWidth={3}
           className="seal-icon"
         />

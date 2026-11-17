@@ -4,6 +4,11 @@ export type Category =
   | 'Fondos'
   | 'Bebidas'
   | 'Postres';
+export const diets = ['vegetarian', 'glutenFree', 'spicy'] as const;
+export type Diet = (typeof diets)[number];
+/** Whether the dish fits every chosen diet. */
+export const matchesDiets = (dish: Dish, chosen: Diet[]) =>
+  chosen.every((diet) => dish.diets?.includes(diet));
 export interface Dish {
   id: string;
   category: Category;
@@ -13,6 +18,9 @@ export interface Dish {
   en: string;
   price: number;
   soldOut?: boolean;
+  /** One of today's specials, written on the chalkboard. */
+  special?: boolean;
+  diets?: Diet[];
   extras?: Extra[];
 }
 /** Optional extra of a dish, with its price per unit. */
@@ -29,6 +37,8 @@ const sandwichExtras: Extra[] = [
   { id: 'huevo', name: 'Huevo frito', en: 'Fried egg', price: 1000 },
   { id: 'tocino', name: 'Tocino', en: 'Bacon', price: 1300 },
 ];
+/** The Carta's first tab, before the categories. */
+export type Tab = 'Hoy' | Category;
 export const categories: Category[] = [
   'Entradas',
   'Sándwiches',
@@ -48,6 +58,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'papas',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Entradas',
     name: 'Papas fritas',
     description:
@@ -66,6 +77,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'ensalada',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Entradas',
     name: 'Ensalada chilena',
     description:
@@ -75,6 +87,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'chacarero',
+    diets: ['spicy'],
     category: 'Sándwiches',
     name: 'Chacarero',
     description:
@@ -116,6 +129,8 @@ export const dishes: Dish[] = [
   },
   {
     id: 'pastel',
+    special: true,
+    diets: ['glutenFree'],
     category: 'Fondos',
     name: 'Pastel de choclo',
     description:
@@ -125,6 +140,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'cazuela',
+    diets: ['glutenFree'],
     category: 'Fondos',
     name: 'Cazuela de vacuno',
     description: 'Caldo casero con osobuco, zapallo, papa, choclo y arroz.',
@@ -133,6 +149,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'lomo',
+    diets: ['glutenFree'],
     category: 'Fondos',
     name: 'Lomo a lo pobre',
     description:
@@ -145,6 +162,8 @@ export const dishes: Dish[] = [
   },
   {
     id: 'porotos',
+    special: true,
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Fondos',
     name: 'Porotos granados',
     description:
@@ -154,6 +173,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'mote',
+    diets: ['vegetarian'],
     category: 'Bebidas',
     name: 'Mote con huesillo',
     description:
@@ -163,6 +183,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'cerveza',
+    diets: ['vegetarian'],
     category: 'Bebidas',
     name: 'Cerveza de la casa',
     description: 'Lager artesanal de barril, 500 ml.',
@@ -171,6 +192,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'jugo',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Bebidas',
     name: 'Jugo natural',
     description: 'Frambuesa, frutilla o mango, recién exprimido.',
@@ -179,6 +201,8 @@ export const dishes: Dish[] = [
   },
   {
     id: 'pisco',
+    special: true,
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Bebidas',
     name: 'Pisco sour',
     description: 'Pisco, limón de Pica y jarabe de goma, batido con clara.',
@@ -187,6 +211,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'helado',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Postres',
     name: 'Helado triple',
     description: 'Tres bolas de lúcuma, chocolate y frutilla.',
@@ -195,6 +220,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'leche',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Postres',
     name: 'Leche asada',
     description: 'Receta de la abuela, con caramelo tostado.',
@@ -203,6 +229,8 @@ export const dishes: Dish[] = [
   },
   {
     id: 'sopaipillas',
+    special: true,
+    diets: ['vegetarian'],
     category: 'Postres',
     name: 'Sopaipillas pasadas',
     description:
@@ -211,3 +239,9 @@ export const dishes: Dish[] = [
     price: 3500,
   },
 ];
+
+/** Today's specials, in menu order. */
+export const specials = dishes.filter((dish) => dish.special);
+/** Dishes that cannot be ordered today. */
+export const soldOutDishes = dishes.filter((dish) => dish.soldOut);
+export const tabs: Tab[] = ['Hoy', ...categories];

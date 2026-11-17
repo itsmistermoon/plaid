@@ -1,13 +1,13 @@
 import { useT } from '../i18n';
-import { type Category, categories } from '../menu';
+import { type Tab, tabs } from '../menu';
 
 /** Category tabs pinned above the board; the shadow appears on scroll. */
 export function CategoryTabs({
   value,
   onChange,
 }: {
-  value: Category;
-  onChange: (category: Category) => void;
+  value: Tab;
+  onChange: (tab: Tab) => void;
 }) {
   const t = useT();
   return (
@@ -17,7 +17,7 @@ export function CategoryTabs({
         role="tablist"
         aria-label={t('categoriesLabel')}
       >
-        {categories.map((item) => (
+        {tabs.map((item) => (
           <button
             key={item}
             type="button"
