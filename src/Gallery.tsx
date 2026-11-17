@@ -16,6 +16,7 @@ import {
 import { Link } from 'wouter';
 import { Badge } from './components/Badge';
 import { CategoryTabs } from './components/CategoryTabs';
+import { DietFilter } from './components/DietFilter';
 import { DishPlate } from './components/DishPlate';
 import { Dropdown } from './components/Dropdown';
 import { Extras } from './components/Extras';
@@ -69,7 +70,7 @@ import {
 } from './domain';
 import { money } from './format';
 import { pathFor, useExtraName, useLang, useT } from './i18n';
-import { type Category, categories, dishes } from './menu';
+import { type Category, categories, type Diet, dishes } from './menu';
 import {
   fullSett,
   sett,
@@ -474,6 +475,11 @@ function SidebarDemo({ tabbar }: { tabbar?: boolean }) {
 /** A single sidebar item, on its material. */
 function SidebarSample({ children }: { children: ReactNode }) {
   return <div className="sidebar sidebar-sample">{children}</div>;
+}
+
+function DietFilterDemo({ initial = [] }: { initial?: Diet[] }) {
+  const [chosen, setChosen] = useState(initial);
+  return <DietFilter value={chosen} onChange={setChosen} />;
 }
 
 /** Tabs over a board with the menu below; `scrolled` leaves it scrolled. */
@@ -1299,6 +1305,18 @@ function RestaurantView() {
           ]}
         >
           <CategoryTabsDemo />
+        </Panel>
+        <Panel
+          title={panel.dietFilter}
+          uses={[]}
+          states={[
+            {
+              label: t('diets').vegetarian,
+              node: <DietFilterDemo initial={['vegetarian']} />,
+            },
+          ]}
+        >
+          <DietFilterDemo />
         </Panel>
         <Panel
           title={panel.tabbar}

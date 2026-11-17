@@ -689,6 +689,16 @@ button.scheme-switch:disabled {
 .tabs-bar + .dish-list {
   margin-top: 12px;
 }
+/* Diet toggles: a fixed-width row between the tabs and the list. */
+.diet-filter {
+  box-sizing: border-box;
+  width: min(100%, 330px);
+  height: 32px;
+  margin-top: 12px;
+}
+.diet-filter + .dish-list {
+  margin-top: 12px;
+}
 .segmented {
   display: flex;
   margin-bottom: 12px;
@@ -799,6 +809,11 @@ button.scheme-switch:disabled {
 }
 .dish[data-sold-out] {
   opacity: 0.55;
+}
+/* A dish outside the chosen diets fades like a free table's cloth. */
+.dish[data-off-diet] {
+  opacity: 0.35;
+  filter: saturate(0.4);
 }
 .dish[data-sold-out] .dish-price {
   text-decoration: line-through;

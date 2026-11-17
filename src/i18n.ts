@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import type { CallKind, OrderStatus } from './domain';
-import type { Category, Dish, Extra } from './menu';
+import type { Category, Diet, Dish, Extra } from './menu';
 import type { TourStep } from './tour';
 
 export type Lang = 'es' | 'en';
@@ -114,6 +114,12 @@ const es = {
   waiterComing: 'Garzón en camino',
   withIclub: 'con iClub',
   categoriesLabel: 'Categorías',
+  dietFilter: 'Filtrar por dieta',
+  diets: {
+    vegetarian: 'Vegetariano',
+    glutenFree: 'Sin gluten',
+    spicy: 'Picante',
+  } satisfies Record<Diet, string>,
   categories: {
     Entradas: 'Entradas',
     Sándwiches: 'Sándwiches',
@@ -277,6 +283,7 @@ const es = {
     sidebar: 'Sidebar',
     tabbar: 'Tabbar del teléfono',
     categoryTabs: 'Pestañas de categorías',
+    dietFilter: 'Filtro de dieta',
     toast: 'Toast de estado',
     empty: 'Estado vacío',
     scanner: 'Lector QR',
@@ -420,6 +427,12 @@ const en: Messages = {
   waiterComing: 'Waiter on the way',
   withIclub: 'with iClub',
   categoriesLabel: 'Categories',
+  dietFilter: 'Filter by diet',
+  diets: {
+    vegetarian: 'Vegetarian',
+    glutenFree: 'Gluten free',
+    spicy: 'Spicy',
+  },
   categories: {
     Entradas: 'Starters',
     Sándwiches: 'Sandwiches',
@@ -576,6 +589,7 @@ const en: Messages = {
     sidebar: 'Sidebar',
     tabbar: 'Phone tab bar',
     categoryTabs: 'Category tabs',
+    dietFilter: 'Diet filter',
     toast: 'Status toast',
     empty: 'Empty state',
     scanner: 'QR reader',

@@ -4,6 +4,11 @@ export type Category =
   | 'Fondos'
   | 'Bebidas'
   | 'Postres';
+export const diets = ['vegetarian', 'glutenFree', 'spicy'] as const;
+export type Diet = (typeof diets)[number];
+/** Whether the dish fits every chosen diet. */
+export const matchesDiets = (dish: Dish, chosen: Diet[]) =>
+  chosen.every((diet) => dish.diets?.includes(diet));
 export interface Dish {
   id: string;
   category: Category;
@@ -13,6 +18,7 @@ export interface Dish {
   en: string;
   price: number;
   soldOut?: boolean;
+  diets?: Diet[];
   extras?: Extra[];
 }
 /** Optional extra of a dish, with its price per unit. */
@@ -48,6 +54,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'papas',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Entradas',
     name: 'Papas fritas',
     description:
@@ -66,6 +73,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'ensalada',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Entradas',
     name: 'Ensalada chilena',
     description:
@@ -75,6 +83,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'chacarero',
+    diets: ['spicy'],
     category: 'Sándwiches',
     name: 'Chacarero',
     description:
@@ -116,6 +125,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'pastel',
+    diets: ['glutenFree'],
     category: 'Fondos',
     name: 'Pastel de choclo',
     description:
@@ -125,6 +135,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'cazuela',
+    diets: ['glutenFree'],
     category: 'Fondos',
     name: 'Cazuela de vacuno',
     description: 'Caldo casero con osobuco, zapallo, papa, choclo y arroz.',
@@ -133,6 +144,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'lomo',
+    diets: ['glutenFree'],
     category: 'Fondos',
     name: 'Lomo a lo pobre',
     description:
@@ -145,6 +157,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'porotos',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Fondos',
     name: 'Porotos granados',
     description:
@@ -154,6 +167,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'mote',
+    diets: ['vegetarian'],
     category: 'Bebidas',
     name: 'Mote con huesillo',
     description:
@@ -163,6 +177,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'cerveza',
+    diets: ['vegetarian'],
     category: 'Bebidas',
     name: 'Cerveza de la casa',
     description: 'Lager artesanal de barril, 500 ml.',
@@ -171,6 +186,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'jugo',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Bebidas',
     name: 'Jugo natural',
     description: 'Frambuesa, frutilla o mango, recién exprimido.',
@@ -179,6 +195,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'pisco',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Bebidas',
     name: 'Pisco sour',
     description: 'Pisco, limón de Pica y jarabe de goma, batido con clara.',
@@ -187,6 +204,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'helado',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Postres',
     name: 'Helado triple',
     description: 'Tres bolas de lúcuma, chocolate y frutilla.',
@@ -195,6 +213,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'leche',
+    diets: ['vegetarian', 'glutenFree'],
     category: 'Postres',
     name: 'Leche asada',
     description: 'Receta de la abuela, con caramelo tostado.',
@@ -203,6 +222,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'sopaipillas',
+    diets: ['vegetarian'],
     category: 'Postres',
     name: 'Sopaipillas pasadas',
     description:

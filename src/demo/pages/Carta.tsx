@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import { useStore } from 'zustand';
 import { CategoryTabs } from '../../components/CategoryTabs';
+import { DietFilter } from '../../components/DietFilter';
 import { DishPlate } from '../../components/DishPlate';
 import { KitCheck } from '../../components/KitCheck';
 import { money } from '../../format';
 import { useDishText, useT } from '../../i18n';
-import { type Category, categories, type Dish, dishes } from '../../menu';
+import {
+  type Category,
+  categories,
+  type Diet,
+  type Dish,
+  dishes,
+  matchesDiets,
+} from '../../menu';
 import { store } from '../store';
 
 export function Carta({ onOpen }: { onOpen: (dish: Dish) => void }) {
@@ -13,9 +21,11 @@ export function Carta({ onOpen }: { onOpen: (dish: Dish) => void }) {
   const t = useT();
   const text = useDishText();
   const [category, setCategory] = useState<Category>(categories[0]);
+  const [chosen, setChosen] = useState<Diet[]>([]);
   return (
     <>
       <CategoryTabs value={category} onChange={setCategory} />
+      <DietFilter value={chosen} onChange={setChosen} />
       <ul
         className="dish-list"
         data-tour="elegir"
@@ -28,6 +38,7 @@ export function Carta({ onOpen }: { onOpen: (dish: Dish) => void }) {
               className="card dish"
               key={dish.id}
               data-sold-out={dish.soldOut || undefined}
+              data-off-diet={!matchesDiets(dish, chosen) || undefined}
             >
               <DishPlate dish={dish} />
               <div className="dish-text">
