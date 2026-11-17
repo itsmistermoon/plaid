@@ -32,7 +32,7 @@ export function MoveMenu({
         <ArrowRightLeft aria-hidden="true" />
         {t('moveTable')}
       </MenuTrigger>
-      <MenuContent className="dropdown-list move-list" side="top">
+      <MenuContent className="dropdown-list move-list">
         {groups.map(
           (group) =>
             group.items.length > 0 && (

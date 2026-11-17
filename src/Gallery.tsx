@@ -1077,7 +1077,7 @@ function TartanGroup() {
       <Panel
         title={panel.tartanWeave}
         uses={[]}
-        wide
+        wide="full"
         states={[
           { label: text.warp, node: <TartanSwatch layer="warp" /> },
           { label: text.weft, node: <TartanSwatch layer="weft" /> },

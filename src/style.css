@@ -252,7 +252,7 @@ button:disabled {
   cursor: not-allowed;
 }
 :focus-visible {
-  outline: 3px solid #f4d67a;
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
 }
 h1,
@@ -1454,7 +1454,7 @@ button.scheme-switch[aria-disabled="true"] {
   outline: none;
 }
 .wheel:has(.wheel-value:focus-visible) {
-  outline: 3px solid #f4d67a;
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
 }
 .wheel-arrows {
@@ -2145,6 +2145,7 @@ button.scheme-switch[aria-disabled="true"] {
   box-sizing: border-box;
   width: 200px;
   height: 30px;
+  justify-self: center;
 }
 .book-slots li {
   display: flex;
@@ -3303,7 +3304,7 @@ button.scheme-switch[aria-disabled="true"] {
   display: none;
 }
 .search:focus-within {
-  outline: 3px solid #f4d67a;
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
 }
 .search-icon {

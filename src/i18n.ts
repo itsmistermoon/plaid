@@ -51,7 +51,7 @@ const es = {
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'Pide desde la mesa',
   stageIntro:
-    'Un restaurante completo en una tablet: pide desde la mesa, sigue tu pedido y paga la cuenta, o cambia a la vista del garzón o de la cocina para atender la sala. Cambia de piel, idioma o tema y pruébalo todo.',
+    'Un restaurante completo en una tablet: pide desde la mesa, sigue tu pedido y paga la cuenta, o cambia a la vista del garzón o de la cocina para atender la sala. Cambia de piel, idioma o tema y pruébalo todo. La interfaz imita el diseño típico de principios de los 2000, a propósito.',
   device: 'Dispositivo',
   diner: 'Comensal',
   waiter: 'Garzón',
@@ -247,7 +247,7 @@ const es = {
   galleryTitle: 'Galería de componentes',
   gallerySubtitle: 'Plaid UI Kit',
   galleryIntro:
-    'Plaid es un kit de componentes esqueumórficos construido sobre UI SDK: texturas, relieves y materiales reales, con el comportamiento accesible de una librería moderna. Cada pieza viene en dos pieles, Plaid y Slate, para comparar lo táctil con lo plano. El código está en',
+    'Plaid es un kit de componentes esqueumórficos construido sobre UI SDK: texturas, relieves y materiales reales, con el comportamiento accesible de una librería moderna. El estilo es el de las interfaces típicas de principios de los 2000, a propósito. Cada pieza viene en dos pieles, Plaid y Slate, para comparar lo táctil con lo plano. El código está en',
   openDemo: 'Abrir la demo',
   states: 'Estados',
   presentational: 'Presentacional',
@@ -429,7 +429,7 @@ const en: Messages = {
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'Order from your table',
   stageIntro:
-    'A whole restaurant on a tablet: order from your table, follow your order and pay the bill, or switch to the waiter or kitchen view to run the floor. Change the skin, language or theme and try everything.',
+    'A whole restaurant on a tablet: order from your table, follow your order and pay the bill, or switch to the waiter or kitchen view to run the floor. Change the skin, language or theme and try everything. The interface deliberately follows the typical UI of the early 2000s.',
   device: 'Device',
   diner: 'Diner',
   waiter: 'Waiter',
@@ -616,7 +616,7 @@ const en: Messages = {
   galleryTitle: 'Component gallery',
   gallerySubtitle: 'Plaid UI Kit',
   galleryIntro:
-    'Plaid is a skeuomorphic component kit built on UI SDK: real textures, depth and materials, with the accessible behavior of a modern library. Every piece comes in two skins, Plaid and Slate, so you can compare tactile and flat. The code is on',
+    'Plaid is a skeuomorphic component kit built on UI SDK: real textures, depth and materials, with the accessible behavior of a modern library. The style is the typical early-2000s interface, on purpose. Every piece comes in two skins, Plaid and Slate, so you can compare tactile and flat. The code is on',
   openDemo: 'Open the demo',
   states: 'States',
   presentational: 'Presentational',
