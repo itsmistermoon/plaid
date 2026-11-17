@@ -173,3 +173,51 @@ test('tocar un especial abre su detalle', async ({ page }) => {
   await page.locator('.special').first().click();
   await expect(page.locator('.detail')).toBeVisible();
 });
+
+// The waiter's bar buttons keep place and size in every skin and language, and
+// their text never overflows. Also leaves screenshots of the bar in .cache/bar.
+for (const width of [1440, 390]) {
+  test(`los botones de la barra del garzón no se mueven ni desbordan a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/demo');
+    if (width > 760) await page.locator('.role-switch button').nth(1).click();
+    else await page.locator('.role-switch').click();
+    let baseline;
+    for (const skin of skins) {
+      await chooseSkin(page, width, skin);
+      for (const lang of ['es', 'en']) {
+        if (width > 760)
+          await page.locator(`.lang-switch a[hreflang="${lang}"]`).click();
+        else if (page.url().includes('/en/') !== (lang === 'en'))
+          await page.locator('.lang-switch').click();
+        await page.evaluate(() => document.fonts.ready);
+        const boxes = [];
+        for (const selector of ['.palette-trigger', '.book-trigger']) {
+          const control = page.locator(selector);
+          await expect(control).toBeVisible();
+          boxes.push(await control.boundingBox());
+          expect(
+            await control.evaluate((el) => el.scrollWidth <= el.clientWidth),
+            `${selector} desborda (${skin.theme}/${skin.scheme}/${lang})`,
+          ).toBe(true);
+        }
+        if (!baseline) baseline = boxes;
+        else
+          boxes.forEach((box, i) => {
+            for (const dimension of ['x', 'y', 'width', 'height'])
+              expect(
+                Math.abs(box[dimension] - baseline[i][dimension]),
+                `botón ${i} ${dimension} (${skin.theme}/${skin.scheme}/${lang})`,
+              ).toBeLessThanOrEqual(0.5);
+          });
+        await page
+          .locator('.navbar')
+          .screenshot({
+            path: `.cache/bar/${width}-${skin.theme}-${skin.scheme}-${lang}.png`,
+          });
+      }
+    }
+  });
+}

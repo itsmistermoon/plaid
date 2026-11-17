@@ -138,7 +138,8 @@ function TableSheet({
 }
 
 export function Garzon() {
-  const { tables, reservations, reserve, cancelReservation } = useStore(store);
+  const { tables, reservations, reserve, cancelReservation, seeTour } =
+    useStore(store);
   const t = useT();
   const phone = useMedia('(max-width: 760px)');
   const [selected, setSelected] = useState<number | null>(null);
@@ -206,12 +207,14 @@ export function Garzon() {
                 },
               ]}
               onRun={run}
+              onOpen={() => seeTour('buscar')}
             />
             <ReservationBookButton
               reservations={reservations}
               tables={tables.map((item) => item.number)}
               onReserve={reserve}
               onCancel={cancelReservation}
+              onOpen={() => seeTour('reservar')}
             />
           </div>
         }

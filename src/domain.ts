@@ -5,7 +5,7 @@ import {
 } from 'zustand/middleware';
 import { createStore } from 'zustand/vanilla';
 import { dishes } from './menu';
-import { advanceTour, type Tour, tourSteps } from './tour';
+import { advanceTour, type Tour, type TourStep, tourSteps } from './tour';
 
 /** What is ordered: a dish with its extras and its kitchen note. */
 export interface LineItem {
@@ -165,6 +165,8 @@ interface DemoState {
   /** Starts the tour, resumes it if skipped, or repeats it if finished. */
   startTour: () => void;
   skipTour: () => void;
+  /** Marks the step about a button as tried, so the tour moves on. */
+  seeTour: (step: TourStep) => void;
   endTour: () => void;
 }
 export const createDemoStore = (storage?: StateStorage) => {
@@ -174,18 +176,26 @@ export const createDemoStore = (storage?: StateStorage) => {
         tour: null,
         startTour: () =>
           set((state) => {
-            const step =
-              state.tour && state.tour.step < tourSteps.length
-                ? state.tour.step
-                : 0;
+            const resuming = state.tour && state.tour.step < tourSteps.length;
+            const tour = {
+              step: resuming ? (state.tour?.step ?? 0) : 0,
+              skipped: false,
+              seen: resuming ? (state.tour?.seen ?? []) : [],
+            };
             return {
-              tour: { step: advanceTour(step, state), skipped: false },
+              tour: { ...tour, step: advanceTour(tour.step, { ...state, tour }) },
             };
           }),
         skipTour: () =>
           set((state) => ({
             tour: state.tour && { ...state.tour, skipped: true },
           })),
+        seeTour: (step) =>
+          set((state) =>
+            !state.tour || state.tour.seen.includes(step)
+              ? state
+              : { tour: { ...state.tour, seen: [...state.tour.seen, step] } },
+          ),
         endTour: () => set({ tour: null }),
         reservations: initialReservations(),
         reserve: (reservation) =>
@@ -362,7 +372,7 @@ export const createDemoStore = (storage?: StateStorage) => {
       }),
       {
         name: 'plaid-demo',
-        version: 1,
+        version: 2,
         storage: createJSONStorage(() => storage ?? sessionStorage),
       },
     ),

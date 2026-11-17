@@ -2020,9 +2020,16 @@ button.scheme-switch[aria-disabled="true"] {
 }
 /* Command palette: a dialog near the top of the screen, with the kit's
    search field over a list in the dropdown's material. */
+:root {
+  --palette-w: 112px;
+  --book-w: 76px;
+}
 .palette-trigger {
   justify-self: start;
+  box-sizing: border-box;
+  width: var(--palette-w);
   gap: 6px;
+  padding: 0;
 }
 .palette-trigger svg {
   width: 14px;
@@ -2102,12 +2109,14 @@ button.scheme-switch[aria-disabled="true"] {
   gap: 6px;
 }
 .book-trigger {
-  width: 30px;
+  box-sizing: border-box;
+  width: var(--book-w);
   padding: 0;
 }
-.book-trigger svg {
-  width: 14px;
-  height: 14px;
+/* The Garzón's bar holds both buttons: its side slots are as wide as they
+   are, in every theme and language. */
+[data-surface="garzon"] .navbar {
+  grid-template-columns: calc(var(--palette-w) + var(--book-w) + 6px) 1fr 120px;
 }
 .book {
   box-sizing: border-box;

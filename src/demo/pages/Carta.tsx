@@ -19,19 +19,28 @@ import {
 import { store } from '../store';
 
 export function Carta({ onOpen }: { onOpen: (dish: Dish) => void }) {
-  const { cart, setQty } = useStore(store);
+  const { cart, setQty, seeTour } = useStore(store);
   const t = useT();
   const text = useDishText();
   const [category, setCategory] = useState<Tab>('Hoy');
   const [chosen, setChosen] = useState<Diet[]>([]);
   return (
     <>
-      <CategoryTabs value={category} onChange={setCategory} />
+      <CategoryTabs
+        value={category}
+        onChange={(next) => {
+          setCategory(next);
+          if (next === 'Hoy') seeTour('hoy');
+        }}
+      />
       {category === 'Hoy' ? (
         <Chalkboard
           specials={specials}
           soldOut={soldOutDishes}
-          onOpen={onOpen}
+          onOpen={(dish) => {
+            seeTour('hoy');
+            onOpen(dish);
+          }}
         />
       ) : (
         <>

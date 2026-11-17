@@ -7,13 +7,12 @@ import {
   DialogTrigger,
 } from '@ui-sdk/react/dialog';
 import { Input, InputGroup } from '@ui-sdk/react/input';
-import { BookMarked, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useState } from 'react';
 import { isReserved, type Reservation, reservationSlots } from '../domain';
 import { useT } from '../i18n';
 import { Dropdown } from './Dropdown';
 import { Selector } from './Selector';
-import { Tip } from './Tip';
 
 interface BookProps {
   reservations: Reservation[];
@@ -21,6 +20,8 @@ interface BookProps {
   tables: number[];
   onReserve: (reservation: Omit<Reservation, 'id'>) => void;
   onCancel: (id: string) => void;
+  /** Called each time the book opens. */
+  onOpen?: () => void;
 }
 
 /**
@@ -134,23 +135,17 @@ export function ReservationBook({
   );
 }
 
-/** The book as a dialog, opened from an icon button with its hint. */
-export function ReservationBookButton(props: BookProps) {
+/** The book as a dialog, opened from a text button. */
+export function ReservationBookButton({ onOpen, ...props }: BookProps) {
   const t = useT();
   return (
-    <Dialog>
-      <Tip
-        hint={t('book')}
-        naming
-        render={
-          <DialogTrigger
-            className="dark-button book-trigger"
-            aria-label={t('book')}
-          />
-        }
+    <Dialog onOpenChange={(open) => open && onOpen?.()}>
+      <DialogTrigger
+        className="dark-button book-trigger"
+        data-tour="reservar"
       >
-        <BookMarked aria-hidden="true" strokeWidth={2.5} />
-      </Tip>
+        {t('bookButton')}
+      </DialogTrigger>
       <DialogBackdrop className="palette-backdrop" />
       <DialogContent className="book">
         <div className="book-head">

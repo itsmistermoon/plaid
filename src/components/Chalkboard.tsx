@@ -34,7 +34,7 @@ export function Chalkboard({
         <h2 className="chalk-title" id={titleId}>
           {t('specialsTitle')}
         </h2>
-        <ul className="specials" data-tour="elegir">
+        <ul className="specials" data-tour="elegir hoy">
           {specials.map((dish) => (
             <li key={dish.id}>
               <button
