@@ -103,7 +103,7 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **Controls (buttons, search, selectors, segmented controls, checkbox, switch, stepper, sidebar and tab bar items) measure exactly the same in both themes, on desktop and phone: height, fixed width and padding come from shared variables (`--button-h`, `--field-h`, `--check-size`…) that no theme redefines. The Slate theme only changes the skin; its outlines and insets are drawn with shadows, border colors or `background-clip`, never with different borders, margins or padding. The Slate receipt is the only exception: it is a card without a printer, with a different typeface, and may measure differently.**
   Why: this way the two themes can be compared side by side without anything changing size.
   <!-- 2026-11-16 -->
-- **The scheme control (system, light, dark) sits in the demo bar and the gallery bar right after the theme switch, with a fixed width: three icon segments on desktop and one icon toggle that cycles on phones. It is always present and keeps its place; in the Plaid theme it is disabled. The layout tests cover it and the dark modern skin.**
+- **The scheme control (system, light, dark) sits in the demo bar and the gallery bar right after the theme switch, with a fixed width: three icon segments on desktop and one icon toggle that cycles on phones. It is always present and keeps its place; in the Plaid theme it is disabled. The layout tests cover it and the dark Slate skin.**
   Why: no control may move or resize when switching theme, language or scheme.
   <!-- 2026-11-16 -->
 - **Sticky bars, such as tabs and headers, have an opaque background and the content scrolls underneath them.**
