@@ -63,6 +63,7 @@ import { Sidebar, SidebarItem } from './components/Sidebar';
 import { StageBar, StageIntro } from './components/StageBar';
 import { TableButton } from './components/Table';
 import { TableDetail, TableDetailEmpty } from './components/TableDetail';
+import { TartanDesigner } from './components/TartanDesigner';
 import { ThemeSwitch } from './components/ThemeSwitch';
 import { KitchenTicket, TicketRail } from './components/TicketRail';
 import { Tip } from './components/Tip';
@@ -1026,6 +1027,13 @@ function TartanGroup() {
             </li>
           ))}
         </ul>
+      </Panel>
+      <Panel
+        title={panel.tartanDesigner}
+        uses={['NumberInput', 'Toast']}
+        wide="full"
+      >
+        <TartanDesigner />
       </Panel>
       <Panel
         title={panel.tartanWeave}

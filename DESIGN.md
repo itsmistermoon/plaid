@@ -75,6 +75,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **Restaurant El Clan has its own tartan, defined once in `src/tartan.ts` by its threadcount (`K/8 G32 K6 G6 K24 W4 K24 Y/2`: green, slate, cream and a thin gold thread). The gallery accent, the "Tartan" section, the favicon and the Open Graph image are generated from it (`pnpm tartan:assets`); it is never redrawn by hand.**
   Why: one sett, one source of truth, like a registered tartan.
   <!-- 2026-11-16 -->
+- **The tartan designer is a loom to try other setts with the Clan's four colors only (no free color picker); it weaves a sample in its own panel and never changes the Clan tartan or its generated assets.**
+  Why: the Clan tartan keeps one source of truth, and the brand palette stays closed.
+  <!-- 2026-11-17 -->
 - **Textile token names are used only where the metaphor is honest: `--warp` and `--weft` for the tablecloth stripes, `--selvedge` for the cloth's hem, `--stitch` / `--stitch-dash` for sewn dashes (ribbon, Slate hem) and `--thread-*` for call threads. Other tokens keep their plain names.**
   Why: the kit is named after the tablecloth; the names explain the pattern code without renaming everything.
   <!-- 2026-11-16 -->

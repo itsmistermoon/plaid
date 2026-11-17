@@ -26,8 +26,11 @@ export const tartanColors: Record<TartanColor, string> = {
   Y: '#f0c453',
 };
 
-/** Half-sett from pivot to pivot, in threads: K/8 G32 K6 G6 K24 W4 K24 Y/2. */
-export const sett: readonly [TartanColor, number][] = [
+/** A half-sett from pivot to pivot: each stripe's color and width in threads. */
+export type Sett = readonly (readonly [TartanColor, number])[];
+
+/** The Clan's half-sett: K/8 G32 K6 G6 K24 W4 K24 Y/2. */
+export const sett: Sett = [
   ['K', 8],
   ['G', 32],
   ['K', 6],
@@ -38,32 +41,41 @@ export const sett: readonly [TartanColor, number][] = [
   ['Y', 2],
 ];
 
-/** The threadcount written as weavers do, with the pivots marked by "/". */
-export const threadcount = sett
-  .map(([color, count], i) =>
-    i === 0 || i === sett.length - 1 ? `${color}/${count}` : `${color}${count}`,
-  )
-  .join(' ');
+/** A threadcount written as weavers do, with the pivots marked by "/". */
+export const threadcountOf = (design: Sett) =>
+  design
+    .map(([color, count], i) =>
+      i === 0 || i === design.length - 1
+        ? `${color}/${count}`
+        : `${color}${count}`,
+    )
+    .join(' ');
 
 /** The full repeat: the half-sett, then mirrored without repeating the pivots. */
-export const fullSett: [TartanColor, number][] = [
-  ...sett,
-  ...sett.slice(1, -1).reverse(),
+export const fullSettOf = (design: Sett) => [
+  ...design,
+  ...design.slice(1, -1).reverse(),
 ];
 
-/** Threads in one full repeat of the pattern. */
-export const settSize = fullSett.reduce((sum, [, count]) => sum + count, 0);
+/** Threads in one full repeat of a sett. */
+export const settSizeOf = (design: Sett) =>
+  fullSettOf(design).reduce((sum, [, count]) => sum + count, 0);
+
+export const threadcount = threadcountOf(sett);
+export const fullSett = fullSettOf(sett);
+export const settSize = settSizeOf(sett);
 
 export type TartanLayer = 'warp' | 'weft' | 'check';
 
-function stripes(direction: 'warp' | 'weft') {
+function stripes(direction: 'warp' | 'weft', design: Sett) {
+  const size = settSizeOf(design);
   let at = 0;
-  return fullSett
+  return fullSettOf(design)
     .map(([color, count]) => {
       const rect =
         direction === 'warp'
-          ? `<rect x="${at}" width="${count}" height="${settSize}" fill="${tartanColors[color]}"/>`
-          : `<rect y="${at}" width="${settSize}" height="${count}" fill="${tartanColors[color]}"/>`;
+          ? `<rect x="${at}" width="${count}" height="${size}" fill="${tartanColors[color]}"/>`
+          : `<rect y="${at}" width="${size}" height="${count}" fill="${tartanColors[color]}"/>`;
       at += count;
       return rect;
     })
@@ -71,25 +83,31 @@ function stripes(direction: 'warp' | 'weft') {
 }
 
 /**
- * One repeat of the tartan as an SVG document, one unit per thread. "warp" and
+ * One repeat of a tartan as an SVG document, one unit per thread. "warp" and
  * "weft" draw a single direction, "check" weaves both: the weft shows only
- * where the 2/2 twill passes it over the warp, in diagonal steps.
+ * where the 2/2 twill passes it over the warp, in diagonal steps. Without a
+ * design it is the Clan tartan.
  */
-export function tartanSvg(layer: TartanLayer = 'check', size = settSize) {
+export function tartanSvg(
+  layer: TartanLayer = 'check',
+  size?: number,
+  design: Sett = sett,
+) {
+  const threads = settSizeOf(design);
   const twill =
     '<pattern id="t" width="4" height="4" patternUnits="userSpaceOnUse">' +
     '<path d="M0 0h2v1H0zM1 1h2v1H1zM2 2h2v1H2zM3 3h1v1H3zM0 3h1v1H0z" fill="#fff"/>' +
     '</pattern><mask id="m"><rect width="100%" height="100%" fill="url(#t)"/></mask>';
   const body =
     layer === 'warp'
-      ? stripes('warp')
+      ? stripes('warp', design)
       : layer === 'weft'
-        ? stripes('weft')
-        : `<defs>${twill}</defs>${stripes('warp')}<g mask="url(#m)">${stripes('weft')}</g>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${settSize} ${settSize}" shape-rendering="crispEdges"><title>Clan tartan</title>${body}</svg>`;
+        ? stripes('weft', design)
+        : `<defs>${twill}</defs>${stripes('warp', design)}<g mask="url(#m)">${stripes('weft', design)}</g>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size ?? threads}" height="${size ?? threads}" viewBox="0 0 ${threads} ${threads}" shape-rendering="crispEdges"><title>Clan tartan</title>${body}</svg>`;
 }
 
-/** The tartan as a `url()` ready for CSS backgrounds. */
-export function tartanUrl(layer: TartanLayer = 'check') {
-  return `url("data:image/svg+xml,${encodeURIComponent(tartanSvg(layer))}")`;
+/** A tartan as a `url()` ready for CSS backgrounds. */
+export function tartanUrl(layer: TartanLayer = 'check', design: Sett = sett) {
+  return `url("data:image/svg+xml,${encodeURIComponent(tartanSvg(layer, undefined, design))}")`;
 }
