@@ -86,7 +86,7 @@ test('las tres vistas de la galería se alternan con la barra fija y respetan el
   page,
 }) => {
   await page.goto('/componentes');
-  const views = page.locator('.gallery-views a');
+  const views = page.locator('.gallery > .stage-bar .gallery-views a');
   await expect(views).toHaveCount(3);
   await views.nth(1).click();
   await expect(page).toHaveURL(/\/componentes\/restaurant$/);
