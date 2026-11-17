@@ -8,6 +8,7 @@ import {
 } from '@ui-sdk/react/toast';
 import { Check, CircleAlert, Send, Utensils } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { useMedia } from '../demo/useMedia';
 import type { OrderStatus } from '../domain';
 
 export type ToastKind = OrderStatus | 'error';
@@ -63,15 +64,17 @@ export function ToastFace({
 }
 
 /**
- * Stack of notices at the bottom end of the screen. UI SDK stacks them,
+ * Stack of notices at the bottom end of the screen (the top on phones, clear of
+ * the sheet's pinned actions). UI SDK stacks them,
  * expands the stack while the pointer or focus is in it, and dismisses a
  * notice with a swipe, Escape or its timer; the CSS only skins that.
  */
 export function OrderToastRegion() {
+  const phone = useMedia('(max-width: 760px)');
   return (
     <ToastRegion
       toaster={orderToaster}
-      side="bottom"
+      side={phone ? 'top' : 'bottom'}
       align="end"
       className="toast-region"
     >

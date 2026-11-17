@@ -9,6 +9,8 @@ import {
   pendingOrders,
   reservationToday,
   splitShares,
+  type Table,
+  tableBill,
   tipAmount,
   toggleNotePreset,
 } from './domain';
@@ -448,4 +450,48 @@ it('writes and cancels reservations, one per Mesa and hour', () => {
   expect(reservationToday(store.getState().reservations, 5)?.name).toBe(
     'Lagos',
   );
+});
+
+it('books the same Mesa and hour on different days of the week', () => {
+  const store = createDemoStore();
+  const { reserve } = store.getState();
+  const before = store.getState().reservations.length;
+  reserve({ table: 6, day: 4, time: '20:00', name: 'Pino' });
+  reserve({ table: 6, day: 4, time: '20:00', name: 'Otro' });
+  reserve({ table: 6, day: 5, time: '20:00', name: 'Mena' });
+  const { reservations } = store.getState();
+  expect(reservations).toHaveLength(before + 2);
+  expect(reservationToday(reservations, 6)).toBeUndefined();
+});
+
+it('shares the Comensal’s tip and split with the Garzón’s view of the Mesa', () => {
+  const store = createDemoStore();
+  const { addToCart, sendOrder, setTipPercent, setPeople } = store.getState();
+  addToCart({ dishId: 'chacarero' }, 3);
+  sendOrder();
+  setTipPercent(15);
+  setPeople(4);
+  const mesa = store.getState().tables.find((table) => table.number === 7);
+  const bill = tableBill(mesa as Table);
+  expect(bill.subtotal).toBe(20700);
+  expect(bill.tip).toBe(3105);
+  expect(bill.total).toBe(23805);
+  expect(bill.shares).toEqual([5952, 5951, 5951, 5951]);
+  // Charging the Mesa clears them for the next party.
+  store.getState().chargeAndFree(7);
+  const freed = store.getState().tables.find((table) => table.number === 7);
+  expect(freed).toMatchObject({ tipPercent: 10, people: 1 });
+});
+
+it('moves the tip and split along with the Pedidos to a free Mesa', () => {
+  const store = createDemoStore();
+  store.getState().addToCart({ dishId: 'chacarero' }, 1);
+  store.getState().sendOrder();
+  store.getState().setTipPercent(0);
+  store.getState().setPeople(2);
+  store.getState().moveTable(7, 3);
+  expect(store.getState().tables.find((t) => t.number === 3)).toMatchObject({
+    tipPercent: 0,
+    people: 2,
+  });
 });

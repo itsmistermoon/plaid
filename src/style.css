@@ -87,6 +87,7 @@
   --book-binding: 10px;
   --book-edge: 1px solid var(--table-wood-edge);
   --book-cover: linear-gradient(
+    to bottom,
     var(--table-wood-top),
     var(--table-wood-mid) 50%,
     var(--table-wood-bottom)
@@ -345,7 +346,8 @@ ol {
   font-weight: 600;
   text-decoration: none;
 }
-.scheme-switch svg {
+.scheme-switch svg,
+.role-switch svg {
   width: 15px;
   height: 15px;
 }
@@ -2018,6 +2020,20 @@ button.scheme-switch[aria-disabled="true"] {
   z-index: 1;
   box-shadow: var(--bill-shadow);
 }
+/* The tip and split lines of the waiter's Cuenta: fixed height, figures that
+   do not move; the split line keeps its place when the bill is not split. */
+.side-bill-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  height: 18px;
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.side-bill-line[data-hidden] {
+  visibility: hidden;
+}
 /* Command palette: a dialog near the top of the screen, with the kit's
    search field over a list in the dropdown's material. */
 :root {
@@ -2165,9 +2181,29 @@ button.scheme-switch[aria-disabled="true"] {
 }
 .book-day {
   box-sizing: border-box;
-  width: 200px;
-  height: 30px;
-  justify-self: center;
+  width: 100%;
+  height: 44px;
+}
+.book-day button {
+  display: grid;
+  gap: 0;
+  align-content: center;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.book-day small {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.book-day b {
+  font-size: 15px;
+}
+.book-date {
+  height: 18px;
+  margin: -6px 0 0;
+  text-align: center;
+  font: var(--book-font);
 }
 .book-slots li {
   display: flex;
@@ -2473,10 +2509,13 @@ button.scheme-switch[aria-disabled="true"] {
   display: grid;
   place-items: center;
 }
+/* Inter, not the receipt's monospace: there the thousands dot takes a full
+   cell and reads as "$20 . 900". */
 .side-total {
   font:
-    700 22px "Courier Prime",
-    monospace;
+    700 22px Inter,
+    sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 .tables {
   display: grid;
@@ -2582,8 +2621,8 @@ button.scheme-switch[aria-disabled="true"] {
 }
 .plate text {
   font:
-    italic bold 16px Georgia,
-    serif;
+    700 14px "Courier Prime",
+    monospace;
   fill: #746944;
 }
 .table-number circle {
@@ -3606,9 +3645,27 @@ button.scheme-switch[aria-disabled="true"] {
 @media (max-width: 760px) {
   .toast-region {
     inset-inline: 12px;
-    bottom: 12px;
     width: auto;
   }
+}
+/* On phones the region sits at the top: the waiter's sheet pins its
+   "Cobrar y liberar" button at the bottom, and a toast must never cover it.
+   The stack mirrors the bottom one. */
+.toast-region[data-side="top"] {
+  top: 12px;
+  bottom: auto;
+}
+.toast-region[data-side="top"] .toast {
+  top: 0;
+  bottom: auto;
+  --y: calc(var(--toast-index) * var(--toast-gap));
+  transform-origin: top center;
+}
+.toast-region[data-side="top"] .toast[data-expanded] {
+  --y: calc(var(--toast-offset) + var(--toast-index) * var(--toast-gap));
+}
+.toast-region[data-side="top"] .toast[data-starting-style][data-front] {
+  --y: -100%;
 }
 .toast-icon {
   display: grid;

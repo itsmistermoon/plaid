@@ -9,8 +9,13 @@ import {
 import { Input, InputGroup } from '@ui-sdk/react/input';
 import { X } from 'lucide-react';
 import { useState } from 'react';
-import { isReserved, type Reservation, reservationSlots } from '../domain';
-import { useT } from '../i18n';
+import {
+  isReserved,
+  type Reservation,
+  reservationDays,
+  reservationSlots,
+} from '../domain';
+import { useLang, useT } from '../i18n';
 import { Dropdown } from './Dropdown';
 import { Selector } from './Selector';
 
@@ -24,6 +29,14 @@ interface BookProps {
   onOpen?: () => void;
 }
 
+const dayOffsets = Array.from({ length: reservationDays }, (_, index) => index);
+/** The calendar date that many days from today. */
+const dateIn = (days: number) => {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return date;
+};
+
 /**
  * The page of the reservation book for a day: every hour with the Mesas held
  * at it, and a line to write a new reservation.
@@ -35,7 +48,15 @@ export function ReservationBook({
   onCancel,
 }: BookProps) {
   const t = useT();
-  const [day, setDay] = useState<0 | 1>(0);
+  const lang = useLang();
+  const locale = lang === 'es' ? 'es-CL' : 'en-US';
+  const weekday = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+  const full = new Intl.DateTimeFormat(locale, {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
+  const [day, setDay] = useState(0);
   const [table, setTable] = useState<string | null>(null);
   const [time, setTime] = useState<string | null>(null);
   const [name, setName] = useState('');
@@ -45,16 +66,30 @@ export function ReservationBook({
     isReserved(reservations, { table: Number(table), day, time });
   return (
     <div className="book-page">
+      {/* A strip with every day of the week: a face of weekday over date. */}
       <Selector
         className="book-day"
         legend={t('bookDay')}
         value={`${day}`}
-        options={t('bookDays').map((label, index) => ({
-          value: `${index}`,
-          label,
-        }))}
-        onChange={(value) => setDay(Number(value) as 0 | 1)}
+        options={dayOffsets.map((offset) => {
+          const date = dateIn(offset);
+          return {
+            value: `${offset}`,
+            label: full.format(date),
+            face: (
+              <>
+                <small>{weekday.format(date).replace('.', '')}</small>
+                <b>{date.getDate()}</b>
+              </>
+            ),
+          };
+        })}
+        onChange={(value) => setDay(Number(value))}
       />
+      <p className="book-date">
+        {t('bookDays')[day] ? `${t('bookDays')[day]} · ` : ''}
+        {full.format(dateIn(day))}
+      </p>
       <ol className="book-slots">
         {reservationSlots.map((slot) => {
           const held = reservations.filter(
@@ -140,10 +175,7 @@ export function ReservationBookButton({ onOpen, ...props }: BookProps) {
   const t = useT();
   return (
     <Dialog onOpenChange={(open) => open && onOpen?.()}>
-      <DialogTrigger
-        className="dark-button book-trigger"
-        data-tour="reservar"
-      >
+      <DialogTrigger className="dark-button book-trigger" data-tour="reservar">
         {t('bookButton')}
       </DialogTrigger>
       <DialogBackdrop className="palette-backdrop" />
