@@ -128,6 +128,10 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   Why: if the content shows through, the interface looks broken.
   <!-- 2026-11-16 -->
 
+- **One footer is shared by the demo and the gallery: quiet, centered links drawn with each theme's tokens, opening in a new tab with `rel="noopener noreferrer"`. On phones it is hidden in the demo (the tablet fills the screen) and in the gallery it leaves the toast area clear.**
+  Why: it credits the original and links the code without competing with the content or covering the tablet or the toasts.
+  <!-- 2026-11-17 -->
+
 - **The gallery's control bar (theme, scheme, language, demo link) stays pinned at the top while scrolling, in its own place, so the skin can be switched anywhere. Its background is opaque and bleeds past the page's sides.**
   Why: the pieces are compared across skins, and scrolling back up to switch broke that.
   <!-- 2026-11-16 -->

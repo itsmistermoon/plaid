@@ -24,6 +24,7 @@ import { CommandPalette } from './components/CommandPalette';
 import { DietFilter } from './components/DietFilter';
 import { DishPlate } from './components/DishPlate';
 import { Dropdown } from './components/Dropdown';
+import { Footer } from './components/Footer';
 import { Extras } from './components/Extras';
 import { KitCheck } from './components/KitCheck';
 import { KitSwitch } from './components/KitSwitch';
@@ -1844,7 +1845,7 @@ export function Gallery({ view }: { view: GalleryView }) {
             </a>
             {t('galleryIntroMid')}{' '}
             <a
-              href="https://github.com/itsmistermoon/plaid"
+              href="https://github.com/itsmistermoon/plaid-ui-kit"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -1857,6 +1858,7 @@ export function Gallery({ view }: { view: GalleryView }) {
       {view === 'components' && <ComponentsView />}
       {view === 'restaurant' && <RestaurantView />}
       {view === 'tartan' && <TartanGroup />}
+      <Footer />
       <OrderToastRegion />
     </main>
   );

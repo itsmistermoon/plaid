@@ -119,6 +119,10 @@
   .app .stage-intro {
     display: none;
   }
+  /* The demo fills the screen on phones: the footer lives in the gallery. */
+  .app .site-footer {
+    display: none;
+  }
   .reset-label {
     display: none;
   }
@@ -353,6 +357,10 @@
   .gallery {
     --gallery-pt: 10px;
     padding: 10px 10px 32px;
+  }
+  /* Keeps the area where toasts appear clear of the links. */
+  .gallery .site-footer {
+    padding-bottom: 88px;
   }
   .gallery > .stage-bar {
     margin-bottom: 12px;

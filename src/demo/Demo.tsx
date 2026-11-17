@@ -2,6 +2,7 @@ import { LayoutGrid, RotateCcw } from 'lucide-react';
 import { type CSSProperties, useState } from 'react';
 import { Link } from 'wouter';
 import { useStore } from 'zustand';
+import { Footer } from '../components/Footer';
 import { LangSwitch } from '../components/LangSwitch';
 import { OrderToastRegion } from '../components/OrderToast';
 import { SchemeSwitch } from '../components/SchemeSwitch';
@@ -134,6 +135,7 @@ export function Demo() {
           )}
         </div>
       </div>
+      <Footer />
       <OrderToastRegion />
       {touring && tourSteps[touring.step] && (
         <TourThread step={tourSteps[touring.step]} />

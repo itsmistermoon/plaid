@@ -1002,3 +1002,8 @@
     inset 0 0 0 1px var(--border),
     var(--shadow-sm);
 }
+
+/* Shared footer */
+[data-theme="slate"] .site-footer a:hover {
+  color: var(--accent);
+}
