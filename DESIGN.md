@@ -128,7 +128,7 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   Why: if the content shows through, the interface looks broken.
   <!-- 2026-11-16 -->
 
-- **One footer is shared by the demo and the gallery: quiet, centered links drawn with each theme's tokens, opening in a new tab with `rel="noopener noreferrer"`. On phones it is hidden in the demo (the tablet fills the screen) and in the gallery it leaves the toast area clear.**
+- **One footer is shared by the demo and the gallery, in this order: Original design on Behance · Case study · GitHub · by @itsmistermoon (only the handle links to X; the middle-dot separators are decorative, `aria-hidden`). It is quiet and centered, drawn with each theme's tokens, opening in a new tab with `rel="noopener noreferrer"`. In the demo it sits clear below the tablet's drop shadow; on phones it is hidden (the tablet fills the screen) and in the gallery it leaves the toast area clear. The gallery panels' "UI SDK" link uses the footer text color, underlined on hover/focus, never the browser's link colors.**
   Why: it credits the original and links the code without competing with the content or covering the tablet or the toasts.
   <!-- 2026-11-17 -->
 
