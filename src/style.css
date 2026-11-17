@@ -1458,6 +1458,23 @@ button.scheme-switch:disabled {
     700 19px Outfit,
     sans-serif;
 }
+/* The Pedido's title with its repeat action at the end of the row. */
+.order-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.order-head .dark-button {
+  flex: none;
+  /* Fits "Repetir", the longer of the two languages. */
+  width: 92px;
+  padding: 0;
+}
+.order-head .dark-button svg {
+  width: 14px;
+  height: 14px;
+}
 .order-lines {
   margin: 4px 0 14px;
   font-size: 13px;

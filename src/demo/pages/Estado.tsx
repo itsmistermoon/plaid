@@ -1,4 +1,4 @@
-import { Check, ConciergeBell, ReceiptText } from 'lucide-react';
+import { Check, ConciergeBell, ReceiptText, Repeat } from 'lucide-react';
 import { useStore } from 'zustand';
 import { findVisitorTable } from '../../domain';
 import { useExtraName, useT } from '../../i18n';
@@ -9,7 +9,7 @@ import { store } from '../store';
 const statusLabels = ['enviado', 'confirmado', 'servido'] as const;
 
 export function Estado({ go }: { go: Go }) {
-  const { tables, callWaiter } = useStore(store);
+  const { tables, callWaiter, addToCart } = useStore(store);
   const t = useT();
   const extraName = useExtraName();
   const mesa = findVisitorTable(tables);
@@ -20,7 +20,21 @@ export function Estado({ go }: { go: Go }) {
           const step = statusLabels.indexOf(order.status);
           return (
             <li key={order.id}>
-              <h3>{t('orderN')(index + 1)}</h3>
+              <div className="order-head">
+                <h3>{t('orderN')(index + 1)}</h3>
+                <button
+                  type="button"
+                  className="dark-button"
+                  aria-label={t('repeatOrderN')(index + 1)}
+                  onClick={() => {
+                    for (const line of order.lines) addToCart(line, line.qty);
+                    go('carrito');
+                  }}
+                >
+                  <Repeat aria-hidden="true" />
+                  {t('repeat')}
+                </button>
+              </div>
               <p className="order-lines">
                 {order.lines
                   .map((line) => lineSummary(line, extraName))
