@@ -1,6 +1,6 @@
 # plaid
 
-Plaid is a skeuomorphic UI kit built on [UI SDK](https://ui-sdk.dev), and Restaurant El Clan is a demo app made with it: a reconstruction of iClub built for moon's portfolio. Textures, relief and real-looking materials (tablecloth, paper receipts, seals, a leather-bound reservation book) sit on top of the accessible behavior of a modern component library. The look is the typical early-2000s interface, chosen on purpose rather than left over from the past.
+Plaid is a skeuomorphic UI kit built on [UI SDK](https://ui-sdk.dev), and Restaurant El Clan is a demo app made with it: a reconstruction of iClub built for moon's portfolio. Textures, relief and real-looking materials (tablecloth, paper receipts, seals, a leather-bound reservation book) sit on top of the accessible behavior of a modern component library. The look is deliberately the skeuomorphic style of the early 2010s, before flat design, chosen on purpose rather than left over from the past.
 
 Every piece comes in two skins, Plaid (tactile) and Slate (flat), so the two approaches can be compared side by side. The UI is available in Spanish and English.
 
