@@ -86,6 +86,12 @@
   --tabbar-current-ink: var(--accent);
   --tabbar-current-bg: none;
   --tabbar-current-shadow: none;
+  --tip-ink: var(--background);
+  --tip-face: var(--foreground);
+  --tip-arrow: var(--foreground);
+  --tip-border: 1px solid var(--foreground);
+  --tip-radius: 6px;
+  --tip-shadow: var(--shadow);
   --toast-icon-border: 0;
   --toast-icon-shadow: none;
   --toast-icon-ink: var(--on-accent);

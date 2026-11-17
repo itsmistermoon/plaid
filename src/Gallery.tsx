@@ -1,8 +1,11 @@
 import {
   BookOpen,
+  CircleHelp,
   Clock,
   ConciergeBell,
+  LayoutGrid,
   ReceiptText,
+  RotateCcw,
   ShoppingCart,
 } from 'lucide-react';
 import {
@@ -58,6 +61,7 @@ import { StageBar, StageIntro } from './components/StageBar';
 import { TableButton } from './components/Table';
 import { TableDetail, TableDetailEmpty } from './components/TableDetail';
 import { ThemeSwitch } from './components/ThemeSwitch';
+import { Tip } from './components/Tip';
 import { type TipPercent, TipSelector } from './components/TipSelector';
 import { lineKey, receiptLine } from './demo/lines';
 import {
@@ -532,6 +536,37 @@ function ToastDemo() {
         >
           {t('statuses')[kind]}
         </button>
+      ))}
+    </div>
+  );
+}
+
+/** Icon-only buttons of the phone bar, each named by its tooltip. */
+function TipDemo({ blocked }: { blocked?: boolean }) {
+  const t = useT();
+  const buttons = [
+    { icon: CircleHelp, name: t('tour') },
+    { icon: LayoutGrid, name: t('uiKit') },
+    { icon: RotateCcw, name: t('resetDemo') },
+  ];
+  return (
+    <div className="row tip-demo">
+      {buttons.slice(0, blocked ? 1 : 3).map(({ icon: Icon, name }) => (
+        <Tip
+          key={name}
+          hint={blocked ? t('schemeSlateOnly') : name}
+          naming={!blocked}
+          render={
+            <button
+              type="button"
+              className="dark-button"
+              aria-label={name}
+              aria-disabled={blocked || undefined}
+            />
+          }
+        >
+          <Icon aria-hidden="true" />
+        </Tip>
       ))}
     </div>
   );
@@ -1198,6 +1233,13 @@ function ComponentsView() {
           ]}
         >
           <PostItDemo />
+        </Panel>
+        <Panel
+          title={panel.tooltip}
+          uses={['Tooltip']}
+          states={[{ label: s.explains, node: <TipDemo blocked /> }]}
+        >
+          <TipDemo />
         </Panel>
         <Panel
           title={panel.toast}

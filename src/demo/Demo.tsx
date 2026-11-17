@@ -8,6 +8,7 @@ import { Selector } from '../components/Selector';
 import { SelectorToggle } from '../components/SelectorToggle';
 import { StageBar, StageIntro } from '../components/StageBar';
 import { ThemeSwitch } from '../components/ThemeSwitch';
+import { Tip } from '../components/Tip';
 import { TourCoach } from '../components/TourCoach';
 import { TourThread } from '../components/TourThread';
 import { pathFor, useLang, useT } from '../i18n';
@@ -67,27 +68,41 @@ export function Demo() {
           />
         )}
         <TourButton />
-        <Link
-          href={pathFor('components', lang)}
-          className="light-button kit-link"
-          aria-label={t('uiKit')}
+        <Tip
+          hint={t('uiKit')}
+          naming
+          disabled={!phone}
+          render={
+            <Link
+              href={pathFor('components', lang)}
+              className="light-button kit-link"
+              aria-label={t('uiKit')}
+            />
+          }
         >
           <LayoutGrid aria-hidden="true" />
           <span className="reset-label">{t('uiKit')}</span>
-        </Link>
-        <button
-          type="button"
-          className="dark-button reset-button"
-          aria-label={t('resetDemo')}
-          onClick={() => {
-            reset();
-            setEntered(false);
-            setRevision((value) => value + 1);
-          }}
+        </Tip>
+        <Tip
+          hint={t('resetDemo')}
+          naming
+          disabled={!phone}
+          render={
+            <button
+              type="button"
+              className="dark-button reset-button"
+              aria-label={t('resetDemo')}
+              onClick={() => {
+                reset();
+                setEntered(false);
+                setRevision((value) => value + 1);
+              }}
+            />
+          }
         >
           <RotateCcw aria-hidden="true" />
           <span className="reset-label">{t('resetDemo')}</span>
-        </button>
+        </Tip>
       </StageBar>
       <StageIntro
         title={t('stageTitle')}

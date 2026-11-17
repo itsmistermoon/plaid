@@ -132,6 +132,10 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   Why: the old toasts were a plain column with no stacking, so they read as less polished than the reference.
   <!-- 2026-11-16 -->
 
+- **Hints on icon-only controls are UI SDK's `Tooltip` (`Tip`), never the native `title`: a cream paper tag with a notch in the Plaid theme, a flat inverted chip in the Slate theme. A control that is unavailable stays focusable (`aria-disabled`) so its hint can say why. Controls that show their text get no hint.**
+  Why: the native title cannot be skinned, does not show on keyboard focus and never appears on a disabled control.
+  <!-- 2026-11-17 -->
+
 - **The guided tour highlights its target with a running thread: a dashed stitch that travels along the border (`TourThread`), never a pulsing ring. With `prefers-reduced-motion` the thread stays still.**
   Why: it follows the textile language of the kit, and the overlay is not clipped by the pieces it surrounds.
   <!-- 2026-11-16 -->

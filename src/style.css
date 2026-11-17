@@ -55,6 +55,12 @@
   --tabbar-current-ink: var(--brand);
   --tabbar-current-bg: #0000002a;
   --tabbar-current-shadow: inset 0 2px 5px #0003;
+  --tip-ink: #3e3e3e;
+  --tip-face: linear-gradient(#fbf8ec, #e9e3cd);
+  --tip-arrow: #fbf8ec;
+  --tip-border: 1px solid #8d8769;
+  --tip-radius: 4px;
+  --tip-shadow: inset 0 1px #fff, 0 3px 8px #0009;
   --toast-icon-border: 1.5px solid #fff;
   --badge-ink: #fff;
   --toast-icon-ink: #fff;
@@ -268,12 +274,86 @@ ol {
   height: 15px;
 }
 /* The Plaid theme is always dark: the control keeps its place, disabled. */
-.scheme-switch:disabled {
+.scheme-switch[aria-disabled="true"] {
   opacity: 0.45;
 }
-.scheme-switch:disabled button,
-button.scheme-switch:disabled {
+.scheme-switch[aria-disabled="true"] button,
+button.scheme-switch[aria-disabled="true"] {
   cursor: not-allowed;
+}
+/* Tooltip (UI SDK): in the Plaid theme, a cream paper tag with a notch that
+   points at its control; the Slate theme makes it a flat inverted chip. */
+.tip {
+  margin: 0;
+  padding: 5px 9px;
+  border: var(--tip-border);
+  border-radius: var(--tip-radius);
+  overflow: visible;
+  font:
+    600 12px / 1.3 Inter,
+    sans-serif;
+  white-space: nowrap;
+  color: var(--tip-ink);
+  background: var(--tip-face);
+  box-shadow: var(--tip-shadow);
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity 150ms var(--ease-out),
+    scale 150ms var(--ease-out);
+}
+.tip:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+  scale: 0.94;
+}
+.tip[data-instant] {
+  transition: none;
+}
+.tip-arrow {
+  box-sizing: border-box;
+  z-index: -1;
+  width: 9px;
+  height: 9px;
+  rotate: 45deg;
+  border: var(--tip-border);
+  background: var(--tip-arrow);
+}
+/* Half of the notch sticks out of the edge that faces the control; the two
+   borders left inside the tag are not drawn. */
+.tip-arrow[data-side="bottom"] {
+  top: -5px;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+.tip-arrow[data-side="top"] {
+  bottom: -5px;
+  border-left-color: transparent;
+  border-top-color: transparent;
+}
+.tip-arrow[data-side="left"] {
+  right: -5px;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+.tip-arrow[data-side="right"] {
+  left: -5px;
+  border-right-color: transparent;
+  border-top-color: transparent;
+}
+.tip-demo .dark-button {
+  box-sizing: border-box;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: var(--bar-radius);
+}
+.tip-demo .dark-button[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tip {
+    transition-property: opacity;
+  }
 }
 /* Title block under the control bar. */
 .stage-intro {
