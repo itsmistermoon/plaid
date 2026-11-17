@@ -77,7 +77,7 @@ for (const width of [1440, 390]) {
         .locator('.panel .stage-bar .selector')
         .first()
         .boundingBox();
-      expect(roleBar.width, 'segmentado del panel').toBe(176);
+      expect(roleBar.width, 'segmentado del panel').toBe(246);
     }
   });
 }

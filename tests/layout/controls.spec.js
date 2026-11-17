@@ -87,3 +87,38 @@ for (const width of [1440, 390]) {
     }
   });
 }
+
+// The Cocina has its three rails in the same place in every skin.
+for (const width of [1440, 390]) {
+  test(`los rieles de la cocina miden lo mismo en todos los temas a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/demo');
+    if (width > 760) await page.locator('.role-switch button').nth(2).click();
+    else for (let i = 0; i < 2; i++) await page.locator('.role-switch').click();
+    let baseline;
+    for (const skin of skins) {
+      await chooseSkin(page, width, skin);
+      await page.evaluate(() => document.fonts.ready);
+      const boxes = await page
+        .locator('.kitchen .rail-bar')
+        .evaluateAll((els) =>
+          els.map((el) => {
+            const { x, width, height } = el.getBoundingClientRect();
+            return { x, width, height };
+          }),
+        );
+      expect(boxes.length).toBe(3);
+      if (!baseline) baseline = boxes;
+      else
+        boxes.forEach((box, i) => {
+          for (const dimension of ['x', 'width', 'height'])
+            expect(
+              Math.abs(box[dimension] - baseline[i][dimension]),
+              `riel ${i} ${dimension} (${skin.theme}/${skin.scheme})`,
+            ).toBeLessThanOrEqual(0.5);
+        });
+    }
+  });
+}

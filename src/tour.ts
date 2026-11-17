@@ -19,7 +19,7 @@ export interface Tour {
 }
 
 interface Snapshot {
-  view: 'comensal' | 'garzon';
+  view: 'comensal' | 'garzon' | 'cocina';
   cart: unknown[];
   tables: {
     number: number;

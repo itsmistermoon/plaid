@@ -45,7 +45,7 @@ export const unitPrice = ({ dishId, extras = [] }: LineItem) => {
 };
 export type CallKind = 'pedido' | 'garzón' | 'pago';
 export type OrderStatus = 'enviado' | 'confirmado' | 'servido';
-interface Order {
+export interface Order {
   id: string;
   lines: Line[];
   status: OrderStatus;
@@ -96,9 +96,19 @@ const initialTables = (): Table[] =>
     orders: [],
     calls: [],
   }));
+/** Whose screen the visitor is looking at. */
+export const views = ['comensal', 'garzon', 'cocina'] as const;
+export type View = (typeof views)[number];
+/** Pedidos of the whole floor that the Cocina still has to serve. */
+export const pendingOrders = (tables: Table[]) =>
+  tables.reduce(
+    (sum, table) =>
+      sum + table.orders.filter((order) => order.status !== 'servido').length,
+    0,
+  );
 interface DemoState {
-  view: 'comensal' | 'garzon';
-  setView: (view: 'comensal' | 'garzon') => void;
+  view: View;
+  setView: (view: View) => void;
   cart: Line[];
   tables: Table[];
   callWaiter: () => void;

@@ -6,11 +6,12 @@ import {
   billTotal,
   cartTotal,
   createDemoStore,
+  pendingOrders,
   splitShares,
   tipAmount,
   toggleNotePreset,
 } from './domain';
-import { startSimulator } from './simulator';
+import { fillerStep, kitchenStep, startSimulator } from './simulator';
 
 it('actualiza el carrito y su total al cambiar cantidades', () => {
   const store = createDemoStore();
@@ -344,4 +345,54 @@ it('toggles a usual request in the kitchen note', () => {
   expect(toggleNotePreset('bien cocido, Sin cebolla', 'Sin cebolla')).toBe(
     'bien cocido',
   );
+});
+
+it('the filler tables send real Pedidos and the simulated Cocina serves them', () => {
+  const store = createDemoStore();
+  let tables = fillerStep(store.getState().tables, () => 0);
+  expect(tables[0].orders).toHaveLength(1);
+  expect(tables[0].orders[0].status).toBe('enviado');
+  tables = kitchenStep(tables);
+  expect(tables[0].orders[0].status).toBe('confirmado');
+  tables = kitchenStep(tables);
+  expect(tables[0].orders[0].status).toBe('servido');
+  expect(kitchenStep(tables)).toBe(tables);
+});
+
+it('the simulated Cocina never touches Mesa 7 and rests in the Cocina view', () => {
+  vi.useFakeTimers();
+  const store = createDemoStore();
+  store.getState().setQty({ dishId: 'empanada' }, 1);
+  store.getState().sendOrder();
+  expect(pendingOrders(store.getState().tables)).toBe(1);
+  expect(kitchenStep(store.getState().tables)).toBe(store.getState().tables);
+  store.getState().setView('cocina');
+  const stop = startSimulator(store, {
+    random: () => 0,
+    setTimeout,
+    clearTimeout,
+  });
+  vi.advanceTimersByTime(3000);
+  expect(store.getState().tables[0].orders[0].status).toBe('enviado');
+  expect(store.getState().tables[6].orders[0].status).toBe('enviado');
+  stop();
+});
+
+it('freeing a filler table clears its Pedidos', () => {
+  const store = createDemoStore();
+  const tables = store.getState().tables.map((table) =>
+    table.number === 1
+      ? {
+          ...table,
+          occupied: true,
+          calls: ['pago' as const],
+          orders: [{ id: 'a', status: 'servido' as const, lines: [] }],
+        }
+      : table,
+  );
+  expect(fillerStep(tables, () => 0)[0]).toMatchObject({
+    occupied: false,
+    orders: [],
+    calls: [],
+  });
 });

@@ -55,6 +55,17 @@
   --tabbar-current-ink: var(--brand);
   --tabbar-current-bg: #0000002a;
   --tabbar-current-shadow: inset 0 2px 5px #0003;
+  --rail-edge: var(--printer-edge);
+  --rail-body: var(--printer-body);
+  --rail-shadow: var(--printer-body-shadow);
+  --ticket-ink: var(--paper-ink);
+  --ticket-font: 12.5px / 1.35 "Courier Prime", monospace;
+  --ticket-face: var(--paper);
+  --ticket-shadow: var(--paper-shadow);
+  --ticket-mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg)
+    bottom / 8px 51% repeat-x,
+    linear-gradient(#000 0 0) top / 100% 50% no-repeat;
   --stub-line: 1px dashed #c9c9c9;
   --stub-muted: #777;
   --tip-ink: #3e3e3e;
@@ -232,7 +243,7 @@ ol {
   --theme-w: 168px;
   --scheme-w: 108px;
   --lang-w: 88px;
-  --role-w: 176px;
+  --role-w: 246px;
   --tour-w: 156px;
   --reset-w: 130px;
   --kit-w: 100px;
@@ -1884,6 +1895,109 @@ button.scheme-switch[aria-disabled="true"] {
   border-left: 2px solid var(--brand);
   font-size: 13px;
   color: var(--muted);
+}
+/* Cocina: one steel rail per status, across the board, with its Pedidos
+   hanging as paper tickets. The row scrolls sideways when they do not fit. */
+.kitchen {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+.rail {
+  display: grid;
+  min-width: 0;
+}
+/* In a gallery panel the rail keeps a fixed width; it never shrinks to its tickets. */
+.rail-demo {
+  width: min(100%, 340px);
+}
+.panel-states .rail-demo {
+  width: 200px;
+}
+.rail-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font:
+    700 15px Outfit,
+    sans-serif;
+  text-transform: capitalize;
+}
+/* The rail grips the paper: it sits above the tickets' top edge and is
+   wider than them. */
+.rail-bar {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  height: 14px;
+  border-radius: 7px;
+  border: var(--rail-edge);
+  background: var(--rail-body);
+  box-shadow: var(--rail-shadow);
+}
+.rail-tickets {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 96px;
+  margin-top: -6px;
+  padding: 0 14px 10px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.rail-empty {
+  box-sizing: border-box;
+  min-height: 90px;
+  padding: 14px;
+}
+.ticket {
+  box-sizing: border-box;
+  flex: none;
+  display: grid;
+  gap: 8px;
+  width: var(--ticket-w, 150px);
+  padding: 16px 10px 14px;
+  color: var(--ticket-ink);
+  font: var(--ticket-font);
+  background: var(--ticket-face);
+  filter: var(--ticket-shadow);
+  mask: var(--ticket-mask);
+}
+.ticket-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  padding-bottom: 6px;
+  border-bottom: var(--stub-line);
+  white-space: nowrap;
+}
+.ticket-head strong {
+  font-size: 15px;
+}
+.ticket-head span {
+  font-size: 11px;
+  color: var(--stub-muted);
+}
+.ticket-lines {
+  display: grid;
+  gap: 3px;
+  overflow-wrap: break-word;
+}
+.ticket .light-button,
+.ticket-done {
+  box-sizing: border-box;
+  height: 28px;
+  min-height: 0;
+  margin: 0;
+  font:
+    600 12px Inter,
+    sans-serif;
+}
+.ticket-done {
+  display: grid;
+  place-items: center;
 }
 .side-total {
   font:

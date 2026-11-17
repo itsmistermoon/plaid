@@ -62,6 +62,7 @@ import { StageBar, StageIntro } from './components/StageBar';
 import { TableButton } from './components/Table';
 import { TableDetail, TableDetailEmpty } from './components/TableDetail';
 import { ThemeSwitch } from './components/ThemeSwitch';
+import { KitchenTicket, TicketRail } from './components/TicketRail';
 import { Tip } from './components/Tip';
 import { type TipPercent, TipSelector } from './components/TipSelector';
 import { lineKey, receiptLine } from './demo/lines';
@@ -70,9 +71,12 @@ import {
   type CallKind,
   cartTotal,
   type Line,
+  type Order,
   splitShares,
   type Table,
   tipAmount,
+  type View,
+  views,
 } from './domain';
 import { money } from './format';
 import { pathFor, useExtraName, useLang, useT } from './i18n';
@@ -317,31 +321,32 @@ function DropdownDemo() {
   );
 }
 
-type View = 'comensal' | 'garzon';
-
 /** The demo bar's role selector, in both forms. */
 function RoleSwitch({ phone }: { phone?: boolean }) {
   const [view, setView] = useState<View>('comensal');
   const t = useT();
+  const roles = {
+    comensal: t('diner'),
+    garzon: t('waiter'),
+    cocina: t('kitchen'),
+  };
+  const next = views[(views.indexOf(view) + 1) % views.length];
   return (
     <div className="stage-bar" data-phone={phone || undefined}>
       {phone ? (
         <SelectorToggle
           className="role-switch"
           label={t('device')}
-          current={view === 'garzon' ? t('waiter') : t('diner')}
-          next={view === 'garzon' ? t('diner') : t('waiter')}
-          onClick={() => setView(view === 'garzon' ? 'comensal' : 'garzon')}
+          current={roles[view]}
+          next={roles[next]}
+          onClick={() => setView(next)}
         />
       ) : (
         <Selector
           className="role-switch"
           legend={t('device')}
           value={view}
-          options={[
-            { value: 'comensal', label: t('diner') },
-            { value: 'garzon', label: t('waiter') },
-          ]}
+          options={views.map((value) => ({ value, label: roles[value] }))}
           onChange={setView}
         />
       )}
@@ -808,6 +813,37 @@ const sampleTable = (): Table => ({
 });
 
 /** Table detail with local state: attend, confirm, serve and charge. */
+const sampleOrder = (status: Order['status']): Order => ({
+  id: status,
+  status,
+  lines: [line('italiano', 2, ['palta']), line('cerveza', 1)],
+});
+
+/** A rail of the Cocina whose ticket moves through the three statuses. */
+function TicketRailDemo() {
+  const [status, setStatus] = useState<Order['status']>('enviado');
+  return (
+    <div className="kitchen rail-demo">
+      <TicketRail status={status} count={2}>
+        <KitchenTicket
+          table={7}
+          number={1}
+          order={sampleOrder(status)}
+          onAdvance={() =>
+            setStatus(status === 'enviado' ? 'confirmado' : 'servido')
+          }
+        />
+        <KitchenTicket
+          table={3}
+          number={2}
+          order={{ id: 'b', status, lines: [line('pastel', 1)] }}
+          onAdvance={() => setStatus('enviado')}
+        />
+      </TicketRail>
+    </div>
+  );
+}
+
 function TableDetailDemo() {
   const [table, setTable] = useState(sampleTable);
   const setStatus = (id: string, status: 'confirmado' | 'servido') =>
@@ -1417,6 +1453,37 @@ function RestaurantView() {
           <div className="card ribbon-demo" data-size="big">
             <Ribbon>Chacarero</Ribbon>
           </div>
+        </Panel>
+        <Panel
+          title={panel.ticketRail}
+          uses={[]}
+          wide
+          states={[
+            {
+              label: s.served,
+              node: (
+                <ul className="rail-tickets">
+                  <KitchenTicket
+                    table={7}
+                    number={1}
+                    order={sampleOrder('servido')}
+                  />
+                </ul>
+              ),
+            },
+            {
+              label: s.noOrders,
+              node: (
+                <div className="kitchen rail-demo">
+                  <TicketRail status="confirmado" count={0}>
+                    {null}
+                  </TicketRail>
+                </div>
+              ),
+            },
+          ]}
+        >
+          <TicketRailDemo />
         </Panel>
         <Panel
           title={panel.tableDetail}

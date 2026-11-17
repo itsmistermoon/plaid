@@ -55,6 +55,7 @@ const es = {
   device: 'Dispositivo',
   diner: 'Comensal',
   waiter: 'Garzón',
+  kitchen: 'Cocina',
   resetDemo: 'Reiniciar demo',
   resetShort: 'Reiniciar',
   uiKit: 'UI Kit',
@@ -186,6 +187,11 @@ const es = {
     pago: 'Pide la cuenta',
   } satisfies Record<CallKind, string>,
   // Components
+  // Cocina
+  pendingTickets: (n: number) => `${n} por servir`,
+  noTickets: 'Sin comandas.',
+  ticketAction: (action: string, table: number, n: number) =>
+    `${action}: Mesa ${table}, pedido ${n}`,
   dish: 'Plato',
   price: 'Precio',
   total: 'Total',
@@ -300,6 +306,7 @@ const es = {
     seal: 'Sello',
     table: 'Mesa',
     tableDetail: 'Detalle de mesa del Garzón',
+    ticketRail: 'Riel de comandas',
     tartanCloth: 'Tela',
     tartanSett: 'Sett',
     tartanColors: 'Colores',
@@ -379,6 +386,7 @@ const en: Messages = {
   device: 'Device',
   diner: 'Diner',
   waiter: 'Waiter',
+  kitchen: 'Kitchen',
   resetDemo: 'Reset demo',
   resetShort: 'Reset',
   uiKit: 'UI Kit',
@@ -501,6 +509,11 @@ const en: Messages = {
     garzón: 'Calls the waiter',
     pago: 'Asks for the bill',
   },
+  // Cocina
+  pendingTickets: (n: number) => `${n} to serve`,
+  noTickets: 'No tickets.',
+  ticketAction: (action: string, table: number, n: number) =>
+    `${action}: Table ${table}, order ${n}`,
   dish: 'Dish',
   price: 'Price',
   total: 'Total',
@@ -614,6 +627,7 @@ const en: Messages = {
     seal: 'Seal',
     table: 'Table',
     tableDetail: "Waiter's table detail",
+    ticketRail: 'Ticket rail',
     tartanCloth: 'Cloth',
     tartanSett: 'Sett',
     tartanColors: 'Colors',

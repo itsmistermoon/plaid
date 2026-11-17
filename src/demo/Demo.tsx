@@ -11,9 +11,11 @@ import { ThemeSwitch } from '../components/ThemeSwitch';
 import { Tip } from '../components/Tip';
 import { TourCoach } from '../components/TourCoach';
 import { TourThread } from '../components/TourThread';
+import { views } from '../domain';
 import { pathFor, useLang, useT } from '../i18n';
 import { tartanUrl } from '../tartan';
 import { tourSteps } from '../tour';
+import { Cocina } from './Cocina';
 import { Comensal } from './Comensal';
 import { Garzon } from './Garzon';
 import { Portada } from './Portada';
@@ -31,6 +33,13 @@ export function Demo() {
   const [revision, setRevision] = useState(0);
   const [entered, setEntered] = useState(false);
   useSimulator();
+  const roles = {
+    comensal: t('diner'),
+    garzon: t('waiter'),
+    cocina: t('kitchen'),
+  };
+  // On phones the role is one button that cycles through the three.
+  const nextView = views[(views.indexOf(view) + 1) % views.length];
   return (
     <main
       className="app"
@@ -46,10 +55,10 @@ export function Demo() {
           <SelectorToggle
             className="role-switch"
             label={t('device')}
-            current={view === 'garzon' ? t('waiter') : t('diner')}
-            next={view === 'garzon' ? t('diner') : t('waiter')}
-            data-tour={view === 'garzon' ? 'cuenta' : 'sala servir cobrar'}
-            onClick={() => setView(view === 'garzon' ? 'comensal' : 'garzon')}
+            current={roles[view]}
+            next={roles[nextView]}
+            data-tour={view === 'comensal' ? 'sala servir cobrar' : 'cuenta'}
+            onClick={() => setView(nextView)}
           />
         ) : (
           <Selector
@@ -57,12 +66,13 @@ export function Demo() {
             legend={t('device')}
             value={view}
             options={[
-              { value: 'comensal', label: t('diner'), tour: 'cuenta' },
+              { value: 'comensal', label: roles.comensal, tour: 'cuenta' },
               {
                 value: 'garzon',
-                label: t('waiter'),
+                label: roles.garzon,
                 tour: 'sala servir cobrar',
               },
+              { value: 'cocina', label: roles.cocina },
             ]}
             onChange={setView}
           />
@@ -114,6 +124,8 @@ export function Demo() {
         <div className="tablet-glass">
           {view === 'garzon' ? (
             <Garzon key={revision} />
+          ) : view === 'cocina' ? (
+            <Cocina />
           ) : entered ? (
             <Comensal key={revision} onHome={() => setEntered(false)} />
           ) : (

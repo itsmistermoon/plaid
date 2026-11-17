@@ -31,6 +31,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **A split bill prints one tear-off stub per person at the foot of the receipt, on its own paper and divided by perforations (dashed lines); the stubs add up exactly to the total. In the Slate theme they are plain cells of the card.**
   Why: the receipt is the signature piece, so the split belongs on it and not in a separate panel.
   <!-- 2026-11-17 -->
+- **In the Cocina, each status (enviado, confirmado, servido) is a steel rail across the board and every Pedido hangs from its rail as a paper ticket with a toothed bottom edge; the rail sits above the tickets' top edge and the row scrolls sideways when they do not fit. In the Slate theme the rail is a plain track and the tickets are flat cards. A ticket keeps its width and its action slot in every status.**
+  Why: the kitchen's order rail is the physical object cooks already read; it reuses the receipt's paper without inventing another material.
+  <!-- 2026-11-17 -->
 - **The Slate theme does not simulate physical objects: no slots, printers or paper. The receipt is a clean card.**
   Why: the Slate theme does not simulate printed paper.
   <!-- 2026-11-16 -->
