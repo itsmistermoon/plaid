@@ -1,6 +1,8 @@
 /* Original theme tokens (iClub, 2012). */
 [data-theme="original"] {
   --stage: #2b3437;
+  --gallery-bar: var(--stage);
+  --gallery-bar-line: #3c4446;
   /* Corner radius of the segmented controls; the bar's buttons match it. */
   --bar-radius: 7px;
   --slate: #50595c;
@@ -109,6 +111,19 @@
   --seal-garzon-light: #bb8ae2;
   --seal-garzon-dark: #5f2b8a;
   --thread-pago: #d23b3e;
+  /* Badge faces: a status shares its toast's face, a call its seal's. */
+  --badge-enviado: var(--toast-enviado);
+  --badge-confirmado: var(--toast-confirmado);
+  --badge-servido: var(--toast-servido);
+  --badge-pedido: var(--toast-enviado);
+  --badge-garzon: linear-gradient(
+    var(--seal-garzon-light),
+    var(--seal-garzon-dark)
+  );
+  --badge-pago: linear-gradient(
+    color-mix(in srgb, var(--thread-pago), #fff 25%),
+    color-mix(in srgb, var(--thread-pago), #000 25%)
+  );
   --cloth-call-opacity: 1;
   --cloth-call-width: 2.4;
   /* Weave shade of a gallery group's thread, and the running stitch of lists. */
@@ -1663,22 +1678,30 @@ button.scheme-switch:disabled {
 .table-order-head button {
   margin-left: auto;
 }
-.status-badge {
+.badge {
+  display: inline-block;
   padding: 2px 8px;
   border-radius: 99px;
   color: var(--badge-ink);
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
+  background: var(--badge-enviado);
 }
-.status-badge[data-status="enviado"] {
-  background: var(--toast-enviado);
+.badge[data-variant="confirmado"] {
+  background: var(--badge-confirmado);
 }
-.status-badge[data-status="confirmado"] {
-  background: var(--toast-confirmado);
+.badge[data-variant="servido"] {
+  background: var(--badge-servido);
 }
-.status-badge[data-status="servido"] {
-  background: var(--toast-servido);
+.badge[data-variant="pedido"] {
+  background: var(--badge-pedido);
+}
+.badge[data-variant="garzón"] {
+  background: var(--badge-garzon);
+}
+.badge[data-variant="pago"] {
+  background: var(--badge-pago);
 }
 .table-order-lines {
   display: grid;
@@ -1877,7 +1900,25 @@ button.scheme-switch:disabled {
   isolation: isolate;
 }
 .gallery {
+  --gallery-pt: 18px;
   counter-reset: panel;
+}
+/* The gallery's control bar stays pinned so the skin can be switched anywhere.
+   The background is opaque and bleeds past the page's sides (the shadow, clipped
+   to the bar's height), and the bar keeps the place it had before pinning. */
+.gallery > .stage-bar {
+  position: sticky;
+  top: calc(10px - var(--gallery-pt));
+  z-index: 10;
+  margin-top: calc(-1 * var(--gallery-pt));
+  margin-bottom: 6px;
+  padding-top: var(--gallery-pt);
+  padding-bottom: 12px;
+  background: var(--gallery-bar);
+  box-shadow:
+    0 0 0 100vmax var(--gallery-bar),
+    0 1px var(--gallery-bar-line);
+  clip-path: inset(0 -100vmax -1px);
 }
 /* Subtle accent: the Clan tartan woven into the top of the page, fading out. */
 .gallery::before,
@@ -2195,24 +2236,33 @@ button.scheme-switch:disabled {
 .panel-states .detail-receipt {
   padding: 0;
 }
+/* A bar inside a panel holds one control: it takes that control's fixed width
+   instead of shrinking to its content. */
 .panel .stage-bar {
+  grid-template-columns: minmax(0, 1fr);
+  width: var(--role-w);
   max-width: none;
   margin: 0;
+  padding: 0;
 }
 .search-hint {
   max-width: 260px;
 }
-/* Receipt paper under the standalone stepper. */
-.stepper-paper {
-  display: inline-block;
-  padding: 8px 14px;
-  font:
-    16px "Courier Prime",
-    monospace;
-  font-variant-numeric: tabular-nums;
-  color: var(--paper-ink);
-  background: var(--paper);
-  filter: var(--paper-shadow);
+/* The standalone stepper in context: a receipt line on a full strip of paper
+   (the receipt's own paper, with its toothed bottom edge). */
+.panel .receipt-paper.stepper-paper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-sizing: border-box;
+  width: 260px;
+  max-width: 100%;
+  padding: 16px 16px 20px;
+  font-size: 16px;
+}
+.panel-states .receipt-paper.stepper-paper {
+  width: 200px;
 }
 /* The printer sticks out 14 px at the sides and 16 px above its paper:
    the frame reserves that space and some air inside the panel. */
@@ -2574,25 +2624,83 @@ button.scheme-switch:disabled {
   color: #fff;
 }
 
-/* Order status toast */
+/* Order status toast: UI SDK lays the stack out through custom properties
+   (--toast-index, --toast-offset, --toast-height…). Collapsed, the notices
+   behind the newest peek out scaled down; the stack opens on hover or focus. */
 .toast-region {
-  position: fixed;
-  inset: auto 0 24px;
-  margin: 0 auto;
+  --toast-gap: 12px;
+  width: min(356px, calc(100vw - 24px));
+  height: var(--toast-front-height);
+  inset-inline-end: 24px;
+  bottom: 24px;
+  margin: 0;
   padding: 0;
   border: 0;
   background: none;
-  width: min(320px, calc(100vw - 16px));
-  /* The auto margin already centers it; without this the SDK shifts it another 50 % to the left. */
-  translate: none;
-  list-style: none;
+  transition: height 400ms var(--ease-out);
+}
+.toast-region[data-expanded] {
+  height: calc(
+    var(--toast-stack-height) +
+    (var(--toast-count) - 1) *
+    var(--toast-gap)
+  );
 }
 .toast {
+  --y: calc(var(--toast-index) * -1 * var(--toast-gap));
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: calc(100 - var(--toast-index));
+  height: var(--toast-height);
+  translate: var(--toast-swipe-x, 0px)
+    calc(var(--y) + var(--toast-swipe-y, 0px));
+  scale: calc(1 - var(--toast-index) * 0.05);
+  transform-origin: bottom center;
+  transition-property: translate, scale, opacity, height;
+  transition-duration: 400ms;
+  transition-timing-function: var(--ease-out);
+  user-select: none;
+  cursor: default;
+}
+.toast:not([data-front], [data-expanded]) {
+  height: var(--toast-front-height);
+}
+.toast[data-expanded] {
+  --y: calc(-1 * (var(--toast-offset) + var(--toast-index) * var(--toast-gap)));
+  scale: 1;
+}
+.toast[data-starting-style] {
+  transition: none;
+}
+.toast[data-starting-style][data-front] {
+  --y: 100%;
+}
+.toast:is([data-starting-style]:not([data-front]), [data-ending-style]) {
+  opacity: 0;
+}
+.toast[data-ending-style][data-swipe-direction="right"] {
+  translate: 120% var(--y);
+}
+.toast[data-swiping] {
+  transition: none;
+}
+.toast > * {
+  transition: opacity 200ms var(--ease-out);
+}
+/* Behind the newest, a notice is only a sliver of its card: its content hides. */
+.toast:not([data-front], [data-expanded]) > * {
+  opacity: 0;
+}
+/* The face shared by the live notice and the static samples. */
+.toast-card {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 320px;
+  width: 100%;
   padding: 10px 14px;
+  overflow: hidden;
   border-radius: 8px;
   border: 1px solid #1a1f20;
   color: var(--ink);
@@ -2600,14 +2708,30 @@ button.scheme-switch:disabled {
   box-shadow:
     inset 0 1px #ffffff2e,
     0 8px 18px #000a;
-  transition:
-    opacity 200ms var(--ease-out),
-    translate 200ms var(--ease-out);
 }
-.toast[data-starting-style],
-.toast[data-ending-style] {
-  opacity: 0;
-  translate: 0 12px;
+.toast-card[data-static] {
+  width: 320px;
+  max-width: 100%;
+}
+.toast-text {
+  flex: 1;
+  min-width: 0;
+}
+.toast-action {
+  flex: none;
+  min-height: 28px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition-property: opacity;
+  }
+}
+@media (max-width: 760px) {
+  .toast-region {
+    inset-inline: 12px;
+    bottom: 12px;
+    width: auto;
+  }
 }
 .toast-icon {
   display: grid;

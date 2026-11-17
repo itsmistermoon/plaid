@@ -4,6 +4,7 @@ import { lineKey, lineSummary } from '../demo/lines';
 import { billTotal, type CallKind, type Table } from '../domain';
 import { money } from '../format';
 import { useExtraName, useT } from '../i18n';
+import { Badge } from './Badge';
 
 /** What the Garzón sees and does on a table: Llamados, Pedidos and the Cuenta pinned at the bottom. */
 export function TableDetail({
@@ -56,9 +57,9 @@ export function TableDetail({
                   <span className="table-order-title">
                     {t('orderN')(index + 1)}
                   </span>
-                  <span className="status-badge" data-status={order.status}>
+                  <Badge variant={order.status}>
                     {t('statuses')[order.status]}
-                  </span>
+                  </Badge>
                   {order.status === 'enviado' && (
                     <button
                       type="button"

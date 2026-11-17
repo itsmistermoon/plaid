@@ -14,6 +14,7 @@ import {
   useState,
 } from 'react';
 import { Link } from 'wouter';
+import { Badge } from './components/Badge';
 import { CategoryTabs } from './components/CategoryTabs';
 import { DishPlate } from './components/DishPlate';
 import { Dropdown } from './components/Dropdown';
@@ -209,17 +210,19 @@ function WheelDemo() {
   return <QuantityWheel value={qty} onChange={setQty} label={t('quantity')} />;
 }
 
-/** The stepper sits on the receipt paper. */
+/** The stepper in context: a receipt line on a full strip of paper. */
 function StepperOnPaper({ qty }: { qty: number }) {
   const [value, setValue] = useState(qty);
+  const name = dish('italiano').name;
   return (
-    <span className="stepper-paper">
+    <div className="receipt-paper stepper-paper">
+      <span>{name}</span>
       <Stepper
-        name="Italiano"
+        name={name}
         qty={value}
         onChange={(next) => setValue(Math.max(1, next))}
       />
-    </span>
+    </div>
   );
 }
 
@@ -501,7 +504,19 @@ function ToastDemo() {
           key={kind}
           type="button"
           className="dark-button"
-          onClick={() => showOrderToast(kind, ...t('toasts')[kind])}
+          onClick={() =>
+            showOrderToast(
+              kind,
+              t('toasts')[kind],
+              // Like Sonner's Undo: a sent order can still be taken back.
+              kind === 'enviado'
+                ? {
+                    label: t('undo'),
+                    onAction: () => showOrderToast('error', t('undone')),
+                  }
+                : undefined,
+            )
+          }
         >
           {t('statuses')[kind]}
         </button>
@@ -510,15 +525,51 @@ function ToastDemo() {
   );
 }
 
-function StaticToast({ kind }: { kind: ToastKind }) {
-  const [title, description] = useT()('toasts')[kind];
+function StaticToast({
+  kind,
+  withAction,
+}: {
+  kind: ToastKind;
+  withAction?: boolean;
+}) {
+  const t = useT();
+  const [title, description] = t('toasts')[kind];
   return (
-    <div className="toast" data-static>
+    <div className="toast-card" data-static>
       <ToastFace
         kind={kind}
         title={<span className="toast-title">{title}</span>}
         description={<span className="toast-description">{description}</span>}
+        action={
+          withAction && (
+            <button type="button" className="light-button toast-action">
+              {t('undo')}
+            </button>
+          )
+        }
       />
+    </div>
+  );
+}
+
+function BadgeDemo() {
+  const t = useT();
+  return (
+    <div className="stack">
+      <div className="row">
+        {statusSteps.map((kind) => (
+          <Badge key={kind} variant={kind}>
+            {t('statuses')[kind]}
+          </Badge>
+        ))}
+      </div>
+      <div className="row">
+        {callKinds.map((kind) => (
+          <Badge key={kind} variant={kind}>
+            {t('callLabels')[kind]}
+          </Badge>
+        ))}
+      </div>
     </div>
   );
 }
@@ -995,6 +1046,16 @@ export function Gallery() {
           <ExtrasDemo />
         </Panel>
         <Panel
+          title={panel.badge}
+          uses={[]}
+          states={['1', '24', '99+'].map((count) => ({
+            label: `${s.count} ${count}`,
+            node: <Badge variant="count">{count}</Badge>,
+          }))}
+        >
+          <BadgeDemo />
+        </Panel>
+        <Panel
           title={panel.switch}
           uses={['Switch']}
           states={[
@@ -1249,6 +1310,10 @@ export function Gallery() {
           wide="full"
           states={[
             { label: s.confirmed, node: <StaticToast kind="confirmado" /> },
+            {
+              label: s.withAction,
+              node: <StaticToast kind="enviado" withAction />,
+            },
             { label: s.error, node: <StaticToast kind="error" /> },
           ]}
         >

@@ -57,3 +57,27 @@ for (const width of [1440, 390]) {
     }
   });
 }
+
+for (const width of [1440, 390]) {
+  test(`la barra de la galería queda fija arriba y el segmentado del panel mide lo mismo a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/componentes');
+    for (const skin of skins) {
+      await chooseSkin(page, width, skin);
+      await page.evaluate(() => window.scrollTo(0, 1500));
+      const bar = await page.locator('.gallery > .stage-bar').boundingBox();
+      expect(
+        bar.y,
+        `barra fija (${skin.theme}/${skin.scheme})`,
+      ).toBeLessThanOrEqual(0);
+      expect(bar.y + bar.height).toBeGreaterThan(40);
+      const roleBar = await page
+        .locator('.panel .stage-bar .selector')
+        .first()
+        .boundingBox();
+      expect(roleBar.width, 'segmentado del panel').toBe(176);
+    }
+  });
+}

@@ -110,6 +110,16 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   Why: if the content shows through, the interface looks broken.
   <!-- 2026-11-16 -->
 
+- **The gallery's control bar (theme, scheme, language, demo link) stays pinned at the top while scrolling, in its own place, so the skin can be switched anywhere. Its background is opaque and bleeds past the page's sides.**
+  Why: the pieces are compared across skins, and scrolling back up to switch broke that.
+  <!-- 2026-11-16 -->
+- **A control that sits alone in a gallery panel keeps its fixed width (the bar's `--role-w`); it never shrinks to its content.**
+  Why: the segmented control was squeezed and its labels overflowed.
+  <!-- 2026-11-16 -->
+- **The standalone receipt stepper is shown in context, as a receipt line on a full strip of the receipt's own paper (a plain card in the modern theme), never as small white squares on the stage.**
+  Why: the loose white squares looked wrong against the dark stage.
+  <!-- 2026-11-16 -->
+
 ## Motion
 
 - **No decorative entrance animations are added. Only what responds to an action is animated, such as the click of the wheel.**
@@ -117,6 +127,10 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   <!-- 2026-11-16 -->
 
 ## Interaction
+
+- **Toasts are UI SDK's `ToastRegion`, skinned like a Sonner stack: bottom end of the screen, the newest in front and older ones peeking scaled down behind it, the stack opening on hover or focus, swipe to dismiss, and an optional action such as Undo (a `light-button`). Only what responds to an action animates, and reduced motion keeps just the fade.**
+  Why: the old toasts were a plain column with no stacking, so they read as less polished than the reference.
+  <!-- 2026-11-16 -->
 
 - **The guided tour highlights its target with a running thread: a dashed stitch that travels along the border (`TourThread`), never a pulsing ring. With `prefers-reduced-motion` the thread stays still.**
   Why: it follows the textile language of the kit, and the overlay is not clipped by the pieces it surrounds.

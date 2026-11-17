@@ -321,9 +321,10 @@
 
   /* Gallery: one column */
   .gallery {
+    --gallery-pt: 10px;
     padding: 10px 10px 32px;
   }
-  .gallery .stage-bar {
+  .gallery > .stage-bar {
     margin-bottom: 12px;
   }
   .gallery .stage-intro {

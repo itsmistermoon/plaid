@@ -32,6 +32,8 @@
 [data-theme="moderno"] {
   /* Slate scale: light surfaces, or #0f172a / #1e293b / #334155 in the dark. */
   --background: light-dark(#f1f5f9, #0f172a);
+  --gallery-bar: var(--background);
+  --gallery-bar-line: var(--border);
   --card: light-dark(#fff, #1e293b);
   --sunken: light-dark(#f8fafc, #172033);
   --foreground: light-dark(#0f172a, #f1f5f9);
@@ -92,6 +94,12 @@
   --toast-confirmado: var(--accent);
   --toast-servido: light-dark(#d97706, #fbbf24);
   --toast-error: var(--destructive);
+  --badge-enviado: var(--toast-enviado);
+  --badge-confirmado: var(--toast-confirmado);
+  --badge-servido: var(--toast-servido);
+  --badge-pedido: var(--thread-pedido);
+  --badge-garzon: var(--thread-garzon);
+  --badge-pago: var(--thread-pago);
 }
 /* Selector and segmented-control rail */
 [data-theme="moderno"] {
@@ -875,7 +883,7 @@
 }
 
 /* Toast */
-[data-theme="moderno"] .toast {
+[data-theme="moderno"] .toast-card {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--foreground);
