@@ -57,7 +57,6 @@ export function TartanDesigner() {
             const name = text.colors[color][0];
             const next = palette[(palette.indexOf(color) + 1) % palette.length];
             return (
-              // biome-ignore lint/suspicious/noArrayIndexKey: stripes are positional
               <li key={index}>
                 <button
                   type="button"
