@@ -55,7 +55,13 @@ export interface Table {
   occupied: boolean;
   orders: Order[];
   calls: CallKind[];
+  /** Tip chosen on the Cuenta, as a percent of the bill. */
+  tipPercent: number;
+  /** People the Cuenta is split between: 1 is no split. */
+  people: number;
 }
+/** What a Mesa starts with, and goes back to once it is charged. */
+const freshBill = { tipPercent: 10, people: 1 };
 export const cartTotal = (lines: Line[]) =>
   lines.reduce((total, line) => total + unitPrice(line) * line.qty, 0);
 export const billTotal = (table: Table) =>
@@ -84,6 +90,18 @@ export const splitShares = (total: number, people: number) =>
     { length: people },
     (_, index) => Math.floor(total / people) + (index < total % people ? 1 : 0),
   );
+/** What a Mesa pays: the bill, its tip, the total and each person's share. */
+export const tableBill = (table: Table) => {
+  const subtotal = billTotal(table);
+  const tip = tipAmount(subtotal, table.tipPercent);
+  const total = subtotal + tip;
+  return {
+    subtotal,
+    tip,
+    total,
+    shares: splitShares(total, table.people),
+  };
+};
 /** Mesa 7: the visitor's table, the demo's Comensal. */
 export const visitorTable = 7;
 /** Mesa 7 within the floor. */
@@ -95,16 +113,19 @@ const initialTables = (): Table[] =>
     occupied: index + 1 === visitorTable,
     orders: [],
     calls: [],
+    ...freshBill,
   }));
-/** A table held for a party: today or tomorrow, at one of the book's hours. */
+/** A table held for a party: a day within the book's week, at one of its hours. */
 export interface Reservation {
   id: string;
   table: number;
-  /** 0 is today, 1 is tomorrow. */
-  day: 0 | 1;
+  /** Days from today: 0 is today, 1 is tomorrow, up to `reservationDays - 1`. */
+  day: number;
   time: string;
   name: string;
 }
+/** How many days, starting today, the reservation book offers. */
+export const reservationDays = 7;
 /** The hours the reservation book offers. */
 export const reservationSlots = ['13:00', '14:00', '20:00', '21:00', '22:00'];
 const initialReservations = (): Reservation[] => [
@@ -143,6 +164,9 @@ interface DemoState {
   callWaiter: () => void;
   reset: () => void;
   chargeAndFree: (number: number) => void;
+  /** The Comensal's tip and split, shared with the Garzón's view of the Mesa. */
+  setTipPercent: (percent: number) => void;
+  setPeople: (people: number) => void;
   requestBill: () => void;
   setQty: (item: LineItem, qty: number) => void;
   addToCart: (item: LineItem, qty: number) => void;
@@ -183,7 +207,10 @@ export const createDemoStore = (storage?: StateStorage) => {
               seen: resuming ? (state.tour?.seen ?? []) : [],
             };
             return {
-              tour: { ...tour, step: advanceTour(tour.step, { ...state, tour }) },
+              tour: {
+                ...tour,
+                step: advanceTour(tour.step, { ...state, tour }),
+              },
             };
           }),
         skipTour: () =>
@@ -242,10 +269,28 @@ export const createDemoStore = (storage?: StateStorage) => {
           set((state) => ({
             tables: state.tables.map((table) =>
               table.number === number
-                ? { ...table, occupied: false, orders: [], calls: [] }
+                ? {
+                    ...table,
+                    occupied: false,
+                    orders: [],
+                    calls: [],
+                    ...freshBill,
+                  }
                 : table,
             ),
             ...(number === visitorTable ? { cart: [] } : {}),
+          })),
+        setTipPercent: (tipPercent) =>
+          set((state) => ({
+            tables: state.tables.map((table) =>
+              table.number === visitorTable ? { ...table, tipPercent } : table,
+            ),
+          })),
+        setPeople: (people) =>
+          set((state) => ({
+            tables: state.tables.map((table) =>
+              table.number === visitorTable ? { ...table, people } : table,
+            ),
           })),
         requestBill: () =>
           set((state) => ({
@@ -326,10 +371,22 @@ export const createDemoStore = (storage?: StateStorage) => {
             return {
               tables: state.tables.map((table) =>
                 table.number === from
-                  ? { ...table, occupied: false, orders: [], calls: [] }
+                  ? {
+                      ...table,
+                      occupied: false,
+                      orders: [],
+                      calls: [],
+                      ...freshBill,
+                    }
                   : table.number === to
                     ? {
                         ...table,
+                        ...(table.occupied
+                          ? {}
+                          : {
+                              tipPercent: origin.tipPercent,
+                              people: origin.people,
+                            }),
                         occupied: true,
                         orders: [...table.orders, ...origin.orders],
                         calls: [...new Set([...table.calls, ...origin.calls])],
@@ -372,7 +429,7 @@ export const createDemoStore = (storage?: StateStorage) => {
       }),
       {
         name: 'plaid-demo',
-        version: 2,
+        version: 3,
         storage: createJSONStorage(() => storage ?? sessionStorage),
       },
     ),

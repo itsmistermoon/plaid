@@ -62,8 +62,7 @@ for (const width of [1440, 390]) {
   }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/demo');
-    if (width > 760) await page.locator('.role-switch button').nth(1).click();
-    else await page.locator('.role-switch').click();
+    await page.locator('.role-switch button').nth(1).click();
     let baseline;
     for (const skin of skins) {
       await chooseSkin(page, width, skin);
@@ -95,8 +94,7 @@ for (const width of [1440, 390]) {
   }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/demo');
-    if (width > 760) await page.locator('.role-switch button').nth(2).click();
-    else for (let i = 0; i < 2; i++) await page.locator('.role-switch').click();
+    await page.locator('.role-switch button').nth(2).click();
     let baseline;
     for (const skin of skins) {
       await chooseSkin(page, width, skin);
@@ -182,8 +180,7 @@ for (const width of [1440, 390]) {
   }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/demo');
-    if (width > 760) await page.locator('.role-switch button').nth(1).click();
-    else await page.locator('.role-switch').click();
+    await page.locator('.role-switch button').nth(1).click();
     let baseline;
     for (const skin of skins) {
       await chooseSkin(page, width, skin);
@@ -212,12 +209,144 @@ for (const width of [1440, 390]) {
                 `botón ${i} ${dimension} (${skin.theme}/${skin.scheme}/${lang})`,
               ).toBeLessThanOrEqual(0.5);
           });
-        await page
-          .locator('.navbar')
-          .screenshot({
-            path: `.cache/bar/${width}-${skin.theme}-${skin.scheme}-${lang}.png`,
-          });
+        await page.locator('.navbar').screenshot({
+          path: `.cache/bar/${width}-${skin.theme}-${skin.scheme}-${lang}.png`,
+        });
       }
     }
+  });
+}
+
+// On phones the role is three icon segments: one tap reaches any of them, in
+// particular back to the diner from the waiter or the Cocina.
+test('a una toque se vuelve al comensal desde el garzón y la cocina en el teléfono', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/demo');
+  const role = (index) => page.locator('.role-switch button').nth(index);
+  for (const from of [1, 2]) {
+    await role(from).click();
+    await expect(page.locator('main')).toHaveAttribute(
+      'data-view',
+      ['comensal', 'garzon', 'cocina'][from],
+    );
+    await role(0).click();
+    await expect(page.locator('main')).toHaveAttribute('data-view', 'comensal');
+  }
+});
+
+// The table plate uses an allowed font, never Georgia.
+test('la placa de la mesa usa Courier Prime', async ({ page }) => {
+  await page.goto('/demo');
+  await page.locator('.role-switch button').nth(1).click();
+  await page.evaluate(() => document.fonts.ready);
+  const font = await page
+    .locator('.plate text')
+    .first()
+    .evaluate((el) => getComputedStyle(el).fontFamily);
+  expect(font).toContain('Courier Prime');
+  expect(font).not.toContain('Georgia');
+  // The longest plate text fits inside the plate's paper (116px of the 140).
+  for (const width of await page
+    .locator('.plate text')
+    .evaluateAll((els) => els.map((el) => el.getBBox().width)))
+    expect(width).toBeLessThanOrEqual(116);
+});
+
+// The diner's tip and split reach the waiter's view of the Mesa, whose total
+// reads "$23.805" with no stray spaces around the thousands dot.
+test('el garzón ve la propina, la división y el total sin espacios', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/demo');
+  await page.locator('.portada .light-button').click();
+  await page.locator('.special').first().click();
+  await page.locator('.detail-order .light-button').click();
+  await page.locator('.cart-button').click();
+  await page.locator('.light-button[data-tour="enviar"]').click();
+  await page.locator('.sidebar-item', { hasText: /Cuenta|Bill/ }).click();
+  await page.locator('.tip-selector button').nth(2).click();
+  await page.locator('.split-selector button').nth(2).click();
+  await page.locator('.role-switch button').nth(1).click();
+  await page.locator('.table-button').nth(6).click();
+  const bill = page.locator('.table-detail-bill');
+  await expect(bill.locator('.side-total')).toHaveText(/^\$\d{1,3}(\.\d{3})+$/);
+  await expect(bill.locator('.side-bill-line').first()).toContainText('15%');
+  await expect(bill.locator('.side-bill-line').nth(1)).toContainText('3');
+  await expect(bill.locator('.side-bill-line').nth(1)).toBeVisible();
+  // The tip and split lines have a fixed height, shown or not.
+  const heights = await bill
+    .locator('.side-bill-line')
+    .evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
+  expect(heights).toEqual([18, 18]);
+});
+
+// On phones the notices sit at the top: the sheet's "Cobrar y liberar" button
+// stays uncovered after a move.
+test('el aviso de mover mesa no tapa "Cobrar y liberar" en el teléfono', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/demo');
+  await page.locator('.role-switch button').nth(1).click();
+  await page.locator('.table-button').nth(6).click();
+  await page.locator('.move-button').click();
+  await page.locator('.dropdown-item').first().click();
+  const toast = page.locator('.toast').first();
+  await expect(toast).toBeVisible();
+  await page.waitForTimeout(600);
+  const [toastBox, buttonBox] = await Promise.all([
+    toast.boundingBox(),
+    page.locator('.table-detail-bill .light-button').boundingBox(),
+  ]);
+  expect(toastBox.y + toastBox.height).toBeLessThanOrEqual(buttonBox.y);
+});
+
+// The reservation book offers every day of the week as a fixed strip.
+for (const width of [1440, 390]) {
+  test(`el libro de reservas elige cualquier día de la semana a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/demo');
+    await page.locator('.role-switch button').nth(1).click();
+    await page.locator('.book-trigger').click();
+    const days = page.locator('.book-day button');
+    await expect(days).toHaveCount(7);
+    const first = await days.evaluateAll((els) =>
+      els.map((el) => el.getBoundingClientRect().width),
+    );
+    // The seed has Vidal at 13:00 tomorrow and nothing three days out.
+    await expect(page.locator('.book-entries')).toHaveCount(2);
+    await days.nth(1).click();
+    await expect(page.locator('.book-slots')).toContainText('Vidal');
+    await days.nth(4).click();
+    await expect(days.nth(4)).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.book-entries')).toHaveCount(0);
+    for (const day of [0, 6]) {
+      await days.nth(day).click();
+      const widths = await days.evaluateAll((els) =>
+        els.map((el) => el.getBoundingClientRect().width),
+      );
+      expect(widths).toEqual(first);
+      expect(
+        await page
+          .locator('.book-day')
+          .evaluate((el) => el.scrollWidth <= el.clientWidth),
+      ).toBe(true);
+    }
+    // A booking made for a later day lands on that day.
+    await days.nth(4).click();
+    await page.getByRole('combobox', { name: 'Mesa' }).click();
+    await page.getByRole('option', { name: 'Mesa 1', exact: true }).click();
+    await page.getByRole('combobox', { name: 'Hora' }).click();
+    await page.getByRole('option', { name: '13:00' }).click();
+    await page.locator('.book-name input').fill('Pino');
+    await page.locator('.book-form [type="submit"]').click();
+    await expect(page.locator('.book-slots')).toContainText('Pino');
+    await days.nth(0).click();
+    await expect(page.locator('.book-slots')).not.toContainText('Pino');
   });
 }

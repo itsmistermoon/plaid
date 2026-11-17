@@ -40,6 +40,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **The specials chalkboard is the first tab of the Carta ("Hoy"), not part of the Portada: a dark slate board in a wooden frame, written on in chalk (Kaushan Script with a rough SVG filter, chalk strokes and smudges), listing today's specials and the Agotados. Tapping a special opens its Detalle. In the Slate theme it is a plain card with the same rows. The tab row keeps six equal, fixed-width tabs in every theme and language.**
   Why: a chalkboard is the physical object a restaurant already uses for the day's specials; the Portada stays the iClub signature.
   <!-- 2026-11-17 -->
+- **The reservation book picks its day from a week strip: seven equal, fixed-size segments (weekday over date, today first) above a line that names the chosen date. The Mesa's plate text is Courier Prime.**
+  Why: Hoy/Mañana was not enough to book ahead; Georgia is not one of the kit's typefaces.
+  <!-- 2026-11-17 -->
 - **The Slate theme does not simulate physical objects: no slots, printers or paper. The receipt is a clean card.**
   Why: the Slate theme does not simulate printed paper.
   <!-- 2026-11-16 -->
@@ -153,6 +156,12 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 
 ## Interaction
 
+- **On phones the role control is three icon segments (diner, waiter, Cocina), so one tap reaches any role; it is never a cycling button. Toasts sit at the top of the screen on phones, so they never cover the waiter sheet's pinned "Cobrar y liberar".**
+  Why: going back to the diner from the waiter took two taps, and a toast hid the charge button.
+  <!-- 2026-11-17 -->
+- **The tip and the split chosen on the diner's Cuenta live on the Mesa in the shared state, and the waiter's Cuenta shows them (tip line, split line, total with tip). Both lines have a fixed height and the split line keeps its place when the bill is not split. Money in the waiter's total is set in Inter with `tabular-nums`, never in the receipt's monospace, where the thousands dot takes a full cell ("$20 . 900").**
+  Why: the waiter has to charge what the diner saw.
+  <!-- 2026-11-17 -->
 - **Toasts are UI SDK's `ToastRegion`, skinned like a Sonner stack: bottom end of the screen, the newest in front and older ones peeking scaled down behind it, the stack opening on hover or focus, swipe to dismiss, and an optional action such as Undo (a `light-button`). Only what responds to an action animates, and reduced motion keeps just the fade.**
   Why: the old toasts were a plain column with no stacking, so they read as less polished than the reference.
   <!-- 2026-11-16 -->

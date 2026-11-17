@@ -1,4 +1,10 @@
-import { LayoutGrid, RotateCcw } from 'lucide-react';
+import {
+  Armchair,
+  ChefHat,
+  ConciergeBell,
+  LayoutGrid,
+  RotateCcw,
+} from 'lucide-react';
 import { type CSSProperties, useState } from 'react';
 import { Link } from 'wouter';
 import { useStore } from 'zustand';
@@ -7,13 +13,11 @@ import { LangSwitch } from '../components/LangSwitch';
 import { OrderToastRegion } from '../components/OrderToast';
 import { SchemeSwitch } from '../components/SchemeSwitch';
 import { Selector } from '../components/Selector';
-import { SelectorToggle } from '../components/SelectorToggle';
 import { StageBar, StageIntro } from '../components/StageBar';
 import { ThemeSwitch } from '../components/ThemeSwitch';
 import { Tip } from '../components/Tip';
 import { TourCoach } from '../components/TourCoach';
 import { TourThread } from '../components/TourThread';
-import { views } from '../domain';
 import { pathFor, useLang, useT } from '../i18n';
 import { tartanUrl } from '../tartan';
 import { tourSteps } from '../tour';
@@ -40,8 +44,6 @@ export function Demo() {
     garzon: t('waiter'),
     cocina: t('kitchen'),
   };
-  // On phones the role is one button that cycles through the three.
-  const nextView = views[(views.indexOf(view) + 1) % views.length];
   return (
     <main
       className="app"
@@ -53,32 +55,32 @@ export function Demo() {
         <ThemeSwitch />
         <SchemeSwitch />
         <LangSwitch />
-        {phone ? (
-          <SelectorToggle
-            className="role-switch"
-            label={t('device')}
-            current={roles[view]}
-            next={roles[nextView]}
-            data-tour={view === 'comensal' ? 'sala servir cobrar' : 'cuenta'}
-            onClick={() => setView(nextView)}
-          />
-        ) : (
-          <Selector
-            className="role-switch"
-            legend={t('device')}
-            value={view}
-            options={[
-              { value: 'comensal', label: roles.comensal, tour: 'cuenta' },
-              {
-                value: 'garzon',
-                label: roles.garzon,
-                tour: 'sala servir cobrar',
-              },
-              { value: 'cocina', label: roles.cocina },
-            ]}
-            onChange={setView}
-          />
-        )}
+        {/* On phones the three roles are icon-only segments: one tap reaches any. */}
+        <Selector
+          className="role-switch"
+          legend={t('device')}
+          value={view}
+          options={[
+            {
+              value: 'comensal',
+              label: roles.comensal,
+              face: phone && <Armchair aria-hidden="true" />,
+              tour: 'cuenta',
+            },
+            {
+              value: 'garzon',
+              label: roles.garzon,
+              face: phone && <ConciergeBell aria-hidden="true" />,
+              tour: 'sala servir cobrar',
+            },
+            {
+              value: 'cocina',
+              label: roles.cocina,
+              face: phone && <ChefHat aria-hidden="true" />,
+            },
+          ]}
+          onChange={setView}
+        />
         <TourButton />
         <Tip
           hint={t('uiKit')}

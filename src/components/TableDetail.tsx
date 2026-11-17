@@ -1,7 +1,7 @@
 import { MousePointerClick } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { lineKey, lineSummary } from '../demo/lines';
-import { billTotal, type CallKind, type Table } from '../domain';
+import { type CallKind, type Table, tableBill } from '../domain';
 import { money } from '../format';
 import { useExtraName, useT } from '../i18n';
 import { Badge } from './Badge';
@@ -33,6 +33,7 @@ export function TableDetail({
 }) {
   const t = useT();
   const extraName = useExtraName();
+  const { tip, total, shares } = tableBill(table);
   return (
     <>
       <div className="table-detail-scroll">
@@ -108,7 +109,25 @@ export function TableDetail({
       {/* The Cuenta and its action stay pinned at the bottom; long content scrolls above. */}
       <section className="table-detail-bill" aria-label={t('bill')}>
         <h4>{t('bill')}</h4>
-        <p className="side-total">{money(billTotal(table))}</p>
+        <p className="side-bill-line">
+          <span>
+            {t('tip')} {table.tipPercent}%
+          </span>
+          <span>{money(tip)}</span>
+        </p>
+        {/* The line keeps its place when the bill is not split. */}
+        <p
+          className="side-bill-line"
+          data-hidden={shares.length < 2 || undefined}
+        >
+          <span>
+            {t('splitBill')} {shares.length}
+          </span>
+          <span>
+            {money(shares[0])} {t('each')}
+          </span>
+        </p>
+        <p className="side-total">{money(total)}</p>
         {table.occupied && (
           <button
             type="button"

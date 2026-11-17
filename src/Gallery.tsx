@@ -24,8 +24,8 @@ import { CommandPalette } from './components/CommandPalette';
 import { DietFilter } from './components/DietFilter';
 import { DishPlate } from './components/DishPlate';
 import { Dropdown } from './components/Dropdown';
-import { Footer } from './components/Footer';
 import { Extras } from './components/Extras';
+import { Footer } from './components/Footer';
 import { KitCheck } from './components/KitCheck';
 import { KitSwitch } from './components/KitSwitch';
 import { LangSwitch } from './components/LangSwitch';
@@ -847,6 +847,8 @@ function TableDemo() {
 const sampleTable = (): Table => ({
   number: 7,
   occupied: true,
+  tipPercent: 10,
+  people: 3,
   calls: ['pedido', 'garzón'],
   orders: [
     {
@@ -1122,300 +1124,296 @@ function ComponentsView() {
   const panel = t('panels');
   const group = t('groups');
   return (
-    <>
-      <Group title={group.controls} thread="controls">
-        <Panel
-          title={panel.button}
-          uses={[]}
-          states={[
-            {
-              label: s.lightDisabled,
-              node: (
-                <button type="button" className="light-button" disabled>
-                  {t('add')}
-                </button>
-              ),
-            },
-            {
-              label: s.darkDisabled,
-              node: (
-                <button type="button" className="dark-button" disabled>
-                  {t('attend')}
-                </button>
-              ),
-            },
-          ]}
-        >
-          <ButtonDemo />
-        </Panel>
-        <Panel
-          title={panel.arrow}
-          uses={[]}
-          states={[
-            {
-              label: s.disabled,
-              node: <ArrowButton disabled>{t('back')}</ArrowButton>,
-            },
-          ]}
-        >
-          <ArrowDemo />
-        </Panel>
-        <Panel
-          title={panel.wheel}
-          uses={['NumberInput']}
-          states={[
-            {
-              label: s.atMin,
-              node: <WheelAt start={1} label={s.min} />,
-            },
-            {
-              label: s.atMax,
-              node: <WheelAt start={20} label={s.max} />,
-            },
-            {
-              label: s.disabledF,
-              node: (
-                <QuantityWheel
-                  value={1}
-                  onChange={() => {}}
-                  label={s.disabledF}
-                  disabled
+    <Group title={group.controls} thread="controls">
+      <Panel
+        title={panel.button}
+        uses={[]}
+        states={[
+          {
+            label: s.lightDisabled,
+            node: (
+              <button type="button" className="light-button" disabled>
+                {t('add')}
+              </button>
+            ),
+          },
+          {
+            label: s.darkDisabled,
+            node: (
+              <button type="button" className="dark-button" disabled>
+                {t('attend')}
+              </button>
+            ),
+          },
+        ]}
+      >
+        <ButtonDemo />
+      </Panel>
+      <Panel
+        title={panel.arrow}
+        uses={[]}
+        states={[
+          {
+            label: s.disabled,
+            node: <ArrowButton disabled>{t('back')}</ArrowButton>,
+          },
+        ]}
+      >
+        <ArrowDemo />
+      </Panel>
+      <Panel
+        title={panel.wheel}
+        uses={['NumberInput']}
+        states={[
+          {
+            label: s.atMin,
+            node: <WheelAt start={1} label={s.min} />,
+          },
+          {
+            label: s.atMax,
+            node: <WheelAt start={20} label={s.max} />,
+          },
+          {
+            label: s.disabledF,
+            node: (
+              <QuantityWheel
+                value={1}
+                onChange={() => {}}
+                label={s.disabledF}
+                disabled
+              />
+            ),
+          },
+        ]}
+      >
+        <WheelDemo />
+      </Panel>
+      <Panel
+        title={panel.stepper}
+        uses={[]}
+        states={[1, 9, 10].map((qty) => ({
+          label: `x${qty}`,
+          node: <StepperOnPaper qty={qty} />,
+        }))}
+      >
+        <StepperOnPaper qty={9} />
+      </Panel>
+      <Panel
+        title={panel.check}
+        uses={['Checkbox']}
+        states={[
+          { label: s.checked, node: <KitCheck label={s.checked} checked /> },
+          {
+            label: s.soldOut,
+            node: <KitCheck label={s.soldOut} checked={false} disabled />,
+          },
+        ]}
+      >
+        <CheckDemo />
+      </Panel>
+      <Panel
+        title={panel.extras}
+        uses={['Checkbox', 'Label']}
+        wide
+        states={[
+          {
+            label: s.noneChecked,
+            node: <Extras extras={sandwichExtras.slice(0, 3)} selected={[]} />,
+          },
+          {
+            label: s.someChecked,
+            node: (
+              <Extras
+                extras={sandwichExtras.slice(0, 3)}
+                selected={['palta', 'tomate']}
+              />
+            ),
+          },
+        ]}
+      >
+        <ExtrasDemo />
+      </Panel>
+      <Panel
+        title={panel.badge}
+        uses={[]}
+        states={['1', '24', '99+'].map((count) => ({
+          label: `${s.count} ${count}`,
+          node: <Badge variant="count">{count}</Badge>,
+        }))}
+      >
+        <BadgeDemo />
+      </Panel>
+      <Panel
+        title={panel.switch}
+        uses={['Switch']}
+        states={[
+          {
+            label: s.off,
+            node: <KitSwitch label={t('callsSwitch')} checked={false} />,
+          },
+          {
+            label: s.disabled,
+            node: <KitSwitch label={t('callsSwitch')} checked disabled />,
+          },
+        ]}
+      >
+        <SwitchDemo />
+      </Panel>
+      <Panel
+        title={panel.search}
+        uses={['Input', 'InputClear']}
+        states={[
+          {
+            label: s.disabledF,
+            node: <SearchField label={s.disabledF} value="" disabled />,
+          },
+          {
+            label: s.error,
+            node: <SearchField label={s.withError} value="sushi" invalid />,
+          },
+        ]}
+      >
+        <SearchDemo />
+      </Panel>
+      <Panel
+        title={panel.dropdown}
+        uses={['Select']}
+        states={[
+          {
+            label: s.disabled,
+            node: (
+              <Dropdown
+                label={t('category')}
+                items={categoryItems}
+                value="Postres"
+                disabled
+              />
+            ),
+          },
+          {
+            label: s.error,
+            node: (
+              <Dropdown
+                label={t('category')}
+                items={categoryItems}
+                value={null}
+                invalid
+              />
+            ),
+          },
+        ]}
+      >
+        <DropdownDemo />
+      </Panel>
+      <Panel
+        title={panel.selector}
+        uses={[]}
+        states={[
+          { label: s.desktop, node: <RoleSwitch /> },
+          { label: s.phone, node: <RoleSwitch phone /> },
+        ]}
+      >
+        <div className="stack">
+          <RoleSwitch />
+          <RoleSwitch phone />
+        </div>
+      </Panel>
+      <Panel
+        title={panel.progress}
+        uses={['Progress']}
+        states={[
+          {
+            label: s.indeterminate,
+            node: <ProgressBar label={s.sending} value={null} />,
+          },
+          {
+            label: s.complete,
+            node: <ProgressBar label={s.served} value={100} />,
+          },
+        ]}
+      >
+        <ProgressDemo />
+      </Panel>
+      <Panel
+        title={panel.scroll}
+        uses={['ScrollArea']}
+        states={[
+          {
+            label: s.noOverflow,
+            node: (
+              <Scroller label={t('shortList')}>
+                <ul className="scroll-list" data-short>
+                  <li>
+                    <span>Pisco sour</span>
+                    <span>{money(4900)}</span>
+                  </li>
+                </ul>
+              </Scroller>
+            ),
+          },
+        ]}
+      >
+        <ScrollDemo />
+      </Panel>
+      <Panel
+        title={panel.postIt}
+        uses={[]}
+        wide
+        states={[
+          {
+            label: s.emptyF,
+            node: (
+              <div className="post-it-demo">
+                <PostIt
+                  label={t('kitchenNote')}
+                  placeholder={t('addNote')}
+                  value=""
                 />
-              ),
-            },
-          ]}
-        >
-          <WheelDemo />
-        </Panel>
-        <Panel
-          title={panel.stepper}
-          uses={[]}
-          states={[1, 9, 10].map((qty) => ({
-            label: `x${qty}`,
-            node: <StepperOnPaper qty={qty} />,
-          }))}
-        >
-          <StepperOnPaper qty={9} />
-        </Panel>
-        <Panel
-          title={panel.check}
-          uses={['Checkbox']}
-          states={[
-            { label: s.checked, node: <KitCheck label={s.checked} checked /> },
-            {
-              label: s.soldOut,
-              node: <KitCheck label={s.soldOut} checked={false} disabled />,
-            },
-          ]}
-        >
-          <CheckDemo />
-        </Panel>
-        <Panel
-          title={panel.extras}
-          uses={['Checkbox', 'Label']}
-          wide
-          states={[
-            {
-              label: s.noneChecked,
-              node: (
-                <Extras extras={sandwichExtras.slice(0, 3)} selected={[]} />
-              ),
-            },
-            {
-              label: s.someChecked,
-              node: (
-                <Extras
-                  extras={sandwichExtras.slice(0, 3)}
-                  selected={['palta', 'tomate']}
+              </div>
+            ),
+          },
+          {
+            label: s.withText,
+            node: (
+              <div className="post-it-demo">
+                <PostIt
+                  label={t('kitchenNote')}
+                  placeholder={t('addNote')}
+                  value={t('sampleNote')}
                 />
-              ),
-            },
-          ]}
-        >
-          <ExtrasDemo />
-        </Panel>
-        <Panel
-          title={panel.badge}
-          uses={[]}
-          states={['1', '24', '99+'].map((count) => ({
-            label: `${s.count} ${count}`,
-            node: <Badge variant="count">{count}</Badge>,
-          }))}
-        >
-          <BadgeDemo />
-        </Panel>
-        <Panel
-          title={panel.switch}
-          uses={['Switch']}
-          states={[
-            {
-              label: s.off,
-              node: <KitSwitch label={t('callsSwitch')} checked={false} />,
-            },
-            {
-              label: s.disabled,
-              node: <KitSwitch label={t('callsSwitch')} checked disabled />,
-            },
-          ]}
-        >
-          <SwitchDemo />
-        </Panel>
-        <Panel
-          title={panel.search}
-          uses={['Input', 'InputClear']}
-          states={[
-            {
-              label: s.disabledF,
-              node: <SearchField label={s.disabledF} value="" disabled />,
-            },
-            {
-              label: s.error,
-              node: <SearchField label={s.withError} value="sushi" invalid />,
-            },
-          ]}
-        >
-          <SearchDemo />
-        </Panel>
-        <Panel
-          title={panel.dropdown}
-          uses={['Select']}
-          states={[
-            {
-              label: s.disabled,
-              node: (
-                <Dropdown
-                  label={t('category')}
-                  items={categoryItems}
-                  value="Postres"
-                  disabled
-                />
-              ),
-            },
-            {
-              label: s.error,
-              node: (
-                <Dropdown
-                  label={t('category')}
-                  items={categoryItems}
-                  value={null}
-                  invalid
-                />
-              ),
-            },
-          ]}
-        >
-          <DropdownDemo />
-        </Panel>
-        <Panel
-          title={panel.selector}
-          uses={[]}
-          states={[
-            { label: s.desktop, node: <RoleSwitch /> },
-            { label: s.phone, node: <RoleSwitch phone /> },
-          ]}
-        >
-          <div className="stack">
-            <RoleSwitch />
-            <RoleSwitch phone />
-          </div>
-        </Panel>
-        <Panel
-          title={panel.progress}
-          uses={['Progress']}
-          states={[
-            {
-              label: s.indeterminate,
-              node: <ProgressBar label={s.sending} value={null} />,
-            },
-            {
-              label: s.complete,
-              node: <ProgressBar label={s.served} value={100} />,
-            },
-          ]}
-        >
-          <ProgressDemo />
-        </Panel>
-        <Panel
-          title={panel.scroll}
-          uses={['ScrollArea']}
-          states={[
-            {
-              label: s.noOverflow,
-              node: (
-                <Scroller label={t('shortList')}>
-                  <ul className="scroll-list" data-short>
-                    <li>
-                      <span>Pisco sour</span>
-                      <span>{money(4900)}</span>
-                    </li>
-                  </ul>
-                </Scroller>
-              ),
-            },
-          ]}
-        >
-          <ScrollDemo />
-        </Panel>
-        <Panel
-          title={panel.postIt}
-          uses={[]}
-          wide
-          states={[
-            {
-              label: s.emptyF,
-              node: (
-                <div className="post-it-demo">
-                  <PostIt
-                    label={t('kitchenNote')}
-                    placeholder={t('addNote')}
-                    value=""
-                  />
-                </div>
-              ),
-            },
-            {
-              label: s.withText,
-              node: (
-                <div className="post-it-demo">
-                  <PostIt
-                    label={t('kitchenNote')}
-                    placeholder={t('addNote')}
-                    value={t('sampleNote')}
-                  />
-                </div>
-              ),
-            },
-          ]}
-        >
-          <PostItDemo />
-        </Panel>
-        <Panel title={panel.palette} uses={['Dialog', 'Command']}>
-          <PaletteDemo />
-        </Panel>
-        <Panel
-          title={panel.tooltip}
-          uses={['Tooltip']}
-          states={[{ label: s.explains, node: <TipDemo blocked /> }]}
-        >
-          <TipDemo />
-        </Panel>
-        <Panel
-          title={panel.toast}
-          uses={['Toast']}
-          wide="full"
-          states={[
-            { label: s.confirmed, node: <StaticToast kind="confirmado" /> },
-            {
-              label: s.withAction,
-              node: <StaticToast kind="enviado" withAction />,
-            },
-            { label: s.error, node: <StaticToast kind="error" /> },
-          ]}
-        >
-          <ToastDemo />
-        </Panel>
-      </Group>
-    </>
+              </div>
+            ),
+          },
+        ]}
+      >
+        <PostItDemo />
+      </Panel>
+      <Panel title={panel.palette} uses={['Dialog', 'Command']}>
+        <PaletteDemo />
+      </Panel>
+      <Panel
+        title={panel.tooltip}
+        uses={['Tooltip']}
+        states={[{ label: s.explains, node: <TipDemo blocked /> }]}
+      >
+        <TipDemo />
+      </Panel>
+      <Panel
+        title={panel.toast}
+        uses={['Toast']}
+        wide="full"
+        states={[
+          { label: s.confirmed, node: <StaticToast kind="confirmado" /> },
+          {
+            label: s.withAction,
+            node: <StaticToast kind="enviado" withAction />,
+          },
+          { label: s.error, node: <StaticToast kind="error" /> },
+        ]}
+      >
+        <ToastDemo />
+      </Panel>
+    </Group>
   );
 }
 
@@ -1642,6 +1640,8 @@ function RestaurantView() {
                       occupied: false,
                       calls: [],
                       orders: [],
+                      tipPercent: 10,
+                      people: 1,
                     }}
                     heading={<TableHeading number={3} />}
                   />
