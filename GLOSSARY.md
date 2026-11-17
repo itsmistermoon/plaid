@@ -28,6 +28,7 @@ Domain vocabulary of the demo. Domain terms stay in Spanish, as they appear in t
 - **Carta**: the dishes Restaurant El Clan offers, grouped into categories.
 - **Categoría**: a group in the Carta: entradas, sándwiches, fondos, bebidas and postres.
 - **Plato**: anything that can be ordered, drinks included. It has a name, description, price and photo.
+- **Especiales del día**: the Platos the Cocina features today, written on the Pizarra (the Carta's first tab, "Hoy") together with the Agotados.
 - **Agotado**: a Plato that cannot be ordered today. It is shown, but cannot be added to the Carrito.
 
 ## Ordering

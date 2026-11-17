@@ -37,6 +37,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **The reservation book is a leather-bound ledger: a cream page ruled in blue with a red margin line, one fixed-height row per hour, opened as a dialog from the floor's bar. In the Slate theme it is a plain card with the same rows.**
   Why: a ledger is the physical object a restaurant already uses for reservations.
   <!-- 2026-11-17 -->
+- **The specials chalkboard is the first tab of the Carta ("Hoy"), not part of the Portada: a dark slate board in a wooden frame, written on in chalk (Kaushan Script with a rough SVG filter, chalk strokes and smudges), listing today's specials and the Agotados. Tapping a special opens its Detalle. In the Slate theme it is a plain card with the same rows. The tab row keeps six equal, fixed-width tabs in every theme and language.**
+  Why: a chalkboard is the physical object a restaurant already uses for the day's specials; the Portada stays the iClub signature.
+  <!-- 2026-11-17 -->
 - **The Slate theme does not simulate physical objects: no slots, printers or paper. The receipt is a clean card.**
   Why: the Slate theme does not simulate printed paper.
   <!-- 2026-11-16 -->

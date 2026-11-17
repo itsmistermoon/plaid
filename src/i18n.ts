@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import type { CallKind, OrderStatus } from './domain';
-import type { Category, Diet, Dish, Extra } from './menu';
+import type { Diet, Dish, Extra, Tab } from './menu';
 import type { TourStep } from './tour';
 
 export type Lang = 'es' | 'en';
@@ -122,15 +122,18 @@ const es = {
     spicy: 'Picante',
   } satisfies Record<Diet, string>,
   categories: {
+    Hoy: 'Hoy',
     Entradas: 'Entradas',
     Sándwiches: 'Sándwiches',
     Fondos: 'Fondos',
     Bebidas: 'Bebidas',
     Postres: 'Postres',
-  } satisfies Record<Category, string>,
+  } satisfies Record<Tab, string>,
   quantity: 'Cantidad',
   quantityOf: (name: string) => `Cantidad de ${name}`,
   soldOut: 'Agotado por hoy',
+  specialsTitle: 'Especiales del día',
+  soldOutToday: 'Agotado hoy',
   previewOf: (name: string) => `Vista previa de ${name}`,
   extras: 'Agregados',
   addNote: 'Agregar nota...',
@@ -346,6 +349,7 @@ const es = {
     ticketRail: 'Riel de comandas',
     moveMenu: 'Menú de mover mesa',
     book: 'Libro de reservas',
+    chalkboard: 'Pizarra de especiales',
     tartanCloth: 'Tela',
     tartanSett: 'Sett',
     tartanColors: 'Colores',
@@ -394,6 +398,8 @@ const es = {
     withCount: 'Con cantidad',
     noOrders: 'Sin pedidos',
     notScrolled: 'Sin desplazar',
+    withSoldOut: 'Con agotados',
+    noSoldOut: 'Sin agotados',
     scrolled: 'Desplazada',
     desktop: 'Escritorio',
     phone: 'Teléfono',
@@ -491,6 +497,7 @@ const en: Messages = {
     spicy: 'Spicy',
   },
   categories: {
+    Hoy: 'Today',
     Entradas: 'Starters',
     Sándwiches: 'Sandwiches',
     Fondos: 'Mains',
@@ -500,6 +507,8 @@ const en: Messages = {
   quantity: 'Quantity',
   quantityOf: (name) => `Quantity of ${name}`,
   soldOut: 'Sold out today',
+  specialsTitle: "Today's specials",
+  soldOutToday: 'Sold out today',
   previewOf: (name) => `Preview of ${name}`,
   extras: 'Extras',
   addNote: 'Add a note...',
@@ -709,6 +718,7 @@ const en: Messages = {
     ticketRail: 'Ticket rail',
     moveMenu: 'Move table menu',
     book: 'Reservation book',
+    chalkboard: 'Specials chalkboard',
     tartanCloth: 'Cloth',
     tartanSett: 'Sett',
     tartanColors: 'Colors',
@@ -757,6 +767,8 @@ const en: Messages = {
     withCount: 'With count',
     noOrders: 'No orders',
     notScrolled: 'Not scrolled',
+    withSoldOut: 'With sold out',
+    noSoldOut: 'No sold out',
     scrolled: 'Scrolled',
     desktop: 'Desktop',
     phone: 'Phone',

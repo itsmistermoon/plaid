@@ -18,6 +18,8 @@ export interface Dish {
   en: string;
   price: number;
   soldOut?: boolean;
+  /** One of today's specials, written on the chalkboard. */
+  special?: boolean;
   diets?: Diet[];
   extras?: Extra[];
 }
@@ -35,6 +37,8 @@ const sandwichExtras: Extra[] = [
   { id: 'huevo', name: 'Huevo frito', en: 'Fried egg', price: 1000 },
   { id: 'tocino', name: 'Tocino', en: 'Bacon', price: 1300 },
 ];
+/** The Carta's first tab, before the categories. */
+export type Tab = 'Hoy' | Category;
 export const categories: Category[] = [
   'Entradas',
   'Sándwiches',
@@ -125,6 +129,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'pastel',
+    special: true,
     diets: ['glutenFree'],
     category: 'Fondos',
     name: 'Pastel de choclo',
@@ -157,6 +162,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'porotos',
+    special: true,
     diets: ['vegetarian', 'glutenFree'],
     category: 'Fondos',
     name: 'Porotos granados',
@@ -195,6 +201,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'pisco',
+    special: true,
     diets: ['vegetarian', 'glutenFree'],
     category: 'Bebidas',
     name: 'Pisco sour',
@@ -222,6 +229,7 @@ export const dishes: Dish[] = [
   },
   {
     id: 'sopaipillas',
+    special: true,
     diets: ['vegetarian'],
     category: 'Postres',
     name: 'Sopaipillas pasadas',
@@ -231,3 +239,9 @@ export const dishes: Dish[] = [
     price: 3500,
   },
 ];
+
+/** Today's specials, in menu order. */
+export const specials = dishes.filter((dish) => dish.special);
+/** Dishes that cannot be ordered today. */
+export const soldOutDishes = dishes.filter((dish) => dish.soldOut);
+export const tabs: Tab[] = ['Hoy', ...categories];

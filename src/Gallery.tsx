@@ -19,6 +19,7 @@ import {
 import { Link } from 'wouter';
 import { Badge } from './components/Badge';
 import { CategoryTabs } from './components/CategoryTabs';
+import { Chalkboard } from './components/Chalkboard';
 import { CommandPalette } from './components/CommandPalette';
 import { DietFilter } from './components/DietFilter';
 import { DishPlate } from './components/DishPlate';
@@ -85,7 +86,15 @@ import {
 } from './domain';
 import { money } from './format';
 import { pathFor, useExtraName, useLang, useT } from './i18n';
-import { type Category, categories, type Diet, dishes } from './menu';
+import {
+  type Category,
+  categories,
+  type Diet,
+  dishes,
+  soldOutDishes,
+  specials,
+  type Tab,
+} from './menu';
 import {
   fullSett,
   sett,
@@ -117,6 +126,8 @@ const line = (dishId: string, qty: number, extras: string[] = []): Line => ({
  * variants below, and a footer saying whether it is presentational or UI SDK.
  * The number comes from a CSS counter, so page order is the numbering.
  */
+const noop = () => undefined;
+
 function Panel({
   title,
   uses,
@@ -500,7 +511,7 @@ function DietFilterDemo({ initial = [] }: { initial?: Diet[] }) {
 
 /** Tabs over a board with the menu below; `scrolled` leaves it scrolled. */
 function CategoryTabsDemo({ scrolled }: { scrolled?: boolean }) {
-  const [category, setCategory] = useState<Category>('Sándwiches');
+  const [category, setCategory] = useState<Tab>('Sándwiches');
   const board = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     if (scrolled && board.current) board.current.scrollTop = 48;
@@ -1547,6 +1558,25 @@ function RestaurantView() {
           <div className="card ribbon-demo" data-size="big">
             <Ribbon>Chacarero</Ribbon>
           </div>
+        </Panel>
+        <Panel
+          title={panel.chalkboard}
+          uses={[]}
+          wide
+          states={[
+            {
+              label: s.noSoldOut,
+              node: (
+                <Chalkboard specials={specials} soldOut={[]} onOpen={noop} />
+              ),
+            },
+          ]}
+        >
+          <Chalkboard
+            specials={specials}
+            soldOut={soldOutDishes}
+            onOpen={noop}
+          />
         </Panel>
         <Panel title={panel.book} uses={['Dialog', 'Select', 'Input']} wide>
           <BookDemo />

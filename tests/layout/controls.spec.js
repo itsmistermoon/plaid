@@ -122,3 +122,54 @@ for (const width of [1440, 390]) {
     }
   });
 }
+
+// The Carta's tabs (Hoy plus five categories) are fixed in place and size in
+// every skin and language, and each label fits its share.
+for (const width of [1440, 390]) {
+  test(`las pestañas de la carta no se mueven ni desbordan a ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/demo');
+    await page.locator('.portada .light-button').click();
+    const tabs = page.locator('.tabs-bar [role="tab"]');
+    await expect(tabs).toHaveCount(6);
+    let baseline;
+    for (const skin of skins) {
+      for (const lang of ['es', 'en']) {
+        await chooseSkin(page, width, skin);
+        if (width > 760)
+          await page.locator(`.lang-switch a[hreflang="${lang}"]`).click();
+        else if (page.url().includes('/en/') !== (lang === 'en'))
+          await page.locator('.lang-switch').click();
+        await page.evaluate(() => document.fonts.ready);
+        // "Hoy" is the first tab and opens on the chalkboard.
+        await expect(tabs.first()).toHaveAttribute('aria-selected', 'true');
+        await expect(page.locator('.chalkboard')).toBeVisible();
+        const boxes = await tabs.evaluateAll((els) =>
+          els.map((el) => {
+            const { x, width: w } = el.getBoundingClientRect();
+            return { x, w, fits: el.scrollWidth <= el.clientWidth };
+          }),
+        );
+        for (const box of boxes)
+          expect(box.fits, `una pestaña desborda (${skin.theme}/${lang})`).toBe(
+            true,
+          );
+        if (!baseline) baseline = boxes;
+        else
+          boxes.forEach((box, i) => {
+            expect(Math.abs(box.x - baseline[i].x)).toBeLessThanOrEqual(0.5);
+            expect(Math.abs(box.w - baseline[i].w)).toBeLessThanOrEqual(0.5);
+          });
+      }
+    }
+  });
+}
+
+test('tocar un especial abre su detalle', async ({ page }) => {
+  await page.goto('/demo');
+  await page.locator('.portada .light-button').click();
+  await page.locator('.special').first().click();
+  await expect(page.locator('.detail')).toBeVisible();
+});

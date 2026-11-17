@@ -406,6 +406,53 @@
 }
 
 /* Carta */
+
+/* Specials: a plain card, no board or frame. */
+[data-theme="slate"] .chalkboard {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--card);
+  background-image: var(--plaid-lines);
+  background-size: 24px 24px;
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="slate"] .chalk-title,
+[data-theme="slate"] .chalk-sub,
+[data-theme="slate"] .special-name {
+  font-family: Outfit, sans-serif;
+}
+[data-theme="slate"] .chalk-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--foreground);
+}
+[data-theme="slate"] .chalk-sub {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .special-name {
+  font-size: 16px;
+  font-weight: 700;
+}
+[data-theme="slate"] .special-price {
+  font-family: "Courier Prime", monospace;
+}
+[data-theme="slate"] .special-text,
+[data-theme="slate"] .chalk-sold li {
+  color: var(--muted-foreground);
+}
+[data-theme="slate"] .chalk-sold li {
+  font:
+    14px Inter,
+    sans-serif;
+}
+[data-theme="slate"] .specials li + li {
+  border-top: 1px solid var(--border);
+}
+[data-theme="slate"] .special:hover .special-name {
+  color: var(--accent);
+}
 [data-theme="slate"] .dish-text p {
   color: var(--muted-foreground);
 }

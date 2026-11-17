@@ -56,6 +56,30 @@
   --tabbar-current-bg: #0000002a;
   --tabbar-current-shadow: inset 0 2px 5px #0003;
   --thread-reserva: #2fb5a6;
+  --chalk: #eef0e4;
+  --chalk-dim: #b9c1b4;
+  --chalk-board: #2c3836;
+  --chalk-smudge: #ffffff0f;
+  --chalk-stroke: #eef0e433;
+  --wood: #8b5d36;
+  --wood-dark: #4f321a;
+  --wood-light: #b27c4b;
+  --chalk-title: color-mix(in srgb, var(--brand), #fff 60%);
+  --wood-grain:
+    repeating-linear-gradient(
+      92deg,
+      #0000 0 7px,
+      color-mix(in srgb, var(--wood-dark) 35%, transparent) 7px 8px,
+      #0000 8px 19px
+    ),
+    linear-gradient(var(--wood-light), var(--wood) 30%, var(--wood-dark));
+  --wood-shadow:
+    inset 0 1px #ffffff40, inset 0 0 0 1px var(--wood-dark), 0 4px 10px #0006;
+  --chalk-face:
+    radial-gradient(40% 30% at 20% 18%, var(--chalk-smudge), #0000),
+    radial-gradient(50% 35% at 80% 70%, var(--chalk-smudge), #0000),
+    var(--noise), var(--chalk-board);
+  --chalk-inset: inset 0 2px 8px #000a, inset 0 0 0 1px #0006;
   --book-binding: 10px;
   --book-edge: 1px solid #2a1a10;
   --book-cover: linear-gradient(#7a4a2b, #55321c);
@@ -800,6 +824,138 @@ button.scheme-switch[aria-disabled="true"] {
 .tabs-bar + .dish-list {
   margin-top: 12px;
 }
+/* Specials chalkboard. Structure is shared; the skin lives per theme below. */
+.chalkboard {
+  position: relative;
+  padding: 14px;
+}
+.chalk-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.chalk-surface {
+  padding: 18px 22px 22px;
+}
+.chalk-title {
+  margin: 0 0 8px;
+  font:
+    30px "Kaushan Script",
+    cursive;
+}
+.chalk-sub {
+  margin: 20px 0 6px;
+  font:
+    22px "Kaushan Script",
+    cursive;
+}
+.specials,
+.chalk-sold {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.special {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 14px;
+  width: 100%;
+  padding: 10px 0;
+  border: 0;
+  text-align: start;
+  color: inherit;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+.special-name {
+  align-self: baseline;
+  font:
+    23px "Kaushan Script",
+    cursive;
+}
+.special-price {
+  font:
+    700 17px Inter,
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+  align-self: baseline;
+}
+.special-text {
+  grid-column: 1 / -1;
+  font:
+    13px / 1.35 Inter,
+    sans-serif;
+}
+.chalk-sold {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+.chalk-sold li {
+  font:
+    19px "Kaushan Script",
+    cursive;
+  text-decoration: line-through;
+}
+.tabs-bar + .chalkboard {
+  margin-top: 12px;
+}
+
+/* Plaid: a slate board in a wooden frame, written on in chalk. */
+[data-theme="plaid"] .chalkboard {
+  border-radius: 6px;
+  background: var(--wood-grain);
+  box-shadow: var(--wood-shadow);
+}
+[data-theme="plaid"] .chalk-surface {
+  border-radius: 2px;
+  color: var(--chalk);
+  background: var(--chalk-face);
+  box-shadow: var(--chalk-inset);
+}
+[data-theme="plaid"] .chalk-title,
+[data-theme="plaid"] .chalk-sub,
+[data-theme="plaid"] .special-name,
+[data-theme="plaid"] .special-price,
+[data-theme="plaid"] .chalk-sold li {
+  filter: url(#chalk-rough);
+  text-shadow: 0 0 3px var(--chalk-stroke);
+}
+[data-theme="plaid"] .chalk-title {
+  color: var(--chalk-title);
+}
+[data-theme="plaid"] .chalk-title::after {
+  content: "";
+  display: block;
+  height: 6px;
+  margin-top: 2px;
+  background: var(--chalk-dim);
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='6' preserveAspectRatio='none' viewBox='0 0 200 6'%3E%3Cpath d='M1 4 C30 1 60 5 100 3 S170 2 199 3' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")
+    0 0 / 100% 100% no-repeat;
+}
+[data-theme="plaid"] .chalk-sub {
+  color: var(--chalk-dim);
+}
+[data-theme="plaid"] .special + .special,
+[data-theme="plaid"] .specials li + li {
+  border-top: 1px dashed var(--chalk-stroke);
+}
+[data-theme="plaid"] .special-text,
+[data-theme="plaid"] .chalk-sold li {
+  color: var(--chalk-dim);
+}
+[data-theme="plaid"] .special:hover .special-name {
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-underline-offset: 4px;
+}
+[data-theme="plaid"] .special:focus-visible {
+  outline: 2px dashed var(--chalk);
+  outline-offset: 2px;
+}
+
 /* Diet toggles: a fixed-width row between the tabs and the list. */
 .diet-filter {
   box-sizing: border-box;
