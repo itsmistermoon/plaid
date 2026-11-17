@@ -51,7 +51,7 @@ const es = {
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'Pide desde la mesa',
   stageIntro:
-    'Un restaurante completo en una tablet: pide desde la mesa, sigue tu pedido y paga la cuenta, o cambia a la vista del garzón o de la cocina para atender la sala. Cambia de piel, idioma o tema y pruébalo todo. La interfaz imita a propósito el estilo esqueumórfico de comienzos de los 2010, antes del diseño plano.',
+    'Un restaurante completo en una tablet: pide desde la mesa, sigue tu pedido y paga la cuenta, o cambia a la vista del garzón o de la cocina para atender la sala. Cambia de piel, idioma o tema y pruébalo todo. La interfaz reconstruye iClub, una app que diseñé en 2011, con el estilo esqueumórfico de esos años.',
   device: 'Dispositivo',
   diner: 'Comensal',
   waiter: 'Garzón',
@@ -247,9 +247,9 @@ const es = {
   galleryTitle: 'Galería de componentes',
   gallerySubtitle: 'Plaid UI Kit',
   galleryIntro:
-    'Plaid es un kit de componentes esqueumórficos construido sobre',
+    'Plaid es un kit de componentes con texturas y relieve, construido sobre',
   galleryIntroMid:
-    ': texturas, relieves y materiales reales, con el comportamiento accesible de una librería moderna. El estilo es a propósito el esqueumórfico de comienzos de los 2010, antes del diseño plano. Cada pieza viene en dos pieles, Plaid y Slate, para comparar lo táctil con lo plano. El código está en',
+    '. La librería aporta el comportamiento accesible y Plaid pone la apariencia. Cada pieza viene en dos pieles, Plaid (táctil) y Slate (plana), para compararlas. El código está en',
   openDemo: 'Abrir la demo',
   footerLabel: 'Enlaces del proyecto',
   footerOriginal: 'Diseño original en Behance',
@@ -437,7 +437,7 @@ const en: Messages = {
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'Order from your table',
   stageIntro:
-    'A whole restaurant on a tablet: order from your table, follow your order and pay the bill, or switch to the waiter or kitchen view to run the floor. Change the skin, language or theme and try everything. The interface deliberately follows the skeuomorphic style of the early 2010s, before flat design.',
+    'A whole restaurant on a tablet: order from your table, follow your order and pay the bill, or switch to the waiter or kitchen view to run the floor. Change the skin, language or theme and try everything. It rebuilds iClub, an app I designed in 2011, in the skeuomorphic style of those years.',
   device: 'Device',
   diner: 'Diner',
   waiter: 'Waiter',
@@ -623,9 +623,9 @@ const en: Messages = {
   },
   galleryTitle: 'Component gallery',
   gallerySubtitle: 'Plaid UI Kit',
-  galleryIntro: 'Plaid is a skeuomorphic component kit built on',
+  galleryIntro: 'Plaid is a component kit with texture and depth, built on',
   galleryIntroMid:
-    ': real textures, depth and materials, with the accessible behavior of a modern library. The style is deliberately the skeuomorphic look of the early 2010s, before flat design. Every piece comes in two skins, Plaid and Slate, so you can compare tactile and flat. The code is on',
+    '. The library provides the accessible behavior and Plaid adds the look. Every piece comes in two skins, Plaid (tactile) and Slate (flat), so you can compare them. The code is on',
   openDemo: 'Open the demo',
   footerLabel: 'Project links',
   footerOriginal: 'Original design on Behance',
