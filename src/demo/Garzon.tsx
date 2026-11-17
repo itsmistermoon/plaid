@@ -4,13 +4,21 @@ import {
   DialogContent,
   DialogTitle,
 } from '@ui-sdk/react/dialog';
+import {
+  Armchair,
+  Check,
+  ConciergeBell,
+  ReceiptText,
+  Utensils,
+} from 'lucide-react';
 import { type ReactNode, useRef, useState } from 'react';
 import { useStore } from 'zustand';
+import { CommandPalette } from '../components/CommandPalette';
 import { Navbar, PendingCalls } from '../components/Navbar';
 import { showOrderToast } from '../components/OrderToast';
 import { TableButton } from '../components/Table';
 import { TableDetail, TableDetailEmpty } from '../components/TableDetail';
-import { type Table as Mesa, visitorTable } from '../domain';
+import { type CallKind, type Table as Mesa, visitorTable } from '../domain';
 import { useT } from '../i18n';
 import { store } from './store';
 import { useMedia } from './useMedia';
@@ -129,9 +137,67 @@ export function Garzon() {
   const table = tables.find((item) => item.number === selected);
   const pending = tables.reduce((sum, item) => sum + item.calls.length, 0);
   const close = () => setSelected(null);
+  const { attendCall, confirmOrder, serveOrder, chargeAndFree } =
+    store.getState();
+  // What the palette offers: first what is waiting on the floor, then every Mesa.
+  const name = (item: Mesa) => t('tableN')(item.number);
+  const actions = tables.flatMap((item) => [
+    ...[...new Set(item.calls)].map((call) => ({
+      value: `attend:${item.number}:${call}`,
+      label: `${name(item)} · ${t('attend')} · ${t('callLabels')[call]}`,
+      icon: <ConciergeBell />,
+    })),
+    ...item.orders.flatMap((order, index) =>
+      order.status === 'servido'
+        ? []
+        : [
+            {
+              value: `${order.status}:${item.number}:${order.id}`,
+              label: `${name(item)} · ${t(order.status === 'enviado' ? 'confirm' : 'serve')} · ${t('orderN')(index + 1)}`,
+              icon: order.status === 'enviado' ? <Check /> : <Utensils />,
+            },
+          ],
+    ),
+    ...(item.occupied
+      ? [
+          {
+            value: `charge:${item.number}`,
+            label: `${name(item)} · ${t('chargeAndFree')}`,
+            icon: <ReceiptText />,
+          },
+        ]
+      : []),
+  ]);
+  const run = (value: string) => {
+    const [action, number, detail] = value.split(':');
+    const mesa = Number(number);
+    if (action === 'attend') attendCall(mesa, detail as CallKind);
+    if (action === 'enviado') confirmOrder(mesa, detail);
+    if (action === 'confirmado') serveOrder(mesa, detail);
+    if (action === 'charge') chargeAndFree(mesa);
+    setSelected(action === 'charge' ? null : mesa);
+  };
   return (
     <div className="screen" data-surface="garzon">
       <Navbar
+        start={
+          <CommandPalette
+            title={t('paletteTitle')}
+            placeholder={t('paletteHint')}
+            groups={[
+              { label: t('paletteActions'), items: actions },
+              {
+                label: t('tables'),
+                items: tables.map((item) => ({
+                  value: `open:${item.number}`,
+                  label: `${name(item)} · ${t(item.occupied ? 'occupied' : 'free')}`,
+                  icon: <Armchair />,
+                })),
+              },
+            ]}
+            onRun={run}
+          />
+        }
         title={t('floor')}
         end={<PendingCalls>{t('pendingCalls')(pending)}</PendingCalls>}
       />

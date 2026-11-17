@@ -55,6 +55,11 @@
   --tabbar-current-ink: var(--brand);
   --tabbar-current-bg: #0000002a;
   --tabbar-current-shadow: inset 0 2px 5px #0003;
+  --backdrop: #000a;
+  --popup-edge: 1px solid #1a1f20;
+  --popup-face: linear-gradient(#4a5355, #353c3e);
+  --popup-shadow: inset 0 1px #ffffff2e, 0 18px 40px #000c;
+  --keys-face: #0005;
   --rail-edge: var(--printer-edge);
   --rail-body: var(--printer-body);
   --rail-shadow: var(--printer-body-shadow);
@@ -1813,6 +1818,83 @@ button.scheme-switch[aria-disabled="true"] {
   z-index: 1;
   box-shadow: var(--bill-shadow);
 }
+/* Command palette: a dialog near the top of the screen, with the kit's
+   search field over a list in the dropdown's material. */
+.palette-trigger {
+  justify-self: start;
+  gap: 6px;
+}
+.palette-trigger svg {
+  width: 14px;
+  height: 14px;
+}
+.palette-keys {
+  margin-left: 2px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  background: var(--keys-face);
+}
+.palette-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--backdrop);
+}
+.palette {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 14vh auto auto 50%;
+  translate: -50% 0;
+  width: min(460px, calc(100vw - 24px));
+  margin: 0;
+  padding: 10px;
+  border: var(--popup-edge);
+  border-radius: 10px;
+  color: var(--ink);
+  background: var(--popup-face);
+  box-shadow: var(--popup-shadow);
+}
+.palette-search {
+  box-sizing: border-box;
+  width: 100%;
+  height: 36px;
+  border-radius: 18px;
+}
+.palette-list {
+  height: min(300px, 50vh);
+  margin-top: 8px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.palette-list:empty,
+.palette-empty:not([data-empty]) {
+  display: none;
+}
+.palette-empty {
+  box-sizing: border-box;
+  height: min(300px, 50vh);
+  margin-top: 8px;
+  padding: 14px 10px;
+}
+.palette-empty[data-empty] + .palette-list {
+  display: none;
+}
+.palette .palette-search input:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+.dropdown-item.palette-item {
+  justify-content: flex-start;
+  gap: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.palette-item [data-slot="command-item-icon"] {
+  display: grid;
+  flex: none;
+}
 /* Move menu of a Mesa: a dark button with the floor's other Mesas, grouped
    by what choosing one does. */
 .move-button {
@@ -1842,7 +1924,7 @@ button.scheme-switch[aria-disabled="true"] {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-.move-group {
+.group-label {
   grid-column: 1 / -1;
   padding: 6px 10px 3px;
   font-size: 11px;

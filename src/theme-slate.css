@@ -86,6 +86,11 @@
   --tabbar-current-ink: var(--accent);
   --tabbar-current-bg: none;
   --tabbar-current-shadow: none;
+  --backdrop: light-dark(#0f172a66, #000a);
+  --popup-edge: 1px solid var(--border);
+  --popup-face: var(--card);
+  --popup-shadow: var(--shadow-overlay);
+  --keys-face: var(--secondary);
   --rail-edge: 0;
   --rail-body: var(--track);
   --rail-shadow: none;

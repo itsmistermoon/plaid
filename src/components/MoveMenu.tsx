@@ -37,7 +37,7 @@ export function MoveMenu({
           (group) =>
             group.items.length > 0 && (
               <MenuGroup key={group.label}>
-                <MenuGroupLabel className="move-group">
+                <MenuGroupLabel className="group-label">
                   {group.label}
                 </MenuGroupLabel>
                 {group.items.map((item) => (

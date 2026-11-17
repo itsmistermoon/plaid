@@ -142,6 +142,10 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
   Why: the native title cannot be skinned, does not show on keyboard focus and never appears on a disabled control.
   <!-- 2026-11-17 -->
 
+- **The Garzón's command palette is UI SDK's `Command` inside a `Dialog`: a search button at the start of the floor's bar (also ⌘K / Ctrl+K), the kit's search field over a list in the dropdown's material, at a fixed size near the top of the screen. Commands read "Mesa N · action", so typing "7 cobrar" finds them in any word order.**
+  Why: it shows the kit handling a modern pattern in both skins without a new material.
+  <!-- 2026-11-17 -->
+
 - **The guided tour highlights its target with a running thread: a dashed stitch that travels along the border (`TourThread`), never a pulsing ring. With `prefers-reduced-motion` the thread stays still.**
   Why: it follows the textile language of the kit, and the overlay is not clipped by the pieces it surrounds.
   <!-- 2026-11-16 -->

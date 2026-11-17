@@ -19,6 +19,7 @@ import {
 import { Link } from 'wouter';
 import { Badge } from './components/Badge';
 import { CategoryTabs } from './components/CategoryTabs';
+import { CommandPalette } from './components/CommandPalette';
 import { DietFilter } from './components/DietFilter';
 import { DishPlate } from './components/DishPlate';
 import { Dropdown } from './components/Dropdown';
@@ -545,6 +546,33 @@ function ToastDemo() {
           {t('statuses')[kind]}
         </button>
       ))}
+    </div>
+  );
+}
+
+/** The palette with a few sample commands: running one shows a notice. */
+function PaletteDemo() {
+  const t = useT();
+  const table = t('tableN');
+  const items = [
+    {
+      label: `${table(2)} · ${t('attend')} · ${t('callLabels').garzón}`,
+      icon: <ConciergeBell />,
+    },
+    {
+      label: `${table(7)} · ${t('serve')} · ${t('orderN')(1)}`,
+      icon: <ReceiptText />,
+    },
+    { label: `${table(7)} · ${t('chargeAndFree')}`, icon: <ReceiptText /> },
+  ].map((item) => ({ ...item, value: item.label }));
+  return (
+    <div className="palette-demo">
+      <CommandPalette
+        title={t('paletteTitle')}
+        placeholder={t('paletteHint')}
+        groups={[{ label: t('paletteActions'), items }]}
+        onRun={(value) => showOrderToast('confirmado', [value, t('advance')])}
+      />
     </div>
   );
 }
@@ -1301,6 +1329,9 @@ function ComponentsView() {
           ]}
         >
           <PostItDemo />
+        </Panel>
+        <Panel title={panel.palette} uses={['Dialog', 'Command']}>
+          <PaletteDemo />
         </Panel>
         <Panel
           title={panel.tooltip}
