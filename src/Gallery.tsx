@@ -26,6 +26,7 @@ import { Extras } from './components/Extras';
 import { KitCheck } from './components/KitCheck';
 import { KitSwitch } from './components/KitSwitch';
 import { LangSwitch } from './components/LangSwitch';
+import { MoveMenu } from './components/MoveMenu';
 import {
   ArrowButton,
   CartButton,
@@ -812,7 +813,6 @@ const sampleTable = (): Table => ({
   ],
 });
 
-/** Table detail with local state: attend, confirm, serve and charge. */
 const sampleOrder = (status: Order['status']): Order => ({
   id: status,
   status,
@@ -844,6 +844,29 @@ function TicketRailDemo() {
   );
 }
 
+const sampleTargets = [1, 2, 4, 5, 6].map((number) => ({
+  number,
+  occupied: number % 2 === 0,
+}));
+
+/** The move menu on its own: choosing a Mesa shows the notice with Undo. */
+function MoveMenuDemo() {
+  const t = useT();
+  return (
+    <MoveMenu
+      targets={sampleTargets}
+      onMove={(to) =>
+        showOrderToast(
+          'confirmado',
+          t(to % 2 === 0 ? 'merged' : 'transferred')(3, to),
+          { label: t('undo'), onAction: () => {} },
+        )
+      }
+    />
+  );
+}
+
+/** Table detail with local state: attend, confirm, serve, charge and move. */
 function TableDetailDemo() {
   const [table, setTable] = useState(sampleTable);
   const setStatus = (id: string, status: 'confirmado' | 'servido') =>
@@ -869,6 +892,10 @@ function TableDetailDemo() {
               ? { ...table, occupied: false, calls: [], orders: [] }
               : sampleTable(),
           )
+        }
+        moveTargets={sampleTargets}
+        onMove={() =>
+          setTable({ ...table, occupied: false, calls: [], orders: [] })
         }
       />
     </TableDetailFrame>
@@ -1453,6 +1480,9 @@ function RestaurantView() {
           <div className="card ribbon-demo" data-size="big">
             <Ribbon>Chacarero</Ribbon>
           </div>
+        </Panel>
+        <Panel title={panel.moveMenu} uses={['Menu', 'Toast']}>
+          <MoveMenuDemo />
         </Panel>
         <Panel
           title={panel.ticketRail}

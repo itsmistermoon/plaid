@@ -1813,6 +1813,44 @@ button.scheme-switch[aria-disabled="true"] {
   z-index: 1;
   box-shadow: var(--bill-shadow);
 }
+/* Move menu of a Mesa: a dark button with the floor's other Mesas, grouped
+   by what choosing one does. */
+.move-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: var(--button-h);
+  font-size: 13px;
+  font-weight: 600;
+}
+.move-button svg {
+  width: 14px;
+  height: 14px;
+}
+.panel-stage > .move-button {
+  width: 200px;
+}
+.move-list {
+  box-sizing: border-box;
+  max-height: min(var(--available-height), 340px);
+  overflow-y: auto;
+}
+/* Two columns keep the whole floor in view without scrolling. */
+.move-list [data-slot="menu-group"] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.move-group {
+  grid-column: 1 / -1;
+  padding: 6px 10px 3px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 .table-detail h3 {
   font:
     700 26px Outfit,

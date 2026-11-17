@@ -5,6 +5,7 @@ import { billTotal, type CallKind, type Table } from '../domain';
 import { money } from '../format';
 import { useExtraName, useT } from '../i18n';
 import { Badge } from './Badge';
+import { MoveMenu } from './MoveMenu';
 
 /** What the Garzón sees and does on a table: Llamados, Pedidos and the Cuenta pinned at the bottom. */
 export function TableDetail({
@@ -14,6 +15,8 @@ export function TableDetail({
   onConfirm,
   onServe,
   onCharge,
+  moveTargets,
+  onMove,
 }: {
   table: Table;
   heading: ReactNode;
@@ -21,6 +24,9 @@ export function TableDetail({
   onConfirm?: (orderId: string) => void;
   onServe?: (orderId: string) => void;
   onCharge?: () => void;
+  /** The other Mesas this one can be moved to; without them there is no move menu. */
+  moveTargets?: { number: number; occupied: boolean }[];
+  onMove?: (to: number) => void;
 }) {
   const t = useT();
   const extraName = useExtraName();
@@ -106,6 +112,9 @@ export function TableDetail({
           >
             {t('chargeAndFree')}
           </button>
+        )}
+        {table.occupied && moveTargets && (
+          <MoveMenu targets={moveTargets} onMove={onMove} />
         )}
       </section>
     </>

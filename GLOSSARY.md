@@ -17,6 +17,9 @@ Domain vocabulary of the demo. Domain terms stay in Spanish, as they appear in t
 - **Mesa**: a numbered spot on the floor. It can be **libre** (free) or **ocupada** (occupied). It accumulates Pedidos and Llamados.
 - **Liberar**: free a Mesa after payment. It clears the Mesa's Pedidos and Llamados.
 
+- **Trasladar**: move a Mesa's Pedidos and Llamados to a free Mesa. The origin becomes libre.
+- **Unir**: move a Mesa's Pedidos and Llamados to another occupied Mesa, which adds them to its own. The origin becomes libre.
+
 ## Carta
 
 - **Carta**: the dishes Restaurant El Clan offers, grouped into categories.

@@ -7,6 +7,7 @@ import {
 import { type ReactNode, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 import { Navbar, PendingCalls } from '../components/Navbar';
+import { showOrderToast } from '../components/OrderToast';
 import { TableButton } from '../components/Table';
 import { TableDetail, TableDetailEmpty } from '../components/TableDetail';
 import { type Table as Mesa, visitorTable } from '../domain';
@@ -19,13 +20,41 @@ function StoreTableDetail({
   table,
   heading,
   onCharged,
+  onMoved,
 }: {
   table: Mesa;
   heading: ReactNode;
   onCharged: () => void;
+  /** The detail follows the Pedidos to their new Mesa, and back on undo. */
+  onMoved: (to: number) => void;
 }) {
-  const { confirmOrder, serveOrder, attendCall, chargeAndFree } =
-    useStore(store);
+  const {
+    tables,
+    confirmOrder,
+    serveOrder,
+    attendCall,
+    chargeAndFree,
+    moveTable,
+    restoreTables,
+  } = useStore(store);
+  const t = useT();
+  const move = (to: number) => {
+    const target = tables.find((item) => item.number === to);
+    if (!target) return;
+    moveTable(table.number, to);
+    onMoved(to);
+    showOrderToast(
+      'confirmado',
+      t(target.occupied ? 'merged' : 'transferred')(table.number, to),
+      {
+        label: t('undo'),
+        onAction: () => {
+          restoreTables([table, target]);
+          onMoved(table.number);
+        },
+      },
+    );
+  };
   return (
     <TableDetail
       table={table}
@@ -37,6 +66,8 @@ function StoreTableDetail({
         chargeAndFree(table.number);
         onCharged();
       }}
+      moveTargets={tables.filter((item) => item.number !== table.number)}
+      onMove={move}
     />
   );
 }
@@ -45,10 +76,12 @@ function StoreTableDetail({
 function TableSheet({
   table,
   onClose,
+  onMoved,
   opener,
 }: {
   table: Mesa | undefined;
   onClose: () => void;
+  onMoved: (to: number) => void;
   /** The grid table that opened the sheet: focus returns there when it closes. */
   opener: () => HTMLElement | null;
 }) {
@@ -69,6 +102,7 @@ function TableSheet({
           <StoreTableDetail
             table={table}
             onCharged={onClose}
+            onMoved={onMoved}
             heading={
               <div className="table-detail-head">
                 <DialogTitle render={(props) => <h3 {...props} />}>
@@ -106,6 +140,7 @@ export function Garzon() {
           <TableSheet
             table={table}
             onClose={close}
+            onMoved={setSelected}
             opener={() => opener.current}
           />
         ) : (
@@ -118,6 +153,7 @@ export function Garzon() {
               <StoreTableDetail
                 table={table}
                 onCharged={close}
+                onMoved={setSelected}
                 heading={
                   <div className="table-detail-head">
                     <h3>{t('tableN')(table.number)}</h3>

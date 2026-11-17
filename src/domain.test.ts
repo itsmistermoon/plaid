@@ -396,3 +396,34 @@ it('freeing a filler table clears its Pedidos', () => {
     calls: [],
   });
 });
+
+it('moves a table to a free one, merges it into an occupied one and undoes it', () => {
+  const store = createDemoStore();
+  store.getState().setQty({ dishId: 'empanada' }, 1);
+  store.getState().sendOrder();
+  store.getState().callWaiter();
+  const before = store.getState().tables;
+  store.getState().moveTable(7, 3);
+  expect(store.getState().tables[6]).toMatchObject({
+    occupied: false,
+    orders: [],
+    calls: [],
+  });
+  expect(store.getState().tables[2]).toMatchObject({
+    occupied: true,
+    calls: ['pedido', 'garzón'],
+  });
+  expect(store.getState().tables[2].orders).toHaveLength(1);
+  // Merge: Mesa 7 orders again and Mesa 3 joins it.
+  store.getState().setQty({ dishId: 'italiano' }, 1);
+  store.getState().sendOrder();
+  store.getState().moveTable(3, 7);
+  expect(store.getState().tables[6].orders).toHaveLength(2);
+  expect(store.getState().tables[6].calls).toEqual(['pedido', 'garzón']);
+  expect(store.getState().tables[2].occupied).toBe(false);
+  // A free table has nothing to move.
+  store.getState().moveTable(3, 5);
+  expect(store.getState().tables[4].occupied).toBe(false);
+  store.getState().restoreTables([before[6], before[2]]);
+  expect(store.getState().tables).toEqual(before);
+});

@@ -121,6 +121,13 @@ interface DemoState {
   confirmOrder: (table: number, id: string) => void;
   serveOrder: (table: number, id: string) => void;
   attendCall: (table: number, call: CallKind) => void;
+  /**
+   * Moves a Mesa's Pedidos and Llamados to another one and frees the origin:
+   * a free destination takes them over, an occupied one adds them to its own.
+   */
+  moveTable: (from: number, to: number) => void;
+  /** Puts the given Mesas back as they were, to undo a move. */
+  restoreTables: (snapshot: Table[]) => void;
   tour: Tour | null;
   /** Starts the tour, resumes it if skipped, or repeats it if finished. */
   startTour: () => void;
@@ -246,6 +253,33 @@ export const createDemoStore = (storage?: StateStorage) => {
                     calls: table.calls.filter((_, i) => i !== index),
                   };
             }),
+          })),
+        moveTable: (from, to) =>
+          set((state) => {
+            const origin = state.tables.find((table) => table.number === from);
+            if (!origin?.occupied || from === to) return state;
+            return {
+              tables: state.tables.map((table) =>
+                table.number === from
+                  ? { ...table, occupied: false, orders: [], calls: [] }
+                  : table.number === to
+                    ? {
+                        ...table,
+                        occupied: true,
+                        orders: [...table.orders, ...origin.orders],
+                        calls: [...new Set([...table.calls, ...origin.calls])],
+                      }
+                    : table,
+              ),
+            };
+          }),
+        restoreTables: (snapshot) =>
+          set((state) => ({
+            tables: state.tables.map(
+              (table) =>
+                snapshot.find((saved) => saved.number === table.number) ??
+                table,
+            ),
           })),
         sendOrder: () =>
           set((state) => {

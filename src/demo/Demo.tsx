@@ -3,6 +3,7 @@ import { type CSSProperties, useState } from 'react';
 import { Link } from 'wouter';
 import { useStore } from 'zustand';
 import { LangSwitch } from '../components/LangSwitch';
+import { OrderToastRegion } from '../components/OrderToast';
 import { SchemeSwitch } from '../components/SchemeSwitch';
 import { Selector } from '../components/Selector';
 import { SelectorToggle } from '../components/SelectorToggle';
@@ -133,6 +134,7 @@ export function Demo() {
           )}
         </div>
       </div>
+      <OrderToastRegion />
       {touring && tourSteps[touring.step] && (
         <TourThread step={tourSteps[touring.step]} />
       )}
