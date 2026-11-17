@@ -363,6 +363,11 @@
   .panel-states .navbar-demo {
     width: 100%;
   }
+  /* The gallery sample is narrower than the demo's bar: the logo shrinks to
+     fit between the two 84px slots instead of truncating. */
+  .navbar-demo .navbar h2[data-logo] {
+    font-size: 20px;
+  }
   /* The printer mouth sticks out 14 px past the paper: do not clip it. */
   .panel-stage {
     padding-inline: 10px;

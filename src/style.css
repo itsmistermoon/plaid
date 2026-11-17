@@ -738,6 +738,9 @@ button.scheme-switch:disabled {
 .dish-plate {
   --r: 8px;
   display: grid;
+  /* Definite tracks: the square photo fills the plate instead of growing its
+     row and overflowing it. */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   place-items: center;
   width: 133px;
   height: 100px;
