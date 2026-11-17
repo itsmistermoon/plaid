@@ -18,8 +18,8 @@ import {
   toothOffset,
 } from '../lib/wheel';
 
-// Tambor vertical y dientes en el borde, mezcla del select wheel y la
-// page-wheel de spec-01 (Shu Ding, MIT), con piel propia.
+// Vertical drum with teeth on the edge, a mix of the select wheel and the
+// page-wheel from spec-01 (Shu Ding, MIT), with its own skin.
 const row = 36;
 const stepDeg = 24;
 const radius = row / ((stepDeg * Math.PI) / 180);
@@ -33,12 +33,12 @@ const reducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /**
- * Ruleta de cantidad: un tambor que hace clic en cada número.
+ * Quantity wheel: a drum that clicks on every number.
  *
- * NumberInput de UI SDK es la fuente de verdad (spinbutton, teclado y flechas
- * que repiten al mantenerlas). El tambor solo dibuja: las entradas mueven un
- * objetivo y un único loop lo alcanza con resorte, sonando y vibrando cada
- * vez que un número cruza el centro.
+ * UI SDK's NumberInput is the source of truth (spinbutton, keyboard and
+ * arrows that repeat when held). The drum only draws: inputs move a target
+ * and a single loop reaches it with a spring, playing a sound and vibrating
+ * each time a number crosses the center.
  */
 export function QuantityWheel({
   value,
@@ -87,7 +87,7 @@ export function QuantityWheel({
     if (!el) return;
     teethEls.current ??= [...el.querySelectorAll<HTMLElement>('[data-tooth]')];
     const { pos } = motion.current;
-    // Los dientes rodean la curva del tambor: se apiñan hacia los bordes.
+    // The teeth wrap around the drum's curve: they bunch up toward the edges.
     const half = teeth.length / 2;
     for (const tooth of teethEls.current) {
       const angle =
@@ -105,13 +105,13 @@ export function QuantityWheel({
       const d = Number(face.dataset.n) - pos;
       const angle = Math.max(-90, Math.min(90, d * stepDeg));
       const rad = (angle * Math.PI) / 180;
-      // Los números mayores quedan arriba: subir la cantidad hace bajar el tambor.
+      // Larger numbers sit on top: raising the quantity moves the drum down.
       face.style.transform = `translateY(${(-radius * Math.sin(rad)).toFixed(2)}px) translateZ(${(radius * (Math.cos(rad) - 1)).toFixed(2)}px) rotateX(${angle.toFixed(2)}deg)`;
       face.style.opacity = Math.max(0, 1 - Math.abs(d) * 0.3).toFixed(2);
     }
   };
 
-  // El único loop: lleva el tambor al objetivo y suena en cada detente.
+  // The single loop: moves the drum to the target and sounds on each detent.
   const run = () => {
     const m = motion.current;
     if (m.frame) return;
@@ -150,13 +150,13 @@ export function QuantityWheel({
 
   useLayoutEffect(paint);
 
-  // Solo un cambio de valor desde fuera (flechas, teclado, tipeo) lo mueve.
+  // Only a value change from outside (arrows, keyboard, typing) moves it.
   useEffect(() => {
     if (!drag.current && motion.current.target !== value) aim(value);
   }, [value]);
 
-  // La rueda del mouse mueve el objetivo y se asienta al detenerse. El
-  // listener de React es pasivo, así que se agrega aquí para frenar el scroll.
+  // The mouse wheel moves the target and settles when it stops. React's
+  // listener is passive, so it is added here to stop the page from scrolling.
   useEffect(() => {
     const el = windowEl.current;
     if (!el || disabled) return;
@@ -208,7 +208,7 @@ export function QuantityWheel({
     >
       <NumberInputGroup
         className="wheel"
-        // Cada gesto sobre la rueda habilita el audio de los clics que siguen.
+        // Every gesture on the wheel enables the audio for the clicks that follow.
         onPointerDownCapture={unlockAudio}
         onKeyDownCapture={unlockAudio}
         onTouchEndCapture={unlockAudio}
@@ -233,7 +233,7 @@ export function QuantityWheel({
             if (!d.moved && Math.abs(dy) < 3) return;
             if (!d.moved) event.currentTarget.dataset.dragging = '';
             d.moved = true;
-            // Arrastrar hacia abajo trae los números mayores, que están arriba.
+            // Dragging down brings the larger numbers, which are on top.
             const target = give(d.target + dy / row, min, max);
             d.samples = [...d.samples.slice(-4), [performance.now(), target]];
             aim(target);
@@ -244,7 +244,7 @@ export function QuantityWheel({
             delete event.currentTarget.dataset.dragging;
             if (!d) return;
             if (!d.moved) {
-              // Un toque arriba o abajo del centro sube o baja uno.
+              // A tap above or below the center raises or lowers by one.
               const box = event.currentTarget.getBoundingClientRect();
               const offset = event.clientY - box.top - box.height / 2;
               if (Math.abs(offset) > row / 2)

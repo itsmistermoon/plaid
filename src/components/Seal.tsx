@@ -4,7 +4,7 @@ import type { CallKind } from '../domain';
 
 const sealIcons = { pago: DollarSign, pedido: Utensils, garzón: HandPlatter };
 
-/** Sello de 14 puntas de un llamado, centrado en (x, 153) dentro de la mesa. */
+/** 14-point Sello of a Llamado, centered at (x, 153) inside the table. */
 export function Seal({ kind, x }: { kind: CallKind; x: number }) {
   const Icon = sealIcons[kind];
   const gradient = useId().replace(/:/g, '');
@@ -26,7 +26,7 @@ export function Seal({ kind, x }: { kind: CallKind; x: number }) {
         className="seal-face"
         fill={`url(#${gradient})`}
       />
-      {/* Cara plana del tema moderno; el original la oculta. */}
+      {/* Flat face of the modern theme; the original hides it. */}
       <circle className="seal-dot" cx={x} cy={153} r={15} />
       <g className="seal-glyph">
         <Icon
@@ -42,7 +42,7 @@ export function Seal({ kind, x }: { kind: CallKind; x: number }) {
   );
 }
 
-/** Un sello suelto, fuera de la mesa. */
+/** A standalone Sello, outside the table. */
 export function SealBadge({ kind, label }: { kind: CallKind; label: string }) {
   return (
     <svg className="seal-badge" viewBox="72 125 56 56" role="img">

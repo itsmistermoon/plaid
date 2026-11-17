@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { type MouseEvent, useId } from 'react';
 import type { CallKind } from '../domain';
 import { useT } from '../i18n';
 import { Seal } from './Seal';
@@ -85,7 +85,7 @@ export function Table({
           height="162"
           filter={`url(#${id}grain)`}
         />
-        {/* El mantel es un rombo mayor que la mesa: el borde lo recorta en octágono. */}
+        {/* The tablecloth is a diamond larger than the table: the edge clips it into an octagon. */}
         <path
           className="cloth-shadow"
           transform="translate(0 3)"
@@ -134,5 +134,43 @@ export function Table({
         />
       ))}
     </svg>
+  );
+}
+
+/** Tappable table of the Garzón's grid, with its summary for screen readers. */
+export function TableButton({
+  number,
+  occupied,
+  calls,
+  pressed,
+  tour,
+  onClick,
+}: {
+  number: number;
+  occupied: boolean;
+  calls: CallKind[];
+  pressed?: boolean;
+  tour?: string;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+}) {
+  const t = useT();
+  const unique = [...new Set(calls)];
+  return (
+    <button
+      className="table-button"
+      data-occupied={occupied}
+      type="button"
+      aria-pressed={pressed ?? false}
+      data-tour={tour}
+      onClick={onClick}
+    >
+      <Table number={number} occupied={occupied} calls={calls} />
+      <span className="sr-only">
+        {t('tableSummary')(number, occupied)}
+        {unique.length
+          ? `, ${t('callsSummary')}: ${unique.map((call) => t('callLabels')[call]).join(', ')}`
+          : ''}
+      </span>
+    </button>
   );
 }

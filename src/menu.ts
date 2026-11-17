@@ -9,13 +9,13 @@ export interface Dish {
   category: Category;
   name: string;
   description: string;
-  /** Bajada en inglés: el nombre chileno se conserva. */
+  /** English subtitle: the Chilean name is kept. */
   en: string;
   price: number;
   soldOut?: boolean;
   extras?: Extra[];
 }
-/** Agregado opcional de un plato, con su precio por unidad. */
+/** Optional extra of a dish, with its price per unit. */
 export interface Extra {
   id: string;
   name: string;

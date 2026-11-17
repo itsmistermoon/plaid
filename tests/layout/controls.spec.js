@@ -12,6 +12,7 @@ for (const width of [1440, 390]) {
       '.lang-switch',
       '.role-switch',
       '.tour-button',
+      '.kit-link',
       '.reset-button',
     ];
     let baseline;
@@ -24,7 +25,7 @@ for (const width of [1440, 390]) {
             .click();
           await page.locator(`.lang-switch a[hreflang="${lang}"]`).click();
         } else {
-          // En teléfono cada elección es un solo botón que alterna.
+          // On phones every choice is a single button that toggles.
           const current = await page.locator('html').getAttribute('data-theme');
           if (current !== theme) await page.locator('.theme-switch').click();
           const english = page.url().includes('/en/');
@@ -39,7 +40,7 @@ for (const width of [1440, 390]) {
           const control = page.locator(selector);
           await expect(control).toBeVisible();
           boxes.push(await control.boundingBox());
-          // El texto más largo entre temas e idiomas cabe sin desbordar.
+          // The longest text across themes and languages fits without overflowing.
           expect(
             await control.evaluate((el) => el.scrollWidth <= el.clientWidth),
             `${selector} desborda (${theme}/${lang})`,

@@ -1,6 +1,6 @@
 import type { Dish } from '../menu';
 
-/** Placa de esquinas cóncavas que enmarca la foto del plato. */
+/** Plate with concave corners that frames the dish photo. */
 export function DishPlate({ dish, size }: { dish: Dish; size?: 'big' }) {
   return (
     <span className="dish-plate" data-size={size}>

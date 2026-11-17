@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "test": "vitest run --passWithNoTests --exclude tests/layout/**",
+    "test": "vitest run --passWithNoTests --exclude 'tests/layout/**'",
     "lint": "biome check .",
     "test:layout": "playwright test"
   },

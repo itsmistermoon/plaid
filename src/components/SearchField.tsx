@@ -2,7 +2,7 @@ import { Input, InputClear, InputGroup } from '@ui-sdk/react/input';
 import { Search, X } from 'lucide-react';
 import { useT } from '../i18n';
 
-/** Campo de búsqueda redondeado con lupa y botón para borrar. */
+/** Rounded search field with a magnifier and a clear button. */
 export function SearchField({
   label,
   value,

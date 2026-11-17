@@ -1,5 +1,5 @@
-// El sonido de un detente: un clic sintetizado con Web Audio.
-// Adaptado de lib/sound.ts de spec-01 (Shu Ding, MIT).
+// The sound of a detent: a click synthesized with Web Audio.
+// Adapted from lib/sound.ts in spec-01 (Shu Ding, MIT).
 
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
@@ -11,21 +11,21 @@ function audio() {
     if (typeof AudioContext === 'undefined') return null;
     ctx = new AudioContext({ latencyHint: 'interactive' });
     master = ctx.createGain();
-    master.gain.value = 0.3; // bajo: acompaña, no protagoniza
+    master.gain.value = 0.3; // low: accompanies, does not take over
     master.connect(ctx.destination);
     noise = ctx.createBuffer(1, ctx.sampleRate / 4, ctx.sampleRate);
     const data = noise.getChannelData(0);
     for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
   }
-  // Safari deja el contexto "interrupted" y no lo retoma solo.
+  // Safari leaves the context "interrupted" and does not resume it on its own.
   if (ctx.state !== 'running') ctx.resume().catch(() => {});
   return ctx;
 }
 
 /**
- * Crea o retoma el audio. Los navegadores solo dejan iniciarlo dentro de un
- * gesto: llámala desde el handler de un gesto para que los clics que vengan
- * después (un arrastre, una inercia) también suenen.
+ * Creates or resumes the audio. Browsers only allow starting it inside a
+ * gesture: call it from a gesture handler so the clicks that follow
+ * (a drag, an inertia) also sound.
  */
 export function unlockAudio() {
   audio();
@@ -33,12 +33,12 @@ export function unlockAudio() {
 
 const vary = (amount: number) => 1 + (Math.random() * 2 - 1) * amount;
 
-/** Un clic de plástico, corto y bajo. */
+/** A plastic click, short and low. */
 export function click() {
   const c = audio();
   if (!c || !master || !noise) return;
   const at = c.currentTime + 0.002;
-  // Ruido filtrado: el roce de plástico contra plástico.
+  // Filtered noise: plastic rubbing against plastic.
   const source = c.createBufferSource();
   source.buffer = noise;
   const filter = c.createBiquadFilter();
@@ -51,7 +51,7 @@ export function click() {
   source.connect(filter).connect(gain).connect(master);
   source.start(at, Math.random() * 0.2);
   source.stop(at + 0.03);
-  // Y un tono brillante y cortísimo encima.
+  // And a bright, very short tone on top.
   const osc = c.createOscillator();
   osc.frequency.value = 4300 * vary(0.04);
   const ring = c.createGain();

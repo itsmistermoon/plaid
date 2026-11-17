@@ -1,17 +1,20 @@
-import { ConciergeBell, ShoppingCart } from 'lucide-react';
+import { ConciergeBell } from 'lucide-react';
 import { useState } from 'react';
 import { useStore } from 'zustand';
-import { ArrowButton, Navbar } from '../components/Navbar';
+import { ArrowButton, CartButton, Navbar } from '../components/Navbar';
+import { Sidebar, SidebarItem } from '../components/Sidebar';
 import { findVisitorTable, visitorTable } from '../domain';
 import { useT } from '../i18n';
 import type { Dish } from '../menu';
 import { type Page, pages } from './pages';
 import { Detalle } from './pages/Detalle';
 import { store } from './store';
+import { useMedia } from './useMedia';
 
 export function Comensal({ onHome }: { onHome: () => void }) {
   const { cart, tables, callWaiter } = useStore(store);
   const t = useT();
+  const phone = useMedia('(max-width: 760px)');
   const mesa = findVisitorTable(tables);
   const [page, setPage] = useState<Page>('carta');
   const [detail, setDetail] = useState<Dish | null>(null);
@@ -36,59 +39,41 @@ export function Comensal({ onHome }: { onHome: () => void }) {
         title={title}
         logo={title === 'Restaurant El Clan'}
         end={
-          <button
-            type="button"
-            className="dark-button cart-button desktop-only"
-            data-tour="enviar"
-            aria-label={t('viewOrder')(count)}
+          <CartButton
+            className="desktop-only"
+            tour="enviar"
+            count={count}
+            label={t('viewOrder')(count)}
             onClick={() => go('carrito')}
-          >
-            <ShoppingCart aria-hidden="true" strokeWidth={2.5} />
-            {count > 0 && <span className="count">{count}</span>}
-          </button>
+          />
         }
       />
       <div className="screen-body">
-        <nav className="sidebar tabbar" aria-label={t('diner')}>
-          <div className="sidebar-guest">
-            <span className="avatar" aria-hidden="true">
-              {visitorTable}
-            </span>
-            {t('table7')}
-          </div>
+        <Sidebar label={t('diner')} table={visitorTable} tabbar={phone}>
           {pages.map((item) => (
-            <button
+            <SidebarItem
               key={item.page}
-              type="button"
-              className="sidebar-item"
-              data-tab={item.tab || undefined}
-              data-tour={item.tour}
-              aria-current={page === item.page && !detail ? 'page' : undefined}
+              icon={item.icon}
+              label={item.label(t)}
+              tab={item.tab}
+              tour={item.tour}
+              current={page === item.page && !detail}
               disabled={item.needsOrders && !mesa.orders.length}
+              count={item.page === 'carrito' ? count : undefined}
               onClick={() => go(item.page)}
-            >
-              {item.icon}
-              {item.label(t)}
-              {item.page === 'carrito' && count > 0 && (
-                <span className="count">{count}</span>
-              )}
-            </button>
+            />
           ))}
-          <button
-            type="button"
-            className="sidebar-item"
+          <SidebarItem
+            icon={<ConciergeBell />}
+            label={
+              mesa.calls.includes('garzón')
+                ? t('waiterComing')
+                : t('waiterShort')
+            }
             disabled={mesa.calls.includes('garzón')}
             onClick={callWaiter}
-          >
-            <ConciergeBell />
-            {mesa.calls.includes('garzón')
-              ? t('waiterComing')
-              : t('waiterShort')}
-          </button>
-          <p className="sidebar-logo">
-            Restaurant El Clan<small>{t('withIclub')}</small>
-          </p>
-        </nav>
+          />
+        </Sidebar>
         <div className="board">
           {detail ? (
             <Detalle

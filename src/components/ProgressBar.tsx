@@ -6,13 +6,13 @@ import {
   ProgressValue,
 } from '@ui-sdk/react/progress';
 
-/** Barra de progreso del kit: canal hundido con relleno verde brillante. */
+/** The kit's progress bar: sunken channel with a bright green fill. */
 export function ProgressBar({
   label,
   value,
 }: {
   label: string;
-  /** `null` cuando el avance es desconocido. */
+  /** `null` when progress is unknown. */
   value: number | null;
 }) {
   return (

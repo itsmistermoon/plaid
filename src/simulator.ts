@@ -6,15 +6,15 @@ import {
   visitorTable,
 } from './domain';
 
-/** Tope de llamados abiertos en las mesas de relleno: la sala se ve viva sin saturarse. */
+/** Cap on open Llamados at the Mesas de relleno: the floor looks alive without getting saturated. */
 const maxFillerCalls = 4;
 const fillerKinds: CallKind[] = ['pedido', 'garzón', 'pago'];
 
 /**
- * Un paso de las mesas de relleno sobre una mesa al azar:
- * una mesa libre se ocupa y manda un pedido; una con llamados ve atendido el
- * más antiguo (y se libera si era el pago); una ocupada sin llamados manda uno
- * nuevo de cualquier tipo. Con la sala al tope solo se atienden llamados.
+ * One step of the Mesas de relleno on a random table: a free table becomes
+ * occupied and sends a Pedido; one with Llamados has its oldest attended
+ * (and is freed if it was the payment); an occupied one without Llamados
+ * sends a new one of any kind. With the floor at the cap, only Llamados are attended.
  */
 export function fillerStep(tables: Table[], random: () => number): Table[] {
   const filler = tables.filter((table) => table.number !== visitorTable);

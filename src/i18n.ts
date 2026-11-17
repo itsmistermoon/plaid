@@ -11,10 +11,10 @@ const paths: Record<Lang, Record<Page, string>> = {
   en: { demo: '/en/demo', gallery: '/en/components' },
 };
 
-/** Ruta de una página en un idioma. */
+/** Path of a page in a language. */
 export const pathFor = (page: Page, lang: Lang) => paths[lang][page];
 
-/** Página e idioma de una ruta, o `null` si no existe. */
+/** Page and language of a path, or `null` if it does not exist. */
 export function routeFor(path: string): { page: Page; lang: Lang } | null {
   const clean = path.replace(/\/+$/, '') || '/';
   for (const lang of ['es', 'en'] as const)
@@ -34,7 +34,7 @@ const es = {
     `${label}: ${current}. Tocar para cambiar a ${next}`,
   themes: { original: 'Original', moderno: 'Moderno' },
   notFound: 'Página no encontrada',
-  // Escenario de la demo
+  // Demo stage
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'una reconstrucción de iClub',
   device: 'Dispositivo',
@@ -42,7 +42,8 @@ const es = {
   waiter: 'Garzón',
   resetDemo: 'Reiniciar demo',
   resetShort: 'Reiniciar',
-  // Recorrido guiado
+  uiKit: 'UI Kit',
+  // Guided tour
   tour: 'Recorrido guiado',
   tourStart: 'Recorrido',
   tourResume: 'Retomar recorrido',
@@ -80,12 +81,11 @@ const es = {
       'Recorriste el pedido de punta a punta. Sigue probando o reinicia la demo.',
     ],
   } satisfies Record<TourStep | 'listo', [string, string]>,
-  // Portada
+  // Cover
   welcome: 'Bienvenido a Restaurant El Clan',
   scanQr: 'Escanea el código QR de tu mesa',
   sitDown: 'Sentarme en la Mesa 7',
   // Comensal
-  table7: 'Mesa 7',
   back: 'Volver',
   menu: 'Carta',
   order: 'Pedido',
@@ -160,7 +160,7 @@ const es = {
     garzón: 'Llama al garzón',
     pago: 'Pide la cuenta',
   } satisfies Record<CallKind, string>,
-  // Componentes
+  // Components
   dish: 'Plato',
   price: 'Precio',
   total: 'Total',
@@ -173,7 +173,7 @@ const es = {
   pickOption: 'Elige una opción',
   switchOn: 'SÍ',
   switchOff: 'NO',
-  // Galería
+  // Gallery
   galleryTitle: 'Galería de componentes',
   gallerySubtitle: 'Restaurant El Clan · iClub',
   openDemo: 'Abrir la demo',
@@ -204,23 +204,41 @@ const es = {
     servido: ['Pedido servido', '¡Buen provecho!'],
     error: ['No se pudo enviar', 'Revisa la conexión e inténtalo de nuevo.'],
   } satisfies Record<OrderStatus | 'error', [string, string]>,
+  groups: {
+    controls: 'Controles',
+    containers: 'Contenedores y navegación',
+    restaurant: 'Piezas del restaurant',
+  },
   panels: {
     button: 'Botón',
     arrow: 'Botón flecha',
     wheel: 'Ruleta de cantidad',
+    stepper: 'Stepper de la boleta',
     check: 'Checkbox',
+    extras: 'Agregados',
     switch: 'Switch',
     search: 'Búsqueda',
-    scroll: 'Scrollbar',
-    progress: 'Progress bar',
     dropdown: 'Selector desplegable',
+    selector: 'Segmentado y botón que alterna',
+    progress: 'Progress bar',
+    scroll: 'Scrollbar',
+    postIt: 'Nota adhesiva',
+    navbar: 'Navbar',
+    sidebar: 'Sidebar',
+    tabbar: 'Tabbar del teléfono',
+    categoryTabs: 'Pestañas de categorías',
+    toast: 'Toast de estado',
+    empty: 'Estado vacío',
+    scanner: 'Lector QR',
+    ribbon: 'Cinta de título',
     plate: 'Placa de plato',
     receipt: 'Boleta',
-    toast: 'Toast de estado',
+    printer: 'Impresora corta y larga',
     seal: 'Sello',
     table: 'Mesa',
-    navbar: 'Navbar',
+    tableDetail: 'Detalle de mesa del Garzón',
   },
+
   stateLabels: {
     disabled: 'Deshabilitado',
     disabledF: 'Deshabilitada',
@@ -245,6 +263,27 @@ const es = {
     combinedCalls: 'Llamados combinados',
     waiter: 'Garzón',
     longTitle: 'Título largo',
+    lightDisabled: 'Claro, deshabilitado',
+    darkDisabled: 'Oscuro, deshabilitado',
+    shortName: 'Nombre corto',
+    longName: 'Nombre largo',
+    emptyF: 'Vacía',
+    withText: 'Con texto',
+    noneChecked: 'Ninguno marcado',
+    someChecked: 'Algunos marcados',
+    activeItem: 'Ítem activo',
+    disabledItem: 'Ítem deshabilitado',
+    withCount: 'Con cantidad',
+    noOrders: 'Sin pedidos',
+    notScrolled: 'Sin desplazar',
+    scrolled: 'Desplazada',
+    desktop: 'Escritorio',
+    phone: 'Teléfono',
+    short: 'Corta',
+    long: 'Larga',
+    freeTable: 'Mesa libre',
+    selected: 'Seleccionada',
+    withActions: 'Con total y acción',
   },
 };
 
@@ -265,6 +304,7 @@ const en: Messages = {
   waiter: 'Waiter',
   resetDemo: 'Reset demo',
   resetShort: 'Reset',
+  uiKit: 'UI Kit',
   tour: 'Guided tour',
   tourStart: 'Tour',
   tourResume: 'Resume tour',
@@ -305,7 +345,6 @@ const en: Messages = {
   welcome: 'Welcome to Restaurant El Clan',
   scanQr: 'Scan the QR code on your table',
   sitDown: 'Sit at Table 7',
-  table7: 'Table 7',
   back: 'Back',
   menu: 'Menu',
   order: 'Order',
@@ -417,23 +456,41 @@ const en: Messages = {
     servido: ['Order served', 'Enjoy your meal!'],
     error: ['Could not send', 'Check the connection and try again.'],
   },
+  groups: {
+    controls: 'Controls',
+    containers: 'Containers and navigation',
+    restaurant: 'Restaurant pieces',
+  },
   panels: {
     button: 'Button',
     arrow: 'Arrow button',
     wheel: 'Quantity wheel',
+    stepper: 'Receipt stepper',
     check: 'Checkbox',
+    extras: 'Extras',
     switch: 'Switch',
     search: 'Search',
-    scroll: 'Scrollbar',
-    progress: 'Progress bar',
     dropdown: 'Dropdown',
+    selector: 'Segmented and toggle button',
+    progress: 'Progress bar',
+    scroll: 'Scrollbar',
+    postIt: 'Sticky note',
+    navbar: 'Navbar',
+    sidebar: 'Sidebar',
+    tabbar: 'Phone tab bar',
+    categoryTabs: 'Category tabs',
+    toast: 'Status toast',
+    empty: 'Empty state',
+    scanner: 'QR reader',
+    ribbon: 'Title ribbon',
     plate: 'Dish plate',
     receipt: 'Receipt',
-    toast: 'Status toast',
+    printer: 'Short and long printer',
     seal: 'Seal',
     table: 'Table',
-    navbar: 'Navbar',
+    tableDetail: "Waiter's table detail",
   },
+
   stateLabels: {
     disabled: 'Disabled',
     disabledF: 'Disabled',
@@ -458,6 +515,27 @@ const en: Messages = {
     combinedCalls: 'Combined calls',
     waiter: 'Waiter',
     longTitle: 'Long title',
+    lightDisabled: 'Light, disabled',
+    darkDisabled: 'Dark, disabled',
+    shortName: 'Short name',
+    longName: 'Long name',
+    emptyF: 'Empty',
+    withText: 'With text',
+    noneChecked: 'None checked',
+    someChecked: 'Some checked',
+    activeItem: 'Active item',
+    disabledItem: 'Disabled item',
+    withCount: 'With count',
+    noOrders: 'No orders',
+    notScrolled: 'Not scrolled',
+    scrolled: 'Scrolled',
+    desktop: 'Desktop',
+    phone: 'Phone',
+    short: 'Short',
+    long: 'Long',
+    freeTable: 'Free table',
+    selected: 'Selected',
+    withActions: 'With total and action',
   },
 };
 
@@ -465,22 +543,22 @@ export const messages: Record<Lang, Messages> = { es, en };
 
 export const LangContext = createContext<Lang>('es');
 
-/** Idioma de la ruta actual. */
+/** Language of the current path. */
 export const useLang = () => useContext(LangContext);
 
-/** `t(clave)` devuelve el texto del idioma de la ruta. */
+/** `t(key)` returns the text in the path's language. */
 export function useT() {
   const dict = messages[useLang()];
   return <K extends keyof Messages>(key: K): Messages[K] => dict[key];
 }
 
-/** Descripción de un plato en el idioma de la ruta; el nombre no se traduce. */
+/** Description of a dish in the path's language; the name is not translated. */
 export function useDishText() {
   const lang = useLang();
   return (dish: Dish) => (lang === 'en' ? dish.en : dish.description);
 }
 
-/** Nombre de un agregado en el idioma de la ruta. */
+/** Name of an extra in the path's language. */
 export function useExtraName() {
   const lang = useLang();
   return (extra: Extra) => (lang === 'en' ? extra.en : extra.name);

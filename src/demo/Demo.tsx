@@ -1,11 +1,14 @@
-import { RotateCcw } from 'lucide-react';
+import { LayoutGrid, RotateCcw } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'wouter';
 import { useStore } from 'zustand';
 import { LangSwitch } from '../components/LangSwitch';
+import { Selector } from '../components/Selector';
 import { SelectorToggle } from '../components/SelectorToggle';
+import { StageBar } from '../components/StageBar';
 import { ThemeSwitch } from '../components/ThemeSwitch';
 import { TourCoach } from '../components/TourCoach';
-import { useT } from '../i18n';
+import { pathFor, useLang, useT } from '../i18n';
 import { tourSteps } from '../tour';
 import { Comensal } from './Comensal';
 import { Garzon } from './Garzon';
@@ -19,6 +22,7 @@ export function Demo() {
   const { view, setView, reset, tour, skipTour, endTour } = useStore(store);
   const touring = tour && !tour.skipped ? tour : null;
   const t = useT();
+  const lang = useLang();
   const phone = useMedia('(max-width: 760px)');
   const [revision, setRevision] = useState(0);
   const [entered, setEntered] = useState(false);
@@ -29,7 +33,7 @@ export function Demo() {
       data-view={view}
       data-tour-step={touring ? tourSteps[touring.step] : undefined}
     >
-      <header className="stage-bar">
+      <StageBar>
         <h1>
           Restaurant El Clan <small>{t('stageSubtitle')}</small>
         </h1>
@@ -45,27 +49,30 @@ export function Demo() {
             onClick={() => setView(view === 'garzon' ? 'comensal' : 'garzon')}
           />
         ) : (
-          <fieldset className="selector role-switch">
-            <legend className="sr-only">{t('device')}</legend>
-            <button
-              type="button"
-              aria-pressed={view === 'comensal'}
-              data-tour="cuenta"
-              onClick={() => setView('comensal')}
-            >
-              {t('diner')}
-            </button>
-            <button
-              type="button"
-              aria-pressed={view === 'garzon'}
-              data-tour="sala servir cobrar"
-              onClick={() => setView('garzon')}
-            >
-              {t('waiter')}
-            </button>
-          </fieldset>
+          <Selector
+            className="role-switch"
+            legend={t('device')}
+            value={view}
+            options={[
+              { value: 'comensal', label: t('diner'), tour: 'cuenta' },
+              {
+                value: 'garzon',
+                label: t('waiter'),
+                tour: 'sala servir cobrar',
+              },
+            ]}
+            onChange={setView}
+          />
         )}
         <TourButton />
+        <Link
+          href={pathFor('gallery', lang)}
+          className="dark-button kit-link"
+          aria-label={t('uiKit')}
+        >
+          <LayoutGrid aria-hidden="true" />
+          <span className="reset-label">{t('uiKit')}</span>
+        </Link>
         <button
           type="button"
           className="dark-button reset-button"
@@ -79,7 +86,7 @@ export function Demo() {
           <RotateCcw aria-hidden="true" />
           <span className="reset-label">{t('resetDemo')}</span>
         </button>
-      </header>
+      </StageBar>
       <div className="tablet">
         <span className="tablet-camera" aria-hidden="true" />
         <div className="tablet-glass">

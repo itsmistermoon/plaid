@@ -1,8 +1,8 @@
-// La vibración de un detente.
-// Adaptado de lib/haptics.ts de spec-01 (Shu Ding, MIT).
+// The vibration of a detent.
+// Adapted from lib/haptics.ts in spec-01 (Shu Ding, MIT).
 
-// Safari no tiene Vibration API, pero iOS 18 vibra al alternar un
-// <input type="checkbox" switch> a través de su label, incluso desde script.
+// Safari has no Vibration API, but iOS 18 vibrates when toggling an
+// <input type="checkbox" switch> through its label, even from script.
 let label: HTMLLabelElement | null = null;
 function tapSwitch() {
   if (!label) {
@@ -21,11 +21,11 @@ function tapSwitch() {
   label.click();
 }
 
-/** Un golpecito háptico, donde el dispositivo lo permite. */
+/** A haptic tap, where the device allows it. */
 export function haptic() {
   if (typeof navigator.vibrate === 'function') navigator.vibrate(8);
   else if ('switch' in HTMLInputElement.prototype) {
-    // Fuera de un gesto iOS no vibra; se deja quieto.
+    // Outside a gesture iOS does not vibrate; leave it alone.
     if (navigator.userActivation && !navigator.userActivation.isActive) return;
     tapSwitch();
   }

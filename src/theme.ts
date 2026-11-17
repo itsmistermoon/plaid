@@ -1,6 +1,6 @@
 import { createLocalStorage, createPreference } from '@ui-sdk/core';
 
-/** Tema de la piel: `data-theme` en `<html>`, compartido por la demo y la galería. */
+/** Skin theme: `data-theme` on `<html>`, shared by the demo and the gallery. */
 export const theme = createPreference({
   values: ['original', 'moderno'],
   defaultValue: 'original',

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useStore } from 'zustand';
+import { CategoryTabs } from '../../components/CategoryTabs';
 import { DishPlate } from '../../components/DishPlate';
 import { KitCheck } from '../../components/KitCheck';
 import { money } from '../../format';
@@ -14,25 +15,7 @@ export function Carta({ onOpen }: { onOpen: (dish: Dish) => void }) {
   const [category, setCategory] = useState<Category>(categories[0]);
   return (
     <>
-      <div className="tabs-bar">
-        <div
-          className="segmented"
-          role="tablist"
-          aria-label={t('categoriesLabel')}
-        >
-          {categories.map((item) => (
-            <button
-              key={item}
-              type="button"
-              role="tab"
-              aria-selected={category === item}
-              onClick={() => setCategory(item)}
-            >
-              {t('categories')[item]}
-            </button>
-          ))}
-        </div>
-      </div>
+      <CategoryTabs value={category} onChange={setCategory} />
       <ul
         className="dish-list"
         data-tour="elegir"

@@ -1,17 +1,17 @@
 # plaid
 
-Demo de Restaurant El Clan, una reconstrucción de iClub para el portfolio de moon.
+A demo of Restaurant El Clan, a reconstruction of iClub built for moon's portfolio.
 
-## Desarrollo
+## Development
 
-Requiere Node.js y pnpm.
+Requires Node.js and pnpm.
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-La demo está en `/demo` y la galería en `/componentes`. Las rutas en inglés son `/en/demo` y `/en/components`.
+The demo lives at `/demo` and the gallery at `/componentes`. The English routes are `/en/demo` and `/en/components`.
 
 ```sh
 pnpm build
@@ -19,6 +19,6 @@ pnpm test
 pnpm lint
 ```
 
-## Publicación
+## Deployment
 
-La configuración de Vercel incluye el rewrite necesario para recargar las rutas de la SPA. Producción: https://plaid-itsmistermoons-projects.vercel.app (rama de producción `integration/demo` mientras dura la construcción; cada PR tiene su preview).
+The Vercel configuration includes the rewrite needed to reload SPA routes. Production: https://plaid-ui-kit.vercel.app (production branch `main`; every PR gets a preview).

@@ -11,7 +11,7 @@ import {
 import { Check, ChevronDown } from 'lucide-react';
 import { useT } from '../i18n';
 
-/** Selector desplegable del kit: botón claro con lista flotante. */
+/** The kit's dropdown selector: a light button with a floating list. */
 export function Dropdown({
   label,
   items,

@@ -4,20 +4,18 @@ import {
   DialogContent,
   DialogTitle,
 } from '@ui-sdk/react/dialog';
-import { MousePointerClick } from 'lucide-react';
 import { type ReactNode, useRef, useState } from 'react';
 import { useStore } from 'zustand';
-import { Navbar } from '../components/Navbar';
-import { Table } from '../components/Table';
-import { billTotal, type Table as Mesa, visitorTable } from '../domain';
-import { money } from '../format';
-import { useExtraName, useT } from '../i18n';
-import { lineKey, lineSummary } from './lines';
+import { Navbar, PendingCalls } from '../components/Navbar';
+import { TableButton } from '../components/Table';
+import { TableDetail, TableDetailEmpty } from '../components/TableDetail';
+import { type Table as Mesa, visitorTable } from '../domain';
+import { useT } from '../i18n';
 import { store } from './store';
 import { useMedia } from './useMedia';
 
-/** Lo que el garzón ve y hace sobre una mesa: llamados, pedidos y cuenta. */
-function TableDetail({
+/** A table's detail wired to the demo state. */
+function StoreTableDetail({
   table,
   heading,
   onCharged,
@@ -28,100 +26,22 @@ function TableDetail({
 }) {
   const { confirmOrder, serveOrder, attendCall, chargeAndFree } =
     useStore(store);
-  const t = useT();
-  const extraName = useExtraName();
   return (
-    <>
-      <div className="table-detail-scroll">
-        {heading}
-        <p className="muted">{table.occupied ? t('occupied') : t('free')}</p>
-        <h4>{t('calls')}</h4>
-        {table.calls.length ? (
-          <ul className="side-list">
-            {[...new Set(table.calls)].map((call) => (
-              <li key={call} data-kind={call}>
-                <span>{t('callLabels')[call]}</span>
-                <button
-                  type="button"
-                  className="dark-button"
-                  onClick={() => attendCall(table.number, call)}
-                >
-                  {t('attend')}
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="muted">{t('noCalls')}</p>
-        )}
-        <h4>{t('orders')}</h4>
-        {table.orders.length ? (
-          <ul className="table-orders">
-            {table.orders.map((order, index) => (
-              <li key={order.id} className="table-order">
-                <div className="table-order-head">
-                  <span className="table-order-title">
-                    {t('orderN')(index + 1)}
-                  </span>
-                  <span className="status-badge" data-status={order.status}>
-                    {t('statuses')[order.status]}
-                  </span>
-                  {order.status === 'enviado' && (
-                    <button
-                      type="button"
-                      className="dark-button"
-                      data-tour="servir"
-                      onClick={() => confirmOrder(table.number, order.id)}
-                    >
-                      {t('confirm')}
-                    </button>
-                  )}
-                  {order.status === 'confirmado' && (
-                    <button
-                      type="button"
-                      className="dark-button"
-                      data-tour="servir"
-                      onClick={() => serveOrder(table.number, order.id)}
-                    >
-                      {t('serve')}
-                    </button>
-                  )}
-                </div>
-                <ul className="table-order-lines">
-                  {order.lines.map((line) => (
-                    <li key={lineKey(line)}>{lineSummary(line, extraName)}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="muted">{t('noOrders')}</p>
-        )}
-      </div>
-      {/* La cuenta y su acción quedan fijas abajo; lo largo hace scroll arriba. */}
-      <section className="table-detail-bill" aria-label={t('bill')}>
-        <h4>{t('bill')}</h4>
-        <p className="side-total">{money(billTotal(table))}</p>
-        {table.occupied && (
-          <button
-            type="button"
-            className="light-button"
-            data-tour="cobrar"
-            onClick={() => {
-              chargeAndFree(table.number);
-              onCharged();
-            }}
-          >
-            {t('chargeAndFree')}
-          </button>
-        )}
-      </section>
-    </>
+    <TableDetail
+      table={table}
+      heading={heading}
+      onAttend={(call) => attendCall(table.number, call)}
+      onConfirm={(id) => confirmOrder(table.number, id)}
+      onServe={(id) => serveOrder(table.number, id)}
+      onCharge={() => {
+        chargeAndFree(table.number);
+        onCharged();
+      }}
+    />
   );
 }
 
-/** En el teléfono el detalle es una hoja inferior: un diálogo que atrapa el foco y se cierra con Esc. */
+/** On phones the detail is a bottom sheet: a dialog that traps focus and closes with Esc. */
 function TableSheet({
   table,
   onClose,
@@ -129,7 +49,7 @@ function TableSheet({
 }: {
   table: Mesa | undefined;
   onClose: () => void;
-  /** La mesa de la grilla que abrió la hoja: ahí vuelve el foco al cerrarla. */
+  /** The grid table that opened the sheet: focus returns there when it closes. */
   opener: () => HTMLElement | null;
 }) {
   const t = useT();
@@ -146,7 +66,7 @@ function TableSheet({
         render={<aside />}
       >
         {table && (
-          <TableDetail
+          <StoreTableDetail
             table={table}
             onCharged={onClose}
             heading={
@@ -179,11 +99,7 @@ export function Garzon() {
     <div className="screen" data-surface="garzon">
       <Navbar
         title={t('floor')}
-        end={
-          <span className="dark-button pending" role="status">
-            {t('pendingCalls')(pending)}
-          </span>
-        }
+        end={<PendingCalls>{t('pendingCalls')(pending)}</PendingCalls>}
       />
       <div className="screen-body">
         {phone ? (
@@ -199,7 +115,7 @@ export function Garzon() {
             data-open={table ? true : undefined}
           >
             {table ? (
-              <TableDetail
+              <StoreTableDetail
                 table={table}
                 onCharged={close}
                 heading={
@@ -209,14 +125,7 @@ export function Garzon() {
                 }
               />
             ) : (
-              <div className="sidebar-empty">
-                <MousePointerClick
-                  size={36}
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                />
-                <p>{t('pickTable')}</p>
-              </div>
+              <TableDetailEmpty />
             )}
           </aside>
         )}
@@ -224,33 +133,19 @@ export function Garzon() {
           <ul className="tables" aria-label={t('tables')}>
             {tables.map((item) => (
               <li key={item.number}>
-                <button
-                  className="table-button"
-                  data-occupied={item.occupied}
-                  type="button"
-                  aria-pressed={selected === item.number}
-                  data-tour={
+                <TableButton
+                  number={item.number}
+                  occupied={item.occupied}
+                  calls={item.calls}
+                  pressed={selected === item.number}
+                  tour={
                     item.number === visitorTable ? 'servir cobrar' : undefined
                   }
                   onClick={(event) => {
                     opener.current = event.currentTarget;
                     setSelected(item.number);
                   }}
-                >
-                  <Table
-                    number={item.number}
-                    occupied={item.occupied}
-                    calls={item.calls}
-                  />
-                  <span className="sr-only">
-                    {t('tableSummary')(item.number, item.occupied)}
-                    {item.calls.length
-                      ? `, ${t('callsSummary')}: ${[...new Set(item.calls)]
-                          .map((call) => t('callLabels')[call])
-                          .join(', ')}`
-                      : ''}
-                  </span>
-                </button>
+                />
               </li>
             ))}
           </ul>

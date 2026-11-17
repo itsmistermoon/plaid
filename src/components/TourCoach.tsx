@@ -4,9 +4,9 @@ import { useT } from '../i18n';
 import { type Tour, tourSteps } from '../tour';
 
 /**
- * Capa de ayuda del recorrido, reinterpretación de la de iClub: una nota
- * manuscrita con la mano que señala. No tapa la demo; lo señalado se marca
- * con `data-tour` en cada pantalla.
+ * The tour's help layer, a reinterpretation of iClub's: a handwritten note
+ * with a pointing hand. It does not cover the demo; what it points at is
+ * marked with `data-tour` on each screen.
  */
 export function TourCoach({
   tour,

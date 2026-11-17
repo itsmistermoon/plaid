@@ -1,7 +1,7 @@
 import { Switch, SwitchThumb } from '@ui-sdk/react/switch';
 import { useT } from '../i18n';
 
-/** Interruptor del kit: riel hundido y perilla clara con SÍ/NO (ON/OFF en inglés). */
+/** The kit's switch: sunken rail and light knob labeled SÍ/NO (ON/OFF in English). */
 export function KitSwitch({
   label,
   checked,

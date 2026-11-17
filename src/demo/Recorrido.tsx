@@ -3,7 +3,7 @@ import { useStore } from 'zustand';
 import { useT } from '../i18n';
 import { store } from './store';
 
-/** Botón de la barra que empieza, salta o retoma el recorrido guiado. */
+/** Bar button that starts, skips or resumes the guided tour. */
 export function TourButton() {
   const { tour, startTour, skipTour } = useStore(store);
   const touring = tour && !tour.skipped;

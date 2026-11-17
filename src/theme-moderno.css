@@ -1,7 +1,16 @@
 /*
- * Tema moderno: plano, al estilo shadcn/ui, con el verde del mantel como
- * acento. Misma estructura que el original; solo cambia la piel.
+ * Modern theme: flat, shadcn/ui style, with the tablecloth green as its
+ * accent. Same structure as the original; only the skin changes.
  */
+/* Shades of the single green, all mixed from --accent. */
+[data-theme="moderno"] {
+  --accent-hover: color-mix(in srgb, var(--accent), #000 13%);
+  --accent-soft: color-mix(in srgb, var(--accent), #fff 90%);
+  --accent-tint: color-mix(in srgb, var(--accent), #fff 84%);
+  --accent-tint-strong: color-mix(in srgb, var(--accent), #fff 74%);
+  --accent-ink: color-mix(in srgb, var(--accent), #000 40%);
+  --accent-glow: color-mix(in srgb, var(--accent) 40%, transparent);
+}
 [data-theme="moderno"] {
   --background: #f1f5f9;
   --card: #fff;
@@ -10,15 +19,14 @@
   --border: #e2e8f0;
   --input: #cbd5e1;
   --secondary: #f1f5f9;
+  /* The single green of the modern theme: every other green is mixed from it. */
   --accent: #4e8b30;
-  --accent-hover: #437a28;
-  --accent-soft: #eef5e8;
   --destructive: #dc2626;
   --radius: 10px;
   --shadow-sm: 0 1px 2px #0f172a0d;
   --shadow: 0 1px 3px #0f172a14, 0 1px 2px #0f172a0f;
 
-  /* Tokens que comparte con el original */
+  /* Tokens shared with the original */
   --ink: var(--foreground);
   --muted: var(--muted-foreground);
   --brand: var(--accent);
@@ -26,7 +34,7 @@
   --total: var(--foreground);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
-  /* Piel de las piezas compartidas (ver style.css) */
+  /* Skin of the shared pieces (see style.css) */
   --step-line: var(--input);
   --step-done-line: var(--accent);
   --step-done-bg: var(--accent);
@@ -39,9 +47,10 @@
   --sticky-shadow: var(--shadow-sm);
   --tabbar-ink: var(--muted-foreground);
   --tabbar-ink-shadow: none;
-  --tabbar-divider: 0;
+  --tabbar-divider: 1px solid transparent;
   --tabbar-current-ink: var(--accent);
   --tabbar-current-bg: none;
+  --tabbar-current-shadow: none;
   --toast-icon-border: 0;
   --toast-icon-shadow: none;
   --toast-enviado: #2563eb;
@@ -52,12 +61,18 @@
   color: var(--foreground);
   background: var(--background);
 }
+/* Selector and segmented-control rail */
+[data-theme="moderno"] {
+  --track: #e2e8f0;
+  --track-edge: #0f172a14;
+  --bill-shadow: 0 -4px 8px -4px #0f172a1f;
+}
 [data-theme="moderno"] :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-/* Escenario y marco */
+/* Stage and frame */
 [data-theme="moderno"] .app,
 [data-theme="moderno"] .gallery {
   color: var(--foreground);
@@ -67,20 +82,23 @@
   color: var(--accent);
   text-shadow: none;
 }
+/* Same borders as the original, painted in the rail's color: the active
+   segment looks inset with an inner ring, without changing any measurement. */
 [data-theme="moderno"] .selector,
 [data-theme="moderno"] .segmented {
-  gap: 2px;
-  padding: 3px;
-  border: 0;
+  border-color: var(--track);
   border-radius: 8px;
-  background: #e2e8f0;
+  background: var(--track);
   box-shadow: none;
+}
+[data-theme="moderno"] .selector :is(button, a) + :is(button, a),
+[data-theme="moderno"] .segmented button + button {
+  border-left-color: var(--track);
 }
 [data-theme="moderno"] .selector button,
 [data-theme="moderno"] .selector a,
 [data-theme="moderno"] .segmented button {
-  border: 0;
-  border-radius: 6px;
+  border-radius: 7px;
   color: var(--muted-foreground);
   background: none;
   text-shadow: none;
@@ -90,7 +108,9 @@
 [data-theme="moderno"] .segmented button[aria-selected="true"] {
   color: var(--foreground);
   background: var(--card);
-  box-shadow: var(--shadow);
+  box-shadow:
+    inset 0 0 0 2px var(--track),
+    inset 0 -1px 0 2px var(--track-edge);
 }
 [data-theme="moderno"] .tablet {
   border: 1px solid #cbd5e1;
@@ -133,12 +153,8 @@
 [data-theme="moderno"] .arrow-button,
 [data-theme="moderno"] .dark-button,
 [data-theme="moderno"] .light-button {
-  height: 30px;
-  padding: 0 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  font-weight: 500;
-  font-size: 13px;
   color: var(--foreground);
   background: var(--card);
   box-shadow: var(--shadow-sm);
@@ -151,15 +167,20 @@
 [data-theme="moderno"] .dark-button:hover:not(:disabled) {
   background: var(--secondary);
 }
+/* The chevron takes the left padding that is the tip in the original. */
 [data-theme="moderno"] .arrow-button {
-  clip-path: none;
-  padding-left: 6px;
-  border-left: 1px solid var(--border);
+  filter: none;
+}
+[data-theme="moderno"] .arrow-button::before,
+[data-theme="moderno"] .arrow-button::after {
+  content: none;
 }
 [data-theme="moderno"] .arrow-button svg {
   display: block;
-  width: 16px;
-  height: 16px;
+  position: absolute;
+  left: 2px;
+  width: 13px;
+  height: 13px;
 }
 [data-theme="moderno"] .light-button {
   border-color: var(--accent);
@@ -183,10 +204,10 @@
   border: 0;
 }
 
-/* Menú lateral */
+/* Side menu */
 [data-theme="moderno"] .sidebar {
   background: var(--card);
-  border-right: 1px solid var(--border);
+  border-right-color: var(--border);
   box-shadow: none;
 }
 [data-theme="moderno"] .sidebar-guest,
@@ -199,7 +220,6 @@
     700 22px Outfit,
     sans-serif;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 8px;
 }
 [data-theme="moderno"] .avatar {
   width: 40px;
@@ -211,20 +231,25 @@
   background: var(--accent);
   box-shadow: none;
 }
+/* Same height and padding as the original; the pill is the background clipped
+   inward, so the item's box does not change. */
 [data-theme="moderno"] .sidebar-item {
-  width: auto;
-  height: 42px;
-  margin: 2px 10px;
-  padding: 0 12px;
   gap: 14px;
-  border-radius: 8px;
+}
+[data-theme="moderno"] .sidebar:not(.tabbar) .sidebar-item {
+  border-radius: 12px;
+  border: 0 solid var(--card);
+  border-width: 2px 10px;
+  background-clip: padding-box;
   font-size: 17px;
   font-weight: 500;
   color: var(--foreground);
   text-shadow: none;
 }
-[data-theme="moderno"] .sidebar-item:hover:not(:disabled) {
-  background: var(--secondary);
+[data-theme="moderno"]
+  .sidebar:not(.tabbar)
+  .sidebar-item:hover:not(:disabled) {
+  background: var(--secondary) padding-box;
 }
 [data-theme="moderno"] .sidebar-item svg {
   width: 21px;
@@ -234,7 +259,7 @@
 }
 [data-theme="moderno"] .sidebar-item[aria-current="page"] {
   color: var(--accent);
-  background: var(--secondary);
+  background: var(--secondary) padding-box;
   box-shadow: none;
 }
 [data-theme="moderno"] .sidebar-item[aria-current="page"] svg {
@@ -275,11 +300,13 @@
   mask: none;
   overflow: hidden;
   border-radius: 8px;
-  background: var(--secondary);
+  background: var(--border);
+}
+[data-theme="moderno"] .dish-plate img {
+  mask: none;
+  border-radius: 7px;
 }
 [data-theme="moderno"] .kit-check {
-  width: 22px;
-  height: 22px;
   border: 1px solid var(--input);
   border-radius: 5px;
   color: #fff;
@@ -340,7 +367,7 @@
 [data-theme="moderno"] .extra-price {
   color: var(--muted-foreground);
 }
-/* La nota es un campo de texto liso, sin chinche. */
+/* The note is a plain text field, with no pin. */
 [data-theme="moderno"] .post-it {
   margin-top: 18px;
   border: 1px solid var(--input);
@@ -375,7 +402,7 @@
   color: var(--destructive);
 }
 
-/* Boleta: tarjeta limpia, sin impresora ni papel */
+/* Receipt: clean card, no printer or paper */
 [data-theme="moderno"] .receipt-slot {
   display: none;
 }
@@ -424,8 +451,6 @@
   font-size: 20px;
 }
 [data-theme="moderno"] .stepper button {
-  width: 22px;
-  height: 22px;
   border: 1px solid var(--input);
   border-radius: 6px;
   color: var(--foreground);
@@ -436,8 +461,8 @@
   background: var(--secondary);
 }
 [data-theme="moderno"] .notice {
-  border: 1px solid #cfe3c2;
-  color: #2f5a1b;
+  border: 1px solid var(--accent-tint-strong);
+  color: var(--accent-ink);
   background: var(--accent-soft);
   box-shadow: none;
 }
@@ -445,7 +470,7 @@
   color: var(--muted-foreground);
 }
 
-/* Estado del pedido */
+/* Order status */
 [data-theme="moderno"] .orders > li + li {
   border-top: 1px solid var(--border);
   box-shadow: none;
@@ -466,8 +491,8 @@
   background: var(--secondary);
   box-shadow: none;
 }
-/* Esquinas del visor: un borde redondeado igual al de la ventana, del que
-   solo quedan las cuatro puntas, así siguen la curva sin cortarse. */
+/* Viewfinder corners: a rounded border matching the window's, of which
+   only the four tips remain, so they follow the curve without being cut. */
 [data-theme="moderno"] .scanner-window::before {
   content: "";
   position: absolute;
@@ -485,7 +510,7 @@
   right: 8%;
   height: 2px;
   background: var(--accent);
-  box-shadow: 0 0 10px 1px #4e8b3066;
+  box-shadow: 0 0 10px 1px var(--accent-glow);
 }
 [data-theme="moderno"] .scanner-laser::before,
 [data-theme="moderno"] .scanner-laser::after {
@@ -528,7 +553,7 @@
   gap: 14px;
 }
 
-/* Mesa: la tarjeta es la mesa, el mantel la sobrepasa y la placa va al centro */
+/* Table: the card is the table, the tablecloth extends past it and the plate goes in the center */
 [data-theme="moderno"] .table-button {
   border-radius: 14px;
 }
@@ -539,8 +564,7 @@
   stroke: var(--accent);
   stroke-width: 3;
 }
-[data-theme="moderno"] .table-button[data-occupied="false"] .mesa,
-[data-theme="moderno"] .table-state[data-occupied="false"] .mesa {
+[data-theme="moderno"] .table-button[data-occupied="false"] .mesa {
   opacity: 0.55;
   filter: none;
 }
@@ -554,17 +578,17 @@
   fill: var(--card);
 }
 [data-theme="moderno"] .cloth {
-  fill: #e6f0de;
+  fill: var(--accent-tint);
 }
 [data-theme="moderno"] .mesa[data-occupied="true"] .cloth {
-  fill: #cfe4bf;
+  fill: var(--accent-tint-strong);
 }
 [data-theme="moderno"] .cloth-shine {
   stroke: #fff;
   stroke-width: 1.5;
   stroke-dasharray: 5 4;
   opacity: 1;
-  /* La costura va hacia adentro del borde del mantel, no encima de él. */
+  /* The stitching goes inward from the tablecloth's edge, not on top of it. */
   transform: scale(0.93);
   transform-box: view-box;
   transform-origin: center;
@@ -624,7 +648,7 @@
   fill: #d97706;
 }
 
-/* Galería */
+/* Gallery */
 [data-theme="moderno"] .panel {
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -649,47 +673,47 @@
   border-top: 1px solid var(--border);
   background: var(--card);
 }
+[data-theme="moderno"] .sidebar-demo,
+[data-theme="moderno"] .tabbar-demo,
+[data-theme="moderno"] .table-detail-demo {
+  box-shadow:
+    0 0 0 1px var(--border),
+    var(--shadow-sm);
+}
+/* Outline as a shadow: a border would shrink the pieces they show. */
 [data-theme="moderno"] .navbar-demo {
-  border: 1px solid var(--border);
   border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--border);
 }
 [data-theme="moderno"] .scroll-list li {
   border-bottom: 1px solid var(--border);
 }
 
-/* Switch del kit */
+/* Kit switch */
 [data-theme="moderno"] .kit-switch {
-  width: 40px;
-  height: 22px;
-  border: 0;
-  border-radius: 11px;
+  border-color: var(--input);
   background: var(--input);
   box-shadow: none;
 }
 [data-theme="moderno"] .kit-switch[data-checked] {
+  border-color: var(--accent);
   background: var(--accent);
 }
 [data-theme="moderno"] .kit-switch-on,
 [data-theme="moderno"] .kit-switch-off {
-  visibility: hidden;
+  text-shadow: none;
+}
+[data-theme="moderno"] .kit-switch-off {
+  color: var(--muted-foreground);
 }
 [data-theme="moderno"] .kit-switch-thumb {
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
   border: 0;
-  border-radius: 50%;
   background: #fff;
   box-shadow: 0 1px 2px #0f172a40;
 }
-[data-theme="moderno"] .kit-switch-thumb[data-checked] {
-  translate: 18px 0;
-}
 
-/* Búsqueda */
+/* Search */
 [data-theme="moderno"] .search {
-  height: 34px;
   border: 1px solid var(--input);
   border-radius: 8px;
   color: var(--muted-foreground);
@@ -738,10 +762,8 @@
 
 /* Selector desplegable */
 [data-theme="moderno"] .dropdown {
-  height: 34px;
   border: 1px solid var(--input);
   border-radius: 8px;
-  font-weight: 500;
   color: var(--foreground);
   background: var(--card);
   box-shadow: var(--shadow-sm);
@@ -776,7 +798,7 @@
   box-shadow: 0 8px 24px #0f172a1f;
 }
 
-/* Columna de acción de la boleta */
+/* Receipt action column */
 [data-theme="moderno"] .receipt-actions-total span {
   color: var(--muted-foreground);
 }

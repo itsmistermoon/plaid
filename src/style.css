@@ -1,4 +1,4 @@
-/* Tokens del tema original (iClub, 2012). */
+/* Original theme tokens (iClub, 2012). */
 [data-theme="original"] {
   --stage: #2b3437;
   --slate: #50595c;
@@ -8,20 +8,40 @@
   --bar: linear-gradient(#5f696b, #3c4446 50%, #343b3d);
   --bar-line: #1e2425;
   --sidebar: #3d4547;
+  /* The lettering green is the single brand green: every other green
+     (ribbon, tablecloth, active faces, fills) is a shade mixed from it. */
   --brand: #8fc23f;
+  --brand-face: linear-gradient(
+    color-mix(in srgb, var(--brand), #000 4%),
+    color-mix(in srgb, var(--brand), #000 32%)
+  );
+  --brand-face-inset: linear-gradient(
+    color-mix(in srgb, var(--brand), #000 32%),
+    color-mix(in srgb, var(--brand), #000 4%)
+  );
+  --brand-fill: linear-gradient(
+    color-mix(in srgb, var(--brand), #fff 35%),
+    color-mix(in srgb, var(--brand), #000 10%)
+  );
+  --segment-face: linear-gradient(#6b7577, #485153);
+  --segment-ink: #e6ebe9;
+  --segment-ink-shadow: 0 -1px #0007;
   --paper-ink: #3e3e3e;
   --total: #a3622b;
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
-  /* Piel de las piezas que ambos temas comparten: el moderno solo cambia estos valores. */
+  /* Skin of the pieces both themes share: the modern theme only changes these values. */
   --step-line: currentColor;
-  --step-done-line: #4f7f22;
-  --step-done-bg: linear-gradient(#9fd164, #5a8f28);
+  --step-done-line: color-mix(in srgb, var(--brand), #000 38%);
+  --step-done-bg: linear-gradient(
+    color-mix(in srgb, var(--brand), #fff 15%),
+    color-mix(in srgb, var(--brand), #000 30%)
+  );
   --step-done-shadow: inset 0 1px #ffffff60, 0 1px 2px #0006;
   --step-now-shadow: var(--step-done-shadow);
-  /* La tabbar del teléfono usa el material oscuro de la barra superior; el
-     verde solo marca el ítem activo, como en el sidebar. */
+  /* The phone tab bar uses the top bar's dark material; the
+     green only marks the active item, as in the sidebar. */
   --tabbar-line: var(--bar-line);
   --tabbar-bg: var(--noise), var(--bar);
   --tabbar-shadow: inset 0 1px #ffffff26;
@@ -30,17 +50,25 @@
   --tabbar-divider: 1px solid #0000004d;
   --tabbar-current-ink: var(--brand);
   --tabbar-current-bg: #0000002a;
+  --tabbar-current-shadow: inset 0 2px 5px #0003;
   --toast-icon-border: 1.5px solid #fff;
   --badge-ink: #fff;
   --toast-icon-shadow: 0 1px 2px #0008;
   --toast-enviado: linear-gradient(#4ca4d6, #105b92);
-  --toast-confirmado: linear-gradient(#b6d77f, #79a63f);
+  --toast-confirmado: var(--brand-fill);
   --toast-servido: linear-gradient(#f0c453, #b27c0e);
   --toast-error: linear-gradient(#e74c3c, #b02a1e);
   --sticky-line: 1px solid #3c4446;
   --sticky-shadow: 0 1px #ffffff17, 0 6px 6px -4px #0006;
+  --bill-shadow: inset 0 1px #ffffff17, 0 -6px 8px -4px #0009;
+  --dark-edge: #1a1f20;
+  --dark-face:
+    linear-gradient(#ffffff2e, #ffffff2e) 0 0 / 100% 1px no-repeat,
+    linear-gradient(#636d6f, #353c3e);
+  --dark-lift: drop-shadow(0 1px #ffffff1a);
+  --crop-frame: 0 0 0 1px var(--dark-edge), 0 4px 10px #0006;
 
-  /* Impresora, papel y cinta. */
+  /* Printer, paper and ribbon. */
   --printer-body:
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
     linear-gradient(#8a9294, #596163 45%, #3c4244 60%, #2c3133);
@@ -55,21 +83,37 @@
     linear-gradient(#fff, #e6e6e6 55%, #fbfbfb);
   --paper-shadow: drop-shadow(0 3px 3px #0007);
   --ribbon-shadow: drop-shadow(0 3px 3px #0007);
+  --plaid-green: var(--brand);
+  --cloth-base: color-mix(in srgb, var(--plaid-green), #fff 45%);
+  --cloth-cross: color-mix(in srgb, var(--plaid-green), #000 50%);
+  --cloth-thread: color-mix(in srgb, var(--plaid-green), #fff 80%);
+  --cloth-shade: color-mix(in srgb, var(--plaid-green), #000 80%);
   --ribbon-cloth:
-    linear-gradient(90deg, #ffffff99 0 5px, #0000 5px 9px) left 6px / 9px 1px
-    repeat-x,
     repeating-linear-gradient(90deg, #ffffff0d 0 1px, #0000 1px 3px),
     repeating-linear-gradient(0deg, #0000000f 0 1px, #0000 1px 3px),
-    linear-gradient(#3fb36c, #24944f 55%, #1a7d41);
+    linear-gradient(
+      color-mix(in srgb, var(--plaid-green), #000 10%),
+      color-mix(in srgb, var(--plaid-green), #000 22%) 55%,
+      color-mix(in srgb, var(--plaid-green), #000 32%)
+    );
   --ribbon-ink: #fff;
-  --ribbon-ink-shadow: 0 -1px #0b3a1c;
+  --ribbon-ink-shadow: 0 -1px color-mix(in srgb, var(--plaid-green), #000 70%);
   --total-shadow: 0 -1px #0008;
 }
 
 :root {
-  /* Alto del encabezado del sidebar; la barra de pestañas lo comparte para
-     que ambas líneas divisorias queden a la misma altura. */
+  /* Height of the sidebar header; the tab bar shares it so
+     both divider lines sit at the same height. */
   --head-height: 68px;
+  /* Control sizes: the same in both themes. Each theme paints its
+     skin on top, but never redefines height, fixed width or padding. */
+  --button-h: 26px;
+  --field-h: 30px;
+  --check-size: 24px;
+  --switch-w: 74px;
+  --switch-h: 26px;
+  --step-size: 20px;
+  --nav-item-h: 46px;
   font-family: Inter, sans-serif;
   font-synthesis: none;
   color: #ecece2;
@@ -118,17 +162,17 @@ ol {
   white-space: nowrap;
 }
 
-/* Escenario y marco de tablet */
+/* Stage and tablet frame */
 .app {
   min-height: 100vh;
   padding: 18px 24px 32px;
   background:
     var(--noise), radial-gradient(120% 90% at 50% 0%, #3d4a4e, var(--stage));
 }
-/* Barra de controles: cada grupo y botón tiene un ancho y un alto fijos, el
-   mismo en ambos temas y en ambos idiomas (caben el texto más largo de ES y
-   EN), y la barra se ancla a la derecha. Así nada se mueve al cambiar de tema
-   o de idioma. */
+/* Control bar: every group and button has a fixed width and height, the
+   same in both themes and both languages (the longest ES and EN text fits),
+   and the bar is anchored to the right. This way nothing moves when
+   switching theme or language. */
 .stage-bar {
   --bar-h: 34px;
   --theme-w: 168px;
@@ -136,6 +180,7 @@ ol {
   --role-w: 176px;
   --tour-w: 156px;
   --reset-w: 130px;
+  --kit-w: 100px;
   max-width: 1120px;
   margin: 0 auto 18px;
   display: flex;
@@ -143,12 +188,14 @@ ol {
   gap: 12px;
 }
 .stage-bar .selector,
-.stage-bar button.dark-button {
+.stage-bar button.dark-button,
+.stage-bar a.dark-button {
   box-sizing: border-box;
   flex: none;
   height: var(--bar-h);
 }
-.stage-bar button.dark-button {
+.stage-bar button.dark-button,
+.stage-bar a.dark-button {
   padding: 0;
   font-size: 13px;
   font-weight: 600;
@@ -167,6 +214,10 @@ ol {
 }
 .reset-button {
   width: var(--reset-w);
+}
+.kit-link {
+  width: var(--kit-w);
+  text-decoration: none;
 }
 .stage-bar h1 {
   margin-right: auto;
@@ -204,16 +255,16 @@ ol {
   font:
     600 13px Inter,
     sans-serif;
-  color: #e6ebe9;
-  background: linear-gradient(#6b7577, #485153);
-  text-shadow: 0 -1px #0007;
+  color: var(--segment-ink);
+  background: var(--segment-face);
+  text-shadow: var(--segment-ink-shadow);
 }
 .selector :is(button, a) + :is(button, a) {
   border-left: 1px solid #2a3133;
 }
 .selector button[aria-pressed="true"],
 .selector a[aria-current="page"] {
-  background: linear-gradient(#86b84d, #5b8c2c);
+  background: var(--brand-face);
   box-shadow: inset 0 2px 4px #0005;
 }
 
@@ -247,7 +298,7 @@ ol {
   box-shadow: 0 0 0 2px #000;
 }
 
-/* Pantalla: barra oscura brillante, menú lateral y pizarra */
+/* Screen: dark glossy bar, side menu and board */
 .screen {
   height: 100%;
   display: flex;
@@ -284,14 +335,14 @@ ol {
   font:
     400 27px "Kaushan Script",
     cursive;
-  color: #aee921;
+  color: var(--brand);
   text-shadow: 0 1px 2px #000a;
 }
 .navbar > :last-child {
   justify-self: end;
 }
 
-/* Botones del kit */
+/* Kit buttons */
 .arrow-button,
 .dark-button,
 .light-button {
@@ -310,9 +361,16 @@ ol {
 .light-button:active {
   transform: scale(0.97);
 }
+/* The phone selector toggle sits in the segmented control's material. */
+[data-theme="original"] .selector-toggle {
+  box-shadow: none;
+  color: var(--segment-ink);
+  background: var(--segment-face);
+  text-shadow: var(--segment-ink-shadow);
+}
 .arrow-button,
 .dark-button {
-  height: 26px;
+  height: var(--button-h);
   padding: 0 10px;
   color: #fff;
   border: 1px solid #1a1f20;
@@ -324,9 +382,36 @@ ol {
 }
 .arrow-button {
   justify-self: start;
+  position: relative;
+  isolation: isolate;
+  padding-left: 16px;
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+  filter: var(--dark-lift);
+}
+/* The tip is drawn with two clipped layers: the border (::before) and, 1 px
+   inside, the body with its gradient and shine (::after). Clipping the whole
+   button cut the border on the diagonal. The numbers hold for
+   --button-h: 26px; the body shifts 1.26 px, the border thickness measured
+   perpendicular to the diagonal. */
+.arrow-button::before,
+.arrow-button::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+}
+.arrow-button::before {
+  inset: -1px;
+  border-radius: 0 4px 4px 0;
+  background: var(--dark-edge);
   clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
-  padding-left: 12px;
-  border-left: 0;
+}
+.arrow-button::after {
+  inset: 0;
+  border-radius: 0 3px 3px 0;
+  background: var(--dark-face);
+  clip-path: polygon(9.5px 0, 100% 0, 100% 100%, 9.5px 100%, 0.25px 50%);
 }
 .arrow-button svg {
   display: none;
@@ -336,7 +421,7 @@ ol {
   height: 17px;
 }
 .light-button {
-  min-height: 26px;
+  min-height: var(--button-h);
   padding: 0 14px;
   color: #444;
   border: 1px solid #9ea2a2;
@@ -377,7 +462,7 @@ ol {
   grid-template-columns: 29.3% 1fr;
 }
 .sidebar {
-  /* Por encima del tablero, para que su bisel no lo tape nada que haga sticky. */
+  /* Above the board, so nothing sticky covers its bevel. */
   position: relative;
   z-index: 3;
   display: flex;
@@ -416,7 +501,7 @@ ol {
   box-shadow: 0 1px 3px #000a;
 }
 .sidebar-item {
-  height: 46px;
+  height: var(--nav-item-h);
   width: 100%;
   border-top: 0;
   border-left: 0;
@@ -487,8 +572,8 @@ ol {
 }
 
 /* Carta */
-/* Las categorías quedan fijas arriba; el fondo opaco tapa la lista que pasa por
-   debajo, también en el hueco del relleno del tablero. */
+/* Categories stay pinned on top; the opaque background covers the list passing
+   underneath, also in the gap of the board's padding. */
 .tabs-bar {
   position: sticky;
   top: calc(var(--board-top) * -1);
@@ -502,8 +587,8 @@ ol {
   border-bottom: var(--sticky-line);
   background: var(--noise), var(--slate);
 }
-/* La sombra solo aparece cuando la lista ya pasa por debajo: se enciende con
-   los primeros píxeles de scroll del tablero. Sin soporte, queda solo la línea. */
+/* The shadow only appears once the list already passes underneath: it turns on with
+   the board's first pixels of scroll. Without support, only the line remains. */
 @supports (animation-timeline: scroll()) {
   .tabs-bar {
     animation: sticky-shadow linear both;
@@ -545,15 +630,15 @@ ol {
   font:
     600 12px Inter,
     sans-serif;
-  color: #e6ebe9;
-  background: linear-gradient(#6b7577, #485153);
-  text-shadow: 0 -1px #0007;
+  color: var(--segment-ink);
+  background: var(--segment-face);
+  text-shadow: var(--segment-ink-shadow);
 }
 .segmented button + button {
   border-left: 1px solid #2a3133;
 }
 .segmented button[aria-selected="true"] {
-  background: linear-gradient(#86b84d, #5b8c2c);
+  background: var(--brand-face);
   box-shadow: inset 0 2px 4px #0005;
 }
 .dish-list {
@@ -572,8 +657,8 @@ ol {
   place-items: center;
   width: 133px;
   height: 100px;
-  color: #8a7b4c;
-  background: linear-gradient(#fffbe3, #d8cc98);
+  padding: 1px;
+  background: var(--dark-edge);
   mask:
     radial-gradient(circle var(--r) at 0 0, #0000 98%, #000) top left,
     radial-gradient(circle var(--r) at 100% 0, #0000 98%, #000) top right,
@@ -582,10 +667,28 @@ ol {
   mask-size: 51% 51%;
   mask-repeat: no-repeat;
 }
+/* The photo sits 1 px inside and its concave corners are concentric with
+   the plate's: the dark background remains as a 1 px outline that follows
+   the curve. */
 .dish-plate img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  --ri: calc(var(--r) + 1px);
+  mask:
+    radial-gradient(circle var(--ri) at -1px -1px, #0000 98%, #000) top left,
+    radial-gradient(circle var(--ri) at calc(100% + 1px) -1px, #0000 98%, #000)
+    top right,
+    radial-gradient(circle var(--ri) at -1px calc(100% + 1px), #0000 98%, #000)
+    bottom left,
+    radial-gradient(
+      circle var(--ri) at calc(100% + 1px) calc(100% + 1px),
+      #0000 98%,
+      #000
+    )
+    bottom right;
+  mask-size: 51% 51%;
+  mask-repeat: no-repeat;
 }
 .dish-plate[data-size="big"] {
   --r: 14px;
@@ -629,8 +732,8 @@ ol {
 .kit-check {
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  width: var(--check-size);
+  height: var(--check-size);
   padding: 0;
   border-radius: 3px;
   border: 1px solid #8d9597;
@@ -663,9 +766,9 @@ ol {
   height: 232px;
   box-shadow: 0 2px 4px #0006;
 }
-/* Cinta de tela verde que cuelga desde el borde superior de la tarjeta.
-   Termina abajo en cola de golondrina con una costura punteada que sigue su
-   borde. */
+/* Green cloth ribbon hanging from the card's top edge.
+   It ends at the bottom in a swallowtail with a dotted stitch that follows
+   its edge. */
 .ribbon {
   position: relative;
   max-width: 100%;
@@ -687,21 +790,20 @@ ol {
 }
 .ribbon-stitch {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 26px;
+  inset: 0 6px 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 6px);
   fill: none;
   stroke: #ffffff99;
   stroke-dasharray: 5 4;
   overflow: visible;
 }
-.ribbon-stitch polyline {
+.ribbon-stitch * {
   vector-effect: non-scaling-stroke;
 }
 .detail-text {
   min-width: 0;
-  /* El borde derecho de la nota coincide con el de la cinta. */
+  /* The note's right edge matches the ribbon's. */
   padding: 20px 24px 0 0;
   overflow-wrap: break-word;
   font-size: 16px;
@@ -725,9 +827,9 @@ ol {
   border: 0;
   border-right: 1px solid #3c4446;
 }
-/* Ícono y título centrados entre sí; el ícono ocupa la columna de las
-   casillas, así el título alinea con los nombres de los agregados. Es un div
-   y no un legend porque WebKit pega el legend al borde superior del fieldset. */
+/* Icon and title centered with each other; the icon takes the checkbox
+   column, so the title aligns with the extras' names. It is a div and not
+   a legend because WebKit pins the legend to the fieldset's top edge. */
 .extras-title {
   display: flex;
   align-items: center;
@@ -751,7 +853,7 @@ ol {
   font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
-/* Post-it amarillo con chinche: la nota para cocina. */
+/** Yellow sticky note with a pin: the note for the kitchen. */
 .post-it {
   position: relative;
   display: block;
@@ -827,9 +929,9 @@ ol {
   grid-column: 1 / -1;
   color: #ffb4a8;
 }
-/* Ruleta de cantidad: un tambor que gira en una ranura, con dientes que
-   ruedan en sus bordes y el valor entre dos marcas. Los colores son
-   variables, así un tema plano cambia la piel sin tocar la estructura. */
+/* Quantity wheel: a drum that turns in a slot, with teeth that roll on its
+   edges and the value between two marks. Colors are variables, so a flat
+   theme changes the skin without touching the structure. */
 .wheel {
   --wheel-frame: linear-gradient(#fdfdfd, #e3e3e3);
   --wheel-border: #8f9393;
@@ -884,7 +986,7 @@ ol {
 .wheel-window[data-dragging] {
   cursor: grabbing;
 }
-/* El lente del valor actual, detrás de los números. */
+/* The lens of the current value, behind the numbers. */
 .wheel-window::before {
   content: "";
   position: absolute;
@@ -892,7 +994,7 @@ ol {
   border-block: 1px solid var(--wheel-line);
   background: var(--wheel-lens);
 }
-/* La marca que señala el valor, junto a las líneas de medida. */
+/* The mark that points at the value, next to the measure lines. */
 .wheel-window::after {
   content: "";
   position: absolute;
@@ -924,7 +1026,7 @@ ol {
 .wheel-face[data-current] {
   color: var(--wheel-ink);
 }
-/* Líneas de medida a la izquierda, ubicadas por script sobre la curva. */
+/* Measure lines on the left, placed by script along the curve. */
 .wheel-teeth {
   position: absolute;
   inset-block: 0;
@@ -941,8 +1043,8 @@ ol {
   background: var(--wheel-tooth);
   will-change: transform;
 }
-/* El spinbutton real queda encima del lente: recibe foco y tipeo, pero los
-   números los dibuja el tambor. */
+/* The real spinbutton sits on top of the lens: it receives focus and typing,
+   but the numbers are drawn by the drum. */
 .wheel-value {
   position: absolute;
   inset: 36px 4px 36px 18px;
@@ -1000,10 +1102,10 @@ ol {
   width: 336px;
   flex: none;
 }
-/* Impresora: una carcasa de aluminio con UNA ranura oscura, más ancha que
-   el papel. El papel cae desde el centro de la ranura: el labio inferior de
-   la carcasa queda por delante de su borde superior, que entra en sombra.
-   Por eso arriba no hay dientes. */
+/* Printer: an aluminum casing with ONE dark slot, wider than the paper.
+   The paper falls from the center of the slot: the casing's lower lip sits
+   in front of its top edge, which falls into shadow. That is why there are
+   no teeth on top. */
 .receipt-slot {
   position: absolute;
   z-index: 1;
@@ -1028,8 +1130,8 @@ ol {
   box-shadow: var(--printer-groove-shadow);
 }
 .receipt-feed {
-  /* El papel nace en la mitad de la ranura: pasa por delante de su labio
-     inferior y se recorta solo arriba, sin perder su sombra. */
+  /* The paper is born in the middle of the slot: it passes in front of its
+     lower lip and is clipped only at the top, without losing its shadow. */
   position: relative;
   z-index: 2;
   top: -8px;
@@ -1049,7 +1151,7 @@ ol {
     bottom / calc(var(--tooth) * 2) 51% repeat-x,
     linear-gradient(#000 0 0) top / 100% 50% no-repeat;
 }
-/* Columnas fijas: el plato toma lo que sobra y las cifras no mueven nada. */
+/* Fixed columns: the dish takes what is left and the figures move nothing. */
 .receipt table {
   width: 100%;
   table-layout: fixed;
@@ -1149,14 +1251,14 @@ ol {
   gap: 4px;
 }
 .stepper output {
-  width: 3.5ch;
+  width: 34px;
   text-align: center;
 }
 .stepper button {
   display: grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: var(--step-size);
+  height: var(--step-size);
   padding: 0;
   border-radius: 50%;
   border: 1px solid #9a9a9a;
@@ -1183,7 +1285,7 @@ ol {
 .ticket-card .receipt {
   align-self: flex-start;
 }
-/* Columna de acción: total grande arriba y la acción principal debajo. */
+/* Action column: large total on top and the primary action below. */
 .receipt-actions {
   position: sticky;
   top: 0;
@@ -1233,7 +1335,7 @@ ol {
   height: 48px;
 }
 
-/* Estado del pedido */
+/* Order status */
 .status {
   padding: 22px 26px;
   min-height: 100%;
@@ -1315,12 +1417,12 @@ ol {
   aspect-ratio: 1;
   border-radius: 12px;
   background:
-    /* rejillas de las esquinas inferiores */
+    /* grilles of the lower corners */
     repeating-linear-gradient(#0009 0 1px, #0000 1px 3px) 6% 93% / 16px 7px
     no-repeat,
     repeating-linear-gradient(#0009 0 1px, #0000 1px 3px) 94% 93% / 16px 7px
     no-repeat,
-    /* líneas guía verticales a los lados de la ventana */
+    /* vertical guide lines on the sides of the window */
     linear-gradient(#0009, #0009) 4.5% 50% / 1px 62% no-repeat,
     linear-gradient(#0009, #0009) 95.5% 50% / 1px 62% no-repeat,
     repeating-linear-gradient(90deg, #ffffff0a 0 1px, #0000 1px 3px),
@@ -1339,7 +1441,7 @@ ol {
     inset 0 -1px #0008,
     0 4px 10px #0008;
 }
-/* Ranura del borde superior y marcas de las esquinas. */
+/* Slot of the top edge and corner marks. */
 .scanner::before {
   content: "";
   position: absolute;
@@ -1374,7 +1476,7 @@ ol {
     0 0 14px 4px #c02aa966;
   animation: laser 2.4s ease-in-out infinite alternate;
 }
-/* Terminaciones del láser: dos topes verticales en sus extremos. */
+/* Laser ends: two vertical stops at its tips. */
 .scanner-laser::before,
 .scanner-laser::after {
   content: "";
@@ -1423,7 +1525,7 @@ ol {
   text-shadow: 0 -1px #0008;
 }
 
-/* Garzón: la misma barra, sidebar y tablero que el comensal. */
+/* Garzón: the same bar, sidebar and board as the Comensal. */
 .pending {
   cursor: default;
   white-space: nowrap;
@@ -1431,7 +1533,7 @@ ol {
 .table-detail {
   overflow: hidden;
 }
-/* El contenido largo hace scroll; la cuenta y su botón quedan siempre abajo. */
+/* Long content scrolls; the Cuenta and its button always stay at the bottom. */
 .table-detail-scroll {
   flex: 1;
   min-height: 0;
@@ -1447,6 +1549,11 @@ ol {
   gap: 8px;
   padding: 14px 20px 20px;
   border-top: var(--sticky-line);
+  /* Pinned at the bottom: its shadow falls upward, over the list passing
+     underneath. */
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--bill-shadow);
 }
 .table-detail h3 {
   font:
@@ -1569,29 +1676,29 @@ ol {
   mix-blend-mode: multiply;
 }
 .cloth-base {
-  fill: #c3e187;
+  fill: var(--cloth-base);
 }
 .cloth-band {
-  fill: #4e9a28;
+  fill: var(--plaid-green);
   opacity: 0.68;
 }
 .cloth-cross {
-  fill: #24731f;
+  fill: var(--cloth-cross);
   opacity: 0.52;
 }
 .cloth-thread {
   fill: none;
-  stroke: #e7f4bb;
+  stroke: var(--cloth-thread);
   stroke-width: 0.45;
   opacity: 0.27;
 }
 .cloth-shadow {
-  fill: #263c16;
+  fill: var(--cloth-shade);
   opacity: 0.55;
 }
 .cloth-shine {
   fill: none;
-  stroke: #e8f4c9;
+  stroke: var(--cloth-thread);
   stroke-width: 2;
   opacity: 0.55;
 }
@@ -1616,7 +1723,7 @@ ol {
 }
 .table-number circle {
   fill: #263e2b;
-  stroke: #d5e6b1;
+  stroke: var(--cloth-thread);
   stroke-width: 1.5;
 }
 .table-number text {
@@ -1676,7 +1783,7 @@ ol {
   }
 }
 
-/* Galería */
+/* Gallery */
 .gallery {
   min-height: 100vh;
   padding: 18px 24px 48px;
@@ -1684,12 +1791,32 @@ ol {
   background:
     var(--noise), radial-gradient(120% 90% at 50% 0%, #3d4a4e, var(--stage));
 }
-.gallery .stage-bar a {
+/* The demo link has a fixed width and height, like the other controls in
+   the bar: "Abrir la demo" and "Open the demo" both fit and nothing moves. */
+.gallery .stage-bar > a {
+  flex: none;
+  box-sizing: border-box;
+  width: 124px;
+  height: var(--bar-h);
   text-decoration: none;
 }
-.gallery-grid {
+.gallery {
+  counter-reset: panel;
+}
+.gallery-group {
   max-width: 1120px;
-  margin: auto;
+  margin: 0 auto 28px;
+}
+.gallery-group-title {
+  margin: 0 0 10px;
+  font:
+    700 13px Inter,
+    sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   grid-auto-flow: dense;
@@ -1709,6 +1836,9 @@ ol {
 .panel[data-wide="true"] {
   grid-column: span 2;
 }
+.panel[data-tall] {
+  grid-row: span 2;
+}
 .panel[data-wide="full"] {
   grid-column: 1 / -1;
 }
@@ -1726,6 +1856,12 @@ ol {
   box-shadow: inset 0 1px #ffffff2e;
   text-shadow: 0 -1px #000a;
 }
+.panel {
+  counter-increment: panel;
+}
+.panel-number::before {
+  content: counter(panel, decimal-leading-zero);
+}
 .panel-number {
   font:
     700 12px "Courier Prime",
@@ -1735,6 +1871,7 @@ ol {
 .panel-stage {
   flex: 1;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   min-height: 170px;
   padding: 22px 18px;
@@ -1742,6 +1879,7 @@ ol {
 .panel-states {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: flex-end;
   gap: 14px 18px;
   padding: 14px;
@@ -1751,7 +1889,7 @@ ol {
 .panel-states > li {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 6px;
 }
 .panel-states small,
@@ -1775,11 +1913,30 @@ ol {
   align-items: flex-start;
   gap: 10px;
 }
+.swap-label {
+  display: inline-grid;
+}
+.swap-label > * {
+  grid-area: 1 / 1;
+}
+.swap-label > [hidden] {
+  display: block;
+  visibility: hidden;
+}
+.panel .stack {
+  align-items: center;
+  text-align: center;
+}
+.table-demo .stack {
+  align-items: flex-start;
+  text-align: left;
+}
 .hint {
   font-size: 12px;
   color: var(--muted);
 }
 .plate-demo {
+  width: 260px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1787,6 +1944,11 @@ ol {
   padding: 0;
   border: 0;
   background: none;
+}
+.plate-demo .hint {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
 }
 .panel-states .dish {
   display: block;
@@ -1804,21 +1966,118 @@ ol {
   display: block;
   width: 120px;
 }
-.table-state[data-occupied="false"] .mesa {
-  opacity: 0.6;
-  filter: saturate(0.55);
-}
 .navbar-demo {
   width: 100%;
   min-width: 300px;
   border-radius: 4px;
   overflow: hidden;
 }
+/* Clipped screen pieces get an outline on every edge, drawn
+   as a shadow so it does not shrink what they show. */
+.navbar-demo,
+.sidebar-demo,
+.tabbar-demo,
+.table-detail-demo {
+  box-shadow: var(--crop-frame);
+}
 .panel-states .navbar-demo {
   width: 500px;
 }
 .panel-states .detail-receipt {
   padding: 0;
+}
+.panel .stage-bar {
+  max-width: none;
+  margin: 0;
+}
+.search-hint {
+  max-width: 260px;
+}
+/* Receipt paper under the standalone stepper. */
+.stepper-paper {
+  display: inline-block;
+  padding: 8px 14px;
+  font:
+    16px "Courier Prime",
+    monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper-ink);
+  background: var(--paper);
+  filter: var(--paper-shadow);
+}
+/* The printer sticks out 14 px at the sides and 16 px above its paper:
+   the frame reserves that space and some air inside the panel. */
+.printer-demo {
+  padding: 24px 22px 8px;
+}
+.post-it-demo {
+  width: 240px;
+}
+/* The sidebar and tab bar at the sizes they have in the demo. */
+/* Frame of the clipped screen pieces. */
+.sidebar-demo,
+.tabbar-demo,
+.table-detail-demo {
+  border-radius: 6px;
+  overflow: hidden;
+}
+.sidebar-demo {
+  display: flex;
+  width: 300px;
+  height: 400px;
+}
+.sidebar-demo .sidebar {
+  flex: 1;
+}
+.tabbar-demo {
+  width: 100%;
+  max-width: 390px;
+}
+.panel-states > li:has(.tabbar-demo) {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.sidebar-sample {
+  width: 240px;
+}
+.tabs-demo {
+  width: 100%;
+  height: 200px;
+  border-radius: 6px;
+  background: var(--noise), var(--slate);
+}
+.tabs-demo .scroll-list {
+  margin-top: 12px;
+}
+.panel-states > li:has(.tabs-demo) {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.table-detail-demo {
+  width: 300px;
+  height: 440px;
+}
+.table-detail-demo[data-short] {
+  height: 260px;
+}
+.scanner-demo {
+  width: 220px;
+}
+.scanner-demo .scanner {
+  width: 100%;
+}
+/* The ribbon hangs from a card's top edge, as in the detail. */
+.ribbon-demo {
+  width: 300px;
+  padding: 26px 0 20px 24px;
+}
+.ribbon-demo[data-size="big"] {
+  width: 340px;
+}
+/* In the detail the extras carry a line separating them from the Pedido;
+   standalone in the gallery they do not need it. */
+.panel .extras {
+  border-right: 0;
 }
 .seal-badge {
   display: block;
@@ -1834,7 +2093,7 @@ ol {
   border-bottom: 1px solid #ffffff14;
 }
 
-/* Switch del kit */
+/* Kit switch */
 .kit-switch-field {
   display: inline-flex;
   align-items: center;
@@ -1847,8 +2106,8 @@ ol {
   display: inline-grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  width: 74px;
-  height: 26px;
+  width: var(--switch-w);
+  height: var(--switch-h);
   padding: 0;
   border: 1px solid #1a1f20;
   border-radius: 13px;
@@ -1860,10 +2119,9 @@ ol {
   box-shadow:
     inset 0 2px 4px #000a,
     0 1px #ffffff1f;
-  overflow: hidden;
 }
 .kit-switch[data-checked] {
-  background: linear-gradient(#5b8c2c, #86b84d);
+  background: var(--brand-face-inset);
 }
 .kit-switch-on,
 .kit-switch-off {
@@ -1885,19 +2143,19 @@ ol {
   transition: translate 200ms var(--ease-out);
 }
 .kit-switch-thumb[data-checked] {
-  translate: 35px 0;
+  translate: 34px 0;
 }
 .kit-switch[data-disabled] {
   opacity: 0.5;
 }
 
-/* Búsqueda */
+/* Search */
 .search {
   display: flex;
   align-items: center;
   gap: 6px;
   width: 260px;
-  height: 30px;
+  height: var(--field-h);
   padding: 0 6px 0 10px;
   border-radius: 15px;
   border: 1px solid #1a1f20;
@@ -2013,7 +2271,7 @@ ol {
   border-radius: inherit;
   background:
     repeating-linear-gradient(135deg, #ffffff2e 0 6px, #0000 6px 12px),
-    linear-gradient(#b6d77f, #79a63f);
+    var(--brand-fill);
   box-shadow: inset 0 1px #ffffff80;
   transition: width 300ms var(--ease-out);
 }
@@ -2043,7 +2301,7 @@ ol {
   justify-content: space-between;
   gap: 10px;
   width: 200px;
-  height: 30px;
+  height: var(--field-h);
   padding: 0 10px;
   font-size: 13px;
   font-weight: 600;
@@ -2095,13 +2353,13 @@ ol {
   color: var(--brand);
 }
 .dropdown-item[data-highlighted] {
-  background: linear-gradient(#86b84d, #5b8c2c);
+  background: var(--brand-face);
 }
 .dropdown-item[data-highlighted] svg {
   color: #fff;
 }
 
-/* Toast de estado del pedido */
+/* Order status toast */
 .toast-region {
   position: fixed;
   inset: auto 0 24px;
@@ -2109,7 +2367,9 @@ ol {
   padding: 0;
   border: 0;
   background: none;
-  width: max-content;
+  width: min(320px, calc(100vw - 16px));
+  /* The auto margin already centers it; without this the SDK shifts it another 50 % to the left. */
+  translate: none;
   list-style: none;
 }
 .toast {
@@ -2172,7 +2432,7 @@ ol {
   color: var(--muted);
 }
 
-/* Garzón sin mesa elegida */
+/* Garzón with no table chosen */
 .sidebar-empty {
   display: flex;
   flex: 1;
@@ -2190,8 +2450,8 @@ ol {
   opacity: 0.6;
 }
 
-/* Con el nombre completo, el subtítulo va bajo el título para que la barra
-   quepa; en escritorios angostos se va el subtítulo y se achica el título. */
+/* With the full name, the subtitle goes under the title so the bar
+   fits; on narrow desktops the subtitle goes away and the title shrinks. */
 .stage-bar h1 small {
   display: block;
   line-height: 1;
