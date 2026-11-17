@@ -49,7 +49,7 @@ const es = {
   notFound: 'Página no encontrada',
   // Demo stage
   stageTitle: 'Restaurant El Clan',
-  stageSubtitle: 'Tu mesa, tu carta, tu cuenta',
+  stageSubtitle: 'Pide desde la mesa',
   stageIntro:
     'Un restaurante completo en una tablet: pide desde la mesa, sigue tu pedido y paga la cuenta, o cambia a la vista del garzón o de la cocina para atender la sala. Cambia de piel, idioma o tema y pruébalo todo.',
   device: 'Dispositivo',
@@ -427,7 +427,7 @@ const en: Messages = {
   schemeSlateOnly: 'Slate theme only',
   notFound: 'Page not found',
   stageTitle: 'Restaurant El Clan',
-  stageSubtitle: 'Your table, your menu, your bill',
+  stageSubtitle: 'Order from your table',
   stageIntro:
     'A whole restaurant on a tablet: order from your table, follow your order and pay the bill, or switch to the waiter or kitchen view to run the floor. Change the skin, language or theme and try everything.',
   device: 'Device',
