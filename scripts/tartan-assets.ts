@@ -23,7 +23,7 @@ body { margin: 0; width: 1200px; height: 630px; display: grid; place-items: cent
   box-shadow: 0 0 0 6px ${tartanColors.W}, 0 24px 60px #000a; }
 h1 { margin: 0; font: 400 108px Kaushan; color: ${tartanColors.G}; }
 p { margin: 8px 0 0; font: 700 34px Outfit; letter-spacing: .04em; }
-</style><div class="card"><h1>plaid</h1><p>Restaurant El Clan</p></div>`;
+</style><div class="card"><h1>plaid</h1><p>UI Kit</p></div>`;
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
