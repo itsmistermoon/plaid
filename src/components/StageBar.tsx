@@ -9,7 +9,7 @@ export function StageIntro({
 }: {
   title: string;
   tagline: string;
-  description: string;
+  description: ReactNode;
 }) {
   return (
     <div className="stage-intro">

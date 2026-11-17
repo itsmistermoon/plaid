@@ -363,6 +363,10 @@
   .gallery .stage-intro h1 {
     font-size: 26px;
   }
+  .gallery .stage-intro p {
+    min-height: 0;
+    font-size: 15px;
+  }
   .gallery-grid {
     grid-template-columns: minmax(0, 1fr);
   }

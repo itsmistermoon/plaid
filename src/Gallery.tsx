@@ -1814,7 +1814,19 @@ export function Gallery({ view }: { view: GalleryView }) {
       <StageIntro
         title={t('galleryTitle')}
         tagline={t('gallerySubtitle')}
-        description={t('galleryIntro')}
+        description={
+          <>
+            {t('galleryIntro')}{' '}
+            <a
+              href="https://github.com/itsmistermoon/plaid"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+            .
+          </>
+        }
       />
       <nav className="selector gallery-views" aria-label={t('galleryViews')}>
         {galleryViews.map((item) => (

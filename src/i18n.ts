@@ -49,9 +49,9 @@ const es = {
   notFound: 'Página no encontrada',
   // Demo stage
   stageTitle: 'Restaurant El Clan',
-  stageSubtitle: 'una reconstrucción de iClub',
+  stageSubtitle: 'Tu mesa, tu carta, tu cuenta',
   stageIntro:
-    'Reconstrucción de iClub, una app de tablet para restaurantes de 2012 con estilo esqueumórfico, hecha con UI SDK. Compara la piel Plaid con la Slate, desde la vista del comensal o la del garzón.',
+    'Un restaurante completo en una tablet: pide desde la mesa, sigue tu pedido y paga la cuenta, o cambia a la vista del garzón o de la cocina para atender la sala. Cambia de piel, idioma o tema y pruébalo todo.',
   device: 'Dispositivo',
   diner: 'Comensal',
   waiter: 'Garzón',
@@ -245,9 +245,9 @@ const es = {
     tartan: 'Tartán',
   },
   galleryTitle: 'Galería de componentes',
-  gallerySubtitle: 'Restaurant El Clan · iClub',
+  gallerySubtitle: 'Plaid UI Kit',
   galleryIntro:
-    'Los componentes de la demo: cada pieza de la reconstrucción de iClub, en su piel Plaid y en la Slate, construida sobre UI SDK.',
+    'Plaid es un kit de componentes esqueuomórficos construido sobre UI SDK: texturas, relieves y materiales reales, con el comportamiento accesible de una librería moderna. Cada pieza viene en dos pieles, Plaid y Slate, para comparar lo táctil con lo plano. El código está en',
   openDemo: 'Abrir la demo',
   states: 'Estados',
   presentational: 'Presentacional',
@@ -427,9 +427,9 @@ const en: Messages = {
   schemeSlateOnly: 'Slate theme only',
   notFound: 'Page not found',
   stageTitle: 'Restaurant El Clan',
-  stageSubtitle: 'an iClub reconstruction',
+  stageSubtitle: 'Your table, your menu, your bill',
   stageIntro:
-    'A reconstruction of iClub, a 2012 skeuomorphic restaurant tablet app, built with UI SDK. Compare the Plaid skin with the Slate one, from the diner’s view or the waiter’s.',
+    'A whole restaurant on a tablet: order from your table, follow your order and pay the bill, or switch to the waiter or kitchen view to run the floor. Change the skin, language or theme and try everything.',
   device: 'Device',
   diner: 'Diner',
   waiter: 'Waiter',
@@ -614,9 +614,9 @@ const en: Messages = {
     tartan: 'Tartan',
   },
   galleryTitle: 'Component gallery',
-  gallerySubtitle: 'Restaurant El Clan · iClub',
+  gallerySubtitle: 'Plaid UI Kit',
   galleryIntro:
-    'The components behind the demo: every piece of the iClub reconstruction, in its Plaid skin and the Slate one, built on UI SDK.',
+    'Plaid is a skeuomorphic component kit built on UI SDK: real textures, depth and materials, with the accessible behavior of a modern library. Every piece comes in two skins, Plaid and Slate, so you can compare tactile and flat. The code is on',
   openDemo: 'Open the demo',
   states: 'States',
   presentational: 'Presentational',

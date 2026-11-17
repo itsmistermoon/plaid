@@ -199,6 +199,9 @@
   color: var(--foreground);
   background: var(--background);
 }
+[data-theme="slate"] .stage-intro p a {
+  color: var(--accent);
+}
 [data-theme="slate"] .stage-intro h1 {
   color: var(--accent);
   text-shadow: none;

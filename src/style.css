@@ -434,8 +434,9 @@ button.scheme-switch[aria-disabled="true"] {
 }
 .stage-intro h1 small {
   display: block;
+  margin-top: 4px;
   font:
-    12px / 1 Inter,
+    14px / 1 Inter,
     sans-serif;
   color: var(--muted);
   text-shadow: none;
@@ -443,13 +444,16 @@ button.scheme-switch[aria-disabled="true"] {
 /* Two lines are always reserved, so the page below keeps its place in
    both languages. */
 .stage-intro p {
-  max-width: 760px;
-  min-height: 42px;
-  margin: 10px 0 0;
+  max-width: 65ch;
+  min-height: calc(5 * 1.6em);
+  margin: 12px 0 0;
   font:
-    14px / 1.5 Inter,
+    17px / 1.6 Inter,
     sans-serif;
   color: var(--muted);
+}
+.stage-intro p a {
+  color: var(--brand);
 }
 .selector {
   margin: 0;
@@ -2944,7 +2948,7 @@ button.scheme-switch[aria-disabled="true"] {
       transparent 29px 32px,
       var(--group-thread) 32px 36px,
       transparent 36px
-    )
+    );
 }
 .panel-caption::after {
   content: "";
