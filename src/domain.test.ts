@@ -6,6 +6,7 @@ import {
   billTotal,
   cartTotal,
   createDemoStore,
+  splitShares,
   tipAmount,
   toggleNotePreset,
 } from './domain';
@@ -324,6 +325,15 @@ it('rounds the tip to the peso', () => {
   expect(tipAmount(20900, 10)).toBe(2090);
   expect(tipAmount(3333, 15)).toBe(500);
   expect(tipAmount(20900, 0)).toBe(0);
+});
+
+it('splits a bill into whole pesos that add up to the total', () => {
+  expect(splitShares(22990, 1)).toEqual([22990]);
+  expect(splitShares(22990, 2)).toEqual([11495, 11495]);
+  expect(splitShares(10000, 3)).toEqual([3334, 3333, 3333]);
+  expect(splitShares(22990, 4).reduce((sum, share) => sum + share, 0)).toBe(
+    22990,
+  );
 });
 
 it('toggles a usual request in the kitchen note', () => {

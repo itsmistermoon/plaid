@@ -55,6 +55,8 @@
   --tabbar-current-ink: var(--brand);
   --tabbar-current-bg: #0000002a;
   --tabbar-current-shadow: inset 0 2px 5px #0003;
+  --stub-line: 1px dashed #c9c9c9;
+  --stub-muted: #777;
   --tip-ink: #3e3e3e;
   --tip-face: linear-gradient(#fbf8ec, #e9e3cd);
   --tip-arrow: #fbf8ec;
@@ -1397,6 +1399,28 @@ button.scheme-switch[aria-disabled="true"] {
     monospace;
   color: var(--total);
 }
+/* Split bill: one tear-off stub per person, on the receipt's own paper,
+   divided by perforations. */
+.receipt-stubs {
+  display: flex;
+  border-bottom: var(--stub-line);
+}
+.receipt-stubs li {
+  flex: 1 1 0;
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 8px 2px;
+  font-size: 13px;
+}
+.receipt-stubs li + li {
+  border-left: var(--stub-line);
+}
+.receipt-stubs span {
+  font-size: 11px;
+  color: var(--stub-muted);
+}
 .detail-receipt .receipt table {
   font-size: 13px;
 }
@@ -1496,12 +1520,29 @@ button.scheme-switch[aria-disabled="true"] {
   color: var(--ink);
   text-shadow: var(--total-shadow);
 }
+/* The per-person line of a split bill keeps its place when hidden. */
+.receipt-actions-total small {
+  font-size: 13px;
+  color: var(--muted);
+}
+.receipt-actions-total small[data-hidden] {
+  visibility: hidden;
+}
+.receipt-option {
+  display: grid;
+  gap: 4px;
+}
+.receipt-option > span {
+  font-size: 13px;
+  color: var(--muted);
+}
 .receipt-actions .light-button {
   height: 32px;
   font-size: 13px;
 }
 /* Tip segments: the percentages never change width with the total. */
-.tip-selector {
+.tip-selector,
+.split-selector {
   box-sizing: border-box;
   height: 32px;
   font-variant-numeric: tabular-nums;

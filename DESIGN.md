@@ -28,6 +28,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **In the Plaid theme, the paper always emerges from inside a slot: the slot mouth sits above the paper's edge and is wider than it, with an inner shadow where the paper enters.**
   Why: if the paper does not come out of the slot, the skeuomorphic illusion is lost.
   <!-- 2026-11-16 -->
+- **A split bill prints one tear-off stub per person at the foot of the receipt, on its own paper and divided by perforations (dashed lines); the stubs add up exactly to the total. In the Slate theme they are plain cells of the card.**
+  Why: the receipt is the signature piece, so the split belongs on it and not in a separate panel.
+  <!-- 2026-11-17 -->
 - **The Slate theme does not simulate physical objects: no slots, printers or paper. The receipt is a clean card.**
   Why: the Slate theme does not simulate printed paper.
   <!-- 2026-11-16 -->

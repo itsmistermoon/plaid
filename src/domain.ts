@@ -75,6 +75,15 @@ export const toggleNotePreset = (note: string, preset: string) => {
 /** The tip for a bill, rounded to the peso. */
 export const tipAmount = (subtotal: number, percent: number) =>
   Math.round((subtotal * percent) / 100);
+/**
+ * What each person pays when a bill is split evenly: whole pesos that add up
+ * to the total, the first ones paying the peso that does not divide.
+ */
+export const splitShares = (total: number, people: number) =>
+  Array.from(
+    { length: people },
+    (_, index) => Math.floor(total / people) + (index < total % people ? 1 : 0),
+  );
 /** Mesa 7: the visitor's table, the demo's Comensal. */
 export const visitorTable = 7;
 /** Mesa 7 within the floor. */

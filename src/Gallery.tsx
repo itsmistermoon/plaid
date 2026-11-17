@@ -46,6 +46,7 @@ import {
   Receipt,
   ReceiptActions,
   type ReceiptLine,
+  ReceiptOption,
   Stepper,
 } from './components/Receipt';
 import { Ribbon } from './components/Ribbon';
@@ -69,6 +70,7 @@ import {
   type CallKind,
   cartTotal,
   type Line,
+  splitShares,
   type Table,
   tipAmount,
 } from './domain';
@@ -678,7 +680,9 @@ function ReceiptDemo() {
         )}
       />
       <ReceiptActions total={total}>
-        <TipSelector value={percent} onChange={setPercent} />
+        <ReceiptOption label={t('tip')}>
+          <TipSelector value={percent} onChange={setPercent} />
+        </ReceiptOption>
         <button type="button" className="light-button">
           {t('placeOrder')}
         </button>
@@ -705,7 +709,7 @@ const longOrder = [
   line('helado', 1),
 ];
 
-function Printer({ lines }: { lines: Line[] }) {
+function Printer({ lines, people = 1 }: { lines: Line[]; people?: number }) {
   const t = useT();
   return (
     <div className="printer-demo">
@@ -713,6 +717,7 @@ function Printer({ lines }: { lines: Line[] }) {
         caption={t('preview')}
         lines={useLines(lines)}
         total={cartTotal(lines)}
+        shares={splitShares(cartTotal(lines), people)}
       />
     </div>
   );
@@ -1542,6 +1547,17 @@ function RestaurantView() {
                         note: t('sampleNote'),
                       },
                     ]}
+                  />
+                </div>
+              ),
+            },
+            {
+              label: s.splitBill,
+              node: (
+                <div className="detail-receipt">
+                  <Printer
+                    people={3}
+                    lines={[line('italiano', 2), line('cerveza', 3)]}
                   />
                 </div>
               ),

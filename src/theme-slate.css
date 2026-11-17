@@ -86,6 +86,8 @@
   --tabbar-current-ink: var(--accent);
   --tabbar-current-bg: none;
   --tabbar-current-shadow: none;
+  --stub-line: 1px dashed var(--input);
+  --stub-muted: var(--muted-foreground);
   --tip-ink: var(--background);
   --tip-face: var(--foreground);
   --tip-arrow: var(--foreground);
@@ -541,6 +543,10 @@
   text-align: right;
   font-size: 20px;
   color: var(--foreground);
+}
+[data-theme="slate"] .receipt-stubs {
+  border-top: var(--stub-line);
+  border-bottom: 0;
 }
 [data-theme="slate"] .detail-receipt .receipt-total {
   font-size: 20px;

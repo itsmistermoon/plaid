@@ -275,7 +275,7 @@
     align-items: center;
   }
   /* Fixed widths: the rows measure the same in both themes. */
-  .receipt-actions .tip-selector {
+  .receipt-actions .receipt-option {
     order: 1;
     grid-column: 1 / -1;
     width: min(100%, 330px);
