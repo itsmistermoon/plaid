@@ -151,6 +151,10 @@
   .navbar h2 {
     font-size: 19px;
   }
+  /* The logo keeps its script face but must fit between the two 84px slots. */
+  .navbar h2[data-logo] {
+    font-size: 23px;
+  }
   .board,
   [data-surface="garzon"] .board {
     --board-top: 12px;
