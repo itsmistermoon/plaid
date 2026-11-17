@@ -23,6 +23,7 @@ export function CategoryTabs({
             type="button"
             role="tab"
             aria-selected={value === item}
+            data-tour={item === 'Hoy' ? 'hoy' : undefined}
             onClick={() => onChange(item)}
           >
             {t('categories')[item]}

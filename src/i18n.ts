@@ -68,6 +68,10 @@ const es = {
   tourEnd: 'Terminar',
   tourStepOf: (n: number, total: number) => `Paso ${n} de ${total}`,
   tourSteps: {
+    hoy: [
+      'Mira lo de hoy',
+      'La pestaña «Hoy» es la pizarra con los platos del día: toca uno para ver su detalle.',
+    ],
     elegir: [
       'Elige tus platos',
       'Siéntate en la Mesa 7 y marca un plato de la carta, o ábrelo en detalle para elegir la cantidad.',
@@ -79,6 +83,14 @@ const es = {
     sala: [
       'Mira la sala',
       'Cambia a la vista del garzón: la Mesa 7 lleva el sello de tu pedido.',
+    ],
+    buscar: [
+      'Busca en la sala',
+      'El botón «Buscar» abre los comandos: escribe «7 cobrar» o «mesa 3».',
+    ],
+    reservar: [
+      'Anota una reserva',
+      'El botón «Reservar» abre el libro de reservas del día.',
     ],
     servir: [
       'Sirve el pedido',
@@ -192,6 +204,7 @@ const es = {
   paletteActions: 'Por hacer',
   noResults: 'Sin resultados.',
   book: 'Libro de reservas',
+  bookButton: 'Reservar',
   bookDay: 'Día',
   bookDays: ['Hoy', 'Mañana'],
   bookTable: 'Mesa',
@@ -453,6 +466,10 @@ const en: Messages = {
   tourEnd: 'Finish',
   tourStepOf: (n: number, total: number) => `Step ${n} of ${total}`,
   tourSteps: {
+    hoy: [
+      'See what is on today',
+      'The “Today” tab is the chalkboard with the day’s specials: tap one to see its detail.',
+    ],
     elegir: [
       'Pick your dishes',
       'Sit at Table 7 and tick a dish on the menu, or open it in detail to choose how many.',
@@ -464,6 +481,14 @@ const en: Messages = {
     sala: [
       'Look at the floor',
       'Switch to the waiter view: Table 7 carries the seal of your order.',
+    ],
+    buscar: [
+      'Search the floor',
+      'The “Search” button opens the commands: type “7 charge” or “table 3”.',
+    ],
+    reservar: [
+      'Write a booking',
+      'The “Book” button opens the day’s reservation book.',
     ],
     servir: [
       'Serve the order',
@@ -570,6 +595,7 @@ const en: Messages = {
   paletteActions: 'To do',
   noResults: 'No results.',
   book: 'Reservation book',
+  bookButton: 'Book',
   bookDay: 'Day',
   bookDays: ['Today', 'Tomorrow'],
   bookTable: 'Table',

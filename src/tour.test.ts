@@ -16,18 +16,25 @@ it('no hay recorrido hasta que el visitante lo empieza', () => {
   const store = createDemoStore();
   expect(store.getState().tour).toBeNull();
   store.getState().startTour();
-  expect(stepOf(store)).toBe('elegir');
+  expect(stepOf(store)).toBe('hoy');
 });
 
 it('avanza paso a paso por el circuito completo', () => {
   const store = createDemoStore();
   const s = () => store.getState();
   s().startTour();
+  expect(stepOf(store)).toBe('hoy');
+  s().seeTour('hoy');
+  expect(stepOf(store)).toBe('elegir');
   s().addToCart({ dishId: 'chacarero' }, 1);
   expect(stepOf(store)).toBe('enviar');
   s().sendOrder();
   expect(stepOf(store)).toBe('sala');
   s().setView('garzon');
+  expect(stepOf(store)).toBe('buscar');
+  s().seeTour('buscar');
+  expect(stepOf(store)).toBe('reservar');
+  s().seeTour('reservar');
   expect(stepOf(store)).toBe('servir');
   s().confirmOrder(7, orderId(store));
   expect(stepOf(store)).toBe('servir');
@@ -57,7 +64,7 @@ it('no retrocede cuando el visitante vuelve a la vista del comensal', () => {
   s().sendOrder();
   s().setView('garzon');
   s().setView('comensal');
-  expect(stepOf(store)).toBe('servir');
+  expect(stepOf(store)).toBe('buscar');
 });
 
 it('vuelve a elegir platos si la mesa se libera antes de pedir la cuenta', () => {
@@ -72,7 +79,7 @@ it('vuelve a elegir platos si la mesa se libera antes de pedir la cuenta', () =>
   s().addToCart({ dishId: 'empanada' }, 1);
   s().sendOrder();
   expect(s().tables[6].occupied).toBe(true);
-  expect(stepOf(store)).toBe('servir');
+  expect(stepOf(store)).toBe('buscar');
 });
 
 it('se salta y se retoma en el paso en que iba', () => {
@@ -102,7 +109,7 @@ it('empieza de nuevo después de terminar', () => {
   expect(stepOf(store)).toBe('listo');
   s().setView('comensal');
   s().startTour();
-  expect(stepOf(store)).toBe('elegir');
+  expect(stepOf(store)).toBe('hoy');
 });
 
 it('cerrar al final y reiniciar la demo quitan el recorrido', () => {
@@ -113,4 +120,24 @@ it('cerrar al final y reiniciar la demo quitan el recorrido', () => {
   store.getState().startTour();
   store.getState().reset();
   expect(store.getState().tour).toBeNull();
+});
+
+it('los pasos de los botones del garzón avanzan al probarlos y se saltan al servir', () => {
+  const store = createDemoStore();
+  const s = () => store.getState();
+  s().seeTour('buscar');
+  expect(s().tour).toBeNull();
+  s().startTour();
+  s().addToCart({ dishId: 'chacarero' }, 1);
+  s().sendOrder();
+  s().setView('garzon');
+  expect(stepOf(store)).toBe('buscar');
+  s().seeTour('reservar');
+  expect(stepOf(store)).toBe('buscar');
+  s().seeTour('buscar');
+  expect(stepOf(store)).toBe('servir');
+  s().startTour();
+  s().endTour();
+  s().startTour();
+  expect(s().tour?.seen).toEqual([]);
 });

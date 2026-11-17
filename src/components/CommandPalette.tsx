@@ -19,7 +19,6 @@ import {
 import { Search } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { useT } from '../i18n';
-import { Tip } from './Tip';
 
 export interface PaletteGroup {
   label: string;
@@ -51,30 +50,34 @@ export function CommandPalette({
   placeholder,
   groups,
   onRun,
+  onOpen,
 }: {
   title: string;
   placeholder: string;
   groups: PaletteGroup[];
   onRun: (value: string) => void;
+  /** Called each time the palette opens. */
+  onOpen?: () => void;
 }) {
   const t = useT();
   const [open, setOpen] = useState(false);
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <Tip
-        hint={title}
-        naming
-        render={
-          <DialogTrigger
-            className="dark-button palette-trigger"
-            shortcut="mod+k"
-            aria-label={title}
-          />
-        }
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (next) onOpen?.();
+      }}
+    >
+      <DialogTrigger
+        className="dark-button palette-trigger"
+        shortcut="mod+k"
+        data-tour="buscar"
       >
         <Search aria-hidden="true" strokeWidth={2.5} />
+        {t('search')}
         <DialogShortcut className="palette-keys desktop-only" />
-      </Tip>
+      </DialogTrigger>
       <DialogBackdrop className="palette-backdrop" />
       <DialogContent className="palette">
         <DialogTitle className="sr-only">{title}</DialogTitle>
