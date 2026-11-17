@@ -975,6 +975,16 @@ button.scheme-switch:disabled {
 .post-it textarea::placeholder {
   color: #7a7243;
 }
+/* Usual requests: a row of toggles in the segmented control's material. */
+.note-presets {
+  box-sizing: border-box;
+  height: 32px;
+  margin-top: 12px;
+}
+.note-presets button {
+  font-size: 12px;
+  white-space: nowrap;
+}
 .post-it textarea:focus-visible {
   outline: 2px solid #c3122a88;
   outline-offset: -4px;

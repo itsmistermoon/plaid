@@ -60,6 +60,18 @@ export const cartTotal = (lines: Line[]) =>
   lines.reduce((total, line) => total + unitPrice(line) * line.qty, 0);
 export const billTotal = (table: Table) =>
   table.orders.reduce((total, order) => total + cartTotal(order.lines), 0);
+/** Adds a usual request to the kitchen note, or removes it if it is there. */
+export const toggleNotePreset = (note: string, preset: string) => {
+  const phrases = note
+    .split(',')
+    .map((phrase) => phrase.trim())
+    .filter(Boolean);
+  return (
+    phrases.includes(preset)
+      ? phrases.filter((phrase) => phrase !== preset)
+      : [...phrases, preset]
+  ).join(', ');
+};
 /** The tip for a bill, rounded to the peso. */
 export const tipAmount = (subtotal: number, percent: number) =>
   Math.round((subtotal * percent) / 100);

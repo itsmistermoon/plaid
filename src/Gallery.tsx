@@ -28,6 +28,7 @@ import {
   Navbar,
   PendingCalls,
 } from './components/Navbar';
+import { NotePresets } from './components/NotePresets';
 import {
   OrderToastRegion,
   showOrderToast,
@@ -390,6 +391,7 @@ function PostItDemo() {
         value={note}
         onChange={setNote}
       />
+      <NotePresets note={note} onChange={setNote} />
     </div>
   );
 }

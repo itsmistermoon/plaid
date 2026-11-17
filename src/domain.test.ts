@@ -2,7 +2,13 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 beforeEach(() => sessionStorage.clear());
 
-import { billTotal, cartTotal, createDemoStore, tipAmount } from './domain';
+import {
+  billTotal,
+  cartTotal,
+  createDemoStore,
+  tipAmount,
+  toggleNotePreset,
+} from './domain';
 import { startSimulator } from './simulator';
 
 it('actualiza el carrito y su total al cambiar cantidades', () => {
@@ -318,4 +324,14 @@ it('rounds the tip to the peso', () => {
   expect(tipAmount(20900, 10)).toBe(2090);
   expect(tipAmount(3333, 15)).toBe(500);
   expect(tipAmount(20900, 0)).toBe(0);
+});
+
+it('toggles a usual request in the kitchen note', () => {
+  expect(toggleNotePreset('', 'Sin cebolla')).toBe('Sin cebolla');
+  expect(toggleNotePreset('bien cocido', 'Sin cebolla')).toBe(
+    'bien cocido, Sin cebolla',
+  );
+  expect(toggleNotePreset('bien cocido, Sin cebolla', 'Sin cebolla')).toBe(
+    'bien cocido',
+  );
 });

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useStore } from 'zustand';
 import { DishPlate } from '../../components/DishPlate';
 import { Extras } from '../../components/Extras';
+import { NotePresets } from '../../components/NotePresets';
 import { PostIt } from '../../components/PostIt';
 import { QuantityWheel } from '../../components/QuantityWheel';
 import { Receipt } from '../../components/Receipt';
@@ -40,6 +41,7 @@ export function Detalle({ dish, onDone }: { dish: Dish; onDone: () => void }) {
           disabled={dish.soldOut}
           onChange={setNote}
         />
+        <NotePresets note={note} disabled={dish.soldOut} onChange={setNote} />
       </div>
       <div className="detail-foot">
         {dish.extras && (
