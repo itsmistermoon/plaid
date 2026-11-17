@@ -247,7 +247,7 @@ const es = {
   galleryTitle: 'Galería de componentes',
   gallerySubtitle: 'Plaid UI Kit',
   galleryIntro:
-    'Plaid es un kit de componentes esqueuomórficos construido sobre UI SDK: texturas, relieves y materiales reales, con el comportamiento accesible de una librería moderna. Cada pieza viene en dos pieles, Plaid y Slate, para comparar lo táctil con lo plano. El código está en',
+    'Plaid es un kit de componentes esqueumórficos construido sobre UI SDK: texturas, relieves y materiales reales, con el comportamiento accesible de una librería moderna. Cada pieza viene en dos pieles, Plaid y Slate, para comparar lo táctil con lo plano. El código está en',
   openDemo: 'Abrir la demo',
   states: 'Estados',
   presentational: 'Presentacional',
