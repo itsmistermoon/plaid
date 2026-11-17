@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-The demo lives at `/demo` and the gallery at `/componentes`. The English routes are `/en/demo` and `/en/components`.
+The demo lives at `/demo` and the gallery in three views: `/componentes` (standalone components), `/componentes/restaurant` and `/componentes/tartan`. The English routes are `/en/demo`, `/en/components`, `/en/components/restaurant` and `/en/components/tartan`.
 
 ```sh
 pnpm build

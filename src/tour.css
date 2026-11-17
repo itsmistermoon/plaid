@@ -133,7 +133,7 @@
 :root {
   --tour-ring: #f6d55c;
 }
-[data-theme="moderno"] {
+[data-theme="slate"] {
   --tour-ring: var(--accent);
 }
 
@@ -144,47 +144,47 @@
   }
 }
 
-/* Modern theme: flat card with the green accent */
-[data-theme="moderno"] .tour {
+/* Slate theme: flat card with the green accent */
+[data-theme="slate"] .tour {
   color: var(--foreground);
   background: var(--card);
   border-color: var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-overlay);
 }
-[data-theme="moderno"] .tour-hand {
+[data-theme="slate"] .tour-hand {
   color: var(--accent);
   filter: none;
 }
-[data-theme="moderno"] .tour-count {
+[data-theme="slate"] .tour-count {
   color: var(--accent);
 }
-[data-theme="moderno"] .tour h2 {
+[data-theme="slate"] .tour h2 {
   font:
     700 18px Outfit,
     sans-serif;
 }
-[data-theme="moderno"] .tour-text > p:last-child {
+[data-theme="slate"] .tour-text > p:last-child {
   font-size: 14px;
   color: var(--muted-foreground);
 }
-[data-theme="moderno"] .tour-dots li {
+[data-theme="slate"] .tour-dots li {
   background: var(--border);
 }
-[data-theme="moderno"] .tour-dots li[data-done] {
+[data-theme="slate"] .tour-dots li[data-done] {
   background: var(--accent);
 }
-[data-theme="moderno"] .tour-close {
+[data-theme="slate"] .tour-close {
   color: var(--foreground);
   border: 1px solid var(--border);
 }
-[data-theme="moderno"] .tour-close small {
+[data-theme="slate"] .tour-close small {
   color: var(--muted-foreground);
 }
-[data-theme="moderno"] .tour-close:hover {
+[data-theme="slate"] .tour-close:hover {
   background: var(--secondary);
 }
-[data-theme="moderno"] .tour-button[aria-pressed="true"] {
+[data-theme="slate"] .tour-button[aria-pressed="true"] {
   color: var(--on-accent);
   background: var(--accent);
   border-color: var(--accent);

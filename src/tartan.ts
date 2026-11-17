@@ -16,7 +16,7 @@ export type TartanColor = 'G' | 'K' | 'W' | 'Y';
 
 /** Colors of the sett, from the brand palette. */
 export const tartanColors: Record<TartanColor, string> = {
-  /** The lettering green (`--brand` of the original theme). */
+  /** The lettering green (`--brand` of the Plaid theme). */
   G: '#8fc23f',
   /** The dark slate of the stage (`--stage`). */
   K: '#2b3437',

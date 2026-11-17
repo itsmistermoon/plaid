@@ -10,11 +10,11 @@ import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Redirect, useLocation } from 'wouter';
 import { Demo } from './demo/Demo';
-import { Gallery } from './Gallery';
+import { Gallery, type GalleryView } from './Gallery';
 import { LangContext, messages, routeFor } from './i18n';
 import { colorScheme, theme } from './theme';
 import './style.css';
-import './theme-moderno.css';
+import './theme-slate.css';
 import './mobile.css';
 import './tour.css';
 
@@ -36,7 +36,11 @@ function App() {
   // only changes the context and does not unmount local state.
   return (
     <LangContext value={route.lang}>
-      {route.page === 'demo' ? <Demo /> : <Gallery />}
+      {route.page === 'demo' ? (
+        <Demo />
+      ) : (
+        <Gallery view={route.page as GalleryView} />
+      )}
     </LangContext>
   );
 }

@@ -4,11 +4,21 @@ import type { Category, Dish, Extra } from './menu';
 import type { TourStep } from './tour';
 
 export type Lang = 'es' | 'en';
-export type Page = 'demo' | 'gallery';
+export type Page = 'demo' | 'components' | 'restaurant' | 'tartan';
 
 const paths: Record<Lang, Record<Page, string>> = {
-  es: { demo: '/demo', gallery: '/componentes' },
-  en: { demo: '/en/demo', gallery: '/en/components' },
+  es: {
+    demo: '/demo',
+    components: '/componentes',
+    restaurant: '/componentes/restaurant',
+    tartan: '/componentes/tartan',
+  },
+  en: {
+    demo: '/en/demo',
+    components: '/en/components',
+    restaurant: '/en/components/restaurant',
+    tartan: '/en/components/tartan',
+  },
 };
 
 /** Path of a page in a language. */
@@ -18,7 +28,7 @@ export const pathFor = (page: Page, lang: Lang) => paths[lang][page];
 export function routeFor(path: string): { page: Page; lang: Lang } | null {
   const clean = path.replace(/\/+$/, '') || '/';
   for (const lang of ['es', 'en'] as const)
-    for (const page of ['demo', 'gallery'] as const)
+    for (const page of Object.keys(paths[lang]) as Page[])
       if (paths[lang][page] === clean) return { page, lang };
   return null;
 }
@@ -32,16 +42,16 @@ const es = {
   themeSwitch: 'Tema',
   switchTo: (label: string, current: string, next: string) =>
     `${label}: ${current}. Tocar para cambiar a ${next}`,
-  themes: { original: 'Original', moderno: 'Moderno' },
+  themes: { plaid: 'Plaid', slate: 'Slate' },
   schemeSwitch: 'Apariencia',
   schemes: { system: 'Sistema', light: 'Claro', dark: 'Oscuro' },
-  schemeModernOnly: 'Solo en el tema Moderno',
+  schemeSlateOnly: 'Solo en el tema Slate',
   notFound: 'Página no encontrada',
   // Demo stage
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'una reconstrucción de iClub',
   stageIntro:
-    'Reconstrucción de iClub, una app de tablet para restaurantes de 2012 con estilo esqueumórfico, hecha con UI SDK. Compara la piel original con una moderna, desde la vista del comensal o la del garzón.',
+    'Reconstrucción de iClub, una app de tablet para restaurantes de 2012 con estilo esqueumórfico, hecha con UI SDK. Compara la piel Plaid con la Slate, desde la vista del comensal o la del garzón.',
   device: 'Dispositivo',
   diner: 'Comensal',
   waiter: 'Garzón',
@@ -179,10 +189,16 @@ const es = {
   switchOn: 'SÍ',
   switchOff: 'NO',
   // Gallery
+  galleryViews: 'Vistas de la galería',
+  viewLabels: {
+    components: 'Componentes',
+    restaurant: 'Restaurant',
+    tartan: 'Tartán',
+  },
   galleryTitle: 'Galería de componentes',
   gallerySubtitle: 'Restaurant El Clan · iClub',
   galleryIntro:
-    'Los componentes de la demo: cada pieza de la reconstrucción de iClub, en su piel original y en una moderna, construida sobre UI SDK.',
+    'Los componentes de la demo: cada pieza de la reconstrucción de iClub, en su piel Plaid y en la Slate, construida sobre UI SDK.',
   openDemo: 'Abrir la demo',
   states: 'Estados',
   presentational: 'Presentacional',
@@ -333,15 +349,15 @@ const en: Messages = {
   themeSwitch: 'Theme',
   switchTo: (label: string, current: string, next: string) =>
     `${label}: ${current}. Tap to switch to ${next}`,
-  themes: { original: 'Original', moderno: 'Modern' },
+  themes: { plaid: 'Plaid', slate: 'Slate' },
   schemeSwitch: 'Appearance',
   schemes: { system: 'System', light: 'Light', dark: 'Dark' },
-  schemeModernOnly: 'Modern theme only',
+  schemeSlateOnly: 'Slate theme only',
   notFound: 'Page not found',
   stageTitle: 'Restaurant El Clan',
   stageSubtitle: 'an iClub reconstruction',
   stageIntro:
-    'A reconstruction of iClub, a 2012 skeuomorphic restaurant tablet app, built with UI SDK. Compare the original skin with a modern one, from the diner’s view or the waiter’s.',
+    'A reconstruction of iClub, a 2012 skeuomorphic restaurant tablet app, built with UI SDK. Compare the Plaid skin with the Slate one, from the diner’s view or the waiter’s.',
   device: 'Device',
   diner: 'Diner',
   waiter: 'Waiter',
@@ -469,10 +485,16 @@ const en: Messages = {
   pickOption: 'Pick an option',
   switchOn: 'ON',
   switchOff: 'OFF',
+  galleryViews: 'Gallery views',
+  viewLabels: {
+    components: 'Components',
+    restaurant: 'Restaurant',
+    tartan: 'Tartan',
+  },
   galleryTitle: 'Component gallery',
   gallerySubtitle: 'Restaurant El Clan · iClub',
   galleryIntro:
-    'The components behind the demo: every piece of the iClub reconstruction, in its original skin and a modern one, built on UI SDK.',
+    'The components behind the demo: every piece of the iClub reconstruction, in its Plaid skin and the Slate one, built on UI SDK.',
   openDemo: 'Open the demo',
   states: 'States',
   presentational: 'Presentational',

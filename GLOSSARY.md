@@ -38,8 +38,8 @@ Domain vocabulary of the demo. Domain terms stay in Spanish, as they appear in t
 ## Presentation
 
 - **Sello**: the visual form of a Llamado on a Mesa in the Garzón's grid.
-- **Tema**: the skin of the interface. It is either **original**, the skeuomorphic reconstruction of iClub, or **moderno**, flat. It changes appearance, not behavior.
-- **Galería**: the page that shows every component with its live demo and states.
+- **Tema**: the skin of the interface. It is either **Plaid**, the skeuomorphic reconstruction of iClub, or **Slate**, flat. It changes appearance, not behavior.
+- **Galería**: the page that shows every component with its live demo and states, in three views: standalone components, restaurant pieces and the Clan tartan.
 - **Recorrido guiado**: the optional help layer that walks the visitor through the Comensal → Garzón circuit.
 - **iClub**: the original 2012 app that plaid reconstructs.
 

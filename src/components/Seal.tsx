@@ -26,7 +26,7 @@ export function Seal({ kind, x }: { kind: CallKind; x: number }) {
         className="seal-face"
         fill={`url(#${gradient})`}
       />
-      {/* Flat face of the modern theme; the original hides it. */}
+      {/* Flat face of the Slate theme; Plaid hides it. */}
       <circle className="seal-dot" cx={x} cy={153} r={16} />
       <g className="seal-glyph">
         <Icon

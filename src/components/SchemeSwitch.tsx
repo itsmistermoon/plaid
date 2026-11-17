@@ -13,7 +13,7 @@ const options = [
 const icons = { system: Monitor, light: Sun, dark: Moon };
 
 /**
- * Light or dark for the modern theme (system, light, dark). The original theme
+ * Light or dark for the Slate theme (system, light, dark). The Plaid theme
  * is always dark, so there the control stays in place but disabled. On phones,
  * a single icon button that cycles through the three choices.
  */
@@ -23,8 +23,8 @@ export function SchemeSwitch() {
   const t = useT();
   const phone = useMedia('(max-width: 760px)');
   const names = t('schemes');
-  const disabled = skin !== 'moderno';
-  const title = disabled ? t('schemeModernOnly') : undefined;
+  const disabled = skin !== 'slate';
+  const title = disabled ? t('schemeSlateOnly') : undefined;
   const choose = (option: ColorSchemeValue, event: Event) =>
     colorScheme.set(option, { reason: 'press', event });
   if (phone) {

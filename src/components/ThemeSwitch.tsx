@@ -5,9 +5,9 @@ import { theme } from '../theme';
 import { Selector } from './Selector';
 import { SelectorToggle } from './SelectorToggle';
 
-const options = ['original', 'moderno'] as const;
+const options = ['plaid', 'slate'] as const;
 
-/** Switch between the original (2012) skin and the modern one. On phones, a single toggle button. */
+/** Switch between the Plaid (2012) skin and the Slate one. On phones, a single toggle button. */
 export function ThemeSwitch() {
   const { value } = usePreference(theme);
   const t = useT();
@@ -15,12 +15,12 @@ export function ThemeSwitch() {
   const choose = (option: (typeof options)[number], event: Event) =>
     theme.set(option, { reason: 'press', event });
   if (phone) {
-    const next = value === 'original' ? 'moderno' : 'original';
+    const next = value === 'plaid' ? 'slate' : 'plaid';
     return (
       <SelectorToggle
         className="theme-switch"
         label={t('themeSwitch')}
-        current={t('themes')[value === 'original' ? 'original' : 'moderno']}
+        current={t('themes')[value === 'plaid' ? 'plaid' : 'slate']}
         next={t('themes')[next]}
         onClick={(event) => choose(next, event.nativeEvent)}
       />
@@ -30,7 +30,7 @@ export function ThemeSwitch() {
     <Selector
       className="theme-switch"
       legend={t('themeSwitch')}
-      value={value === 'original' ? 'original' : 'moderno'}
+      value={value === 'plaid' ? 'plaid' : 'slate'}
       options={options.map((option) => ({
         value: option,
         label: t('themes')[option],

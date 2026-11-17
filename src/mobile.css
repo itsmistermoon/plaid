@@ -1,7 +1,7 @@
 /*
  * Phone (≤ 760 px): the Comensal full screen, no tablet frame, with bottom
  * tabs; the Garzón in 2 columns with the detail as a sheet.
- * Applies to both themes; the modern theme's colors go at the end.
+ * Applies to both themes; the Slate theme's colors go at the end.
  */
 .mobile-only {
   display: none;
@@ -131,7 +131,7 @@
     background: none;
     box-shadow: none;
   }
-  [data-theme="moderno"] .tablet {
+  [data-theme="slate"] .tablet {
     border: 0;
     background: none;
     box-shadow: none;
@@ -387,9 +387,9 @@
   }
 }
 
-/* Modern theme on phones */
+/* Slate theme on phones */
 @media (max-width: 760px) {
-  [data-theme="moderno"] .table-detail {
+  [data-theme="slate"] .table-detail {
     box-shadow: var(--shadow-sheet);
   }
 }

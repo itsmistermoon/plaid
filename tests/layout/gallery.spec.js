@@ -81,3 +81,21 @@ for (const width of [1440, 390]) {
     }
   });
 }
+
+test('las tres vistas de la galería se alternan con la barra fija y respetan el idioma', async ({
+  page,
+}) => {
+  await page.goto('/componentes');
+  const views = page.locator('.gallery-views a');
+  await expect(views).toHaveCount(3);
+  await views.nth(1).click();
+  await expect(page).toHaveURL(/\/componentes\/restaurant$/);
+  await expect(page.locator('.panel-caption').first()).toBeVisible();
+  await page.locator('.lang-switch a[hreflang="en"]').click();
+  await expect(page).toHaveURL(/\/en\/components\/restaurant$/);
+  await page.locator('.gallery-views a').nth(2).click();
+  await expect(page).toHaveURL(/\/en\/components\/tartan$/);
+  await expect(page.locator('.stage-bar')).toBeVisible();
+  await page.locator('.gallery-views a').nth(0).click();
+  await expect(page).toHaveURL(/\/en\/components$/);
+});

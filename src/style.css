@@ -1,5 +1,5 @@
-/* Original theme tokens (iClub, 2012). */
-[data-theme="original"] {
+/* Plaid theme tokens (iClub, 2012). */
+[data-theme="plaid"] {
   --stage: #2b3437;
   --gallery-bar: var(--stage);
   --gallery-bar-line: #3c4446;
@@ -35,7 +35,7 @@
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
-  /* Skin of the pieces both themes share: the modern theme only changes these values. */
+  /* Skin of the pieces both themes share: the Slate theme only changes these values. */
   --step-line: currentColor;
   --step-done-line: color-mix(in srgb, var(--brand), #000 38%);
   --step-done-bg: linear-gradient(
@@ -267,7 +267,7 @@ ol {
   width: 15px;
   height: 15px;
 }
-/* The original theme is always dark: the control keeps its place, disabled. */
+/* The Plaid theme is always dark: the control keeps its place, disabled. */
 .scheme-switch:disabled {
   opacity: 0.45;
 }
@@ -435,7 +435,7 @@ button.scheme-switch:disabled {
   transform: scale(0.97);
 }
 /* The phone selector toggle sits in the segmented control's material. */
-[data-theme="original"] .selector-toggle {
+[data-theme="plaid"] .selector-toggle {
   box-shadow: none;
   color: var(--segment-ink);
   background: var(--segment-face);
@@ -1035,7 +1035,7 @@ button.scheme-switch:disabled {
   user-select: none;
   -webkit-touch-callout: none;
 }
-[data-theme="moderno"] .wheel {
+[data-theme="slate"] .wheel {
   --wheel-frame: var(--card);
   --wheel-border: var(--input);
   --wheel-line: var(--border);
@@ -2016,6 +2016,16 @@ button.scheme-switch:disabled {
   font-weight: 700;
   color: var(--tartan-chip-ink);
   box-shadow: var(--tartan-frame);
+}
+/* The three gallery views, under the sticky bar. */
+.gallery-views {
+  box-sizing: border-box;
+  width: min(100%, 420px);
+  height: var(--bar-h);
+  margin: 0 auto 22px;
+}
+.gallery-views a {
+  padding: 0 8px;
 }
 .gallery-group {
   max-width: 1120px;

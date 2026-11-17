@@ -68,7 +68,7 @@ export function Demo() {
         )}
         <TourButton />
         <Link
-          href={pathFor('gallery', lang)}
+          href={pathFor('components', lang)}
           className="light-button kit-link"
           aria-label={t('uiKit')}
         >

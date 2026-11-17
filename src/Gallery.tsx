@@ -83,6 +83,8 @@ const dish = (id: string) => {
   if (!found) throw new Error(`No existe el plato ${id}`);
   return found;
 };
+export const galleryViews = ['components', 'restaurant', 'tartan'] as const;
+export type GalleryView = (typeof galleryViews)[number];
 const callKinds: CallKind[] = ['pedido', 'garzón', 'pago'];
 const line = (dishId: string, qty: number, extras: string[] = []): Line => ({
   dishId,
@@ -905,35 +907,17 @@ function TartanGroup() {
   );
 }
 
-export function Gallery() {
+function ComponentsView() {
   const t = useT();
-  const lang = useLang();
-  const callLabels = t('callLabels');
-  const s = t('stateLabels');
-  const panel = t('panels');
-  const group = t('groups');
   const categoryItems = categories.map((id) => ({
     value: id,
     label: t('categories')[id],
   }));
+  const s = t('stateLabels');
+  const panel = t('panels');
+  const group = t('groups');
   return (
-    <main
-      className="gallery"
-      style={{ '--clan-tartan': tartanUrl() } as CSSProperties}
-    >
-      <StageBar>
-        <ThemeSwitch />
-        <SchemeSwitch />
-        <LangSwitch />
-        <Link href={pathFor('demo', lang)} className="light-button">
-          {t('openDemo')}
-        </Link>
-      </StageBar>
-      <StageIntro
-        title={t('galleryTitle')}
-        tagline={t('gallerySubtitle')}
-        description={t('galleryIntro')}
-      />
+    <>
       <Group title={group.controls} thread="controls">
         <Panel
           title={panel.button}
@@ -1200,7 +1184,34 @@ export function Gallery() {
         >
           <PostItDemo />
         </Panel>
+        <Panel
+          title={panel.toast}
+          uses={['Toast']}
+          wide="full"
+          states={[
+            { label: s.confirmed, node: <StaticToast kind="confirmado" /> },
+            {
+              label: s.withAction,
+              node: <StaticToast kind="enviado" withAction />,
+            },
+            { label: s.error, node: <StaticToast kind="error" /> },
+          ]}
+        >
+          <ToastDemo />
+        </Panel>
       </Group>
+    </>
+  );
+}
+
+function RestaurantView() {
+  const t = useT();
+  const callLabels = t('callLabels');
+  const s = t('stateLabels');
+  const panel = t('panels');
+  const group = t('groups');
+  return (
+    <>
       <Group title={group.containers} thread="containers">
         <Panel
           title={panel.navbar}
@@ -1303,21 +1314,6 @@ export function Gallery() {
           <TableDetailFrame short>
             <TableDetailEmpty />
           </TableDetailFrame>
-        </Panel>
-        <Panel
-          title={panel.toast}
-          uses={['Toast']}
-          wide="full"
-          states={[
-            { label: s.confirmed, node: <StaticToast kind="confirmado" /> },
-            {
-              label: s.withAction,
-              node: <StaticToast kind="enviado" withAction />,
-            },
-            { label: s.error, node: <StaticToast kind="error" /> },
-          ]}
-        >
-          <ToastDemo />
         </Panel>
       </Group>
       <Group title={group.restaurant} thread="restaurant">
@@ -1500,7 +1496,45 @@ export function Gallery() {
           <Printer lines={[line('empanada', 2), line('italiano', 1)]} />
         </Panel>
       </Group>
-      <TartanGroup />
+    </>
+  );
+}
+
+export function Gallery({ view }: { view: GalleryView }) {
+  const t = useT();
+  const lang = useLang();
+  return (
+    <main
+      className="gallery"
+      style={{ '--clan-tartan': tartanUrl() } as CSSProperties}
+    >
+      <StageBar>
+        <ThemeSwitch />
+        <SchemeSwitch />
+        <LangSwitch />
+        <Link href={pathFor('demo', lang)} className="light-button">
+          {t('openDemo')}
+        </Link>
+      </StageBar>
+      <StageIntro
+        title={t('galleryTitle')}
+        tagline={t('gallerySubtitle')}
+        description={t('galleryIntro')}
+      />
+      <nav className="selector gallery-views" aria-label={t('galleryViews')}>
+        {galleryViews.map((item) => (
+          <Link
+            key={item}
+            href={pathFor(item, lang)}
+            aria-current={view === item ? 'page' : undefined}
+          >
+            {t('viewLabels')[item]}
+          </Link>
+        ))}
+      </nav>
+      {view === 'components' && <ComponentsView />}
+      {view === 'restaurant' && <RestaurantView />}
+      {view === 'tartan' && <TartanGroup />}
       <OrderToastRegion />
     </main>
   );
