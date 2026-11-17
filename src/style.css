@@ -298,6 +298,7 @@ ol {
   --reset-w: 130px;
   --kit-w: 100px;
   --open-w: 124px;
+  --views-w: 330px;
   max-width: 1120px;
   margin: 0 auto 18px;
   display: grid;
@@ -309,11 +310,23 @@ ol {
   align-items: center;
   gap: 12px;
 }
-/* The gallery bar has fewer controls: the same cells, with the demo link last. */
+/* The gallery bar has fewer controls: the same cells, then the three views,
+   with the demo link last. On phones the views take their own full row. */
 .gallery .stage-bar {
   grid-template-columns:
     minmax(0, var(--theme-w)) minmax(0, var(--scheme-w))
-    minmax(0, var(--lang-w)) minmax(0, var(--open-w));
+    minmax(0, var(--lang-w)) minmax(0, var(--views-w)) minmax(0, var(--open-w));
+}
+@media (max-width: 760px) {
+  .gallery .stage-bar {
+    grid-template-columns:
+      minmax(0, var(--theme-w)) minmax(0, var(--scheme-w))
+      minmax(0, var(--lang-w)) minmax(0, var(--open-w));
+  }
+  .gallery .stage-bar .gallery-views {
+    grid-column: 1 / -1;
+    order: 1;
+  }
 }
 /* Each control fills its grid cell; the bar's buttons share the segmented
    control's corner radius. */
@@ -2841,16 +2854,10 @@ button.scheme-switch[aria-disabled="true"] {
   color: var(--tartan-chip-ink);
   box-shadow: var(--tartan-frame);
 }
-/* The three gallery views, under the sticky bar. */
-.gallery-views {
-  box-sizing: border-box;
-  width: min(100%, 420px);
-  height: 42px;
-  margin: 0 auto 22px;
-}
+/* The three gallery views, in the sticky bar. */
 .gallery-views a {
   padding: 0 8px;
-  font-size: 15px;
+  font-size: 13px;
 }
 .gallery-group {
   max-width: 1120px;

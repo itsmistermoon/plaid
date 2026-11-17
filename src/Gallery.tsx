@@ -111,6 +111,8 @@ const dish = (id: string) => {
   if (!found) throw new Error(`No existe el plato ${id}`);
   return found;
 };
+const uiSdkUrl = 'https://ui-sdk.dev';
+
 export const galleryViews = ['components', 'restaurant', 'tartan'] as const;
 export type GalleryView = (typeof galleryViews)[number];
 const callKinds: CallKind[] = ['pedido', 'garzón', 'pago'];
@@ -169,7 +171,16 @@ function Panel({
         </ul>
       )}
       <p className="panel-uses">
-        {uses.length ? `UI SDK: ${uses.join(', ')}` : t('presentational')}
+        {uses.length ? (
+          <>
+            <a href={uiSdkUrl} target="_blank" rel="noopener noreferrer">
+              UI SDK
+            </a>
+            : {uses.join(', ')}
+          </>
+        ) : (
+          t('presentational')
+        )}
       </p>
     </section>
   );
@@ -1807,6 +1818,17 @@ export function Gallery({ view }: { view: GalleryView }) {
         <ThemeSwitch />
         <SchemeSwitch />
         <LangSwitch />
+        <nav className="selector gallery-views" aria-label={t('galleryViews')}>
+          {galleryViews.map((item) => (
+            <Link
+              key={item}
+              href={pathFor(item, lang)}
+              aria-current={view === item ? 'page' : undefined}
+            >
+              {t('viewLabels')[item]}
+            </Link>
+          ))}
+        </nav>
         <Link href={pathFor('demo', lang)} className="light-button">
           {t('openDemo')}
         </Link>
@@ -1817,6 +1839,10 @@ export function Gallery({ view }: { view: GalleryView }) {
         description={
           <>
             {t('galleryIntro')}{' '}
+            <a href={uiSdkUrl} target="_blank" rel="noopener noreferrer">
+              UI SDK
+            </a>
+            {t('galleryIntroMid')}{' '}
             <a
               href="https://github.com/itsmistermoon/plaid"
               target="_blank"
@@ -1828,17 +1854,6 @@ export function Gallery({ view }: { view: GalleryView }) {
           </>
         }
       />
-      <nav className="selector gallery-views" aria-label={t('galleryViews')}>
-        {galleryViews.map((item) => (
-          <Link
-            key={item}
-            href={pathFor(item, lang)}
-            aria-current={view === item ? 'page' : undefined}
-          >
-            {t('viewLabels')[item]}
-          </Link>
-        ))}
-      </nav>
       {view === 'components' && <ComponentsView />}
       {view === 'restaurant' && <RestaurantView />}
       {view === 'tartan' && <TartanGroup />}

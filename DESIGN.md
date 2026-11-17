@@ -131,6 +131,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **The gallery's control bar (theme, scheme, language, demo link) stays pinned at the top while scrolling, in its own place, so the skin can be switched anywhere. Its background is opaque and bleeds past the page's sides.**
   Why: the pieces are compared across skins, and scrolling back up to switch broke that.
   <!-- 2026-11-16 -->
+- **The gallery's view tabs (Componentes, Restaurant, Tartán) are a segmented control in that same bar, before the demo link, so they stay visible while scrolling. On phones they take their own full row of the bar.**
+  Why: switching view was only possible from the top of the page.
+  <!-- 2026-11-17 -->
 - **A control that sits alone in a gallery panel keeps its fixed width (the bar's `--role-w`); it never shrinks to its content.**
   Why: the segmented control was squeezed and its labels overflowed.
   <!-- 2026-11-16 -->
