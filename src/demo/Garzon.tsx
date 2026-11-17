@@ -16,9 +16,15 @@ import { useStore } from 'zustand';
 import { CommandPalette } from '../components/CommandPalette';
 import { Navbar, PendingCalls } from '../components/Navbar';
 import { showOrderToast } from '../components/OrderToast';
+import { ReservationBookButton } from '../components/ReservationBook';
 import { TableButton } from '../components/Table';
 import { TableDetail, TableDetailEmpty } from '../components/TableDetail';
-import { type CallKind, type Table as Mesa, visitorTable } from '../domain';
+import {
+  type CallKind,
+  type Table as Mesa,
+  reservationToday,
+  visitorTable,
+} from '../domain';
 import { useT } from '../i18n';
 import { store } from './store';
 import { useMedia } from './useMedia';
@@ -44,7 +50,9 @@ function StoreTableDetail({
     chargeAndFree,
     moveTable,
     restoreTables,
+    reservations,
   } = useStore(store);
+  const booked = reservationToday(reservations, table.number);
   const t = useT();
   const move = (to: number) => {
     const target = tables.find((item) => item.number === to);
@@ -74,6 +82,7 @@ function StoreTableDetail({
         chargeAndFree(table.number);
         onCharged();
       }}
+      reservation={booked && t('reservedToday')(booked.time, booked.name)}
       moveTargets={tables.filter((item) => item.number !== table.number)}
       onMove={move}
     />
@@ -129,7 +138,7 @@ function TableSheet({
 }
 
 export function Garzon() {
-  const tables = useStore(store, (state) => state.tables);
+  const { tables, reservations, reserve, cancelReservation } = useStore(store);
   const t = useT();
   const phone = useMedia('(max-width: 760px)');
   const [selected, setSelected] = useState<number | null>(null);
@@ -181,22 +190,30 @@ export function Garzon() {
     <div className="screen" data-surface="garzon">
       <Navbar
         start={
-          <CommandPalette
-            title={t('paletteTitle')}
-            placeholder={t('paletteHint')}
-            groups={[
-              { label: t('paletteActions'), items: actions },
-              {
-                label: t('tables'),
-                items: tables.map((item) => ({
-                  value: `open:${item.number}`,
-                  label: `${name(item)} · ${t(item.occupied ? 'occupied' : 'free')}`,
-                  icon: <Armchair />,
-                })),
-              },
-            ]}
-            onRun={run}
-          />
+          <div className="navbar-tools">
+            <CommandPalette
+              title={t('paletteTitle')}
+              placeholder={t('paletteHint')}
+              groups={[
+                { label: t('paletteActions'), items: actions },
+                {
+                  label: t('tables'),
+                  items: tables.map((item) => ({
+                    value: `open:${item.number}`,
+                    label: `${name(item)} · ${t(item.occupied ? 'occupied' : 'free')}`,
+                    icon: <Armchair />,
+                  })),
+                },
+              ]}
+              onRun={run}
+            />
+            <ReservationBookButton
+              reservations={reservations}
+              tables={tables.map((item) => item.number)}
+              onReserve={reserve}
+              onCancel={cancelReservation}
+            />
+          </div>
         }
         title={t('floor')}
         end={<PendingCalls>{t('pendingCalls')(pending)}</PendingCalls>}
@@ -239,6 +256,7 @@ export function Garzon() {
                   number={item.number}
                   occupied={item.occupied}
                   calls={item.calls}
+                  reserved={reservationToday(reservations, item.number)?.time}
                   pressed={selected === item.number}
                   tour={
                     item.number === visitorTable ? 'servir cobrar' : undefined

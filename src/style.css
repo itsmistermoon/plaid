@@ -55,6 +55,19 @@
   --tabbar-current-ink: var(--brand);
   --tabbar-current-bg: #0000002a;
   --tabbar-current-shadow: inset 0 2px 5px #0003;
+  --thread-reserva: #2fb5a6;
+  --book-binding: 10px;
+  --book-edge: 1px solid #2a1a10;
+  --book-cover: linear-gradient(#7a4a2b, #55321c);
+  --book-title: #f3e6cf;
+  --book-ink: #3e3e3e;
+  --book-paper:
+    linear-gradient(90deg, #0000 62px, #d9a0a0 62px 63px, #0000 63px),
+    linear-gradient(#fbf8ec, #f1ead2);
+  --book-paper-shadow: inset 0 0 0 1px #0002, 0 1px 3px #0006;
+  --book-rule: 1px solid #b9c7d6;
+  --book-font: 14px "Courier Prime", monospace;
+  --book-entry: #0000000f;
   --backdrop: #000a;
   --popup-edge: 1px solid #1a1f20;
   --popup-face: linear-gradient(#4a5355, #353c3e);
@@ -1894,6 +1907,150 @@ button.scheme-switch[aria-disabled="true"] {
 .palette-item [data-slot="command-item-icon"] {
   display: grid;
   flex: none;
+}
+/* Reservation book: a leather-bound ledger with a ruled page per day. Its
+   state color is the reservation's own thread, never the tartan's gold. */
+.navbar-tools {
+  display: flex;
+  gap: 6px;
+}
+.book-trigger {
+  width: 30px;
+  padding: 0;
+}
+.book-trigger svg {
+  width: 14px;
+  height: 14px;
+}
+.book {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 8vh auto auto 50%;
+  translate: -50% 0;
+  width: min(440px, calc(100vw - 24px));
+  max-height: 86vh;
+  margin: 0;
+  padding: var(--book-binding);
+  overflow-y: auto;
+  border: var(--book-edge);
+  border-radius: 10px;
+  color: var(--book-ink);
+  background: var(--book-cover);
+  box-shadow: var(--popup-shadow);
+}
+.book-demo {
+  position: static;
+  translate: none;
+  max-height: none;
+  box-shadow: none;
+}
+.book-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 4px 10px;
+  color: var(--book-title);
+}
+.book-head h3 {
+  font:
+    700 18px Outfit,
+    sans-serif;
+}
+.book-page {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 4px;
+  background: var(--book-paper);
+  box-shadow: var(--book-paper-shadow);
+}
+.book-page > * {
+  min-width: 0;
+}
+.book-day {
+  box-sizing: border-box;
+  width: 200px;
+  height: 30px;
+}
+.book-slots li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 36px;
+  border-bottom: var(--book-rule);
+  font: var(--book-font);
+}
+.book-slots time {
+  flex: none;
+  width: 48px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.book-entries {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+.book-entries li {
+  flex: none;
+}
+.book-entries li {
+  gap: 4px;
+  min-height: 24px;
+  padding: 0 4px 0 8px;
+  border: 0;
+  border-left: 3px solid var(--thread-reserva);
+  border-radius: 2px;
+  background: var(--book-entry);
+}
+.book-free {
+  opacity: 0.5;
+}
+.book-cancel {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: inherit;
+  background: none;
+  opacity: 0.6;
+}
+.book-cancel:hover {
+  opacity: 1;
+}
+.book-cancel svg {
+  width: 11px;
+  height: 11px;
+}
+.book-form {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  white-space: nowrap;
+  gap: 10px;
+  align-items: end;
+}
+.book-form .dropdown,
+.book-form .search {
+  box-sizing: border-box;
+  width: 100%;
+}
+.book-form .search,
+.book-form .light-button {
+  height: var(--field-h);
+}
+.book-hint {
+  grid-column: 1 / -1;
+  min-height: 16px;
+  font-size: 12px;
+}
+.cloth-call[data-kind="reserva"] {
+  stroke: var(--thread-reserva);
 }
 /* Move menu of a Mesa: a dark button with the floor's other Mesas, grouped
    by what choosing one does. */

@@ -7,14 +7,20 @@ export function Table({
   number,
   occupied,
   calls,
+  reserved,
 }: {
   number: number;
   occupied: boolean;
   calls: CallKind[];
+  /** Hour of today's reservation: a free Mesa says so on its plate. */
+  reserved?: string;
 }) {
   const t = useT();
   const id = useId().replace(/:/g, '');
   const unique = [...new Set(calls)];
+  const held = !occupied && reserved;
+  // A reservation weaves its own thread into the cloth, like an open call.
+  const threads = [...unique, ...(held ? ['reserva'] : [])];
   return (
     <svg
       className="mesa"
@@ -50,8 +56,8 @@ export function Table({
           patternUnits="userSpaceOnUse"
           patternTransform="rotate(45)"
         >
-          {unique.map((call, index) => {
-            const at = 21 + (index - (unique.length - 1) / 2) * 4;
+          {threads.map((call, index) => {
+            const at = 21 + (index - (threads.length - 1) / 2) * 4;
             return (
               <path
                 key={call}
@@ -120,7 +126,7 @@ export function Table({
           d="M100 -28 228 100 100 228 -28 100Z"
           fill={`url(#${id}checks)`}
         />
-        {unique.length > 0 && (
+        {threads.length > 0 && (
           <path
             className="cloth-calls"
             d="M100 -28 228 100 100 228 -28 100Z"
@@ -148,7 +154,11 @@ export function Table({
         />
         <path d="M42 83H158Q158 89 164 89V114Q158 114 158 120H42Q42 114 36 114V89Q42 89 42 83Z" />
         <text x="100" y="107" textAnchor="middle">
-          {occupied ? t('plateOccupied') : t('plateFree')}
+          {occupied
+            ? t('plateOccupied')
+            : held
+              ? t('plateReserved')(held)
+              : t('plateFree')}
         </text>
       </g>
       <g className="table-number">
@@ -173,6 +183,7 @@ export function TableButton({
   number,
   occupied,
   calls,
+  reserved,
   pressed,
   tour,
   onClick,
@@ -180,6 +191,7 @@ export function TableButton({
   number: number;
   occupied: boolean;
   calls: CallKind[];
+  reserved?: string;
   pressed?: boolean;
   tour?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -195,9 +207,15 @@ export function TableButton({
       data-tour={tour}
       onClick={onClick}
     >
-      <Table number={number} occupied={occupied} calls={calls} />
+      <Table
+        number={number}
+        occupied={occupied}
+        calls={calls}
+        reserved={reserved}
+      />
       <span className="sr-only">
         {t('tableSummary')(number, occupied)}
+        {!occupied && reserved ? `, ${t('plateReserved')(reserved)}` : ''}
         {unique.length
           ? `, ${t('callsSummary')}: ${unique.map((call) => t('callLabels')[call]).join(', ')}`
           : ''}

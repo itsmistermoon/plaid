@@ -96,6 +96,35 @@ const initialTables = (): Table[] =>
     orders: [],
     calls: [],
   }));
+/** A table held for a party: today or tomorrow, at one of the book's hours. */
+export interface Reservation {
+  id: string;
+  table: number;
+  /** 0 is today, 1 is tomorrow. */
+  day: 0 | 1;
+  time: string;
+  name: string;
+}
+/** The hours the reservation book offers. */
+export const reservationSlots = ['13:00', '14:00', '20:00', '21:00', '22:00'];
+const initialReservations = (): Reservation[] => [
+  { id: 'r1', table: 11, day: 0, time: '20:00', name: 'Rojas' },
+  { id: 'r2', table: 4, day: 0, time: '21:00', name: 'Soto' },
+  { id: 'r3', table: 2, day: 1, time: '13:00', name: 'Vidal' },
+];
+/** Whether a Mesa is already held at that day and hour. */
+export const isReserved = (
+  reservations: Reservation[],
+  { table, day, time }: Omit<Reservation, 'id' | 'name'>,
+) =>
+  reservations.some(
+    (item) => item.table === table && item.day === day && item.time === time,
+  );
+/** Today's first reservation of a Mesa, if it has one. */
+export const reservationToday = (reservations: Reservation[], table: number) =>
+  reservations
+    .filter((item) => item.table === table && item.day === 0)
+    .sort((a, b) => a.time.localeCompare(b.time))[0];
 /** Whose screen the visitor is looking at. */
 export const views = ['comensal', 'garzon', 'cocina'] as const;
 export type View = (typeof views)[number];
@@ -128,6 +157,10 @@ interface DemoState {
   moveTable: (from: number, to: number) => void;
   /** Puts the given Mesas back as they were, to undo a move. */
   restoreTables: (snapshot: Table[]) => void;
+  reservations: Reservation[];
+  /** Writes a reservation in the book, unless the Mesa is taken at that hour. */
+  reserve: (reservation: Omit<Reservation, 'id'>) => void;
+  cancelReservation: (id: string) => void;
   tour: Tour | null;
   /** Starts the tour, resumes it if skipped, or repeats it if finished. */
   startTour: () => void;
@@ -154,6 +187,27 @@ export const createDemoStore = (storage?: StateStorage) => {
             tour: state.tour && { ...state.tour, skipped: true },
           })),
         endTour: () => set({ tour: null }),
+        reservations: initialReservations(),
+        reserve: (reservation) =>
+          set((state) =>
+            !reservation.name.trim() ||
+            isReserved(state.reservations, reservation)
+              ? state
+              : {
+                  reservations: [
+                    ...state.reservations,
+                    {
+                      ...reservation,
+                      name: reservation.name.trim(),
+                      id: crypto.randomUUID(),
+                    },
+                  ],
+                },
+          ),
+        cancelReservation: (id) =>
+          set((state) => ({
+            reservations: state.reservations.filter((item) => item.id !== id),
+          })),
         view: 'comensal',
         setView: (view) => set({ view }),
         cart: [],
@@ -163,6 +217,7 @@ export const createDemoStore = (storage?: StateStorage) => {
             view: 'comensal',
             cart: [],
             tables: initialTables(),
+            reservations: initialReservations(),
             tour: null,
           }),
         callWaiter: () =>

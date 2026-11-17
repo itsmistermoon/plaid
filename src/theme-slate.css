@@ -86,6 +86,17 @@
   --tabbar-current-ink: var(--accent);
   --tabbar-current-bg: none;
   --tabbar-current-shadow: none;
+  --thread-reserva: light-dark(#0d9488, #2dd4bf);
+  --book-binding: 10px;
+  --book-edge: 1px solid var(--border);
+  --book-cover: var(--card);
+  --book-title: var(--foreground);
+  --book-ink: var(--foreground);
+  --book-paper: none;
+  --book-paper-shadow: none;
+  --book-rule: 1px solid var(--border);
+  --book-font: 14px Inter, sans-serif;
+  --book-entry: var(--secondary);
   --backdrop: light-dark(#0f172a66, #000a);
   --popup-edge: 1px solid var(--border);
   --popup-face: var(--card);

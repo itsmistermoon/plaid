@@ -17,6 +17,7 @@ export function TableDetail({
   onCharge,
   moveTargets,
   onMove,
+  reservation,
 }: {
   table: Table;
   heading: ReactNode;
@@ -27,6 +28,8 @@ export function TableDetail({
   /** The other Mesas this one can be moved to; without them there is no move menu. */
   moveTargets?: { number: number; occupied: boolean }[];
   onMove?: (to: number) => void;
+  /** Today's reservation of the Mesa, already worded. */
+  reservation?: string;
 }) {
   const t = useT();
   const extraName = useExtraName();
@@ -34,7 +37,10 @@ export function TableDetail({
     <>
       <div className="table-detail-scroll">
         {heading}
-        <p className="muted">{table.occupied ? t('occupied') : t('free')}</p>
+        <p className="muted">
+          {table.occupied ? t('occupied') : t('free')}
+          {reservation && ` · ${reservation}`}
+        </p>
         <h4>{t('calls')}</h4>
         {table.calls.length ? (
           <ul className="side-list">

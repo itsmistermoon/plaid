@@ -20,6 +20,9 @@ Domain vocabulary of the demo. Domain terms stay in Spanish, as they appear in t
 - **Trasladar**: move a Mesa's Pedidos and Llamados to a free Mesa. The origin becomes libre.
 - **Unir**: move a Mesa's Pedidos and Llamados to another occupied Mesa, which adds them to its own. The origin becomes libre.
 
+- **Reserva**: a Mesa held for a party, today or tomorrow, at one of the book's hours. A free Mesa with a Reserva today says so on its plate.
+- **Libro de reservas**: the Garzón's ledger of Reservas, one page per day.
+
 ## Carta
 
 - **Carta**: the dishes Restaurant El Clan offers, grouped into categories.

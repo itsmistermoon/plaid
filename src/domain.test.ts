@@ -7,6 +7,7 @@ import {
   cartTotal,
   createDemoStore,
   pendingOrders,
+  reservationToday,
   splitShares,
   tipAmount,
   toggleNotePreset,
@@ -426,4 +427,25 @@ it('moves a table to a free one, merges it into an occupied one and undoes it', 
   expect(store.getState().tables[4].occupied).toBe(false);
   store.getState().restoreTables([before[6], before[2]]);
   expect(store.getState().tables).toEqual(before);
+});
+
+it('writes and cancels reservations, one per Mesa and hour', () => {
+  const store = createDemoStore();
+  const { reserve, cancelReservation } = store.getState();
+  const before = store.getState().reservations.length;
+  reserve({ table: 5, day: 0, time: '22:00', name: ' Lagos ' });
+  reserve({ table: 5, day: 0, time: '22:00', name: 'Otro' });
+  reserve({ table: 5, day: 0, time: '13:00', name: '  ' });
+  reserve({ table: 5, day: 0, time: '14:00', name: 'Mella' });
+  const { reservations } = store.getState();
+  expect(reservations).toHaveLength(before + 2);
+  expect(reservationToday(reservations, 5)).toMatchObject({
+    time: '14:00',
+    name: 'Mella',
+  });
+  expect(reservationToday(reservations, 2)).toBeUndefined();
+  cancelReservation(reservationToday(reservations, 5)?.id ?? '');
+  expect(reservationToday(store.getState().reservations, 5)?.name).toBe(
+    'Lagos',
+  );
 });

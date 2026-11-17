@@ -34,6 +34,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **In the Cocina, each status (enviado, confirmado, servido) is a steel rail across the board and every Pedido hangs from its rail as a paper ticket with a toothed bottom edge; the rail sits above the tickets' top edge and the row scrolls sideways when they do not fit. In the Slate theme the rail is a plain track and the tickets are flat cards. A ticket keeps its width and its action slot in every status.**
   Why: the kitchen's order rail is the physical object cooks already read; it reuses the receipt's paper without inventing another material.
   <!-- 2026-11-17 -->
+- **The reservation book is a leather-bound ledger: a cream page ruled in blue with a red margin line, one fixed-height row per hour, opened as a dialog from the floor's bar. In the Slate theme it is a plain card with the same rows.**
+  Why: a ledger is the physical object a restaurant already uses for reservations.
+  <!-- 2026-11-17 -->
 - **The Slate theme does not simulate physical objects: no slots, printers or paper. The receipt is a clean card.**
   Why: the Slate theme does not simulate printed paper.
   <!-- 2026-11-16 -->
@@ -72,6 +75,9 @@ Design rules for plaid (a demo of Restaurant El Clan, a reconstruction of iClub)
 - **In the Slate theme, the call threads woven into the tablecloth are quiet: thinner and translucent (`--cloth-call-width`, `--cloth-call-opacity`), still readable next to the seal.**
   Why: at full strength they overpowered the flat cards.
   <!-- 2026-11-16 -->
+- **A reservation has its own thread, teal (`--thread-reserva`): it is woven into the cloth of a free Mesa held today, whose plate reads the hour, and it marks the entries of the reservation book. The tartan's gold is never used for it.**
+  Why: gold belongs to the tartan's thin thread only; every state gets a thread of its own.
+  <!-- 2026-11-17 -->
 - **Restaurant El Clan has its own tartan, defined once in `src/tartan.ts` by its threadcount (`K/8 G32 K6 G6 K24 W4 K24 Y/2`: green, slate, cream and a thin gold thread). The gallery accent, the "Tartan" section, the favicon and the Open Graph image are generated from it (`pnpm tartan:assets`); it is never redrawn by hand.**
   Why: one sett, one source of truth, like a registered tartan.
   <!-- 2026-11-16 -->

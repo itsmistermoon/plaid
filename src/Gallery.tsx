@@ -51,6 +51,7 @@ import {
   ReceiptOption,
   Stepper,
 } from './components/Receipt';
+import { ReservationBook } from './components/ReservationBook';
 import { Ribbon } from './components/Ribbon';
 import { Scanner } from './components/Scanner';
 import { SchemeSwitch } from './components/SchemeSwitch';
@@ -75,6 +76,7 @@ import {
   cartTotal,
   type Line,
   type Order,
+  type Reservation,
   splitShares,
   type Table,
   tipAmount,
@@ -873,6 +875,32 @@ function TicketRailDemo() {
   );
 }
 
+/** The reservation book with local state. */
+function BookDemo() {
+  const [reservations, setReservations] = useState<Reservation[]>([
+    { id: 'a', table: 4, day: 0, time: '21:00', name: 'Soto' },
+    { id: 'b', table: 11, day: 0, time: '20:00', name: 'Rojas' },
+    { id: 'c', table: 2, day: 1, time: '13:00', name: 'Vidal' },
+  ]);
+  return (
+    <div className="book book-demo">
+      <ReservationBook
+        reservations={reservations}
+        tables={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
+        onReserve={(item) =>
+          setReservations([
+            ...reservations,
+            { ...item, id: `${reservations.length}${item.name}` },
+          ])
+        }
+        onCancel={(id) =>
+          setReservations(reservations.filter((item) => item.id !== id))
+        }
+      />
+    </div>
+  );
+}
+
 const sampleTargets = [1, 2, 4, 5, 6].map((number) => ({
   number,
   occupied: number % 2 === 0,
@@ -1520,6 +1548,9 @@ function RestaurantView() {
             <Ribbon>Chacarero</Ribbon>
           </div>
         </Panel>
+        <Panel title={panel.book} uses={['Dialog', 'Select', 'Input']} wide>
+          <BookDemo />
+        </Panel>
         <Panel title={panel.moveMenu} uses={['Menu', 'Toast']}>
           <MoveMenuDemo />
         </Panel>
@@ -1589,6 +1620,19 @@ function RestaurantView() {
               node: (
                 <span className="table-state">
                   <TableButton number={3} occupied={false} calls={[]} />
+                </span>
+              ),
+            },
+            {
+              label: s.reserved,
+              node: (
+                <span className="table-state">
+                  <TableButton
+                    number={11}
+                    occupied={false}
+                    calls={[]}
+                    reserved="20:00"
+                  />
                 </span>
               ),
             },
