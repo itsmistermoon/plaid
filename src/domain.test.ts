@@ -2,7 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 beforeEach(() => sessionStorage.clear());
 
-import { billTotal, cartTotal, createDemoStore } from './domain';
+import { billTotal, cartTotal, createDemoStore, tipAmount } from './domain';
 import { startSimulator } from './simulator';
 
 it('actualiza el carrito y su total al cambiar cantidades', () => {
@@ -313,3 +313,9 @@ it.each([0, 0.3, 0.5, 0.99])(
     stop();
   },
 );
+
+it('rounds the tip to the peso', () => {
+  expect(tipAmount(20900, 10)).toBe(2090);
+  expect(tipAmount(3333, 15)).toBe(500);
+  expect(tipAmount(20900, 0)).toBe(0);
+});

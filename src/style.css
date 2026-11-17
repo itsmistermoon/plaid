@@ -1390,6 +1390,12 @@ button.scheme-switch:disabled {
   height: 32px;
   font-size: 13px;
 }
+/* Tip segments: the percentages never change width with the total. */
+.tip-selector {
+  box-sizing: border-box;
+  height: 32px;
+  font-variant-numeric: tabular-nums;
+}
 .notice {
   padding: 10px 14px;
   border-radius: 6px;

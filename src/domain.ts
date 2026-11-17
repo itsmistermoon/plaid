@@ -60,6 +60,9 @@ export const cartTotal = (lines: Line[]) =>
   lines.reduce((total, line) => total + unitPrice(line) * line.qty, 0);
 export const billTotal = (table: Table) =>
   table.orders.reduce((total, order) => total + cartTotal(order.lines), 0);
+/** The tip for a bill, rounded to the peso. */
+export const tipAmount = (subtotal: number, percent: number) =>
+  Math.round((subtotal * percent) / 100);
 /** Mesa 7: the visitor's table, the demo's Comensal. */
 export const visitorTable = 7;
 /** Mesa 7 within the floor. */

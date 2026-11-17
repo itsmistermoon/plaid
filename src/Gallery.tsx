@@ -56,6 +56,7 @@ import { StageBar, StageIntro } from './components/StageBar';
 import { TableButton } from './components/Table';
 import { TableDetail, TableDetailEmpty } from './components/TableDetail';
 import { ThemeSwitch } from './components/ThemeSwitch';
+import { type TipPercent, TipSelector } from './components/TipSelector';
 import { lineKey, receiptLine } from './demo/lines';
 import {
   billTotal,
@@ -63,6 +64,7 @@ import {
   cartTotal,
   type Line,
   type Table,
+  tipAmount,
 } from './domain';
 import { money } from './format';
 import { pathFor, useExtraName, useLang, useT } from './i18n';
@@ -602,13 +604,17 @@ function ReceiptDemo() {
     line('empanada', 2),
     line('italiano', 1, ['palta']),
   ]);
+  const [percent, setPercent] = useState<TipPercent>(10);
+  const tip = tipAmount(cartTotal(cart), percent);
+  const total = cartTotal(cart) + tip;
   const t = useT();
   const extraName = useExtraName();
   return (
     <section className="card ticket-card" aria-label={t('sampleReceipt')}>
       <Receipt
         caption={t('sampleReceipt')}
-        total={cartTotal(cart)}
+        total={total}
+        tip={{ percent, amount: tip }}
         lines={cart.map((item) =>
           receiptLine(
             item,
@@ -628,7 +634,8 @@ function ReceiptDemo() {
           ),
         )}
       />
-      <ReceiptActions total={cartTotal(cart)}>
+      <ReceiptActions total={total}>
+        <TipSelector value={percent} onChange={setPercent} />
         <button type="button" className="light-button">
           {t('placeOrder')}
         </button>

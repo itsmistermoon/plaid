@@ -274,6 +274,10 @@
     grid-template-columns: 1fr auto;
     align-items: center;
   }
+  .receipt-actions .tip-selector {
+    order: 1;
+    grid-column: 1 / -1;
+  }
 
   /* Status: call the Garzón and view the Cuenta */
   .status-actions.mobile-only {

@@ -20,11 +20,15 @@ export function Receipt({
   lines,
   total,
   caption,
+  tip,
   children,
 }: {
   lines: ReceiptLine[];
+  /** The figure to pay, tip included. */
   total: number;
   caption: string;
+  /** Printed as one more line when its amount is not zero. */
+  tip?: { percent: number; amount: number };
   children?: ReactNode;
 }) {
   const t = useT();
@@ -75,6 +79,15 @@ export function Receipt({
                 )}
               </tbody>
             ))}
+            {!!tip?.amount && (
+              <tbody className="receipt-tip">
+                <tr>
+                  <th scope="row">{t('tip')}</th>
+                  <td>{tip.percent}%</td>
+                  <td>{money(tip.amount)}</td>
+                </tr>
+              </tbody>
+            )}
           </table>
           <p className="receipt-total">
             {t('total')}: {money(total)}
