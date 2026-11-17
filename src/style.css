@@ -1,5 +1,9 @@
 /* Plaid theme tokens (iClub, 2012). */
 [data-theme="plaid"] {
+  --table-wood-top: #ddb585;
+  --table-wood-mid: #ae7848;
+  --table-wood-bottom: #79502e;
+  --table-wood-edge: #553e29;
   --stage: #2b3437;
   --gallery-bar: var(--stage);
   --gallery-bar-line: #3c4446;
@@ -81,13 +85,17 @@
     var(--noise), var(--chalk-board);
   --chalk-inset: inset 0 2px 8px #000a, inset 0 0 0 1px #0006;
   --book-binding: 10px;
-  --book-edge: 1px solid #2a1a10;
-  --book-cover: linear-gradient(#7a4a2b, #55321c);
-  --book-title: #f3e6cf;
-  --book-ink: #3e3e3e;
+  --book-edge: 1px solid var(--table-wood-edge);
+  --book-cover: linear-gradient(
+    var(--table-wood-top),
+    var(--table-wood-mid) 50%,
+    var(--table-wood-bottom)
+  );
+  --book-title: #fff;
+  --book-ink: var(--paper-ink);
   --book-paper:
     linear-gradient(90deg, #0000 62px, #d9a0a0 62px 63px, #0000 63px),
-    linear-gradient(#fbf8ec, #f1ead2);
+    var(--paper);
   --book-paper-shadow: inset 0 0 0 1px #0002, 0 1px 3px #0006;
   --book-rule: 1px solid #b9c7d6;
   --book-font: 14px "Courier Prime", monospace;
@@ -959,9 +967,15 @@ button.scheme-switch[aria-disabled="true"] {
 /* Diet toggles: a fixed-width row between the tabs and the list. */
 .diet-filter {
   box-sizing: border-box;
+  flex: none;
   width: min(100%, 330px);
   height: 32px;
   margin-top: 12px;
+}
+.panel-states .diet-filter {
+  width: 330px;
+  max-width: 100%;
+  margin-top: 0;
 }
 .diet-filter + .dish-list {
   margin-top: 12px;
@@ -2528,7 +2542,7 @@ button.scheme-switch[aria-disabled="true"] {
 }
 .table-outline {
   fill: none;
-  stroke: #553e29;
+  stroke: var(--table-wood-edge);
   stroke-width: 1.5;
 }
 .plate {
@@ -2826,11 +2840,12 @@ button.scheme-switch[aria-disabled="true"] {
 .gallery-views {
   box-sizing: border-box;
   width: min(100%, 420px);
-  height: var(--bar-h);
+  height: 42px;
   margin: 0 auto 22px;
 }
 .gallery-views a {
   padding: 0 8px;
+  font-size: 15px;
 }
 .gallery-group {
   max-width: 1120px;
@@ -2890,7 +2905,7 @@ button.scheme-switch[aria-disabled="true"] {
   align-items: center;
   gap: 10px;
   height: 36px;
-  padding: 0 12px 0 30px;
+  padding: 0 12px 0 52px;
   font:
     700 15px Outfit,
     sans-serif;
@@ -2902,12 +2917,13 @@ button.scheme-switch[aria-disabled="true"] {
 .panel {
   counter-increment: panel;
 }
-/* The group's thread, woven: two warp stripes under a twill. */
+/* The group's thread, woven as a small tartan: warp and weft stripes of the
+   thread cross over a twill, so the plaid reads at a glance. */
 .panel-caption::before {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
-  width: 18px;
+  width: 40px;
   opacity: var(--weave-opacity);
   background:
     repeating-linear-gradient(
@@ -2917,12 +2933,37 @@ button.scheme-switch[aria-disabled="true"] {
     ),
     linear-gradient(
       90deg,
-      transparent 0 5px,
-      var(--group-thread) 5px 9px,
-      transparent 9px 11px,
+      transparent 0 4px,
+      var(--group-thread) 4px 8px,
+      transparent 8px 11px,
       var(--group-thread) 11px 13px,
-      transparent 13px
-    );
+      transparent 13px 17px,
+      var(--group-thread) 17px 23px,
+      transparent 23px 27px,
+      var(--group-thread) 27px 29px,
+      transparent 29px 32px,
+      var(--group-thread) 32px 36px,
+      transparent 36px
+    )
+}
+.panel-caption::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40px;
+  opacity: calc(var(--weave-opacity) * 0.55);
+  background: linear-gradient(
+    0deg,
+    transparent 0 5px,
+    var(--group-thread) 5px 9px,
+    transparent 9px 14px,
+    var(--group-thread) 14px 16px,
+    transparent 16px 20px,
+    var(--group-thread) 20px 22px,
+    transparent 22px 27px,
+    var(--group-thread) 27px 31px,
+    transparent 31px
+  );
 }
 .panel-number::before {
   content: counter(panel, decimal-leading-zero);

@@ -153,6 +153,10 @@
   /* Subtler threads and stitches on the flat theme. */
   --weave-shade: light-dark(#0f172a1f, #0006);
   --weave-opacity: 0.6;
+  --table-wood-top: #ddb585;
+  --table-wood-mid: #ae7848;
+  --table-wood-bottom: #79502e;
+  --table-wood-edge: #553e29;
   /* Call threads woven into the tablecloth: present but quiet. */
   --cloth-call-opacity: 0.5;
   --cloth-call-width: 1.6;

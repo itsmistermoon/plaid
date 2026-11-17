@@ -78,9 +78,9 @@ export function Table({
           <feColorMatrix type="saturate" values="0" />
         </filter>
         <linearGradient id={`${id}wood`} x2="0" y2="1">
-          <stop stopColor="#ddb585" />
-          <stop offset=".5" stopColor="#ae7848" />
-          <stop offset="1" stopColor="#79502e" />
+          <stop style={{ stopColor: 'var(--table-wood-top)' }} />
+          <stop offset=".5" style={{ stopColor: 'var(--table-wood-mid)' }} />
+          <stop offset="1" style={{ stopColor: 'var(--table-wood-bottom)' }} />
         </linearGradient>
         <linearGradient id={`${id}plate`} x2="0" y2="1">
           <stop stopColor="#fffbd6" />

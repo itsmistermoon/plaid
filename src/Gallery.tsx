@@ -1587,7 +1587,7 @@ function RestaurantView() {
         <Panel
           title={panel.ticketRail}
           uses={[]}
-          wide
+          wide="full"
           states={[
             {
               label: s.served,
@@ -1643,7 +1643,7 @@ function RestaurantView() {
         <Panel
           title={panel.table}
           uses={[]}
-          wide
+          wide="full"
           states={[
             {
               label: s.free,
