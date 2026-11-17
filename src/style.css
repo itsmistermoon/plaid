@@ -991,8 +991,10 @@ button.scheme-switch:disabled {
   color: #7a7243;
 }
 /* Usual requests: a row of toggles in the segmented control's material. */
+/* Fixed width: the row measures the same in both themes. */
 .note-presets {
   box-sizing: border-box;
+  width: min(100%, var(--presets-w, 260px));
   height: 32px;
   margin-top: 12px;
 }
